@@ -1,8 +1,9 @@
 <template>
   <div class="chat_container">
-    <div class="chat" id="chat">
+    <!-- <div class="chat" id="chat">
       <message v-for="item in conversation" :key="item.id" :text="item.text" :sender="item.sender"></message>
-    </div>
+    </div>-->
+    <chat :conversationHistory="conversation"></chat>
     <div class="interface">
       <textarea
         name="message_box"
@@ -17,6 +18,7 @@
 
 <script lang="ts">
 import Message from "./message.vue";
+import Chat from "./conversation.vue";
 import Vue from "vue";
 
 // import { conversation } from "./../../test/conversation";
@@ -43,7 +45,7 @@ export default Vue.extend({
     }
   },
   components: {
-    Message
+    Chat
   },
   updated: function() {
     console.log("chiamato updated");
@@ -60,36 +62,31 @@ export default Vue.extend({
   /* overflow: hidden; */
 }
 
-.chat {
+/* .chat {
   display: grid;
   margin: auto;
   overflow-y: auto;
   overflow-x: hidden;
   height: 60vh;
   padding: 10px;
-}
-
+} */
+/* 
 ::-webkit-scrollbar {
   width: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   border-radius: 5px;
-  /* background: #f1f1f1;*/
-  /* background: white; */
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #d2d9dc;
   border-radius: 5px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #a6b4ba;
-}
+} */
 
 .interface {
   width: 100%;
