@@ -54,7 +54,7 @@ export default Vue.extend({
 
   .message_box {
     color: white;
-    background-color: #4e8cff;
+    background-color: #187795;
     // text-align: right;
   }
 }
@@ -67,8 +67,8 @@ export default Vue.extend({
   }
 
   .message_box {
-    color: black;
-    background-color: #b9b9b9;
+    color: white;
+    background-color: #38686a;
     // text-align: left;
   }
 }
