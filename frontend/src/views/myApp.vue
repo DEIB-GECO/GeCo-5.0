@@ -3,7 +3,7 @@
     <h1>First draft of the Chat!</h1>
     <div class="grid_container">
       <chat @emit-send="sendMessage()" :textMessage.sync="message" :conversation="conversation"></chat>
-      <div class="side"></div>
+      <toolbox></toolbox>
     </div>
     <!-- <chat @emit-send="sendMessage()" :textMessage.sync="message" :conversation="conversation"></chat> -->
   </div>
@@ -12,7 +12,10 @@
 
 <script lang="ts">
 import Chat from "./../components/chat/chat_interface.vue";
+import Toolbox from "./../components/toolbox/toolbox_interface.vue";
+
 import { conversation } from "./../test/conversation";
+
 import Vue from "vue";
 
 export default Vue.extend({
@@ -23,7 +26,8 @@ export default Vue.extend({
     };
   },
   components: {
-    Chat
+    Chat,
+    Toolbox
   },
   methods: {
     sendMessage: function() {
@@ -51,9 +55,5 @@ export default Vue.extend({
   height: 90%;
   width: 80%;
   /* display: flex; */
-}
-
-.side {
-  background-color: rosybrown;
 }
 </style>
