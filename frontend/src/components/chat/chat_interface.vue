@@ -21,11 +21,11 @@ import Vue from "vue";
 export default Vue.extend({
   props: {
     textMessage: {
-      type: String
+      type: String,
     },
     conversation: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   methods: {
     emitSend() {
@@ -37,19 +37,20 @@ export default Vue.extend({
       if (container) {
         container.scrollTop = container.scrollHeight;
       }
-    }
+    },
   },
   components: {
-    Chat
+    Chat,
   },
-  updated: function() {
-    console.log("chiamato updated");
-    this.scrollToEnd();
-  }
+  // updated: function() {
+  //   console.log("chiamato updated");
+  //   this.scrollToEnd();
+  // }
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "../../style/base.scss";
 .chat_container {
   margin: auto;
 }
@@ -94,5 +95,9 @@ textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
 }
 </style>

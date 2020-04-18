@@ -25,6 +25,15 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/myApp.vue"),
   },
+
+  {
+    path: "/ds",
+    name: "GeCo 5.0",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/toolbox/tools/dataset_list/dataset_list.vue"
+      ),
+  },
 ];
 
 const router = new VueRouter({

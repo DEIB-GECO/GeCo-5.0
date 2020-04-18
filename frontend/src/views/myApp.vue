@@ -2,13 +2,16 @@
   <div class="container">
     <h1>First draft of the Chat!</h1>
     <div class="grid_container">
-      <chat @emit-send="sendMessage()" :textMessage.sync="message" :conversation="conversation"></chat>
-      <toolbox></toolbox>
+      <chat
+        @emit-send="sendMessage()"
+        :textMessage.sync="message"
+        :conversation="conversation"
+      ></chat>
+      <toolbox :concatenateToMessage="concatenateToMessage"></toolbox>
     </div>
     <!-- <chat @emit-send="sendMessage()" :textMessage.sync="message" :conversation="conversation"></chat> -->
   </div>
 </template>
-
 
 <script lang="ts">
 import Chat from "./../components/chat/chat_interface.vue";
@@ -22,12 +25,12 @@ export default Vue.extend({
   data() {
     return {
       message: "",
-      conversation
+      conversation,
     };
   },
   components: {
     Chat,
-    Toolbox
+    Toolbox,
   },
   methods: {
     sendMessage: function() {
@@ -36,8 +39,12 @@ export default Vue.extend({
         console.log("I sent: " + this.message);
         this.message = "";
       }
-    }
-  }
+      // this.message += "ciao";
+    },
+    concatenateToMessage: function(newPiece: string) {
+      this.message += " " + newPiece;
+    },
+  },
 });
 </script>
 <style scoped>

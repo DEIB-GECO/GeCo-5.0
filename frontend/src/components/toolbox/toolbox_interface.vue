@@ -1,15 +1,20 @@
 <template>
   <div class="toolbox_interface">
     <keep-alive>
-      <div class="canvas" :is="active"></div>
+      <div class="canvas" :is="active" :copyName="sendMessageToConcat"></div>
     </keep-alive>
     <div class="buttons_grid">
       <div
         v-for="tool in tools"
         v-bind:key="tool.component"
-        :class="['tool',(active == tool.component)? 'active_tool' : 'inactive_tool']"
-        @click="active=tool.component"
-      >{{tool.name}}</div>
+        :class="[
+          'tool',
+          active == tool.component ? 'active_tool' : 'inactive_tool'
+        ]"
+        @click="active = tool.component"
+      >
+        {{ tool.name }}
+      </div>
     </div>
   </div>
 </template>
@@ -17,8 +22,8 @@
 <script lang="ts">
 import Vue from "vue";
 
-import DatasetList from "./tools/dataset_list.vue";
-import MetadataExploration from "./tools/metadata_exploration.vue";
+import DatasetList from "./tools/dataset_list/dataset_list.vue";
+import MetadataExploration from "./tools/metadata_exploration/metadata_exploration.vue";
 
 export default Vue.extend({
   data() {
@@ -29,6 +34,21 @@ export default Vue.extend({
         { name: "Matadata", component: "metadata" }
       ]
     };
+  },
+  props: {
+    concatenateToMessage: {
+      type: Function
+    }
+  },
+  methods: {
+    sendMessageToConcat(msg: string) {
+      console.log("sendMessageToConcat invoked");
+      if (this.concatenateToMessage) {
+        this.concatenateToMessage(msg);
+      } else {
+        console.log("concat non esiste");
+      }
+    }
   },
   components: {
     dataset: DatasetList,
