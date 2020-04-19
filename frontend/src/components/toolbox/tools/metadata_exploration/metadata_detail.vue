@@ -21,22 +21,43 @@
       </div>
     </div>
     <div class="detail_body">
-      here is the list
-      <div class="metadata_table">
+      <h2>Meatadatum Name</h2>
+      <div class="metadata_table_container">
         <table>
           <thead>
-            <th>Value</th>
-            <th>count</th>
+            <th>
+              Value
+
+              <font-awesome-icon
+                :icon="isValueCaretDown ? 'caret-down' : 'caret-up'"
+                size="1x"
+                @click="orderByValue"
+              ></font-awesome-icon>
+            </th>
+            <th>
+              count
+              <font-awesome-icon
+                @click="orderByCount"
+                :icon="isCountCaretDown ? 'caret-down' : 'caret-up'"
+                size="1x"
+              ></font-awesome-icon>
+            </th>
           </thead>
           <tbody>
-            <tr>
-              <td>Ciao</td>
-              <td>4</td>
+            <tr v-for="pair in valuesList" :key="pair.name">
+              <td>{{ pair.name }}</td>
+              <td>{{ pair.count }}</td>
             </tr>
-            <td>Culo</td>
-            <td>3</td>
           </tbody>
         </table>
+      </div>
+      <div class="suggestions_box">
+        <div class="suggestions_box_title">
+          Not satisfied?
+        </div>
+        <div class="suggestions">
+          Try with XXX, YYY, ZZZ
+        </div>
       </div>
     </div>
   </div>
@@ -44,17 +65,28 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { metadataValuesList } from "../../../../test/metadata_values_list";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faTimesCircle,
   faChevronLeft,
+  faCaretUp,
+  faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faTimesCircle, faChevronLeft);
+library.add(faTimesCircle, faChevronLeft, faCaretUp, faCaretDown);
 
 export default Vue.extend({
+  data() {
+    return {
+      valuesList: metadataValuesList,
+      orderBy: "value-down",
+      isValueCaretDown: false,
+      isCountCaretDown: true,
+    };
+  },
   components: {
     FontAwesomeIcon,
   },
@@ -63,11 +95,40 @@ export default Vue.extend({
       console.log("emit close details");
       this.$emit("closeDetails");
     },
+    orderByValue() {
+      console.log("order by value invoked");
+
+      const greaterNumber = this.isValueCaretDown ? -1 : 1;
+      const smallerNumber = -greaterNumber;
+
+      this.valuesList = this.valuesList.sort((a, b) =>
+        a.name > b.name ? greaterNumber : smallerNumber
+      );
+
+      console.log(this.valuesList);
+
+      this.isValueCaretDown = !this.isValueCaretDown;
+      console.log("isValueDown= " + this.isValueCaretDown);
+    },
+    orderByCount() {
+      console.log("order by count invohed");
+
+      const greaterNumber = this.isCountCaretDown ? -1 : 1;
+      const smallerNumber = -greaterNumber;
+
+      this.valuesList = this.valuesList.sort((a, b) =>
+        a.count > b.count ? greaterNumber : smallerNumber
+      );
+
+      this.isCountCaretDown = !this.isCountCaretDown;
+      console.log("isValueDown= " + this.isValueCaretDown);
+    },
   },
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "../../../../style/base.scss";
 .metadata_detail {
   position: absolute;
   height: 100%;
@@ -99,5 +160,58 @@ export default Vue.extend({
 .to_previous_button_text {
   margin-left: 10px;
   color: #187795;
+}
+
+.detail_body {
+  height: 80%;
+}
+
+.metadata_table_container {
+  overflow: auto;
+  height: 60%;
+  table {
+    margin: auto;
+    margin-top: 0;
+    border-collapse: separate;
+  }
+  thead {
+    border: 3px solid #ddd;
+    margin: 0;
+  }
+
+  th {
+    position: sticky;
+    top: 0px;
+    background-color: white;
+    border: 3px solid #ddd;
+    padding: 10px;
+    margin: 0;
+  }
+
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-spacing: 0;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #ddd;
+  }
+}
+
+.suggestions_box {
+  margin-left: 15px;
+  margin-top: 10px;
+}
+.suggestions_box_title {
+  text-align: left;
+}
+
+.suggestions {
+  text-align: left;
 }
 </style>
