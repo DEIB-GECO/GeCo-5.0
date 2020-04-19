@@ -1,6 +1,9 @@
 <template>
   <div class="metadata_exploration">
-    <metadata-detail v-if="isDetailVisible"></metadata-detail>
+    <metadata-detail
+      v-if="isDetailVisible"
+      @closeDetails="isDetailVisible = false"
+    ></metadata-detail>
     <div class="metadata_list">
       <h1>metadata exploration</h1>
       <div class="metadata_item">
@@ -28,13 +31,13 @@ library.add(faChevronRight);
 export default {
   data() {
     return {
-      isDetailVisible: false
+      isDetailVisible: false,
     };
   },
   components: {
     FontAwesomeIcon,
-    MetadataDetail
-  }
+    MetadataDetail,
+  },
 };
 </script>
 
