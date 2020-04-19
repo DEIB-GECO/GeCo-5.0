@@ -12,7 +12,7 @@
     <!-- <chat @emit-send="sendMessage()" :textMessage.sync="message" :conversation="conversation"></chat> -->
   </div>
 </template>
-
+<script src="/socket.io/socket.io.js"></script>
 <script lang="ts">
 import Chat from "./../components/chat/chat_interface.vue";
 import Toolbox from "./../components/toolbox/toolbox_interface.vue";
@@ -20,6 +20,11 @@ import Toolbox from "./../components/toolbox/toolbox_interface.vue";
 import { conversation } from "./../test/conversation";
 
 import Vue from "vue";
+
+import io from 'socket.io-client';
+
+const socket = io("http://localhost:5980/test")
+
 
 export default Vue.extend({
   data() {
@@ -32,11 +37,19 @@ export default Vue.extend({
     Chat,
     Toolbox,
   },
+
+  created: function() {
+    socket.on("my_response", function(msg:any) {
+        conversation.push({ sender: "Geco", text: msg.data })
+        console.log("server sent:" + "msg");});
+    }
+
   methods: {
     sendMessage: function() {
       if (this.message != "") {
         conversation.push({ sender: "user", text: this.message });
         console.log("I sent: " + this.message);
+        socket.emit('my_event', {data:this.message})
         this.message = "";
       }
       // this.message += "ciao";
