@@ -3,12 +3,18 @@
     <metadata-detail
       v-if="isDetailVisible"
       @closeDetails="isDetailVisible = false"
+      :copyName="receiveNameAndPassAbove"
+      :metadataKey="expandedMetadata"
     ></metadata-detail>
     <div class="metadata_list">
       <h1>metadata exploration</h1>
       <div class="metadata_item">
         <div class="metadata_name">This is a metadatum</div>
-        <div class="explore_button_container" @click="isDetailVisible = true">
+        <div
+          class="explore_button_container"
+          @click="openMetadataDetail('metadatum name')"
+          :key="'metadatum name'"
+        >
           <font-awesome-icon
             class="close_icon"
             :icon="['fas', 'chevron-right']"
@@ -32,11 +38,28 @@ export default {
   data() {
     return {
       isDetailVisible: false,
+      expandedMetadata: "",
     };
+  },
+  props: {
+    copyName: {
+      type: Function,
+    },
   },
   components: {
     FontAwesomeIcon,
     MetadataDetail,
+  },
+  methods: {
+    openMetadataDetail(metadataKey) {
+      this.expandedMetadata = metadataKey;
+      console.log("expandedMetadata set to " + this.expandedMetadata);
+      this.isDetailVisible = true;
+    },
+    receiveNameAndPassAbove(name) {
+      console.log("metadata_exploration receive and pass invoked");
+      this.copyName(name);
+    },
   },
 };
 </script>

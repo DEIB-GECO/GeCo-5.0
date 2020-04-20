@@ -9,7 +9,7 @@
         v-bind:key="tool.component"
         :class="[
           'tool',
-          active == tool.component ? 'active_tool' : 'inactive_tool'
+          active == tool.component ? 'active_tool' : 'inactive_tool',
         ]"
         @click="active = tool.component"
       >
@@ -24,6 +24,7 @@ import Vue from "vue";
 
 import DatasetList from "./tools/dataset_list/dataset_list.vue";
 import MetadataExploration from "./tools/metadata_exploration/metadata_exploration.vue";
+import FieldExplorer from "./tools/field_explorer.vue";
 
 export default Vue.extend({
   data() {
@@ -31,14 +32,15 @@ export default Vue.extend({
       active: "dataset",
       tools: [
         { name: "Dataset List", component: "dataset" },
-        { name: "Matadata", component: "metadata" }
-      ]
+        { name: "Matadata", component: "metadata" },
+        { name: "Field Explorer", component: "field" },
+      ],
     };
   },
   props: {
     concatenateToMessage: {
-      type: Function
-    }
+      type: Function,
+    },
   },
   methods: {
     sendMessageToConcat(msg: string) {
@@ -48,18 +50,19 @@ export default Vue.extend({
       } else {
         console.log("concat non esiste");
       }
-    }
+    },
   },
   components: {
     dataset: DatasetList,
-    metadata: MetadataExploration
-  }
+    metadata: MetadataExploration,
+    field: FieldExplorer,
+  },
 });
 </script>
 
 <style scoped>
 .toolbox_interface {
-  height: 100%;
+  height: 75vh;
   width: 100%;
 }
 

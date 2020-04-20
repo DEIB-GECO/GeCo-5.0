@@ -7,6 +7,7 @@
         id="message_box"
         @change="$emit('update:textMessage', $event.target.value)"
         v-bind:value="textMessage"
+        @keyup.enter="emitSend()"
       ></textarea>
       <button class="send_button" @click="emitSend()">Send</button>
     </div>

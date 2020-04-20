@@ -21,10 +21,9 @@ import { conversation } from "./../test/conversation";
 
 import Vue from "vue";
 
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
-const socket = io("http://localhost:5980/test")
-
+const socket = io("http://localhost:5980/test");
 
 export default Vue.extend({
   data() {
@@ -39,17 +38,18 @@ export default Vue.extend({
   },
 
   created: function() {
-    socket.on("my_response", function(msg:any) {
-        conversation.push({ sender: "Geco", text: msg.data })
-        console.log("server sent:" + "msg");});
-    }
+    socket.on("my_response", function(msg: any) {
+      conversation.push({ sender: "Geco", text: msg.data });
+      console.log("server sent:" + "msg");
+    });
+  },
 
   methods: {
     sendMessage: function() {
       if (this.message != "") {
         conversation.push({ sender: "user", text: this.message });
         console.log("I sent: " + this.message);
-        socket.emit('my_event', {data:this.message})
+        socket.emit("my_event", { data: this.message });
         this.message = "";
       }
       // this.message += "ciao";

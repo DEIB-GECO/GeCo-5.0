@@ -3,6 +3,12 @@
     <pop-up v-if="isPopUpVisible" @hidePopUp="isPopUpVisible = false"></pop-up>
     <!-- <pop-up v-if="isPopUpVisible" @hidePopUp="isPopupVisible = false"></pop-up> -->
     <h2>Dataset List</h2>
+    <div v-for="item in datasetList" :key="item" class="list_item">
+      <div class="dataset_name" @click="emitCopyName(item)">
+        {{ item }}
+      </div>
+      <div class="info_button"><button @click="showPopUp">i</button></div>
+    </div>
     <div class="list_item">
       <div class="dataset_name" @click="emitCopyName('NAME_NAME_NAME')">
         NAME_NAME_NAME
@@ -15,17 +21,19 @@
 <script lang="ts">
 import Vue from "vue";
 import PopUp from "./pop_up.vue";
+import { datasetList } from "../../../../test/dataset_list";
 
 export default Vue.extend({
   data() {
     return {
-      isPopUpVisible: false
+      isPopUpVisible: false,
+      datasetList,
     };
   },
   props: {
     copyName: {
-      type: Function
-    }
+      type: Function,
+    },
   },
   methods: {
     showPopUp() {
@@ -38,29 +46,30 @@ export default Vue.extend({
       } else {
         console.log("error-funct not found");
       }
-    }
+    },
   },
   components: {
-    PopUp
-  }
+    PopUp,
+  },
 });
 </script>
 
 <style scoped lang="scss">
 .dataset_list {
-  height: 100%;
+  height: 60vh;
+  overflow: auto;
 }
 
 .list_item {
   padding-top: 10px;
-  padding-top: 10px;
+  padding-bottom: 3px;
   padding-left: 3%;
   padding-right: 3%;
 
   margin-left: 5%;
   margin-right: 5%;
 
-  height: 5%;
+  height: 30px;
 
   border: solid 2px #187795;
   border-radius: 10px;

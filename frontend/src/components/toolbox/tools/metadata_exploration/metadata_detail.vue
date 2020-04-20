@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="detail_body">
-      <h2>Meatadatum Name</h2>
+      <h2>Title is:{{ metadataKey }}</h2>
       <div class="metadata_table_container">
         <table>
           <thead>
@@ -59,6 +59,9 @@
           Try with XXX, YYY, ZZZ
         </div>
       </div>
+      <div class="use_this_button" @click="emitCopyName('NAME')">
+        Use XXX
+      </div>
     </div>
   </div>
 </template>
@@ -87,17 +90,23 @@ export default Vue.extend({
       isCountCaretDown: true,
     };
   },
+  props: {
+    metadataKey: {
+      type: String,
+      // default: "",
+    },
+    copyName: {
+      type: Function,
+    },
+  },
   components: {
     FontAwesomeIcon,
   },
   methods: {
     emitCloseButton() {
-      console.log("emit close details");
       this.$emit("closeDetails");
     },
     orderByValue() {
-      console.log("order by value invoked");
-
       const greaterNumber = this.isValueCaretDown ? -1 : 1;
       const smallerNumber = -greaterNumber;
 
@@ -108,11 +117,8 @@ export default Vue.extend({
       console.log(this.valuesList);
 
       this.isValueCaretDown = !this.isValueCaretDown;
-      console.log("isValueDown= " + this.isValueCaretDown);
     },
     orderByCount() {
-      console.log("order by count invohed");
-
       const greaterNumber = this.isCountCaretDown ? -1 : 1;
       const smallerNumber = -greaterNumber;
 
@@ -121,7 +127,14 @@ export default Vue.extend({
       );
 
       this.isCountCaretDown = !this.isCountCaretDown;
-      console.log("isValueDown= " + this.isValueCaretDown);
+    },
+    emitCopyName(msg: string) {
+      // console.log(typeof this.functToCall);
+      if (this.copyName) {
+        this.copyName(msg);
+      } else {
+        console.log("error-funct not found");
+      }
     },
   },
 });
@@ -213,5 +226,19 @@ export default Vue.extend({
 
 .suggestions {
   text-align: left;
+}
+
+.use_this_button {
+  border: solid 2px #0b3142;
+  width: 50%;
+  padding: 8px;
+  margin: auto;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.use_this_button:hover {
+  background-color: #0b3142;
+  color: white;
 }
 </style>
