@@ -55,6 +55,7 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+@import "../../../../style/base.scss";
 .dataset_list {
   height: 60vh;
   overflow: auto;
