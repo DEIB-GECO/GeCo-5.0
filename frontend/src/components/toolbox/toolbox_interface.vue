@@ -32,7 +32,7 @@ export default Vue.extend({
       active: "dataset",
       tools: [
         { name: "Dataset List", component: "dataset" },
-        { name: "Matadata", component: "metadata" },
+        { name: "Metadata", component: "metadata" },
         { name: "Field Explorer", component: "field" },
       ],
     };

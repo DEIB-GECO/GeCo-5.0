@@ -3,6 +3,20 @@
     <h1>Fields Explorer</h1>
     <div class="list_container">
       <ul>
+        <li v-for="element in fieldList" :key="element.field">
+          {{ element.field }}
+          <ul>
+            <li
+              v-for="item in element.values"
+              :key="item"
+              @click="elementClicked(item)"
+            >
+              {{ item }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul>
         <li>
           Field 1
           <ul>
@@ -18,21 +32,31 @@
 <script lang="ts">
 import Vue from "vue";
 
+import { fieldList } from "../../../test/field_list";
+
 export default Vue.extend({
-  methods: {
-    elementClicked(msg: string) {
-      this.copyName(msg);
-    },
+  data() {
+    return {
+      fieldList,
+    };
   },
   props: {
     copyName: {
       type: Function,
     },
   },
+  methods: {
+    elementClicked(msg: string) {
+      this.copyName(msg);
+    },
+  },
 });
 </script>
-<style scoped>
+<style scoped lang="scss">
+@import "../../../style/base.scss";
 .list_container {
+  height: 80%;
   text-align: left;
+  overflow: auto;
 }
 </style>

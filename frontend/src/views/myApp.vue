@@ -30,6 +30,7 @@ export default Vue.extend({
     return {
       message: "",
       conversation,
+      fieldList: [],
     };
   },
   components: {
