@@ -42,6 +42,9 @@ export default Vue.extend({
       conversation.push({ sender: "Geco", text: msg.data });
       console.log("server sent:" + "msg");
     });
+    socket.on("json_response", (payload: any) => {
+      console.log(payload);
+    });
   },
 
   methods: {
