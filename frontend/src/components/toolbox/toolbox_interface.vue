@@ -11,7 +11,7 @@
           'tool',
           active == tool.component ? 'active_tool' : 'inactive_tool',
         ]"
-        @click="active = tool.component"
+        @click="updateToolToShow(tool.component)"
       >
         {{ tool.name }}
       </div>
@@ -21,19 +21,22 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapState, mapMutations } from "vuex";
 
 import DatasetList from "./tools/dataset_list/dataset_list.vue";
 import MetadataExploration from "./tools/metadata_exploration/metadata_exploration.vue";
 import FieldExplorer from "./tools/field_explorer.vue";
+import QueryViewer from "./tools/query_viewer.vue";
 
 export default Vue.extend({
   data() {
     return {
-      active: "dataset",
+      // active: "dataset",
       tools: [
         { name: "Dataset List", component: "dataset" },
         { name: "Metadata", component: "metadata" },
         { name: "Field Explorer", component: "field" },
+        { name: "Query", component: "query" },
       ],
     };
   },
@@ -42,7 +45,13 @@ export default Vue.extend({
       type: Function,
     },
   },
+  computed: {
+    ...mapState({
+      active: (state: any) => state.tools.toolToShow,
+    }),
+  },
   methods: {
+    ...mapMutations("tools", ["updateToolToShow"]),
     sendMessageToConcat(msg: string) {
       console.log("sendMessageToConcat invoked");
       if (this.concatenateToMessage) {
@@ -56,6 +65,7 @@ export default Vue.extend({
     dataset: DatasetList,
     metadata: MetadataExploration,
     field: FieldExplorer,
+    query: QueryViewer,
   },
 });
 </script>

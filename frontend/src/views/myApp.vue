@@ -52,7 +52,7 @@ export default Vue.extend({
   },
 
   methods: {
-    ...mapMutations("tools", ["updateFieldList"]),
+    ...mapMutations("tools", ["updateFieldList", "updateQueryParameters"]),
     sendMessage: function() {
       if (this.message != "") {
         conversation.push({ sender: "user", text: this.message });
@@ -63,7 +63,7 @@ export default Vue.extend({
       // this.message += "ciao";
     },
     concatenateToMessage: function(newPiece: string) {
-      this.updateFieldList([{ field: "Ciao", values: ["uno", "due"] }]);
+      this.updateQueryParameters([{ field: "Ciao", values: ["uno", "due"] }]);
       this.message += " " + newPiece;
     },
     parseResponse: function(data: any) {
@@ -73,7 +73,11 @@ export default Vue.extend({
         case "select_annotations":
           console.log("SELECT ANNOTATIONS: " + data.payload);
           this.updateFieldList([data.payload]);
+          // this.$store.tools.commit('updateFieldList', [data.payload])
           break;
+        case "query":
+          console.log("UPDATE QUERY: " + data.payload);
+          this.updateQueryParameters(data.payload);
         default:
           console.log(data.type + "not found");
           break;
