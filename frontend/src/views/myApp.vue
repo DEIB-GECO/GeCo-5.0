@@ -72,7 +72,7 @@ export default Vue.extend({
       switch (data.type) {
         case "select_annotations":
           console.log("SELECT ANNOTATIONS: " + data.payload);
-          this.updateFieldList(data.payload);
+          this.updateFieldList([data.payload]);
           break;
         default:
           console.log(data.type + "not found");
