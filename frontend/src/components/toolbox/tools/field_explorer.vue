@@ -3,7 +3,7 @@
     <h1>Fields Explorer</h1>
     <div class="list_container">
       <ul>
-        <li v-for="element in oldfieldList" :key="element.field">
+        <li v-for="element in fieldList" :key="element.field">
           {{ element.field }}
           <ul>
             <li

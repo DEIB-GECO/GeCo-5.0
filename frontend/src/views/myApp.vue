@@ -63,13 +63,14 @@ export default Vue.extend({
       // this.message += "ciao";
     },
     concatenateToMessage: function(newPiece: string) {
+      // this.updateFieldList([{ field: "Ciao", values: ["uno", "due"] }]);
       this.message += " " + newPiece;
     },
     parseResponse: function(data: any) {
       this.pushBotMessage(data.message);
       switch (data.type) {
         case "select_annotations":
-          this.fieldList = data.payload;
+          this.updateFieldList(data.payload);
           break;
         default:
           console.log(data.type + "not found");
