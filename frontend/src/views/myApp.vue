@@ -40,9 +40,10 @@ export default Vue.extend({
   },
 
   created: function() {
-    socket.on("my_response", function(msg: any) {
-      conversation.push({ sender: "Geco", text: msg.data });
+    socket.on("my_response", (payload: any) => {
+      // conversation.push({ sender: "Geco", text: payload.data });
       console.log("server sent:" + "msg");
+      this.parseResponse(payload.data);
     });
     socket.on("json_response", (payload: any) => {
       console.log(payload);
@@ -65,6 +66,7 @@ export default Vue.extend({
       this.message += " " + newPiece;
     },
     parseResponse: function(data: any) {
+      this.pushBotMessage(data.message);
       switch (data.type) {
         case "select_annotations":
           this.fieldList = data.payload;
@@ -72,6 +74,11 @@ export default Vue.extend({
         default:
           console.log(data.type + "not found");
           break;
+      }
+    },
+    pushBotMessage(msg: string) {
+      if (msg != "") {
+        this.conversation.push({ sender: "bot", text: msg });
       }
     },
   },
