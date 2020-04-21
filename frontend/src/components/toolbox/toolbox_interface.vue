@@ -47,11 +47,13 @@ export default Vue.extend({
   },
   computed: {
     ...mapState({
-      active: (state: any) => state.tools.toolToShow,
+      // active: (state: any) => state.tools.toolToShow,
+      active: (state: any) => state.toolToShow,
     }),
   },
   methods: {
-    ...mapMutations("tools", ["updateToolToShow"]),
+    // ...mapMutations("tools", ["updateToolToShow"]),
+    ...mapMutations(["updateToolToShow"]),
     sendMessageToConcat(msg: string) {
       console.log("sendMessageToConcat invoked");
       if (this.concatenateToMessage) {

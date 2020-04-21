@@ -39,7 +39,8 @@ export default Vue.extend({
   },
   computed: {
     ...mapState({
-      fieldList: (state: any) => state.tools.fieldList,
+      // fieldList: (state: any) => state.tools.fieldList,
+      fieldList: (state: any) => state.fieldList,
     }),
   },
   methods: {

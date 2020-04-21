@@ -46,7 +46,8 @@ import { mapState, mapGetters } from "vuex";
 export default Vue.extend({
   computed: {
     ...mapState({
-      queryParameters: (state: any) => state.tools.queryParameters,
+      //   queryParameters: (state: any) => state.tools.queryParameters,
+      queryParameters: (state: any) => state.queryParameters,
     }),
   },
 });

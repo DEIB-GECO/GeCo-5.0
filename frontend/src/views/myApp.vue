@@ -52,7 +52,8 @@ export default Vue.extend({
   },
 
   methods: {
-    ...mapMutations("tools", ["updateFieldList", "updateQueryParameters"]),
+    // ...mapMutations("tools", ["updateFieldList", "updateQueryParameters"]),
+    ...mapMutations(["updateFieldList", "updateQueryParameters"]),
     sendMessage: function() {
       if (this.message != "") {
         conversation.push({ sender: "user", text: this.message });
