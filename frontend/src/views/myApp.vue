@@ -63,7 +63,7 @@ export default Vue.extend({
       // this.message += "ciao";
     },
     concatenateToMessage: function(newPiece: string) {
-      // this.updateFieldList([{ field: "Ciao", values: ["uno", "due"] }]);
+      this.updateFieldList([{ field: "Ciao", values: ["uno", "due"] }]);
       this.message += " " + newPiece;
     },
     parseResponse: function(data: any) {
