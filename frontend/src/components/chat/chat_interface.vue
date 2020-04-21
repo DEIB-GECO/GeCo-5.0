@@ -43,10 +43,6 @@ export default Vue.extend({
   components: {
     Chat,
   },
-  // updated: function() {
-  //   console.log("chiamato updated");
-  //   this.scrollToEnd();
-  // }
 });
 </script>
 

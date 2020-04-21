@@ -3,7 +3,7 @@
     <h1>Fields Explorer</h1>
     <div class="list_container">
       <ul>
-        <li v-for="element in fieldList" :key="element.field">
+        <li v-for="element in oldfieldList" :key="element.field">
           {{ element.field }}
           <ul>
             <li
@@ -16,28 +16,20 @@
           </ul>
         </li>
       </ul>
-      <ul>
-        <li>
-          Field 1
-          <ul>
-            <li @click="elementClicked('ciao')">1.1</li>
-            <li>1.2</li>
-          </ul>
-        </li>
-      </ul>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { mapState } from "vuex";
 
 import { fieldList } from "../../../test/field_list";
 
 export default Vue.extend({
   data() {
     return {
-      fieldList,
+      oldfieldList: fieldList,
     };
   },
   props: {
@@ -45,9 +37,16 @@ export default Vue.extend({
       type: Function,
     },
   },
+  computed: {
+    ...mapState({
+      fieldList: (state: any) => state.tools.fieldList,
+    }),
+  },
   methods: {
     elementClicked(msg: string) {
       this.copyName(msg);
+      // console.log(this.$store.getters["getFieldList"]);
+      console.log(this.fieldList);
     },
   },
 });

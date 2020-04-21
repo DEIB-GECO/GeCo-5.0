@@ -22,6 +22,7 @@ import { conversation } from "./../test/conversation";
 import Vue from "vue";
 
 import io from "socket.io-client";
+import { mapMutations } from "vuex";
 
 const socket = io("http://localhost:5980/test");
 
@@ -45,10 +46,12 @@ export default Vue.extend({
     });
     socket.on("json_response", (payload: any) => {
       console.log(payload);
+      this.parseResponse(payload);
     });
   },
 
   methods: {
+    ...mapMutations("tools", ["updateFieldList"]),
     sendMessage: function() {
       if (this.message != "") {
         conversation.push({ sender: "user", text: this.message });
@@ -60,6 +63,16 @@ export default Vue.extend({
     },
     concatenateToMessage: function(newPiece: string) {
       this.message += " " + newPiece;
+    },
+    parseResponse: function(data: any) {
+      switch (data.type) {
+        case "select_annotations":
+          this.fieldList = data.payload;
+          break;
+        default:
+          console.log(data.type + "not found");
+          break;
+      }
     },
   },
 });
