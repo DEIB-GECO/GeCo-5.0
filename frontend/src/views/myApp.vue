@@ -68,9 +68,10 @@ export default Vue.extend({
     },
     parseResponse: function(data: any) {
       this.pushBotMessage(data.message);
+      console.log("PARSE RESPONSE, type: " + data.type);
       switch (data.type) {
         case "select_annotations":
-          console.log("SLECT ANNOTATIONS: " + data.payload);
+          console.log("SELECT ANNOTATIONS: " + data.payload);
           this.updateFieldList(data.payload);
           break;
         default:
