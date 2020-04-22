@@ -2,7 +2,7 @@
   <div>
     <div class="chat" id="chat">
       <message
-        v-for="item in conversationHistory"
+        v-for="item in conversation"
         :key="item.id"
         :text="item.text"
         :sender="item.sender"
@@ -15,11 +15,13 @@
 import Vue from "vue";
 import Message from "./message.vue";
 
+import { mapState } from "vuex";
+
 export default Vue.extend({
-  props: {
-    conversationHistory: {
-      type: Array,
-    },
+  computed: {
+    ...mapState({
+      conversation: (state: any) => state.gecoAgent.conversation.conversation,
+    }),
   },
   components: {
     Message,

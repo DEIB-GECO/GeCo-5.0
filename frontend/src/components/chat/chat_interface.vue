@@ -1,6 +1,6 @@
 <template>
   <div class="chat_container">
-    <chat :conversationHistory="conversation"></chat>
+    <chat></chat>
     <div class="interface">
       <textarea
         name="message_box"
@@ -23,9 +23,6 @@ export default Vue.extend({
   props: {
     textMessage: {
       type: String,
-    },
-    conversation: {
-      type: Array,
     },
   },
   methods: {

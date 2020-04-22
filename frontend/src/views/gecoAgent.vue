@@ -2,14 +2,9 @@
   <div class="container">
     <h1>First draft of the Chat!</h1>
     <div class="grid_container">
-      <chat
-        @emit-send="sendMessage()"
-        :textMessage.sync="message"
-        :conversation="conversation"
-      ></chat>
+      <chat @emit-send="sendMessage()" :textMessage.sync="message"></chat>
       <toolbox :concatenateToMessage="concatenateToMessage"></toolbox>
     </div>
-    <!-- <chat @emit-send="sendMessage()" :textMessage.sync="message" :conversation="conversation"></chat> -->
   </div>
 </template>
 <script src="/socket.io/socket.io.js"></script>
@@ -32,6 +27,11 @@ export default Vue.extend({
       message: "",
       conversation,
       fieldList: [],
+      messageTypes: [
+        { typeName: "query", nameSpace: "tools" },
+        { typeName: "message", nameSpace: "gecoAgent/conversation" },
+        { typeName: "select_annotations", nameSpace: "tools" },
+      ],
     };
   },
   components: {
@@ -55,25 +55,31 @@ export default Vue.extend({
     ...mapMutations("tools", ["updateFieldList", "updateQueryParameters"]),
     sendMessage: function() {
       if (this.message != "") {
-        conversation.push({ sender: "user", text: this.message });
+        this.$store.commit(
+          "gecoAgent/conversation/addUserMessage",
+          this.message
+        );
         console.log("I sent: " + this.message);
         socket.emit("my_event", { data: this.message });
         this.message = "";
       }
-      // this.message += "ciao";
     },
     concatenateToMessage: function(newPiece: string) {
-      // this.updateFieldList([{ field: "Ciao", values: ["uno", "due"] }]);
       this.message += " " + newPiece;
     },
     parseResponse: function(data: any) {
-      this.pushBotMessage(data.message);
       console.log("PARSE RESPONSE, type: " + data.type);
       switch (data.type) {
+        case "message":
+          console.log("MESSAGE ");
+          console.log(data);
+          this.$store.commit(
+            "gecoAgent/conversation/parseJsonResponse",
+            data.payload
+          );
         case "select_annotations":
           console.log("SELECT ANNOTATIONS: " + data.payload);
           this.updateFieldList([data.payload]);
-          // this.$store.tools.commit('updateFieldList', [data.payload])
           break;
         case "query":
           console.log("UPDATE QUERY: " + data.payload);
@@ -100,11 +106,8 @@ export default Vue.extend({
 .grid_container {
   display: inline-grid;
   grid-template-columns: 30% 70%;
-  /* grid-template-rows: auto; */
   grid-gap: 10px;
-  /* background-color: #2196f3; */
   height: 90%;
   width: 80%;
-  /* display: flex; */
 }
 </style>

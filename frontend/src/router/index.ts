@@ -20,10 +20,10 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
-    path: "/app",
+    path: "/geco_agent",
     name: "GeCo 5.0",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/myApp.vue"),
+      import(/* webpackChunkName: "about" */ "../views/gecoAgent.vue"),
   },
 
   {
