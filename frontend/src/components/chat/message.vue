@@ -3,7 +3,7 @@
     <div class="icon_container">
       <img src="./../../assets/logo.png" alt class="icon" />
     </div>
-    <div class="message_box">{{text}}</div>
+    <div class="message_box">{{ text }}</div>
   </div>
 </template>
 
@@ -13,18 +13,19 @@ import Vue from "vue";
 export default Vue.extend({
   props: {
     sender: {
-      type: String
+      type: String,
     },
     text: {
-      type: String
-    }
-  }
+      type: String,
+    },
+  },
 });
 </script>
 
-<style scoped  lang="scss">
+<style scoped lang="scss">
 .chat_line {
   display: flex;
+  height: fit-content;
 }
 
 .message_box {

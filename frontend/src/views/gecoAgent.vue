@@ -69,6 +69,7 @@ export default Vue.extend({
     },
     parseResponse: function(data: any) {
       console.log("PARSE RESPONSE, type: " + data.type);
+      console.log(data);
       switch (data.type) {
         case "message":
           console.log("MESSAGE ");

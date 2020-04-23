@@ -47,6 +47,7 @@ export default Vue.extend({
 @import "../../style/base.scss";
 .chat_container {
   margin: auto;
+  margin-bottom: 5vh;
 }
 
 .interface {

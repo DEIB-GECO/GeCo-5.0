@@ -21,7 +21,8 @@ export default {
   mutations: {
     updateFieldList(state: any, newList: any) {
       state.fieldList = newList;
-      console.log("UPDATE invoked");
+      console.log("UPDATE invoked, new list=");
+      console.log(state.fielList);
     },
     updateToolToShow(state: any, newTool: string) {
       if (newTool != "") {

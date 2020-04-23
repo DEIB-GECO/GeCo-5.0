@@ -29,7 +29,7 @@ export default Vue.extend({
   methods: {
     scrollToEnd: function() {
       const container = this.$el.querySelector("#chat");
-      console.log(container);
+      // console.log(container);
       if (container) {
         container.scrollTop = container.scrollHeight;
       }
@@ -55,7 +55,7 @@ export default Vue.extend({
   margin: auto;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 60vh;
+  max-height: 60vh;
   padding: 10px;
 }
 
