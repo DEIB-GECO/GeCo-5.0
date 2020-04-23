@@ -70,17 +70,6 @@
 import Vue from "vue";
 import { metadataValuesList } from "../../../../test/metadata_values_list";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faTimesCircle,
-  faChevronLeft,
-  faCaretUp,
-  faCaretDown,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
-library.add(faTimesCircle, faChevronLeft, faCaretUp, faCaretDown);
-
 export default Vue.extend({
   data() {
     return {
@@ -98,9 +87,6 @@ export default Vue.extend({
     copyName: {
       type: Function,
     },
-  },
-  components: {
-    FontAwesomeIcon,
   },
   methods: {
     emitCloseButton() {

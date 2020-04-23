@@ -28,7 +28,7 @@ export default Vue.extend({
       conversation,
       fieldList: [],
       messageTypes: [
-        { typeName: "query", nameSpace: "tools" },
+        { typeName: "query", nameSpace: "gecoAgent/queryParameters" },
         { typeName: "message", nameSpace: "gecoAgent/conversation" },
         { typeName: "select_annotations", nameSpace: "tools" },
       ],
@@ -85,6 +85,11 @@ export default Vue.extend({
         case "query":
           console.log("UPDATE QUERY: " + data.payload);
           this.updateQueryParameters(data.payload);
+          this.$store.commit(
+            "gecoAgent/queryParameters/parseJsonResponse",
+            data.payload
+          );
+          break;
         default:
           console.log(data.type + "not found");
           break;

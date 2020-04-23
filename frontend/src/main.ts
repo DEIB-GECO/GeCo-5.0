@@ -8,10 +8,20 @@ import {
   faTimesCircle,
   faUserAstronaut,
   faRobot,
+  faChevronLeft,
+  faCaretUp,
+  faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faTimesCircle, faUserAstronaut, faRobot);
+library.add(
+  faTimesCircle,
+  faUserAstronaut,
+  faRobot,
+  faChevronLeft,
+  faCaretUp,
+  faCaretDown
+);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
