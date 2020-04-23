@@ -1,7 +1,12 @@
 <template>
   <div :class="['chat_line', sender]">
     <div class="icon_container">
-      <img src="./../../assets/logo.png" alt class="icon" />
+      <!-- <img src="./../../assets/logo.png" alt class="icon" /> -->
+      <font-awesome-icon
+        class="icon"
+        :icon="['fas', sender == 'user' ? 'user-astronaut' : 'robot']"
+        size="2x"
+      />
     </div>
     <div class="message_box">{{ text }}</div>
   </div>

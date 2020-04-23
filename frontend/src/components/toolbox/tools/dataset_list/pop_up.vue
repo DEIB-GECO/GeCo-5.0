@@ -33,27 +33,18 @@ import Vue from "vue";
 
 import { datasetDetail } from "../../../../test/dataset_detail";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
-library.add(faTimesCircle);
-
 export default Vue.extend({
   data() {
     return {
-      datasetDetail
+      datasetDetail,
     };
   },
   methods: {
     emitHidePopUp() {
       console.log("Emit Hide Pop Up");
       this.$emit("hidePopUp");
-    }
+    },
   },
-  components: {
-    FontAwesomeIcon
-  }
 });
 </script>
 
