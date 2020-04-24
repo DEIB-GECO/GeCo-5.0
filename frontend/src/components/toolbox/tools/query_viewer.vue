@@ -14,10 +14,6 @@
           </tr>
           <tr></tr>
           <tr>
-            <td>Annotation</td>
-            <td>{{ queryParameters.annotations }}</td>
-          </tr>
-          <tr>
             <td>Data</td>
             <td>{{ queryParameters.data }}</td>
           </tr>
