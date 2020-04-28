@@ -34,6 +34,12 @@ const routes: Array<RouteConfig> = [
         /* webpackChunkName: "about" */ "../components/toolbox/tools/dataset_list/dataset_list.vue"
       ),
   },
+  {
+    path: "/test",
+    name: "GeCo 5.0",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/graph_test.vue"),
+  },
 ];
 
 const router = new VueRouter({
