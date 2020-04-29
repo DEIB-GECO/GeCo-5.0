@@ -73,7 +73,7 @@ export default Vue.extend({
 
       // set the color scale
       const color = scaleOrdinal()
-        // .domain(dataArray)
+        .domain(dataArray)
         .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"]);
 
       // Compute the position of each group on the pie:
@@ -87,7 +87,7 @@ export default Vue.extend({
       // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
       svg
         .selectAll("whatever")
-        .data(pie(dataReady))
+        .data(dataReady)
         .enter()
         .append("path")
         .attr(
@@ -96,10 +96,10 @@ export default Vue.extend({
             .innerRadius(0)
             .outerRadius(radius)
         )
-        // .attr("fill", (d: any) => {
-        //   console.log(d);
-        //   return color(d.data.key);
-        // })
+        .attr("fill", (d: any) => {
+          console.log(d);
+          return color(d.data.key);
+        })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
         .style("opacity", 0.7);
