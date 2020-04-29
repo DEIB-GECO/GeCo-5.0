@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0bc28d29-df22-4028-92e6-b0fe8f6f9ad0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/toolbox/tools/data_visualization/charts/piechart.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/toolbox/tools/data_visualization/charts/piechart.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +40,7 @@
       <updated>1587979649339</updated>
       <workItem from="1587979655754" duration="4211000" />
       <workItem from="1588057882983" duration="2607000" />
+      <workItem from="1588150907046" duration="1866000" />
     </task>
     <servers />
   </component>

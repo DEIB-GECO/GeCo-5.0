@@ -1,19 +1,23 @@
 <template>
   <div>
     <div id="piechart"></div>
+    <div id="whatever"></div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-// import * from "d3";
 import { select } from "d3-selection";
 import { scaleOrdinal } from "d3-scale";
 import { pie, arc } from "d3-shape";
 import { entries } from "d3-collection";
-// import {} from "d3-shape"
-// import {append} from "d3-svg";
-// import   from "d3-shape"
+// import PieLayout from "D3";s
+// import {pie} as pppp from layout;
+import * as d3 from "D3";
+interface PieData {
+  label: string;
+  value: number;
+}
 
 // const d3 = Object.assign(
 //   {},
@@ -59,7 +63,7 @@ export default Vue.extend({
           "translate(" + this.width / 2 + "," + this.height / 2 + ")"
         );
 
-      const dataArray = this.chartData.reduce(
+      const dataArray: any = this.chartData.reduce(
         (acc: any, item: any) => ((acc[item.label] = item.value), acc),
         {}
       );
@@ -69,30 +73,33 @@ export default Vue.extend({
 
       // set the color scale
       const color = scaleOrdinal()
-        .domain(this.chartData)
+        // .domain(dataArray)
         .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"]);
 
       // Compute the position of each group on the pie:
       const myPie = pie().value(function(d: any) {
         return d.value;
       });
-      const dataReady = pie(entries(dataArray));
+      // const dataReady = pie(entries(dataArray));
+      const dataReady = pie();
+      console.log(dataReady);
 
       // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
       svg
         .selectAll("whatever")
-        .data(dataReady)
+        .data(pie(dataReady))
         .enter()
         .append("path")
         .attr(
           "d",
-          arc()
+          arc<any>()
             .innerRadius(0)
             .outerRadius(radius)
         )
-        .attr("fill", (d: any) => {
-          return color(d.dataReady.key);
-        })
+        // .attr("fill", (d: any) => {
+        //   console.log(d);
+        //   return color(d.data.key);
+        // })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
         .style("opacity", 0.7);
