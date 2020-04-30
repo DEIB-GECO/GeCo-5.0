@@ -3,37 +3,33 @@
     <pop-up v-if="isPopUpVisible" @hidePopUp="isPopUpVisible = false"></pop-up>
     <!-- <pop-up v-if="isPopUpVisible" @hidePopUp="isPopupVisible = false"></pop-up> -->
     <h2>Dataset List</h2>
-    <div v-for="item in datasetList" :key="item" class="list_item">
-      <div class="dataset_name" @click="emitCopyName(item)">
-        {{ item }}
+    <div class="list_container">
+      <div v-for="item in datasetList" :key="item" class="list_item">
+        <div class="dataset_name" @click="emitCopyName(item)">
+          {{ item }}
+        </div>
+        <div class="info_button"><button @click="showPopUp">i</button></div>
       </div>
-      <div class="info_button"><button @click="showPopUp">i</button></div>
-    </div>
-    <div class="list_item">
-      <div class="dataset_name" @click="emitCopyName('NAME_NAME_NAME')">
-        NAME_NAME_NAME
-      </div>
-      <div class="info_button"><button @click="showPopUp">i</button></div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import PopUp from "./pop_up.vue";
-import { datasetList } from "../../../../test/dataset_list";
+import Vue from 'vue';
+import PopUp from './pop_up.vue';
+import { datasetList } from '../../../../test/dataset_list';
 
 export default Vue.extend({
   data() {
     return {
       isPopUpVisible: false,
-      datasetList,
+      datasetList
     };
   },
   props: {
     copyName: {
-      type: Function,
-    },
+      type: Function
+    }
   },
   methods: {
     showPopUp() {
@@ -44,20 +40,24 @@ export default Vue.extend({
       if (this.copyName) {
         this.copyName(msg);
       } else {
-        console.log("error-funct not found");
+        console.log('error-funct not found');
       }
-    },
+    }
   },
   components: {
-    PopUp,
-  },
+    PopUp
+  }
 });
 </script>
 
 <style scoped lang="scss">
-@import "../../../../style/base.scss";
+@import '../../../../style/base.scss';
 .dataset_list {
-  height: 60vh;
+  height: 100%;
+}
+
+.list_container {
+  height: 40vh;
   overflow: auto;
 }
 
@@ -70,7 +70,7 @@ export default Vue.extend({
   margin-left: 5%;
   margin-right: 5%;
 
-  height: 30px;
+  height: 3vh;
 
   border: solid 2px #187795;
   border-radius: 10px;

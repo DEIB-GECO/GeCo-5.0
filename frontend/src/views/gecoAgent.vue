@@ -1,9 +1,16 @@
 <template>
   <div class="container">
     <h1>First draft of the Chat!</h1>
-    <div class="grid_container">
+    <div class="grid_container_upper_row">
       <chat @emit-send="sendMessage()" :textMessage.sync="message"></chat>
+      <functions-area></functions-area>
       <toolbox :concatenateToMessage="concatenateToMessage"></toolbox>
+    </div>
+    <div class="grid_container_lower_row">
+      <div class="prova pane_border">
+        <h1>boxes</h1>
+      </div>
+      <div class="prova pane_border"><h1>parameters</h1></div>
     </div>
   </div>
 </template>
@@ -14,13 +21,14 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import io from 'socket.io-client';
 import Chat from './../components/chat/chat_interface.vue';
+import FunctionsArea from '../components/functionsArea/functionsArea.vue';
 import Toolbox from './../components/toolbox/toolbox_interface.vue';
 import { conversation } from './../test/conversation';
 
 const socket = io('http://localhost:5980/test');
 const tools = namespace('tools');
 
-interface messageObject {
+interface MessageObject {
   sender: 'user' | 'bot';
   text: string;
 }
@@ -28,7 +36,8 @@ interface messageObject {
 @Component({
   components: {
     Chat,
-    Toolbox
+    Toolbox,
+    FunctionsArea
   }
 })
 export default class GecoAgent extends Vue {
@@ -36,7 +45,7 @@ export default class GecoAgent extends Vue {
   @tools.Mutation updateQueryParameters!: (newTool: string) => void;
 
   message = '';
-  conversation?: messageObject[] = [];
+  conversation?: MessageObject[] = [];
   fieldList = [];
   messageTypes = [
     { typeName: 'query', nameSpace: 'gecoAgent/queryParameters' },
@@ -46,11 +55,13 @@ export default class GecoAgent extends Vue {
 
   created() {
     socket.on('my_response', (payload: any) => {
-      console.log('server sent:' + 'msg');
-      this.parseResponse(payload.data);
+      console.log('server sent My response');
+      console.log(payload);
+      this.parseResponse(payload);
     });
     socket.on('json_response', (payload: any) => {
       console.log(payload);
+      console.log('server sent:' + 'json response');
       this.parseResponse(payload);
     });
   }
@@ -187,16 +198,31 @@ export default class GecoAgent extends Vue {
 // });
 </script>
 <style scoped>
+@import '../style/base.scss';
 .container {
-  height: 88vh;
+  height: 95vh;
   overflow: hidden;
 }
 
-.grid_container {
+.grid_container_upper_row {
   display: inline-grid;
-  grid-template-columns: 30% 70%;
+  grid-template-columns: 25% 25% 50%;
   grid-gap: 10px;
-  height: 90%;
+  height: 65%;
   width: 80%;
+}
+
+.grid_container_lower_row {
+  display: inline-grid;
+  margin-top: 15px;
+  grid-template-columns: 50% 50%;
+  grid-gap: 10px;
+  height: 15%;
+  width: 80%;
+}
+
+.prova {
+  width: 100%;
+  /* border: solid 3px #ecebe4; */
 }
 </style>

@@ -9,7 +9,7 @@
         v-bind:key="tool.component"
         :class="[
           'tool',
-          active == tool.component ? 'active_tool' : 'inactive_tool',
+          active == tool.component ? 'active_tool' : 'inactive_tool'
         ]"
         @click="updateToolToShow(tool.component)"
       >
@@ -20,59 +20,59 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState, mapMutations } from "vuex";
+import Vue from 'vue';
+import { mapState, mapMutations } from 'vuex';
 
-import DatasetList from "./tools/dataset_list/dataset_list.vue";
-import MetadataExploration from "./tools/metadata_exploration/metadata_exploration.vue";
-import FieldExplorer from "./tools/field_explorer.vue";
-import QueryViewer from "./tools/query_viewer.vue";
+import DatasetList from './tools/dataset_list/dataset_list.vue';
+import MetadataExploration from './tools/metadata_exploration/metadata_exploration.vue';
+import FieldExplorer from './tools/field_explorer.vue';
+import QueryViewer from './tools/query_viewer.vue';
 
 export default Vue.extend({
   data() {
     return {
       // active: "dataset",
       tools: [
-        { name: "Dataset List", component: "dataset" },
-        { name: "Metadata", component: "metadata" },
-        { name: "Field Explorer", component: "field" },
-        { name: "Query", component: "query" },
-      ],
+        { name: 'Dataset List', component: 'dataset' },
+        { name: 'Metadata', component: 'metadata' },
+        { name: 'Field Explorer', component: 'field' },
+        { name: 'Query', component: 'query' }
+      ]
     };
   },
   props: {
     concatenateToMessage: {
-      type: Function,
-    },
+      type: Function
+    }
   },
   computed: {
     ...mapState({
-      active: (state: any) => state.tools.toolToShow,
-    }),
+      active: (state: any) => state.tools.toolToShow
+    })
   },
   methods: {
-    ...mapMutations("tools", ["updateToolToShow"]),
+    ...mapMutations('tools', ['updateToolToShow']),
     sendMessageToConcat(msg: string) {
-      console.log("sendMessageToConcat invoked");
+      console.log('sendMessageToConcat invoked');
       if (this.concatenateToMessage) {
         this.concatenateToMessage(msg);
       } else {
-        console.log("concat non esiste");
+        console.log('concat non esiste');
       }
-    },
+    }
   },
   components: {
     dataset: DatasetList,
     metadata: MetadataExploration,
     field: FieldExplorer,
-    query: QueryViewer,
-  },
+    query: QueryViewer
+  }
 });
 </script>
 
 <style scoped>
 .toolbox_interface {
-  height: 75vh;
+  height: 100%;
   width: 100%;
 }
 

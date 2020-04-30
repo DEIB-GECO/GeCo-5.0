@@ -15,39 +15,40 @@
 </template>
 
 <script lang="ts">
-import Message from "./message.vue";
-import Chat from "./conversation.vue";
-import Vue from "vue";
+import Message from './message.vue';
+import Chat from './conversation.vue';
+import Vue from 'vue';
 
 export default Vue.extend({
   props: {
     textMessage: {
-      type: String,
-    },
+      type: String
+    }
   },
   methods: {
     emitSend() {
-      this.$emit("emit-send");
+      this.$emit('emit-send');
     },
     scrollToEnd: function() {
-      const container = this.$el.querySelector("#chat");
+      const container = this.$el.querySelector('#chat');
       console.log(container);
       if (container) {
         container.scrollTop = container.scrollHeight;
       }
-    },
+    }
   },
   components: {
-    Chat,
-  },
+    Chat
+  }
 });
 </script>
 
 <style scoped lang="scss">
-@import "../../style/base.scss";
+@import '../../style/base.scss';
 .chat_container {
   margin: auto;
-  margin-bottom: 5vh;
+  margin-bottom: 0vh;
+  // height: 100%;
 }
 
 .interface {
