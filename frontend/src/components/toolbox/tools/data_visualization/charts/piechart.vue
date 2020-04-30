@@ -42,6 +42,7 @@ export default class Piechart extends Vue {
   width = 450;
   height = 450;
   margin = 40;
+  //ciao oligi
 
   plotPie() {
     const data = this.chartData.map((x) => {
