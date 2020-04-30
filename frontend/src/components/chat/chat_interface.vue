@@ -48,6 +48,7 @@ export default Vue.extend({
 .chat_container {
   margin: auto;
   margin-bottom: 0vh;
+  width: 95%;
   // height: 100%;
 }
 
