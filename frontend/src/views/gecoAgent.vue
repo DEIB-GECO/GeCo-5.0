@@ -7,101 +7,184 @@
     </div>
   </div>
 </template>
+
 <script src="/socket.io/socket.io.js"></script>
 <script lang="ts">
-import Chat from "./../components/chat/chat_interface.vue";
-import Toolbox from "./../components/toolbox/toolbox_interface.vue";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import io from 'socket.io-client';
+import Chat from './../components/chat/chat_interface.vue';
+import Toolbox from './../components/toolbox/toolbox_interface.vue';
+import { conversation } from './../test/conversation';
 
-import { conversation } from "./../test/conversation";
+const socket = io('http://localhost:5980/test');
+const tools = namespace('tools');
 
-import Vue from "vue";
+interface messageObject {
+  sender: 'user' | 'bot';
+  text: string;
+}
 
-import io from "socket.io-client";
-import { mapMutations } from "vuex";
-
-const socket = io("http://localhost:5980/test");
-
-export default Vue.extend({
-  data() {
-    return {
-      message: "",
-      conversation,
-      fieldList: [],
-      messageTypes: [
-        { typeName: "query", nameSpace: "gecoAgent/queryParameters" },
-        { typeName: "message", nameSpace: "gecoAgent/conversation" },
-        { typeName: "select_annotations", nameSpace: "tools" },
-      ],
-    };
-  },
+@Component({
   components: {
     Chat,
-    Toolbox,
-  },
+    Toolbox
+  }
+})
+export default class GecoAgent extends Vue {
+  @tools.Mutation updateFieldList!: (newList: any) => void;
+  @tools.Mutation updateQueryParameters!: (newTool: string) => void;
 
-  created: function() {
-    socket.on("my_response", (payload: any) => {
-      // conversation.push({ sender: "Geco", text: payload.data });
-      console.log("server sent:" + "msg");
+  message = '';
+  conversation?: messageObject[] = [];
+  fieldList = [];
+  messageTypes = [
+    { typeName: 'query', nameSpace: 'gecoAgent/queryParameters' },
+    { typeName: 'message', nameSpace: 'gecoAgent/conversation' },
+    { typeName: 'select_annotations', nameSpace: 'tools' }
+  ];
+
+  created() {
+    socket.on('my_response', (payload: any) => {
+      console.log('server sent:' + 'msg');
       this.parseResponse(payload.data);
     });
-    socket.on("json_response", (payload: any) => {
+    socket.on('json_response', (payload: any) => {
       console.log(payload);
       this.parseResponse(payload);
     });
-  },
+  }
 
-  methods: {
-    ...mapMutations("tools", ["updateFieldList", "updateQueryParameters"]),
-    sendMessage: function() {
-      if (this.message != "") {
+  sendMessage() {
+    if (this.message != '') {
+      this.$store.commit('gecoAgent/conversation/addUserMessage', this.message);
+      console.log('I sent: ' + this.message);
+      socket.emit('my_event', { data: this.message });
+      this.message = '';
+    }
+  }
+
+  concatenateToMessage(newPiece: string) {
+    this.message += ' ' + newPiece;
+  }
+
+  parseResponse(data: any) {
+    console.log('PARSE RESPONSE, type: ' + data.type);
+    console.log(data);
+    switch (data.type) {
+      case 'message':
+        console.log('MESSAGE ');
+        console.log(data);
         this.$store.commit(
-          "gecoAgent/conversation/addUserMessage",
-          this.message
+          'gecoAgent/conversation/parseJsonResponse',
+          data.payload
         );
-        console.log("I sent: " + this.message);
-        socket.emit("my_event", { data: this.message });
-        this.message = "";
-      }
-    },
-    concatenateToMessage: function(newPiece: string) {
-      this.message += " " + newPiece;
-    },
-    parseResponse: function(data: any) {
-      console.log("PARSE RESPONSE, type: " + data.type);
-      console.log(data);
-      switch (data.type) {
-        case "message":
-          console.log("MESSAGE ");
-          console.log(data);
-          this.$store.commit(
-            "gecoAgent/conversation/parseJsonResponse",
-            data.payload
-          );
-        case "select_annotations":
-          console.log("SELECT ANNOTATIONS: " + data.payload);
-          this.updateFieldList([data.payload]);
-          break;
-        case "query":
-          console.log("UPDATE QUERY: " + data.payload);
-          this.updateQueryParameters(data.payload);
-          this.$store.commit(
-            "gecoAgent/queryParameters/parseJsonResponse",
-            data.payload
-          );
-          break;
-        default:
-          console.log(data.type + "not found");
-          break;
-      }
-    },
-    pushBotMessage(msg: string) {
-      if (msg != "") {
-        this.conversation.push({ sender: "bot", text: msg });
-      }
-    },
-  },
-});
+      case 'select_annotations':
+        console.log('SELECT ANNOTATIONS: ' + data.payload);
+        this.updateFieldList([data.payload]);
+        break;
+      case 'query':
+        console.log('UPDATE QUERY: ' + data.payload);
+        this.updateQueryParameters(data.payload);
+        this.$store.commit(
+          'gecoAgent/queryParameters/parseJsonResponse',
+          data.payload
+        );
+        break;
+      default:
+        console.log(data.type + 'not found');
+        break;
+    }
+  }
+
+  pushBotMessage(msg: string) {
+    if (msg != '') {
+      conversation.push({ sender: 'bot', text: msg });
+    }
+  }
+}
+
+// export default Vue.extend({
+//   data() {
+//     return {
+//       message: '',
+//       conversation,
+//       fieldList: [],
+//       messageTypes: [
+//         { typeName: 'query', nameSpace: 'gecoAgent/queryParameters' },
+//         { typeName: 'message', nameSpace: 'gecoAgent/conversation' },
+//         { typeName: 'select_annotations', nameSpace: 'tools' }
+//       ]
+//     };
+//   },
+//   components: {
+//     Chat,
+//     Toolbox
+//   },
+
+//   created: function() {
+//     socket.on('my_response', (payload: any) => {
+//       // conversation.push({ sender: "Geco", text: payload.data });
+//       console.log('server sent:' + 'msg');
+//       this.parseResponse(payload.data);
+//     });
+//     socket.on('json_response', (payload: any) => {
+//       console.log(payload);
+//       this.parseResponse(payload);
+//     });
+//   },
+
+//   methods: {
+//     ...mapMutations('tools', ['updateFieldList', 'updateQueryParameters']),
+//     sendMessage: function() {
+//       if (this.message != '') {
+//         this.$store.commit(
+//           'gecoAgent/conversation/addUserMessage',
+//           this.message
+//         );
+//         console.log('I sent: ' + this.message);
+//         socket.emit('my_event', { data: this.message });
+//         this.message = '';
+//       }
+//     },
+//     concatenateToMessage: function(newPiece: string) {
+//       this.message += ' ' + newPiece;
+//     },
+//     parseResponse: function(data: any) {
+//       console.log('PARSE RESPONSE, type: ' + data.type);
+//       console.log(data);
+//       switch (data.type) {
+//         case 'message':
+//           console.log('MESSAGE ');
+//           console.log(data);
+//           this.$store.commit(
+//             'gecoAgent/conversation/parseJsonResponse',
+//             data.payload
+//           );
+//         case 'select_annotations':
+//           console.log('SELECT ANNOTATIONS: ' + data.payload);
+//           this.updateFieldList([data.payload]);
+//           break;
+//         case 'query':
+//           console.log('UPDATE QUERY: ' + data.payload);
+//           this.updateQueryParameters(data.payload);
+//           this.$store.commit(
+//             'gecoAgent/queryParameters/parseJsonResponse',
+//             data.payload
+//           );
+//           break;
+//         default:
+//           console.log(data.type + 'not found');
+//           break;
+//       }
+//     },
+//     pushBotMessage(msg: string) {
+//       if (msg != '') {
+//         this.conversation.push({ sender: 'bot', text: msg });
+//       }
+//     }
+//   }
+// });
 </script>
 <style scoped>
 .container {
