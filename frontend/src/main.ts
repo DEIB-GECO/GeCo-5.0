@@ -11,7 +11,8 @@ import {
   faChevronLeft,
   faCaretUp,
   faCaretDown,
-  faLightbulb
+  faLightbulb,
+  faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -22,7 +23,8 @@ library.add(
   faChevronLeft,
   faCaretUp,
   faCaretDown,
-  faLightbulb
+  faLightbulb,
+  faSearch
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

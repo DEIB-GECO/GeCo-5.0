@@ -1,25 +1,30 @@
 <template>
   <div class="function_canvas">
-    <h1>Functions Area</h1>
-    <h2>{{ viewType }}</h2>
-    <div class="tips_pane">
-      <div class="title_row">
-        <div class="icon_wrapper">
-          <font-awesome-icon
-            class="tip_icon"
-            :icon="['fas', 'lightbulb']"
-            size="2x"
-          />
+    <!-- <h1>Functions Area</h1>
+    <h2>{{ viewType }}</h2> -->
+    <div class="tips_pane_wrapper" v-if="viewType == 'tip'">
+      <div class="tips_pane">
+        <div class="title_row">
+          <div class="icon_wrapper">
+            <font-awesome-icon
+              class="tip_icon"
+              :icon="['fas', 'lightbulb']"
+              size="2x"
+            />
+          </div>
+          <div class="tip_title">
+            Tip
+          </div>
         </div>
-        <div class="tip_title">
-          Tip
+        <div class="tip_content">
+          {{ tipContent }}
         </div>
-      </div>
-      <div class="tip_content">
-        {{ tipContent }}
       </div>
     </div>
-    <functionChoice></functionChoice>
+    <functionChoice
+      :choicesList="choicesArray"
+      v-if="viewType == 'options'"
+    ></functionChoice>
   </div>
 </template>
 
@@ -27,6 +32,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import FunctionChoice from './functionChoice.vue';
+
+import { choices } from '@/test/choices';
 
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
 
@@ -47,11 +54,16 @@ export default class FunctionsArea extends Vue {
   @functionsAreaStore.State
   choicesTitle!: string;
 
-  @functionsAreaStore.State
+  // @functionsAreaStore.State
+  // choicesArray!: AvailableChoice[];
   choicesArray!: AvailableChoice[];
 
   @functionsAreaStore.State
   tipContent!: string;
+
+  created() {
+    this.choicesArray = choices;
+  }
 }
 </script>
 
@@ -60,6 +72,10 @@ export default class FunctionsArea extends Vue {
   height: 100%;
   width: 100%;
   border: solid 3px #ecebe4;
+}
+
+.tips_pane_wrapper {
+  height: 100%;
   position: relative;
 }
 
