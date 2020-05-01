@@ -1,4 +1,4 @@
-export default interface AvailableChoice {
+interface AvailableChoice {
   name: String;
   value: String;
   description: String;

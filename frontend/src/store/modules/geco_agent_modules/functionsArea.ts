@@ -1,17 +1,20 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
-import AvailableChoice from '@/types/AvailableChoice';
+type Type = 'options' | 'tip';
+
+// import AvailableChoice from '@/types/AvailableChoice';
 
 @Module({ namespaced: true })
 class FunctionArea extends VuexModule {
-  name: string = '';
-  searchBarVisible: Boolean = false;
-  viewType: 'options' | 'tip' = 'options';
-  choicesTitle: string = '';
+  name = '';
+  searchBarVisible = false;
+  viewType: Type = 'options';
+  choicesTitle = '';
   choicesArray: AvailableChoice[] = [];
-  tipContent: string = '';
+  tipContent =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis lacus varius, pulvinar dolor a, dapibus dolor. Quisque facilisis mi sit amet tempor efficitur. Proin eleifend neque tellus, sed facilisis.';
 
   @Mutation
-  setSearchBarVisible(isVisible: Boolean): void {
+  setSearchBarVisible(isVisible: boolean): void {
     this.searchBarVisible = isVisible;
   }
 
