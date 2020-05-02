@@ -28,6 +28,8 @@ import { conversation } from './../test/conversation';
 const socket = io('http://localhost:5980/test');
 const tools = namespace('tools');
 const conversationStore = namespace('gecoAgent/conversation');
+const parametersStore = namespace('gecoAgent/queryParameters');
+const functionsAreaStore = namespace('gecoAgent/functionsArea');
 
 @Component({
   components: {
@@ -37,12 +39,21 @@ const conversationStore = namespace('gecoAgent/conversation');
   }
 })
 export default class GecoAgent extends Vue {
+  @conversationStore.State('currentMessage') message!: string;
+
   @tools.Mutation updateFieldList!: (newList: any) => void;
   @tools.Mutation updateQueryParameters!: (newTool: string) => void;
   @conversationStore.Mutation addUserMessage!: (msg: string) => void;
   @conversationStore.Mutation editMessage!: (msg: string) => void;
 
-  @conversationStore.State('currentMessage') message!: string;
+  @conversationStore.Mutation('parseJsonResponse') messageParser!: (
+    msg: string
+  ) => void;
+  @parametersStore.Mutation('parseJsonResponse') parameterParser!: (
+    payload: any
+  ) => void;
+  @functionsAreaStore.Mutation('parseJsonResponseXXX')
+  availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
 
   // message = '';
 
@@ -54,12 +65,28 @@ export default class GecoAgent extends Vue {
     { typeName: 'select_annotations', nameSpace: 'tools' }
   ];
 
+  jsonResponseParsingFunctions = {
+    message: this.messageParser,
+    parameters_list: this.parameterParser
+  };
+
+  functionPaneParsingFunctions = {
+    available_choices: this.availableChoicesParser,
+    prova2: this.availableChoicesParser
+  };
+
   created() {
-    socket.on('my_response', (payload: any) => {
-      console.log('server sent My response');
-      console.log(payload);
-      this.parseResponse(payload);
-    });
+    socket.on(
+      'function_pane_operation',
+      (payload: FunctionPaneOperationJson) => {
+        console.log('server sent function_pane_operation ');
+        console.log(payload);
+        const operationType = payload.type;
+        // this.functionPaneParsingFunctions[operationType];
+        this.functionPaneParsingFunctions[payload.type](payload.payload);
+        // this.availableChoicesParser(payload.payload);
+      }
+    );
     socket.on('json_response', (payload: any) => {
       console.log(payload);
       console.log('server sent:' + 'json response');

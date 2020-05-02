@@ -10,6 +10,11 @@ class FunctionArea extends VuexModule {
   viewType: Type = 'options';
   choicesTitle = '';
   choicesArray: AvailableChoice[] = [];
+
+  //da aggiungere a componente
+  showDetails = true;
+
+  //da aggiungere a json
   showHelpIcon = true;
   helpContent =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis lacus varius, pulvinar dolor a, dapibus dolor. Quisque facilisis mi sit amet tempor efficitur. Proin eleifend neque tellus, sed facilisis.';
@@ -29,6 +34,14 @@ class FunctionArea extends VuexModule {
   @Mutation
   setTipContent(newContent: string): void {
     this.tipContent = newContent;
+  }
+
+  @Mutation
+  parseJsonResponse(newData: AvailableChoiceJsonPayload): void {
+    this.searchBarVisible = newData.showSearchBar;
+    this.showDetails = newData.showDetails;
+    this.choicesTitle = newData.caption;
+    this.choicesArray = newData.elements;
   }
 
   @Mutation
