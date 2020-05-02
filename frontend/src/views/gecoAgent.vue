@@ -28,11 +28,6 @@ import { conversation } from './../test/conversation';
 const socket = io('http://localhost:5980/test');
 const tools = namespace('tools');
 
-interface MessageObject {
-  sender: 'user' | 'bot';
-  text: string;
-}
-
 @Component({
   components: {
     Chat,
@@ -45,6 +40,7 @@ export default class GecoAgent extends Vue {
   @tools.Mutation updateQueryParameters!: (newTool: string) => void;
 
   message = '';
+
   conversation?: MessageObject[] = [];
   fieldList = [];
   messageTypes = [
