@@ -12,7 +12,8 @@ import {
   faCaretUp,
   faCaretDown,
   faLightbulb,
-  faSearch
+  faSearch,
+  faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -24,7 +25,8 @@ library.add(
   faCaretUp,
   faCaretDown,
   faLightbulb,
-  faSearch
+  faSearch,
+  faQuestionCircle
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

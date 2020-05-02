@@ -21,19 +21,14 @@
         </div>
       </div>
     </div>
-    <functionChoice
-      :choicesList="choicesArray"
-      v-if="viewType == 'options'"
-    ></functionChoice>
+    <functionChoice v-if="viewType == 'options'"></functionChoice>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import FunctionChoice from './functionChoice.vue';
-
-import { choices } from '@/test/choices';
 
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
 
@@ -49,21 +44,7 @@ export default class FunctionsArea extends Vue {
   viewType!: string;
 
   @functionsAreaStore.State
-  searchBarVisible!: boolean;
-
-  @functionsAreaStore.State
-  choicesTitle!: string;
-
-  // @functionsAreaStore.State
-  // choicesArray!: AvailableChoice[];
-  choicesArray!: AvailableChoice[];
-
-  @functionsAreaStore.State
   tipContent!: string;
-
-  created() {
-    this.choicesArray = choices;
-  }
 }
 </script>
 

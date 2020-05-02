@@ -6,10 +6,13 @@ type Type = 'options' | 'tip';
 @Module({ namespaced: true })
 class FunctionArea extends VuexModule {
   name = '';
-  searchBarVisible = false;
+  searchBarVisible = true;
   viewType: Type = 'options';
   choicesTitle = '';
   choicesArray: AvailableChoice[] = [];
+  showHelpIcon = true;
+  helpContent =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis lacus varius, pulvinar dolor a, dapibus dolor. Quisque facilisis mi sit amet tempor efficitur. Proin eleifend neque tellus, sed facilisis.';
   tipContent =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis lacus varius, pulvinar dolor a, dapibus dolor. Quisque facilisis mi sit amet tempor efficitur. Proin eleifend neque tellus, sed facilisis.';
 

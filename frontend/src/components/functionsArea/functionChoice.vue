@@ -4,13 +4,24 @@
       <!-- <div class="search_bar_title">Filter:</div> -->
       <div class="search_bar">
         <font-awesome-icon class="search_icon" :icon="['fas', 'search']" />
-        <input type="text" />
+        <input type="text" v-model="searchBarContent" />
       </div>
     </div>
     <div class="choice_pane">
-      <div class="choice_title">Here you are:</div>
+      <div class="choice_pane_header">
+        <div id="help_icon" class="help_button_container" v-if="showHelpIcon">
+          <font-awesome-icon
+            class="info_icon"
+            :icon="['fas', 'question-circle']"
+          />
+        </div>
+        <div class="choice_title">Here you are:</div>
+      </div>
+      <div class="help_tooltip" id="help_tooltip">
+        {{ helpContent }}
+      </div>
       <div class="choice_list">
-        <div v-for="choice in choicesList" :key="choice.name">
+        <div v-for="choice in filteredChoices" :key="choice.name">
           <choice :choice="choice"> </choice>
         </div>
       </div>
@@ -19,9 +30,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import { createPopper } from '@popperjs/core';
 import Choice from './choice.vue';
+import { choices } from '@/test/choices';
+
+const functionsAreaStore = namespace('gecoAgent/functionsArea');
 
 @Component({
   components: {
@@ -29,57 +44,91 @@ import Choice from './choice.vue';
   }
 })
 export default class FunctionsArea extends Vue {
-  //   @Prop({required: true})
-  @Prop()
+  searchBarContent = '';
+  helpButton: any;
+  tooltip: any;
+  showEvents = ['mouseenter', 'focus'];
+  hideEvents = ['mouseleave', 'blur'];
+
+  // @functionsAreaStore.State
+  // choicesArray!: AvailableChoice[];
   choicesList!: AvailableChoice[];
 
+  @functionsAreaStore.State
+  searchBarVisible!: boolean;
+
+  @functionsAreaStore.State
+  choicesTitle!: string;
+
+  @functionsAreaStore.State
+  showHelpIcon!: boolean;
+
+  @functionsAreaStore.State
+  helpContent!: string;
+
   created() {
-    console.log('CH LIST');
-    console.log(this.choicesList);
+    this.choicesList = choices;
   }
-  // button: any;
-  // tooltip: any;
-  // showEvents = ['mouseenter', 'focus'];
-  // hideEvents = ['mouseleave', 'blur'];
+  get filteredChoices(): AvailableChoice[] {
+    console.log('Chiamato Computed');
+    if (this.searchBarContent === '' || !this.searchBarVisible) {
+      return this.choicesList;
+    }
+    const newArray = this.choicesList.filter((element: AvailableChoice) => {
+      return this.choiceContainsKeyword(element, this.searchBarContent);
+    });
+    console.log('Torno 2');
+    console.log(newArray);
+    return newArray;
+  }
 
-  // createTooltip() {
-  //   createPopper(this.button, this.tooltip, {
-  //     placement: 'right',
-  //     modifiers: [
-  //       {
-  //         name: 'offset',
-  //         options: {
-  //           offset: [0, 10]
-  //         }
-  //       }
-  //     ]
-  //   });
-  // }
+  choiceContainsKeyword(choice: AvailableChoice, keyWord: string): boolean {
+    const isInTheName = choice.name.includes(keyWord);
 
-  // showTooltip() {
-  //   this.tooltip.setAttribute('data-show', '');
-  //   console.log('entrato');
-  // }
+    const filteredSynonims = choice.synonyms.filter((item) => {
+      return item.includes(keyWord);
+    });
+    const isInTheSynonims = filteredSynonims.length > 0;
 
-  // hideTooltip() {
-  //   this.tooltip.removeAttribute('data-show');
-  //   console.log('uscito');
-  // }
+    return isInTheName || isInTheSynonims;
+  }
 
-  // mounted() {
-  //   this.button = document.querySelector('#choice');
-  //   this.tooltip = document.querySelector('#tooltip');
+  createTooltip() {
+    createPopper(this.helpButton, this.tooltip, {
+      placement: 'bottom',
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, 5]
+          }
+        }
+      ]
+    });
+  }
 
-  //   this.createTooltip();
+  showTooltip() {
+    this.tooltip.setAttribute('data-show', '');
+  }
 
-  //   this.showEvents.forEach((event) => {
-  //     this.button.addEventListener(event, this.showTooltip);
-  //   });
+  hideTooltip() {
+    this.tooltip.removeAttribute('data-show');
+  }
 
-  //   this.hideEvents.forEach((event) => {
-  //     this.button.addEventListener(event, this.hideTooltip);
-  //   });
-  // }
+  mounted() {
+    this.helpButton = document.querySelector('#help_icon');
+    this.tooltip = document.querySelector('#help_tooltip');
+
+    this.createTooltip();
+
+    this.showEvents.forEach((event) => {
+      this.helpButton.addEventListener(event, this.showTooltip);
+    });
+
+    this.hideEvents.forEach((event) => {
+      this.helpButton.addEventListener(event, this.hideTooltip);
+    });
+  }
 }
 </script>
 
@@ -102,6 +151,10 @@ export default class FunctionsArea extends Vue {
   margin-left: 5px;
 }
 
+.choice_pane_header {
+  display: flex;
+}
+
 .choice_list {
   display: block;
   height: 90%;
@@ -116,47 +169,18 @@ export default class FunctionsArea extends Vue {
   //   text-shadow: 0px -2px #2980b9;
 }
 
-#tooltip {
-  background-color: #333;
-  color: white;
+#help_tooltip {
+  background-color: white;
+  border: solid 2px;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 13px;
   display: none;
   max-width: 30%;
+  text-align: left;
 }
 
-#tooltip[data-show] {
+#help_tooltip[data-show] {
   display: block;
-}
-
-#tooltip[data-popper-placement^='top'] > #arrow {
-  bottom: -4px;
-}
-
-#arrow,
-#arrow::before {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  z-index: -1;
-}
-
-#arrow::before {
-  content: '';
-  transform: rotate(45deg);
-  background: #333;
-}
-
-#tooltip[data-popper-placement^='bottom'] > #arrow {
-  top: -4px;
-}
-
-#tooltip[data-popper-placement^='left'] > #arrow {
-  right: -8px;
-}
-
-#tooltip[data-popper-placement^='right'] > #arrow {
-  left: -4px;
 }
 </style>
