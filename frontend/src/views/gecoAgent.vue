@@ -27,6 +27,7 @@ import { conversation } from './../test/conversation';
 
 const socket = io('http://localhost:5980/test');
 const tools = namespace('tools');
+const conversationStore = namespace('gecoAgent/conversation');
 
 @Component({
   components: {
@@ -38,8 +39,12 @@ const tools = namespace('tools');
 export default class GecoAgent extends Vue {
   @tools.Mutation updateFieldList!: (newList: any) => void;
   @tools.Mutation updateQueryParameters!: (newTool: string) => void;
+  @conversationStore.Mutation addUserMessage!: (msg: string) => void;
+  @conversationStore.Mutation editMessage!: (msg: string) => void;
 
-  message = '';
+  @conversationStore.State('currentMessage') message!: string;
+
+  // message = '';
 
   conversation?: MessageObject[] = [];
   fieldList = [];
@@ -64,10 +69,9 @@ export default class GecoAgent extends Vue {
 
   sendMessage() {
     if (this.message != '') {
-      this.$store.commit('gecoAgent/conversation/addUserMessage', this.message);
-      console.log('I sent: ' + this.message);
+      this.addUserMessage(this.message);
       socket.emit('my_event', { data: this.message });
-      this.message = '';
+      this.editMessage('');
     }
   }
 

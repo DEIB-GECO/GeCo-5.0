@@ -1,6 +1,10 @@
 <template>
   <div class="choice_wrapper">
-    <button :id="'choice_' + id" class="choice">
+    <button
+      :id="'choice_' + id"
+      class="choice"
+      @click="concatenateToMessage(choice.value)"
+    >
       {{ choice.name }}
     </button>
     <div :id="'tooltip_' + id" class="tooltip">
@@ -12,14 +16,20 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { namespace, Mutation } from 'vuex-class';
 import { createPopper } from '@popperjs/core';
 import makeid from '@/utils/makeid';
+
+const conversationStore = namespace('gecoAgent/conversation');
 
 @Component
 export default class Choice extends Vue {
   //   @Prop({required: true})
   @Prop()
   choice!: AvailableChoice;
+
+  @conversationStore.Mutation
+  concatenateToMessage!: (newPiece: string) => void;
 
   id!: string;
   button: any;

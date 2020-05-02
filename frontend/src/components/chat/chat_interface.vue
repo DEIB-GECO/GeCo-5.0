@@ -2,11 +2,17 @@
   <div class="chat_container">
     <chat></chat>
     <div class="interface">
-      <textarea
+      <!-- <textarea
         name="message_box"
         id="message_box"
         @change="$emit('update:textMessage', $event.target.value)"
         v-bind:value="textMessage"
+        @keyup.enter="emitSend()"
+      ></textarea> -->
+      <textarea
+        name="message_box"
+        id="message_box"
+        v-model="message"
         @keyup.enter="emitSend()"
       ></textarea>
       <button class="send_button" @click="emitSend()">Send</button>
@@ -15,32 +21,63 @@
 </template>
 
 <script lang="ts">
-import Message from './message.vue';
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import Chat from './conversation.vue';
-import Vue from 'vue';
+// import Vue from 'vue';
 
-export default Vue.extend({
-  props: {
-    textMessage: {
-      type: String
-    }
-  },
-  methods: {
-    emitSend() {
-      this.$emit('emit-send');
-    },
-    scrollToEnd: function() {
-      const container = this.$el.querySelector('#chat');
-      console.log(container);
-      if (container) {
-        container.scrollTop = container.scrollHeight;
-      }
-    }
-  },
+const conversationStore = namespace('gecoAgent/conversation');
+
+@Component({
   components: {
     Chat
   }
-});
+})
+export default class ChatInterface extends Vue {
+  @conversationStore.State('currentMessage') storeMessage!: string;
+  @conversationStore.Mutation editMessage!: (newMsg: string) => void;
+
+  get message() {
+    return this.storeMessage;
+  }
+  set message(newMsg: string) {
+    this.editMessage(newMsg);
+  }
+
+  emitSend() {
+    this.$emit('emit-send');
+  }
+
+  scrollToEnd() {
+    const container = this.$el.querySelector('#chat');
+    console.log(container);
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }
+}
+// export default Vue.extend({
+//   props: {
+//     textMessage: {
+//       type: String
+//     }
+//   },
+//   methods: {
+//     emitSend() {
+//       this.$emit('emit-send');
+//     },
+//     scrollToEnd: function() {
+//       const container = this.$el.querySelector('#chat');
+//       console.log(container);
+//       if (container) {
+//         container.scrollTop = container.scrollHeight;
+//       }
+//     }
+//   },
+//   components: {
+//     Chat
+//   }
+// });
 </script>
 
 <style scoped lang="scss">
