@@ -52,7 +52,7 @@ export default class GecoAgent extends Vue {
   @parametersStore.Mutation('parseJsonResponse') parameterParser!: (
     payload: any
   ) => void;
-  @functionsAreaStore.Mutation('parseJsonResponseXXX')
+  @functionsAreaStore.Mutation('parseJsonResponse')
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
 
   // message = '';
@@ -128,6 +128,9 @@ export default class GecoAgent extends Vue {
           'gecoAgent/queryParameters/parseJsonResponse',
           data.payload
         );
+        break;
+      case 'available_choices':
+        this.functionPaneParsingFunctions['available_choices'](data.payload);
         break;
       default:
         console.log(data.type + 'not found');

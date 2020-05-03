@@ -22,6 +22,7 @@
       </div>
       <div class="choice_list">
         <div v-for="choice in filteredChoices" :key="choice.name">
+          <!-- <div v-for="choice in choicesArray" :key="choice.name"> -->
           <choice :choice="choice"> </choice>
         </div>
       </div>
@@ -50,9 +51,9 @@ export default class FunctionsArea extends Vue {
   showEvents = ['mouseenter', 'focus'];
   hideEvents = ['mouseleave', 'blur'];
 
-  // @functionsAreaStore.State
+  @functionsAreaStore.State
+  choicesArray!: AvailableChoice[];
   // choicesArray!: AvailableChoice[];
-  choicesList!: AvailableChoice[];
 
   @functionsAreaStore.State
   searchBarVisible!: boolean;
@@ -66,29 +67,32 @@ export default class FunctionsArea extends Vue {
   @functionsAreaStore.State
   helpContent!: string;
 
-  created() {
-    this.choicesList = choices;
-  }
+  // created() {
+  //   this.choicesArray = choices;
+  // }
   get filteredChoices(): AvailableChoice[] {
     console.log('Chiamato Computed');
     if (this.searchBarContent === '' || !this.searchBarVisible) {
-      return this.choicesList;
+      console.log('Torno1');
+      return this.choicesArray;
     }
-    const newArray = this.choicesList.filter((element: AvailableChoice) => {
+    const newArray = this.choicesArray.filter((element: AvailableChoice) => {
+      console.log('Torno 2');
       return this.choiceContainsKeyword(element, this.searchBarContent);
     });
-    console.log('Torno 2');
     console.log(newArray);
-    return newArray;
+    return this.choicesArray;
+    // return newArray;
   }
 
   choiceContainsKeyword(choice: AvailableChoice, keyWord: string): boolean {
     const isInTheName = choice.name.includes(keyWord);
 
-    const filteredSynonims = choice.synonyms.filter((item) => {
-      return item.includes(keyWord);
-    });
-    const isInTheSynonims = filteredSynonims.length > 0;
+    // const filteredSynonims = choice.synonyms.filter((item) => {
+    //   return item.includes(keyWord);
+    // });
+    // const isInTheSynonims = filteredSynonims.length > 0;
+    const isInTheSynonims = true;
 
     return isInTheName || isInTheSynonims;
   }

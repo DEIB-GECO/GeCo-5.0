@@ -38,10 +38,12 @@ class FunctionArea extends VuexModule {
 
   @Mutation
   parseJsonResponse(newData: AvailableChoiceJsonPayload): void {
+    console.log('Invocato ParseJsonResponse in FunctoinArea!');
     this.searchBarVisible = newData.showSearchBar;
     this.showDetails = newData.showDetails;
     this.choicesTitle = newData.caption;
     this.choicesArray = newData.elements;
+    console.log(this.choicesArray);
   }
 
   @Mutation
