@@ -7,7 +7,7 @@
     >
       {{ choice.name }}
     </button>
-    <div :id="'tooltip_' + id" class="tooltip">
+    <div :id="'tooltip_' + id" class="tooltip" v-show="showDetails">
       {{ choice.description }}
       <div id="arrow" data-popper-arrow></div>
     </div>
@@ -21,12 +21,16 @@ import { createPopper } from '@popperjs/core';
 import makeid from '@/utils/makeid';
 
 const conversationStore = namespace('gecoAgent/conversation');
+const functionsAreaStore = namespace('gecoAgent/functionsArea');
 
 @Component
 export default class Choice extends Vue {
   //   @Prop({required: true})
   @Prop()
   choice!: AvailableChoice;
+
+  @functionsAreaStore.State
+  showDetails!: boolean;
 
   @conversationStore.Mutation
   concatenateToMessage!: (newPiece: string) => void;

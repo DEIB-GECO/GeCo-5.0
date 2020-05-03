@@ -1,6 +1,6 @@
 <template>
   <div class="functionChoice">
-    <div class="search_bar_module">
+    <div class="search_bar_module" v-if="searchBarVisible">
       <!-- <div class="search_bar_title">Filter:</div> -->
       <div class="search_bar">
         <font-awesome-icon class="search_icon" :icon="['fas', 'search']" />
@@ -15,7 +15,7 @@
             :icon="['fas', 'question-circle']"
           />
         </div>
-        <div class="choice_title">Here you are:</div>
+        <div class="choice_title">{{ choicesTitle }}</div>
       </div>
       <div class="help_tooltip" id="help_tooltip">
         {{ helpContent }}
@@ -35,7 +35,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { createPopper } from '@popperjs/core';
 import Choice from './choice.vue';
-import { choices } from '@/test/choices';
+// import { choices } from '@/test/choices';
 
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
 
@@ -88,11 +88,13 @@ export default class FunctionsArea extends Vue {
   choiceContainsKeyword(choice: AvailableChoice, keyWord: string): boolean {
     const isInTheName = choice.name.includes(keyWord);
 
-    // const filteredSynonims = choice.synonyms.filter((item) => {
-    //   return item.includes(keyWord);
-    // });
-    // const isInTheSynonims = filteredSynonims.length > 0;
-    const isInTheSynonims = true;
+    const filteredSynonims = choice.synonyms
+      ? choice.synonyms.filter((item) => {
+          return item.includes(keyWord);
+        })
+      : [];
+    const isInTheSynonims = filteredSynonims.length > 0;
+    // const isInTheSynonims = true;
 
     return isInTheName || isInTheSynonims;
   }
@@ -157,6 +159,14 @@ export default class FunctionsArea extends Vue {
 
 .choice_pane_header {
   display: flex;
+}
+
+.choice_title {
+  margin-left: 5 px;
+}
+
+.info_icon {
+  margin: 3px;
 }
 
 .choice_list {

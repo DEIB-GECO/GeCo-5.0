@@ -6,7 +6,7 @@ type Type = 'options' | 'tip';
 @Module({ namespaced: true })
 class FunctionArea extends VuexModule {
   name = '';
-  searchBarVisible = true;
+  searchBarVisible = false;
   viewType: Type = 'options';
   choicesTitle = '';
   choicesArray: AvailableChoice[] = [];
