@@ -1,11 +1,34 @@
 <template>
-  <div></div>
+  <div class="data_viz">
+    <pie-chart :chartTitle="'these'"></pie-chart>
+    <pie-chart :chartTitle="'are'"></pie-chart>
+    <pie-chart :chartTitle="'some'"></pie-chart>
+    <pie-chart :chartTitle="'examples'"></pie-chart>
+    <pie-chart :chartTitle="'of'"></pie-chart>
+    <pie-chart :chartTitle="'graphs'"></pie-chart>
+  </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+// import { namespace } from 'vuex-class';
+import PieChart from './charts/pieChart.vue';
 
-export default Vue.extend({});
+@Component({
+  components: {
+    PieChart
+  }
+})
+export default class DataVisualization extends Vue {}
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+@import '@/style/base.scss';
+.data_viz {
+  height: 85%;
+  overflow: auto;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+</style>

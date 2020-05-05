@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1>{{ chartTitle }}</h1>
-    <div id="piechart"></div>
+  <div class="chart_container">
+    <div>{{ chartTitle }}</div>
+    <div :id="chartDivId"></div>
   </div>
 </template>
 
@@ -13,6 +13,7 @@ import { schemeCategory10 } from 'd3-scale-chromatic';
 import { pie, arc, PieArcDatum } from 'd3-shape';
 import { entries } from 'd3-collection';
 import { sum } from 'd3-array';
+import makeid from '@/utils/makeid';
 
 interface PieData {
   label: string;
@@ -31,7 +32,7 @@ const d3 = Object.assign(
 );
 
 @Component
-export default class Piechart extends Vue {
+export default class PieChart extends Vue {
   @Prop({
     default: () => [
       { label: 'primo', value: 4 },
@@ -44,15 +45,20 @@ export default class Piechart extends Vue {
   })
   chartData!: PieData[];
 
+  chartDivId: string;
+
   @Prop({
     default: () => 'title'
   })
-  chartTitle: string;
+  chartTitle!: string;
 
-  width = 450;
-  height = 450;
-  margin = 40;
+  width = 200;
+  height = 200;
+  margin = 10;
 
+  created() {
+    this.chartDivId = 'pie_' + makeid(8);
+  }
   // deatiled guide: https://codepen.io/thecraftycoderpdx/pen/jZyzKo
   plotPie() {
     const data = this.chartData.map((x) => {
@@ -63,7 +69,9 @@ export default class Piechart extends Vue {
     });
     const radius = Math.min(this.width, this.height) / 2 - this.margin;
 
-    const svg = d3.select<Element, PieData>('#piechart');
+    const svg = d3.select<Element, PieData>('#' + this.chartDivId);
+    console.log('THIS is svg:');
+    console.log(svg);
     const g = svg
       .append('svg')
       .attr('width', this.width)
@@ -80,7 +88,7 @@ export default class Piechart extends Vue {
     //PETER
 
     const tooltip = d3
-      .select('#piechart') // select element in the DOM with id 'chart'
+      .select('#' + this.chartDivId) // select element in the DOM with id 'chart'
       .append('div') // append a div element to the element we've selected
       .attr('class', 'tooltip'); // add class 'tooltip' on the divs we just selected
 
@@ -166,14 +174,14 @@ export default class Piechart extends Vue {
     });
     //FINE PETER
 
-    arc
-      .append('text')
-      .attr('transform', function(d) {
-        return `translate(${label.centroid(d)})`;
-      })
-      .text(function(d) {
-        return d.data.label;
-      });
+    // arc
+    //   .append('text')
+    //   .attr('transform', function(d) {
+    //     return `translate(${label.centroid(d)})`;
+    //   })
+    //   .text(function(d) {
+    //     return d.data.label;
+    //   });
   }
 
   mounted() {
@@ -183,6 +191,12 @@ export default class Piechart extends Vue {
 </script>
 
 <style scoped lang="scss">
+.chart_container {
+  border: solid 1px #0b3142;
+  // overflow: auto;
+  position: relative;
+}
+
 .tooltip {
   // NOTE: the css written here is not recognized for
   // some reason --  use tooltip.style as above!

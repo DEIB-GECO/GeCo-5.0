@@ -27,6 +27,7 @@ import DatasetList from './tools/dataset_list/dataset_list.vue';
 import MetadataExploration from './tools/metadata_exploration/metadata_exploration.vue';
 import FieldExplorer from './tools/field_explorer.vue';
 import QueryViewer from './tools/query_viewer.vue';
+import DataVisualization from './tools/data_visualization/data_visualization.vue';
 
 export default Vue.extend({
   data() {
@@ -36,7 +37,8 @@ export default Vue.extend({
         { name: 'Dataset List', component: 'dataset' },
         { name: 'Metadata', component: 'metadata' },
         { name: 'Field Explorer', component: 'field' },
-        { name: 'Query', component: 'query' }
+        { name: 'Query', component: 'query' },
+        { name: 'Data', component: 'dataviz' }
       ]
     };
   },
@@ -65,7 +67,8 @@ export default Vue.extend({
     dataset: DatasetList,
     metadata: MetadataExploration,
     field: FieldExplorer,
-    query: QueryViewer
+    query: QueryViewer,
+    dataviz: DataVisualization
   }
 });
 </script>
