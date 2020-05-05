@@ -12,7 +12,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 // import { namespace } from 'vuex-class';
-import PieChart from './charts/pieChart.vue';
+import PieChart from './charts/pie_chart.vue';
 
 @Component({
   components: {
