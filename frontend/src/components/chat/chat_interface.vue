@@ -15,7 +15,13 @@
         v-model="message"
         @keyup.enter="emitSend()"
       ></textarea>
-      <button class="send_button" @click="emitSend()">Send</button>
+      <button class="send_button" @click="emitSend()">
+        <font-awesome-icon
+          class="icon"
+          :icon="['fas', 'paper-plane']"
+          size="2x"
+        />
+      </button>
     </div>
   </div>
 </template>
@@ -56,28 +62,6 @@ export default class ChatInterface extends Vue {
     }
   }
 }
-// export default Vue.extend({
-//   props: {
-//     textMessage: {
-//       type: String
-//     }
-//   },
-//   methods: {
-//     emitSend() {
-//       this.$emit('emit-send');
-//     },
-//     scrollToEnd: function() {
-//       const container = this.$el.querySelector('#chat');
-//       console.log(container);
-//       if (container) {
-//         container.scrollTop = container.scrollHeight;
-//       }
-//     }
-//   },
-//   components: {
-//     Chat
-//   }
-// });
 </script>
 
 <style scoped lang="scss">

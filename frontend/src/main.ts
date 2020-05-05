@@ -13,7 +13,8 @@ import {
   faCaretDown,
   faLightbulb,
   faSearch,
-  faQuestionCircle
+  faQuestionCircle,
+  faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -26,7 +27,8 @@ library.add(
   faCaretDown,
   faLightbulb,
   faSearch,
-  faQuestionCircle
+  faQuestionCircle,
+  faPaperPlane
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

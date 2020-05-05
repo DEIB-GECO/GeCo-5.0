@@ -10,7 +10,7 @@
       <div class="prova pane_border">
         <h1>boxes</h1>
       </div>
-      <div class="prova pane_border"><h1>parameters</h1></div>
+      <div class="prova pane_border"><parameters-box></parameters-box></div>
     </div>
   </div>
 </template>
@@ -23,19 +23,21 @@ import io from 'socket.io-client';
 import Chat from './../components/chat/chat_interface.vue';
 import FunctionsArea from '../components/functionsArea/functionsArea.vue';
 import Toolbox from './../components/toolbox/toolbox_interface.vue';
+import ParametersBox from '@/components/ParametersBox.vue';
 import { conversation } from './../test/conversation';
 
 const socket = io('http://localhost:5980/test');
 const tools = namespace('tools');
 const conversationStore = namespace('gecoAgent/conversation');
-const parametersStore = namespace('gecoAgent/queryParameters');
+const parametersStore = namespace('gecoAgent/parametersBox');
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
 
 @Component({
   components: {
     Chat,
     Toolbox,
-    FunctionsArea
+    FunctionsArea,
+    ParametersBox
   }
 })
 export default class GecoAgent extends Vue {
@@ -49,13 +51,11 @@ export default class GecoAgent extends Vue {
   @conversationStore.Mutation('parseJsonResponse') messageParser!: (
     msg: string
   ) => void;
-  @parametersStore.Mutation('parseJsonResponse') parameterParser!: (
-    payload: any
+  @parametersStore.Mutation('setParametersList') parameterParser!: (
+    payload: Parameter[]
   ) => void;
   @functionsAreaStore.Mutation('parseJsonResponse')
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
-
-  // message = '';
 
   conversation?: MessageObject[] = [];
   fieldList = [];
@@ -67,12 +67,13 @@ export default class GecoAgent extends Vue {
 
   jsonResponseParsingFunctions = {
     message: this.messageParser,
-    parameters_list: this.parameterParser
+    parameters_list: this.parameterParser,
+    available_choices: this.availableChoicesParser
   };
 
   functionPaneParsingFunctions = {
-    available_choices: this.availableChoicesParser,
-    prova2: this.availableChoicesParser
+    prova2: this.availableChoicesParser,
+    available_choices: this.availableChoicesParser
   };
 
   created() {
@@ -82,9 +83,7 @@ export default class GecoAgent extends Vue {
         console.log('server sent function_pane_operation ');
         console.log(payload);
         const operationType = payload.type;
-        // this.functionPaneParsingFunctions[operationType];
         this.functionPaneParsingFunctions[payload.type](payload.payload);
-        // this.availableChoicesParser(payload.payload);
       }
     );
     socket.on('json_response', (payload: any) => {
@@ -106,36 +105,10 @@ export default class GecoAgent extends Vue {
     this.message += ' ' + newPiece;
   }
 
-  parseResponse(data: any) {
+  parseResponse(data: SocketJsonResponse) {
     console.log('PARSE RESPONSE, type: ' + data.type);
     console.log(data);
-    switch (data.type) {
-      case 'message':
-        console.log('MESSAGE ');
-        console.log(data);
-        this.$store.commit(
-          'gecoAgent/conversation/parseJsonResponse',
-          data.payload
-        );
-      case 'select_annotations':
-        console.log('SELECT ANNOTATIONS: ' + data.payload);
-        this.updateFieldList([data.payload]);
-        break;
-      case 'query':
-        console.log('UPDATE QUERY: ' + data.payload);
-        this.updateQueryParameters(data.payload);
-        this.$store.commit(
-          'gecoAgent/queryParameters/parseJsonResponse',
-          data.payload
-        );
-        break;
-      case 'available_choices':
-        this.functionPaneParsingFunctions['available_choices'](data.payload);
-        break;
-      default:
-        console.log(data.type + 'not found');
-        break;
-    }
+    this.jsonResponseParsingFunctions[data.type](data.payload);
   }
 
   pushBotMessage(msg: string) {
@@ -144,88 +117,6 @@ export default class GecoAgent extends Vue {
     }
   }
 }
-
-// export default Vue.extend({
-//   data() {
-//     return {
-//       message: '',
-//       conversation,
-//       fieldList: [],
-//       messageTypes: [
-//         { typeName: 'query', nameSpace: 'gecoAgent/queryParameters' },
-//         { typeName: 'message', nameSpace: 'gecoAgent/conversation' },
-//         { typeName: 'select_annotations', nameSpace: 'tools' }
-//       ]
-//     };
-//   },
-//   components: {
-//     Chat,
-//     Toolbox
-//   },
-
-//   created: function() {
-//     socket.on('my_response', (payload: any) => {
-//       // conversation.push({ sender: "Geco", text: payload.data });
-//       console.log('server sent:' + 'msg');
-//       this.parseResponse(payload.data);
-//     });
-//     socket.on('json_response', (payload: any) => {
-//       console.log(payload);
-//       this.parseResponse(payload);
-//     });
-//   },
-
-//   methods: {
-//     ...mapMutations('tools', ['updateFieldList', 'updateQueryParameters']),
-//     sendMessage: function() {
-//       if (this.message != '') {
-//         this.$store.commit(
-//           'gecoAgent/conversation/addUserMessage',
-//           this.message
-//         );
-//         console.log('I sent: ' + this.message);
-//         socket.emit('my_event', { data: this.message });
-//         this.message = '';
-//       }
-//     },
-//     concatenateToMessage: function(newPiece: string) {
-//       this.message += ' ' + newPiece;
-//     },
-//     parseResponse: function(data: any) {
-//       console.log('PARSE RESPONSE, type: ' + data.type);
-//       console.log(data);
-//       switch (data.type) {
-//         case 'message':
-//           console.log('MESSAGE ');
-//           console.log(data);
-//           this.$store.commit(
-//             'gecoAgent/conversation/parseJsonResponse',
-//             data.payload
-//           );
-//         case 'select_annotations':
-//           console.log('SELECT ANNOTATIONS: ' + data.payload);
-//           this.updateFieldList([data.payload]);
-//           break;
-//         case 'query':
-//           console.log('UPDATE QUERY: ' + data.payload);
-//           this.updateQueryParameters(data.payload);
-//           this.$store.commit(
-//             'gecoAgent/queryParameters/parseJsonResponse',
-//             data.payload
-//           );
-//           break;
-//         default:
-//           console.log(data.type + 'not found');
-//           break;
-//       }
-//     },
-//     pushBotMessage(msg: string) {
-//       if (msg != '') {
-//         this.conversation.push({ sender: 'bot', text: msg });
-//       }
-//     }
-//   }
-// });
 </script>
 <style scoped>
 @import '../style/base.scss';
@@ -253,6 +144,5 @@ export default class GecoAgent extends Vue {
 
 .prova {
   width: 100%;
-  /* border: solid 3px #ecebe4; */
 }
 </style>
