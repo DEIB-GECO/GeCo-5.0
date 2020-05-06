@@ -157,6 +157,8 @@ export default class FunctionsArea extends Vue {
 
 .choice_pane {
   margin-left: 5px;
+  max-height: 55vh;
+  overflow: auto;
 }
 
 .choice_pane_header {

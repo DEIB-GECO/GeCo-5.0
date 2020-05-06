@@ -9,7 +9,7 @@
     </button>
     <div :id="'tooltip_' + id" class="tooltip" v-show="showDetails">
       {{ choice.description }}
-      <div id="arrow" data-popper-arrow></div>
+      <!-- <div id="arrow" data-popper-arrow></div> -->
     </div>
   </div>
 </template>
@@ -40,13 +40,14 @@ export default class Choice extends Vue {
   tooltip: any;
   showEvents = ['mouseenter', 'focus'];
   hideEvents = ['mouseleave', 'blur'];
+  popperInstance = null;
 
   created() {
     this.id = makeid(8);
   }
 
   createTooltip() {
-    createPopper(this.button, this.tooltip, {
+    this.popperInstance = createPopper(this.button, this.tooltip, {
       placement: 'right',
       modifiers: [
         {
@@ -61,10 +62,19 @@ export default class Choice extends Vue {
 
   showTooltip() {
     this.tooltip.setAttribute('data-show', '');
+    this.createTooltip();
   }
 
   hideTooltip() {
     this.tooltip.removeAttribute('data-show');
+    this.destroyTooltip();
+  }
+
+  destroyTooltip() {
+    if (this.popperInstance) {
+      this.popperInstance.destroy();
+      this.popperInstance = null;
+    }
   }
 
   mounted() {

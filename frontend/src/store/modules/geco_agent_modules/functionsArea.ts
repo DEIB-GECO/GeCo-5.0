@@ -1,4 +1,5 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
+import { choices } from '@/test/choices';
 type Type = 'options' | 'tip';
 
 // import AvailableChoice from '@/types/AvailableChoice';
@@ -6,10 +7,10 @@ type Type = 'options' | 'tip';
 @Module({ namespaced: true })
 class FunctionArea extends VuexModule {
   name = '';
-  searchBarVisible = false;
+  searchBarVisible = true;
   viewType: Type = 'options';
   choicesTitle = '';
-  choicesArray: AvailableChoice[] = [];
+  choicesArray: AvailableChoice[] = choices;
   showDetails = true;
 
   //da aggiungere a json
