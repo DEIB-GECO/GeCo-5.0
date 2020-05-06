@@ -45,7 +45,7 @@ export default class PieChart extends Vue {
   })
   chartData!: PieData[];
 
-  chartDivId: string;
+  chartDivId!: string;
 
   @Prop({
     default: () => 'title'

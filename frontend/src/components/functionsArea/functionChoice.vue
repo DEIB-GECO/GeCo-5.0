@@ -139,6 +139,8 @@ export default class FunctionsArea extends Vue {
 </script>
 
 <style lang="scss">
+@import '@/style/base.scss';
+
 .search_bar_module {
   width: 90%;
   margin-top: 15px;
@@ -172,6 +174,7 @@ export default class FunctionsArea extends Vue {
 .choice_list {
   display: block;
   height: 90%;
+  overflow: auto;
   // align-content: left;
 }
 

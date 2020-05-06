@@ -10,8 +10,6 @@ class FunctionArea extends VuexModule {
   viewType: Type = 'options';
   choicesTitle = '';
   choicesArray: AvailableChoice[] = [];
-
-  //da aggiungere a componente
   showDetails = true;
 
   //da aggiungere a json
