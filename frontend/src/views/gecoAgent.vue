@@ -9,6 +9,8 @@
     <div class="grid_container_lower_row">
       <div class="prova pane_border">
         <h1>boxes</h1>
+        <button @click="addButton">add Data</button>
+        <button @click="removeButton">remove data</button>
       </div>
       <div class="prova pane_border"><parameters-box></parameters-box></div>
     </div>
@@ -57,10 +59,22 @@ export default class GecoAgent extends Vue {
   @functionsAreaStore.Mutation('parseJsonResponse')
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
 
+  //TESTING ADD REMOVE TOOLS
+  @tools.Action addToolsToPane!: (toolsToAdd: string[]) => void;
+  @tools.Action removeToolsFromPane!: (toolsToRemove: string[]) => void;
+
+  addButton() {
+    this.addToolsToPane(['dataviz']);
+  }
+
+  removeButton() {
+    this.removeToolsFromPane(['dataviz']);
+  }
+
   conversation?: MessageObject[] = [];
   fieldList = [];
   messageTypes = [
-    { typeName: 'query', nameSpace: 'gecoAgent/queryParameters' },
+    // { typeName: 'query', nameSpace: 'gecoAgent/queryParameters' },
     { typeName: 'message', nameSpace: 'gecoAgent/conversation' },
     { typeName: 'select_annotations', nameSpace: 'tools' }
   ];

@@ -40,7 +40,7 @@ export default class Choice extends Vue {
   tooltip: any;
   showEvents = ['mouseenter', 'focus'];
   hideEvents = ['mouseleave', 'blur'];
-  popperInstance = null;
+  popperInstance!: any;
 
   created() {
     this.id = makeid(8);
@@ -81,15 +81,17 @@ export default class Choice extends Vue {
     this.button = document.querySelector('#choice_' + this.id);
     this.tooltip = document.querySelector('#tooltip_' + this.id);
 
-    this.createTooltip();
+    if (this.showDetails) {
+      this.createTooltip();
 
-    this.showEvents.forEach((event) => {
-      this.button.addEventListener(event, this.showTooltip);
-    });
+      this.showEvents.forEach((event) => {
+        this.button.addEventListener(event, this.showTooltip);
+      });
 
-    this.hideEvents.forEach((event) => {
-      this.button.addEventListener(event, this.hideTooltip);
-    });
+      this.hideEvents.forEach((event) => {
+        this.button.addEventListener(event, this.hideTooltip);
+      });
+    }
   }
 }
 </script>

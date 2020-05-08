@@ -124,16 +124,17 @@ export default class FunctionsArea extends Vue {
   mounted() {
     this.helpButton = document.querySelector('#help_icon');
     this.tooltip = document.querySelector('#help_tooltip');
+    if (this.showHelpIcon) {
+      this.createTooltip();
 
-    this.createTooltip();
+      this.showEvents.forEach((event) => {
+        this.helpButton.addEventListener(event, this.showTooltip);
+      });
 
-    this.showEvents.forEach((event) => {
-      this.helpButton.addEventListener(event, this.showTooltip);
-    });
-
-    this.hideEvents.forEach((event) => {
-      this.helpButton.addEventListener(event, this.hideTooltip);
-    });
+      this.hideEvents.forEach((event) => {
+        this.helpButton.addEventListener(event, this.hideTooltip);
+      });
+    }
   }
 }
 </script>

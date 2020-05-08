@@ -5,7 +5,7 @@
     </keep-alive>
     <div class="buttons_grid">
       <div
-        v-for="tool in tools"
+        v-for="tool in activeTools"
         v-bind:key="tool.component"
         :class="[
           'tool',
@@ -20,8 +20,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { mapState, mapMutations } from 'vuex';
+// import Vue from 'vue';
+// import { mapState, mapMutations } from 'vuex';
+
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
 import DatasetList from './tools/dataset_list/dataset_list.vue';
 import MetadataExploration from './tools/metadata_exploration/metadata_exploration.vue';
@@ -29,40 +32,9 @@ import FieldExplorer from './tools/field_explorer.vue';
 import QueryViewer from './tools/query_viewer.vue';
 import DataVisualization from './tools/data_visualization/data_visualization.vue';
 
-export default Vue.extend({
-  data() {
-    return {
-      // active: "dataset",
-      tools: [
-        { name: 'Dataset List', component: 'dataset' },
-        { name: 'Metadata', component: 'metadata' },
-        { name: 'Field Explorer', component: 'field' },
-        { name: 'Query', component: 'query' },
-        { name: 'Data', component: 'dataviz' }
-      ]
-    };
-  },
-  props: {
-    concatenateToMessage: {
-      type: Function
-    }
-  },
-  computed: {
-    ...mapState({
-      active: (state: any) => state.tools.toolToShow
-    })
-  },
-  methods: {
-    ...mapMutations('tools', ['updateToolToShow']),
-    sendMessageToConcat(msg: string) {
-      console.log('sendMessageToConcat invoked');
-      if (this.concatenateToMessage) {
-        this.concatenateToMessage(msg);
-      } else {
-        console.log('concat non esiste');
-      }
-    }
-  },
+const toolsNamespace = namespace('tools');
+
+@Component({
   components: {
     dataset: DatasetList,
     metadata: MetadataExploration,
@@ -70,7 +42,76 @@ export default Vue.extend({
     query: QueryViewer,
     dataviz: DataVisualization
   }
-});
+})
+export default class ToolboxInterface extends Vue {
+  // tools = [
+  //   { name: 'Dataset List', component: 'dataset' },
+  //   { name: 'Metadata', component: 'metadata' },
+  //   { name: 'Field Explorer', component: 'field' },
+  //   { name: 'Query', component: 'query' },
+  //   { name: 'Data', component: 'dataviz' }
+  // ];
+
+  @toolsNamespace.State('toolToShow') active!: string;
+  @toolsNamespace.State activeTools!: string[];
+
+  @Prop()
+  concatenateToMessage!: Function;
+
+  @toolsNamespace.Action updateToolToShow!: (newTool: string) => void;
+
+  sendMessageToConcat(msg: string) {
+    console.log('sendMessageToConcat invoked');
+    if (this.concatenateToMessage) {
+      this.concatenateToMessage(msg);
+    } else {
+      console.log('concat non esiste');
+    }
+  }
+}
+
+// export default Vue.extend({
+//   data() {
+//     return {
+//       // active: "dataset",
+//       tools: [
+//         { name: 'Dataset List', component: 'dataset' },
+//         { name: 'Metadata', component: 'metadata' },
+//         { name: 'Field Explorer', component: 'field' },
+//         { name: 'Query', component: 'query' },
+//         { name: 'Data', component: 'dataviz' }
+//       ]
+//     };
+//   },
+//   props: {
+//     concatenateToMessage: {
+//       type: Function
+//     }
+//   },
+//   computed: {
+//     ...mapState({
+//       active: (state: any) => state.tools.toolToShow
+//     })
+//   },
+//   methods: {
+//     ...mapMutations('tools', ['updateToolToShow']),
+//     sendMessageToConcat(msg: string) {
+//       console.log('sendMessageToConcat invoked');
+//       if (this.concatenateToMessage) {
+//         this.concatenateToMessage(msg);
+//       } else {
+//         console.log('concat non esiste');
+//       }
+//     }
+//   },
+//   components: {
+//     dataset: DatasetList,
+//     metadata: MetadataExploration,
+//     field: FieldExplorer,
+//     query: QueryViewer,
+//     dataviz: DataVisualization
+//   }
+// });
 </script>
 
 <style scoped>
