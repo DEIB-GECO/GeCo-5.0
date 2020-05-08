@@ -6,6 +6,8 @@
     <pie-chart :chartTitle="'examples'"></pie-chart>
     <pie-chart :chartTitle="'of'"></pie-chart>
     <pie-chart :chartTitle="'graphs'"></pie-chart>
+    <pie-chart :chartTitle="'graphs'"></pie-chart>
+    <pie-chart :chartTitle="'graphs'"></pie-chart>
   </div>
 </template>
 
@@ -25,8 +27,9 @@ export default class DataVisualization extends Vue {}
 <style scoped lang="scss">
 @import '@/style/base.scss';
 .data_viz {
-  height: 85%;
-  overflow: auto;
+  max-height: 70vh !important;
+  overflow-y: scroll;
+  overflow-x: hidden;
   position: relative;
   display: grid;
   grid-template-columns: auto auto auto;

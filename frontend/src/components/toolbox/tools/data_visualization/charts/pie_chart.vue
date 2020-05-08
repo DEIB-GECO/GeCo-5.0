@@ -112,7 +112,7 @@ export default class PieChart extends Vue {
     tooltip.style('font-size', '18px');
     tooltip.style('left', '130px');
     tooltip.style('padding', '10px');
-    tooltip.style('position', 'absolute');
+    tooltip.style('position', 'fixed');
     tooltip.style('text-align', 'center');
     tooltip.style('top', '95px');
     tooltip.style('width', '80px');
@@ -169,8 +169,8 @@ export default class PieChart extends Vue {
     arc.on('mousemove', function(d) {
       // when mouse moves
       tooltip
-        .style('top', event.layerY + 10 + 'px') // always 10px below the cursor
-        .style('left', event.layerX + 10 + 'px'); // always 10px to the right of the mouse
+        .style('top', event.pageY + 10 + 'px') // always 10px below the cursor
+        .style('left', event.pageX + 10 + 'px'); // always 10px to the right of the mouse
     });
     //FINE PETER
 
@@ -207,7 +207,7 @@ export default class PieChart extends Vue {
   font-size: 18px;
   left: 130px;
   padding: 10px;
-  position: absolute;
+  position: fixed;
   text-align: center;
   top: 95px;
   width: 80px;

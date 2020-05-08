@@ -116,7 +116,7 @@ export default class ToolboxInterface extends Vue {
 
 <style scoped>
 .toolbox_interface {
-  height: 100%;
+  height: inherit;
   width: 100%;
 }
 

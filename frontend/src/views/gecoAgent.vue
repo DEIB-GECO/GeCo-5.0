@@ -122,6 +122,7 @@ export default class GecoAgent extends Vue {
   parseResponse(data: SocketJsonResponse) {
     console.log('PARSE RESPONSE, type: ' + data.type);
     console.log(data);
+    // @ts-ignore
     this.jsonResponseParsingFunctions[data.type](data.payload);
   }
 
@@ -143,7 +144,7 @@ export default class GecoAgent extends Vue {
   display: inline-grid;
   grid-template-columns: 25% 25% 50%;
   grid-gap: 10px;
-  height: 65%;
+  height: 60vh;
   width: 80%;
 }
 
