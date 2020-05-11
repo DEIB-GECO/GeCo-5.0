@@ -18,8 +18,8 @@ class Tools extends VuexModule {
     { name: 'Dataset List', component: 'dataset' },
     { name: 'Metadata', component: 'metadata' },
     { name: 'Field Explorer', component: 'field' },
-    { name: 'Query', component: 'query' },
-    { name: 'Data', component: 'dataviz' }
+    { name: 'Query', component: 'query' }
+    // { name: 'Data', component: 'dataviz' }
   ];
 
   @Mutation
@@ -46,38 +46,6 @@ class Tools extends VuexModule {
   @Mutation
   setToolToShow(newTool: string): void {
     this.toolToShow = newTool;
-  }
-
-  @Action
-  addRemoveTools(jsonPayload: ToolsSetUpPayload) {
-    // this.addToolsToPane(jsonPayload.add);
-    console.log('Add:', jsonPayload.add, 'Remove: ', jsonPayload.remove);
-    // this.context.dispatch('addToolsToPane', jsonPayload.add);
-    // this.context.dispatch('removeToolsFromPane', jsonPayload.remove);
-    // this.removeToolsFromPane(jsonPayload.remove);
-
-    if (jsonPayload.add) {
-      jsonPayload.add.forEach((newTool) => {
-        console.log('adding ' + newTool);
-        this.context.commit('addSingleToolToPane', newTool);
-      });
-    }
-    if (jsonPayload.remove) {
-      jsonPayload.remove.forEach((tool) => {
-        console.log('removing ' + tool);
-        this.context.commit('removeSingleToolFromPane', tool);
-      });
-    }
-  }
-
-  @Action
-  addToolsToPane(newToolsList: string[]): void {
-    // this.addSingleToolToPane(newToolsList[0]);
-    console.log('invocato add tools to pane');
-    newToolsList.forEach((newTool) => {
-      console.log('il for each per ' + newTool);
-      this.context.commit('addSingleToolToPane', newTool);
-    });
   }
 
   @Mutation
@@ -121,13 +89,14 @@ class Tools extends VuexModule {
     const toolToRemove = this.activeTools.find((elem) => {
       return elem.component == tool;
     });
+    console.log('Tool to remove:', toolToRemove);
 
     if (toolToRemove) {
       if (this.toolToShow == tool) {
         this.toolToShow = this.activeTools[0].component;
       }
       const index = this.activeTools.indexOf(toolToRemove);
-      this.activeTools.splice(index);
+      this.activeTools.splice(index, 1);
     }
   }
 }

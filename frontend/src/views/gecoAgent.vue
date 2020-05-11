@@ -57,14 +57,22 @@ export default class GecoAgent extends Vue {
   @functionsAreaStore.Mutation('parseJsonResponse')
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
   @tools.Mutation addSingleToolToPane!: (newTool: string) => void;
-  @tools.Action removeToolsFromPane!: (toolsToRemove: string[]) => void;
+  @tools.Mutation removeSingleToolFromPane!: (tool: string) => void;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
     console.log('ho chiamato addRemoveTools in GecoAgent vue', jsonPayload);
-    jsonPayload.add.forEach((newTool) => {
-      console.log('il for each per ' + newTool);
-      this.addSingleToolToPane(newTool);
-    });
+    if (jsonPayload.add) {
+      jsonPayload.add.forEach((newTool) => {
+        console.log('il for each per ' + newTool);
+        this.addSingleToolToPane(newTool);
+      });
+    }
+    if (jsonPayload.remove) {
+      jsonPayload.remove.forEach((tool) => {
+        this.removeSingleToolFromPane(tool);
+      });
+    }
+
     // this.removeToolsFromPane(jsonPayload.remove);
     // this.addToolsToPane(jsonPayload.add);
   }
