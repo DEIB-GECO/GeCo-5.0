@@ -18,8 +18,8 @@ class Tools extends VuexModule {
     { name: 'Dataset List', component: 'dataset' },
     { name: 'Metadata', component: 'metadata' },
     { name: 'Field Explorer', component: 'field' },
-    { name: 'Query', component: 'query' },
-    { name: 'Data', component: 'dataviz' }
+    { name: 'Query', component: 'query' }
+    // { name: 'Data', component: 'dataviz' }
   ];
 
   @Mutation
@@ -48,10 +48,26 @@ class Tools extends VuexModule {
     this.toolToShow = newTool;
   }
 
-  @Mutation
+  @Action
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
-    this.addToolsToPane(jsonPayload.add);
-    this.removeToolsFromPane(jsonPayload.remove);
+    // this.addToolsToPane(jsonPayload.add);
+    console.log('Add:', jsonPayload.add, 'Remove: ', jsonPayload.remove);
+    // this.context.dispatch('addToolsToPane', jsonPayload.add);
+    // this.context.dispatch('removeToolsFromPane', jsonPayload.remove);
+    // this.removeToolsFromPane(jsonPayload.remove);
+
+    if (jsonPayload.add) {
+      jsonPayload.add.forEach((newTool) => {
+        console.log('adding ' + newTool);
+        this.context.commit('addSingleToolToPane', newTool);
+      });
+    }
+    if (jsonPayload.remove) {
+      jsonPayload.remove.forEach((tool) => {
+        console.log('removing ' + tool);
+        this.context.commit('removeSingleToolFromPane', tool);
+      });
+    }
   }
 
   @Action
@@ -65,6 +81,7 @@ class Tools extends VuexModule {
   @Mutation
   addSingleToolToPane(newTool: string): void {
     //I check if the tool is not already in the tools list
+    console.log('Tool: ' + newTool);
     if (
       !this.activeTools.find((elem) => {
         return elem.component == newTool;
@@ -75,6 +92,7 @@ class Tools extends VuexModule {
         return elem.component == newTool;
       });
       if (newToolTuple) {
+        console.log('c');
         this.activeTools.push(newToolTuple);
       }
     }

@@ -60,17 +60,24 @@ export default class GecoAgent extends Vue {
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
 
   //TESTING ADD REMOVE TOOLS
+  // @tools.Action('addRemoveTools') addToolsToPane!: (toolsToAdd: string[]) => void;
   @tools.Action addToolsToPane!: (toolsToAdd: string[]) => void;
   @tools.Action removeToolsFromPane!: (toolsToRemove: string[]) => void;
 
   addButton() {
-    this.addToolsToPane(['dataviz']);
+    this.addRemoveTools({ add: ['dataviz'], remove: ['query'] });
   }
 
   removeButton() {
     this.removeToolsFromPane(['dataviz']);
   }
 
+  addRemoveTools(jsonPayload: ToolsSetUpPayload) {
+    this.removeToolsFromPane(jsonPayload.remove);
+    this.addToolsToPane(jsonPayload.add);
+  }
+
+  //FINE TESTING
   conversation?: MessageObject[] = [];
   fieldList = [];
   messageTypes = [
