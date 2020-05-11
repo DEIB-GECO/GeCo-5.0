@@ -9,8 +9,6 @@
     <div class="grid_container_lower_row">
       <div class="prova pane_border">
         <h1>boxes</h1>
-        <button @click="addButton">add Data</button>
-        <button @click="removeButton">remove data</button>
       </div>
       <div class="prova pane_border"><parameters-box></parameters-box></div>
     </div>

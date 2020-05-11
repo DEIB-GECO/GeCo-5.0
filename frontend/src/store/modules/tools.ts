@@ -18,8 +18,8 @@ class Tools extends VuexModule {
     { name: 'Dataset List', component: 'dataset' },
     { name: 'Metadata', component: 'metadata' },
     { name: 'Field Explorer', component: 'field' },
-    { name: 'Query', component: 'query' }
-    // { name: 'Data', component: 'dataviz' }
+    { name: 'Query', component: 'query' },
+    { name: 'Data', component: 'dataviz' }
   ];
 
   @Mutation
