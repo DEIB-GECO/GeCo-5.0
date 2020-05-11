@@ -36,7 +36,7 @@ export default Vue.extend({
     }
   },
   updated: function() {
-    console.log('chiamato updated');
+    // console.log('chiamato updated');
     this.scrollToEnd();
   },
   mounted: function() {

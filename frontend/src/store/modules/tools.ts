@@ -73,7 +73,9 @@ class Tools extends VuexModule {
   @Action
   addToolsToPane(newToolsList: string[]): void {
     // this.addSingleToolToPane(newToolsList[0]);
+    console.log('invocato add tools to pane');
     newToolsList.forEach((newTool) => {
+      console.log('il for each per ' + newTool);
       this.context.commit('addSingleToolToPane', newTool);
     });
   }

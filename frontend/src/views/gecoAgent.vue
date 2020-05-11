@@ -56,15 +56,18 @@ export default class GecoAgent extends Vue {
   ) => void;
   @functionsAreaStore.Mutation('parseJsonResponse')
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
-  @tools.Action addToolsToPane!: (toolsToAdd: string[]) => void;
+  @tools.Mutation addSingleToolToPane!: (newTool: string) => void;
   @tools.Action removeToolsFromPane!: (toolsToRemove: string[]) => void;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
-    this.removeToolsFromPane(jsonPayload.remove);
-    this.addToolsToPane(jsonPayload.add);
+    console.log('ho chiamato addRemoveTools in GecoAgent vue', jsonPayload);
+    jsonPayload.add.forEach((newTool) => {
+      console.log('il for each per ' + newTool);
+      this.addSingleToolToPane(newTool);
+    });
+    // this.removeToolsFromPane(jsonPayload.remove);
+    // this.addToolsToPane(jsonPayload.add);
   }
-
-  //FINE TESTING
   conversation?: MessageObject[] = [];
   fieldList = [];
   messageTypes = [
@@ -77,13 +80,18 @@ export default class GecoAgent extends Vue {
     message: this.messageParser,
     parameters_list: this.parameterParser,
     available_choices: this.availableChoicesParser,
-    tools_setup: this.addRemoveTools
+    tools_setup: this.addRemoveTools,
+    data_summary: this.temporaryFunction
   };
 
   functionPaneParsingFunctions = {
     prova2: this.availableChoicesParser,
     available_choices: this.availableChoicesParser
   };
+
+  temporaryFunction(obg: any) {
+    console.log('TemporaryFunciton', obg);
+  }
 
   created() {
     socket.on(
@@ -96,8 +104,7 @@ export default class GecoAgent extends Vue {
       }
     );
     socket.on('json_response', (payload: any) => {
-      console.log(payload);
-      console.log('server sent:' + 'json response');
+      console.log('server sent JSON_response', payload);
       this.parseResponse(payload);
     });
   }

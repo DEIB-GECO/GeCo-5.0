@@ -1,27 +1,42 @@
 <template>
   <div class="data_viz">
-    <pie-chart :chartTitle="'these'"></pie-chart>
+    <div
+      v-for="chart in charts"
+      :key="chart.title"
+      :is="availableCharts[chart.vizType]"
+      :chartData="chart.data"
+      :chartTitle="chart.title"
+    ></div>
+    <!-- <pie-chart :chartTitle="'these'"></pie-chart>
     <pie-chart :chartTitle="'are'"></pie-chart>
     <pie-chart :chartTitle="'some'"></pie-chart>
     <pie-chart :chartTitle="'examples'"></pie-chart>
     <pie-chart :chartTitle="'of'"></pie-chart>
     <pie-chart :chartTitle="'graphs'"></pie-chart>
     <pie-chart :chartTitle="'graphs'"></pie-chart>
-    <pie-chart :chartTitle="'graphs'"></pie-chart>
+    <pie-chart :chartTitle="'graphs'"></pie-chart> -->
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-// import { namespace } from 'vuex-class';
+import { namespace } from 'vuex-class';
 import PieChart from './charts/pie_chart.vue';
+
+const datavizStore = namespace('gecoAgent/DataViz');
 
 @Component({
   components: {
     PieChart
   }
 })
-export default class DataVisualization extends Vue {}
+export default class DataVisualization extends Vue {
+  availableCharts = {
+    pieChart: 'PieChart'
+  };
+
+  @datavizStore.State charts!: ChartData[];
+}
 </script>
 
 <style scoped lang="scss">

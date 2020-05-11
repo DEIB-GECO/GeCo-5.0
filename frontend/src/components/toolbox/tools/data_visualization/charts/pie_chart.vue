@@ -35,15 +35,15 @@ const d3 = Object.assign(
 export default class PieChart extends Vue {
   @Prop({
     default: () => [
-      { label: 'primo', value: 4 },
-      { label: 'secondo', value: 5 },
-      { label: 'terzo', value: 2 },
-      { label: 'terzo2', value: 2 },
-      { label: 'terzo3', value: 3 },
-      { label: 'quarto', value: 5 }
+      { value: 'primo', count: 4 },
+      { value: 'secondo', count: 5 },
+      { value: 'terzo', count: 2 },
+      { value: 'terzo2', count: 2 },
+      { value: 'terzo3', count: 3 },
+      { value: 'quarto', count: 5 }
     ]
   })
-  chartData!: PieData[];
+  chartData!: any[];
 
   chartDivId!: string;
 
@@ -63,8 +63,8 @@ export default class PieChart extends Vue {
   plotPie() {
     const data = this.chartData.map((x) => {
       return {
-        label: x.label,
-        value: x.value
+        label: x.value,
+        value: x.count
       };
     });
     const radius = Math.min(this.width, this.height) / 2 - this.margin;
