@@ -1,20 +1,19 @@
 <template>
   <div class="data_viz">
-    <div
+    <!-- <div
       v-for="chart in charts"
       :key="chart.title"
       :is="availableCharts[chart.vizType]"
       :chartData="chart.data"
       :chartTitle="chart.title"
+    ></div> -->
+    <div
+      v-for="chart in charts"
+      :key="chart.title"
+      :is="'pie-chart'"
+      :chartData="chart.data"
+      :chartTitle="chart.title"
     ></div>
-    <!-- <pie-chart :chartTitle="'these'"></pie-chart>
-    <pie-chart :chartTitle="'are'"></pie-chart>
-    <pie-chart :chartTitle="'some'"></pie-chart>
-    <pie-chart :chartTitle="'examples'"></pie-chart>
-    <pie-chart :chartTitle="'of'"></pie-chart>
-    <pie-chart :chartTitle="'graphs'"></pie-chart>
-    <pie-chart :chartTitle="'graphs'"></pie-chart>
-    <pie-chart :chartTitle="'graphs'"></pie-chart> -->
   </div>
 </template>
 

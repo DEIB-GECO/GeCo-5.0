@@ -31,6 +31,7 @@ const tools = namespace('tools');
 const conversationStore = namespace('gecoAgent/conversation');
 const parametersStore = namespace('gecoAgent/parametersBox');
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
+const dataVizStore = namespace('gecoAgent/DataViz');
 
 @Component({
   components: {
@@ -58,12 +59,11 @@ export default class GecoAgent extends Vue {
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
   @tools.Mutation addSingleToolToPane!: (newTool: string) => void;
   @tools.Mutation removeSingleToolFromPane!: (tool: string) => void;
+  @dataVizStore.Mutation setCharts!: (newCharts: ChartData[]) => void;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
-    console.log('ho chiamato addRemoveTools in GecoAgent vue', jsonPayload);
     if (jsonPayload.add) {
       jsonPayload.add.forEach((newTool) => {
-        console.log('il for each per ' + newTool);
         this.addSingleToolToPane(newTool);
       });
     }
@@ -89,7 +89,7 @@ export default class GecoAgent extends Vue {
     parameters_list: this.parameterParser,
     available_choices: this.availableChoicesParser,
     tools_setup: this.addRemoveTools,
-    data_summary: this.temporaryFunction
+    data_summary: this.setCharts
   };
 
   functionPaneParsingFunctions = {
