@@ -58,19 +58,8 @@ export default class GecoAgent extends Vue {
   ) => void;
   @functionsAreaStore.Mutation('parseJsonResponse')
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
-
-  //TESTING ADD REMOVE TOOLS
-  // @tools.Action('addRemoveTools') addToolsToPane!: (toolsToAdd: string[]) => void;
   @tools.Action addToolsToPane!: (toolsToAdd: string[]) => void;
   @tools.Action removeToolsFromPane!: (toolsToRemove: string[]) => void;
-
-  addButton() {
-    this.addRemoveTools({ add: ['dataviz'], remove: ['query'] });
-  }
-
-  removeButton() {
-    this.removeToolsFromPane(['dataviz']);
-  }
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
     this.removeToolsFromPane(jsonPayload.remove);
@@ -89,7 +78,8 @@ export default class GecoAgent extends Vue {
   jsonResponseParsingFunctions = {
     message: this.messageParser,
     parameters_list: this.parameterParser,
-    available_choices: this.availableChoicesParser
+    available_choices: this.availableChoicesParser,
+    tools_setup: this.addRemoveTools
   };
 
   functionPaneParsingFunctions = {
