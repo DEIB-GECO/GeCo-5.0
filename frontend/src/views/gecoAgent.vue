@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <h1>First draft of the Chat!</h1>
+    <h1>
+      GeCo Agent
+      <font-awesome-icon class="icon" :icon="['fas', 'dna']" size="1x" />
+    </h1>
     <div class="grid_container_upper_row">
       <chat @emit-send="sendMessage()" :textMessage.sync="message"></chat>
       <functions-area></functions-area>
@@ -60,6 +63,7 @@ export default class GecoAgent extends Vue {
   @tools.Mutation addSingleToolToPane!: (newTool: string) => void;
   @tools.Mutation removeSingleToolFromPane!: (tool: string) => void;
   @dataVizStore.Mutation setCharts!: (newCharts: DataSummaryPayload) => void;
+  @dataVizStore.Action updateToolToShow!: (newTool: string) => void;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
     if (jsonPayload.add) {
@@ -92,25 +96,11 @@ export default class GecoAgent extends Vue {
     data_summary: this.setCharts
   };
 
-  functionPaneParsingFunctions = {
-    prova2: this.availableChoicesParser,
-    available_choices: this.availableChoicesParser
-  };
-
   temporaryFunction(obg: any) {
     console.log('TemporaryFunciton', obg);
   }
 
   created() {
-    socket.on(
-      'function_pane_operation',
-      (payload: FunctionPaneOperationJson) => {
-        console.log('server sent function_pane_operation ');
-        console.log(payload);
-        const operationType = payload.type;
-        this.functionPaneParsingFunctions[payload.type](payload.payload);
-      }
-    );
     socket.on('json_response', (payload: any) => {
       console.log('server sent JSON_response', payload);
       this.parseResponse(payload);
@@ -132,6 +122,9 @@ export default class GecoAgent extends Vue {
   parseResponse(data: SocketJsonResponse) {
     console.log('PARSE RESPONSE, type: ' + data.type);
     console.log(data);
+    if (data.show) {
+      this.updateToolToShow(data.show);
+    }
     // @ts-ignore
     this.jsonResponseParsingFunctions[data.type](data.payload);
   }

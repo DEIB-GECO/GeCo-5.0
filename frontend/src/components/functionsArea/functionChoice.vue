@@ -67,22 +67,15 @@ export default class FunctionsArea extends Vue {
   @functionsAreaStore.State
   helpContent!: string;
 
-  // created() {
-  //   this.choicesArray = choices;
-  // }
   get filteredChoices(): AvailableChoice[] {
-    // console.log('Chiamato Computed');
     if (this.searchBarContent === '' || !this.searchBarVisible) {
-      // console.log('Torno1');
       return this.choicesArray;
     }
     const newArray = this.choicesArray.filter((element: AvailableChoice) => {
-      // console.log('Torno 2');
       return this.choiceContainsKeyword(element, this.searchBarContent);
     });
     console.log(newArray);
     return this.choicesArray;
-    // return newArray;
   }
 
   choiceContainsKeyword(choice: AvailableChoice, keyWord: string): boolean {

@@ -1,9 +1,15 @@
 // import { fieldList } from "@/test/field_list";
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 
+interface ToolTuple {
+  name: string;
+  component: string;
+}
+
 @Module({ namespaced: true })
 class Tools extends VuexModule {
-  availableTools = [
+  cleanCanvas = true;
+  availableTools: ToolTuple[] = [
     { name: 'Dataset List', component: 'dataset' },
     { name: 'Metadata', component: 'metadata' },
     { name: 'Field Explorer', component: 'field' },
@@ -12,13 +18,13 @@ class Tools extends VuexModule {
   ];
 
   fieldList: string[] = [];
-  toolToShow = 'dataset';
-  // activeTools = this.availableTools;
-  activeTools = [
-    { name: 'Dataset List', component: 'dataset' },
-    { name: 'Metadata', component: 'metadata' },
-    { name: 'Field Explorer', component: 'field' },
-    { name: 'Query', component: 'query' }
+  toolToShow = '';
+
+  activeTools: ToolTuple[] = [
+    // { name: 'Dataset List', component: 'dataset' },
+    // { name: 'Metadata', component: 'metadata' },
+    // { name: 'Field Explorer', component: 'field' },
+    // { name: 'Query', component: 'query' }
     // { name: 'Data', component: 'dataviz' }
   ];
 
@@ -45,6 +51,7 @@ class Tools extends VuexModule {
   //Action instead
   @Mutation
   setToolToShow(newTool: string): void {
+    this.cleanCanvas = false;
     this.toolToShow = newTool;
   }
 
@@ -57,31 +64,16 @@ class Tools extends VuexModule {
         return elem.component == newTool;
       })
     ) {
-      //If not, I search it and I add it
       const newToolTuple = this.availableTools.find((elem) => {
         return elem.component == newTool;
       });
       if (newToolTuple) {
         console.log('c');
         this.activeTools.push(newToolTuple);
+        this.cleanCanvas = false;
+        this.toolToShow = newToolTuple.component;
       }
     }
-  }
-
-  @Action
-  removeToolsFromPane(toolsList: string[]): void {
-    toolsList.forEach((tool) => {
-      this.context.commit('removeSingleToolFromPane', tool);
-      // this.removeSingleToolFromPane(tool)
-      // const toolToRemove = this.activeTools.find((elem) => {
-      //   return elem.component == tool;
-      // });
-
-      // if (toolToRemove) {
-      //   const index = this.activeTools.indexOf(toolToRemove);
-      //   this.activeTools.splice(index);
-      // }
-    });
   }
 
   @Mutation
@@ -89,11 +81,10 @@ class Tools extends VuexModule {
     const toolToRemove = this.activeTools.find((elem) => {
       return elem.component == tool;
     });
-    console.log('Tool to remove:', toolToRemove);
 
     if (toolToRemove) {
       if (this.toolToShow == tool) {
-        this.toolToShow = this.activeTools[0].component;
+        this.cleanCanvas = true;
       }
       const index = this.activeTools.indexOf(toolToRemove);
       this.activeTools.splice(index, 1);
@@ -102,37 +93,3 @@ class Tools extends VuexModule {
 }
 
 export default Tools;
-// export default {
-//   namespaced: true,
-//   state: {
-//     fieldList: ["gigi"],
-//     toolToShow: "field",
-//     queryParameters: {},
-//   },
-//   getters: {
-//     getFieldList(state: any) {
-//       return state.fieldList;
-//     },
-//     getToolToShow(state: any) {
-//       return state.toolToShow;
-//     },
-//     getQueryParameters(state: any) {
-//       return state.queryParameters;
-//     },
-//   },
-//   mutations: {
-//     updateFieldList(state: any, newList: any) {
-//       state.fieldList = newList;
-//       console.log("UPDATE invoked, new list=");
-//       console.log(state.fielList);
-//     },
-//     updateToolToShow(state: any, newTool: string) {
-//       if (newTool != "") {
-//         state.toolToShow = newTool;
-//       }
-//     },
-//     updateQueryParameters(state: any, newParameters: any) {
-//       state.queryParameters = newParameters;
-//     },
-//   },
-// };

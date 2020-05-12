@@ -1,29 +1,12 @@
 <template>
   <div class="data_viz">
-    <!-- <div
-      v-for="chart in charts"
-      :key="chart.title"
-      :is="availableCharts[chart.vizType]"
-      :chartData="chart.data"
-      :chartTitle="chart.title"
-    ></div> -->
     <div
       v-for="chart in charts"
       :key="chart.title"
-      :is="'pie-chart'"
+      :is="chart.vizType"
       :chartData="chart.data"
       :chartTitle="chart.title"
     ></div>
-    <!-- <div
-      v-for="chart in charts"
-      :key="chart.title"
-      :chartData="chart.data"
-      :chartTitle="chart.title"
-    >
-      chart: {{ chart }}, ChartData: {{ chart.data }}, chartTitle:
-      {{ chart.title }}
-    </div>
-    <div>charts: {{ charts }}</div> -->
   </div>
 </template>
 
@@ -61,7 +44,7 @@ export default class DataVisualization extends Vue {
 .data_viz {
   max-height: 70vh !important;
   overflow-y: scroll;
-  overflow-x: hidden;
+  // overflow-x: hidden;
   position: relative;
   display: grid;
   grid-template-columns: auto auto auto;

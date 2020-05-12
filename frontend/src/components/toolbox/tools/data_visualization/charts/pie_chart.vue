@@ -54,7 +54,6 @@ export default class PieChart extends Vue {
 
   @Watch('chartData')
   dataChanged() {
-    console.log('data have changed!');
     const svg = d3.select<Element, PieData>('#' + this.chartDivId);
     svg.selectAll('*').remove();
     this.plotPie();
@@ -66,11 +65,6 @@ export default class PieChart extends Vue {
 
   created() {
     this.chartDivId = 'pie_' + makeid(8);
-    console.log(
-      'created piechart! Title, data',
-      this.chartTitle,
-      this.chartData
-    );
   }
 
   // deatiled guide: https://codepen.io/thecraftycoderpdx/pen/jZyzKo
@@ -84,8 +78,6 @@ export default class PieChart extends Vue {
     const radius = Math.min(this.width, this.height) / 2 - this.margin;
 
     const svg = d3.select<Element, PieData>('#' + this.chartDivId);
-    console.log('THIS is svg:');
-    console.log(svg);
     const g = svg
       .append('svg')
       .attr('width', this.width)

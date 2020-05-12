@@ -1,7 +1,15 @@
 <template>
   <div class="toolbox_interface">
     <keep-alive>
-      <div class="canvas" :is="active" :copyName="sendMessageToConcat"></div>
+      <div
+        class="canvas"
+        :is="active"
+        :copyName="sendMessageToConcat"
+        v-if="!cleanCanvas"
+      ></div>
+    </keep-alive>
+    <keep-alive>
+      <div class="canvas" v-if="cleanCanvas"></div>
     </keep-alive>
     <div class="buttons_grid">
       <div
@@ -44,14 +52,7 @@ const toolsNamespace = namespace('tools');
   }
 })
 export default class ToolboxInterface extends Vue {
-  // tools = [
-  //   { name: 'Dataset List', component: 'dataset' },
-  //   { name: 'Metadata', component: 'metadata' },
-  //   { name: 'Field Explorer', component: 'field' },
-  //   { name: 'Query', component: 'query' },
-  //   { name: 'Data', component: 'dataviz' }
-  // ];
-
+  @toolsNamespace.State cleanCanvas!: boolean;
   @toolsNamespace.State('toolToShow') active!: string;
   @toolsNamespace.State activeTools!: string[];
 
@@ -69,49 +70,6 @@ export default class ToolboxInterface extends Vue {
     }
   }
 }
-
-// export default Vue.extend({
-//   data() {
-//     return {
-//       // active: "dataset",
-//       tools: [
-//         { name: 'Dataset List', component: 'dataset' },
-//         { name: 'Metadata', component: 'metadata' },
-//         { name: 'Field Explorer', component: 'field' },
-//         { name: 'Query', component: 'query' },
-//         { name: 'Data', component: 'dataviz' }
-//       ]
-//     };
-//   },
-//   props: {
-//     concatenateToMessage: {
-//       type: Function
-//     }
-//   },
-//   computed: {
-//     ...mapState({
-//       active: (state: any) => state.tools.toolToShow
-//     })
-//   },
-//   methods: {
-//     ...mapMutations('tools', ['updateToolToShow']),
-//     sendMessageToConcat(msg: string) {
-//       console.log('sendMessageToConcat invoked');
-//       if (this.concatenateToMessage) {
-//         this.concatenateToMessage(msg);
-//       } else {
-//         console.log('concat non esiste');
-//       }
-//     }
-//   },
-//   components: {
-//     dataset: DatasetList,
-//     metadata: MetadataExploration,
-//     field: FieldExplorer,
-//     query: QueryViewer,
-//     dataviz: DataVisualization
-//   }
-// });
 </script>
 
 <style scoped>

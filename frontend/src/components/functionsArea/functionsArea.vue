@@ -1,8 +1,8 @@
 <template>
-  <!--div class="function_canvas">
-    < <h1>Functions Area</h1>
+  <div class="function_canvas">
+    <!-- <h1>Functions Area</h1>
     <h2>{{ viewType }}</h2> -->
-  <!--div class="tips_pane_wrapper" v-if="viewType == 'tip'">
+    <div class="tips_pane_wrapper" v-if="viewType == 'tip'">
       <div class="tips_pane">
         <div class="title_row">
           <div class="icon_wrapper">
@@ -20,9 +20,9 @@
           {{ tipContent }}
         </div>
       </div>
-    </div-->
-  <functionChoice v-if="viewType == 'options'"></functionChoice>
-  <!--/div-->
+    </div>
+    <functionChoice v-if="viewType == 'options'"></functionChoice>
+  </div>
 </template>
 
 <script lang="ts">
@@ -31,8 +31,6 @@ import { namespace } from 'vuex-class';
 import FunctionChoice from './functionChoice.vue';
 
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
-
-// import AvailableChoice from '@/types/AvailableChoice';
 
 @Component({
   components: {

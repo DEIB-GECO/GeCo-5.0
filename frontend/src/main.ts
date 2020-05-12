@@ -14,7 +14,8 @@ import {
   faLightbulb,
   faSearch,
   faQuestionCircle,
-  faPaperPlane
+  faPaperPlane,
+  faDna
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -28,7 +29,8 @@ library.add(
   faLightbulb,
   faSearch,
   faQuestionCircle,
-  faPaperPlane
+  faPaperPlane,
+  faDna
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

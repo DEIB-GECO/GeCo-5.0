@@ -83,6 +83,7 @@ export default class ChatInterface extends Vue {
 .send_button {
   height: 100%;
   width: 13%;
+  min-width: 40px;
   margin-left: 2%;
   background-color: #0b3142;
   color: white;

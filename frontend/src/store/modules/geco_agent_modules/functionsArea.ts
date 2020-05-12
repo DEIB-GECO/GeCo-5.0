@@ -10,7 +10,7 @@ class FunctionArea extends VuexModule {
   searchBarVisible = true;
   viewType: Type = 'options';
   choicesTitle = '';
-  choicesArray: AvailableChoice[] = choices;
+  choicesArray: AvailableChoice[] = [];
   showDetails = false;
   showHelpIcon = false;
 
