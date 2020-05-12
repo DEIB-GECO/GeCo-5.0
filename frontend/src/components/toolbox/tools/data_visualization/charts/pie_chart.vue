@@ -1,6 +1,6 @@
 <template>
   <div class="chart_container">
-    <div>{{ chartTitle }}</div>
+    <div class="piechart_title">{{ chartTitle }}</div>
     <div :id="chartDivId"></div>
   </div>
 </template>
@@ -201,6 +201,12 @@ export default class PieChart extends Vue {
   border: solid 1px #0b3142;
   // overflow: auto;
   position: relative;
+  max-height: 230px;
+}
+
+.piechart_title {
+  padding-top: 10px;
+  font-weight: bold;
 }
 
 .tooltip {
@@ -216,7 +222,8 @@ export default class PieChart extends Vue {
   position: fixed;
   text-align: center;
   top: 95px;
-  width: 80px;
+  min-width: 80px;
+  max-width: 130px;
   z-index: 10;
 }
 </style>

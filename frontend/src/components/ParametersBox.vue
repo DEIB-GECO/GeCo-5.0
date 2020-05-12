@@ -2,7 +2,7 @@
   <div class="parameters_box">
     <div class="parameter_list">
       <div v-for="parameter in parametersList" :key="parameter.field">
-        <span>{{ parameter.field }}: </span>
+        <span class="parameter_field">{{ parameter.field }}: </span>
         <span>{{ parameter.values.toString() }}</span>
       </div>
     </div>
@@ -32,9 +32,9 @@ export default class Choice extends Vue {
     //   { field: 'Margherita', values: ['a value like 1 '] },
     //   { field: 'Napoli', values: ['a value like 12'] }
     // ]);
-    console.log('Parameters Box');
-    console.log(this.parametersList);
-    console.log();
+    // console.log('Parameters Box');
+    // console.log(this.parametersList);
+    // console.log();
   }
 }
 </script>
@@ -56,8 +56,13 @@ export default class Choice extends Vue {
   // column-width: auto;
   text-align: left;
   display: grid;
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   grid-auto-flow: column;
   grid-template-columns: repeat(12, 350px);
+  margin: 20px;
+}
+
+.parameter_field {
+  font-weight: bold;
 }
 </style>

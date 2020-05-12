@@ -48,6 +48,7 @@ export default class FunctionsArea extends Vue {
 
 <style lang="scss">
 .function_canvas {
+  padding-top: 7px;
   height: 100%;
   width: 100%;
   border: solid 3px #ecebe4;

@@ -137,7 +137,7 @@ export default class FunctionsArea extends Vue {
 
 .functionChoice {
   height: inherit;
-  border: solid 3px #ecebe4;
+  // border: solid 3px #ecebe4;
 }
 .search_bar_module {
   width: 90%;
