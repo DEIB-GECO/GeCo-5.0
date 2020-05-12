@@ -59,7 +59,7 @@ export default class GecoAgent extends Vue {
   availableChoicesParser!: (newChoices: AvailableChoiceJsonPayload) => void;
   @tools.Mutation addSingleToolToPane!: (newTool: string) => void;
   @tools.Mutation removeSingleToolFromPane!: (tool: string) => void;
-  @dataVizStore.Mutation setCharts!: (newCharts: ChartData[]) => void;
+  @dataVizStore.Mutation setCharts!: (newCharts: DataSummaryPayload) => void;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
     if (jsonPayload.add) {

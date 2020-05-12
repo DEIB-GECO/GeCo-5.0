@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { select, event } from 'd3-selection';
 import { scaleOrdinal } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
@@ -34,23 +34,31 @@ const d3 = Object.assign(
 @Component
 export default class PieChart extends Vue {
   @Prop({
-    default: () => [
-      { value: 'primo', count: 4 },
-      { value: 'secondo', count: 5 },
-      { value: 'terzo', count: 2 },
-      { value: 'terzo2', count: 2 },
-      { value: 'terzo3', count: 3 },
-      { value: 'quarto', count: 5 }
-    ]
+    // default: () => [
+    //   { value: 'primo', count: 4 },
+    //   { value: 'secondo', count: 5 },
+    //   { value: 'terzo', count: 2 },
+    //   { value: 'terzo2', count: 2 },
+    //   { value: 'terzo3', count: 3 },
+    //   { value: 'quarto', count: 5 }
+    // ]
   })
   chartData!: any[];
 
   chartDivId!: string;
 
   @Prop({
-    default: () => 'title'
+    // default: () => 'title'
   })
   chartTitle!: string;
+
+  @Watch('chartData')
+  dataChanged() {
+    console.log('data have changed!');
+    const svg = d3.select<Element, PieData>('#' + this.chartDivId);
+    svg.selectAll('*').remove();
+    this.plotPie();
+  }
 
   width = 200;
   height = 200;
@@ -58,7 +66,13 @@ export default class PieChart extends Vue {
 
   created() {
     this.chartDivId = 'pie_' + makeid(8);
+    console.log(
+      'created piechart! Title, data',
+      this.chartTitle,
+      this.chartData
+    );
   }
+
   // deatiled guide: https://codepen.io/thecraftycoderpdx/pen/jZyzKo
   plotPie() {
     const data = this.chartData.map((x) => {

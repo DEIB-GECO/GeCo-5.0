@@ -14,6 +14,16 @@
       :chartData="chart.data"
       :chartTitle="chart.title"
     ></div>
+    <!-- <div
+      v-for="chart in charts"
+      :key="chart.title"
+      :chartData="chart.data"
+      :chartTitle="chart.title"
+    >
+      chart: {{ chart }}, ChartData: {{ chart.data }}, chartTitle:
+      {{ chart.title }}
+    </div>
+    <div>charts: {{ charts }}</div> -->
   </div>
 </template>
 
@@ -35,6 +45,14 @@ export default class DataVisualization extends Vue {
   };
 
   @datavizStore.State charts!: ChartData[];
+
+  created() {
+    console.log('data_visualizaiton has the following data:', this.charts);
+  }
+
+  updated() {
+    console.log('data_visualizaiton updated with following data:', this.charts);
+  }
 }
 </script>
 

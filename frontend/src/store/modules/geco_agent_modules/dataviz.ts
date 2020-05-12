@@ -15,8 +15,8 @@ class DataViz extends VuexModule {
   ];
 
   @Mutation
-  setCharts(newCharts: ChartData[]): void {
-    this.charts = newCharts;
+  setCharts(newCharts: DataSummaryPayload): void {
+    this.charts = newCharts.viz;
     console.log('new Charts', newCharts);
   }
 }
