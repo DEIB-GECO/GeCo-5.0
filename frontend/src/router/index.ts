@@ -1,51 +1,51 @@
-import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
+import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
+    path: '/',
+    name: 'Home',
+    component: Home
   },
   {
-    path: "/about",
-    name: "About",
+    path: '/about',
+    name: 'About',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+      import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: "/geco_agent",
-    name: "GeCo 5.0",
+    path: '/geco_agent',
+    name: 'GeCo 5.0',
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/gecoAgent.vue"),
+      import(/* webpackChunkName: "about" */ '../views/gecoAgent.vue')
   },
 
   {
-    path: "/ds",
-    name: "GeCo 5.0",
+    path: '/ds',
+    name: 'GeCo 5.0',
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../components/toolbox/tools/dataset_list/dataset_list.vue"
-      ),
+        /* webpackChunkName: "about" */ '../components/toolbox/tools/dataset_list/dataset_list.vue'
+      )
   },
   {
-    path: "/test",
-    name: "GeCo 5.0",
+    path: '/test',
+    name: 'GeCo 5.0',
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/graph_test.vue"),
-  },
+      import(/* webpackChunkName: "about" */ '../views/graph_test.vue')
+  }
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 export default router;

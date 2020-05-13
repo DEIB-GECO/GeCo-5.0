@@ -10,8 +10,8 @@
       <toolbox :concatenateToMessage="concatenateToMessage"></toolbox>
     </div>
     <div class="grid_container_lower_row">
-      <div class="prova pane_border">
-        <h1>boxes</h1>
+      <div class="prova pane_border box_pane">
+        <div class="data_selection_box">Data Selection</div>
       </div>
       <div class="prova pane_border"><parameters-box></parameters-box></div>
     </div>
@@ -145,7 +145,7 @@ export default class GecoAgent extends Vue {
 
 .grid_container_upper_row {
   display: inline-grid;
-  grid-template-columns: 25% 25% 50%;
+  grid-template-columns: 25% 24% 50%;
   grid-gap: 10px;
   height: 60vh;
   width: 80%;
@@ -154,13 +154,26 @@ export default class GecoAgent extends Vue {
 .grid_container_lower_row {
   display: inline-grid;
   margin-top: 15px;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 49.7% 50%;
   grid-gap: 10px;
   height: 15%;
   width: 80%;
 }
 
+.data_selection_box {
+  width: 100px;
+
+  border: solid 3px #0b3142;
+  border-radius: 5px;
+  padding: 20px;
+  float: left;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
 .prova {
+  display: flex;
   width: 100%;
+  align-items: center;
 }
 </style>

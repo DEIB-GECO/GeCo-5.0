@@ -85,8 +85,25 @@ export default class PieChart extends Vue {
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
 
-    // const color = d3.scaleOrdinal(['#4daf4a', '#377eb8', '#ff7f00', '#984ea3']);
-    const color = d3.scaleOrdinal(schemeCategory10);
+    const color = d3.scaleOrdinal([
+      '#5ca4a9',
+      '#e6ebe0',
+      '#ed6a5a',
+      '#9bc1bc',
+      '#f4f1bb'
+    ]);
+    // const color = d3.scaleOrdinal([
+    //   '#1B998B',
+    //   '#54457F',
+    //   '#D62828',
+    //   '#3D314A',
+    //   '#F77F00',
+    //   '#335C81',
+    //   '#FCBF49',
+    //   '#465362',
+    //   '#F87060'
+    // ]);
+    // const color = d3.scaleOrdinal(schemeCategory10);
     const myPie = d3.pie<PieData>().value(function(d) {
       return d.value;
     });

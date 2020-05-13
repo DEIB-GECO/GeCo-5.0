@@ -165,6 +165,7 @@ export default class FunctionsArea extends Vue {
 
 .choice_title {
   margin-left: 5 px;
+  font-weight: bold;
 }
 
 .info_icon {
