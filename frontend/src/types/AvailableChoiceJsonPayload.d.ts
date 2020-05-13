@@ -3,4 +3,6 @@ interface AvailableChoiceJsonPayload {
   showDetails: boolean;
   caption: string;
   elements: AvailableChoice[];
+  showHelpIcon: boolean;
+  helpIconContent: string;
 }

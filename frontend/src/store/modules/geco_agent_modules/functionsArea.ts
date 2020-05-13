@@ -7,7 +7,7 @@ type Type = 'options' | 'tip';
 @Module({ namespaced: true })
 class FunctionArea extends VuexModule {
   name = '';
-  searchBarVisible = true;
+  searchBarVisible = false;
   viewType: Type = 'options';
   choicesTitle = '';
   choicesArray: AvailableChoice[] = [];
@@ -37,10 +37,13 @@ class FunctionArea extends VuexModule {
   @Mutation
   parseJsonResponse(newData: AvailableChoiceJsonPayload): void {
     console.log('Invocato ParseJsonResponse in FunctoinArea!');
-    this.searchBarVisible = newData.showSearchBar;
+    // this.searchBarVisible = newData.showSearchBar;
+    this.searchBarVisible = true;
     this.showDetails = newData.showDetails;
     this.choicesTitle = newData.caption;
     this.choicesArray = newData.elements;
+    this.showHelpIcon = newData.showHelpIcon;
+    this.helpContent = newData.helpIconContent;
     console.log(this.choicesArray);
   }
 
@@ -51,6 +54,8 @@ class FunctionArea extends VuexModule {
     this.choicesTitle = '';
     this.choicesArray = [];
     this.tipContent = '';
+    this.showHelpIcon = false;
+    this.helpContent = '';
   }
 
   @Action

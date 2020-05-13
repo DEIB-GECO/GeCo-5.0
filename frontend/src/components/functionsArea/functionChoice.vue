@@ -21,10 +21,15 @@
         {{ helpContent }}
       </div>
       <div class="choice_list">
-        <div v-for="choice in filteredChoices" :key="choice.name">
-          <!-- <div v-for="choice in choicesArray" :key="choice.name"> -->
-          <choice :choice="choice"> </choice>
-        </div>
+        <!-- <div v-for="choice in filteredChoices" :key="choice.name"> -->
+        <!-- <div v-for="choice in choicesArray" :key="choice.name"> -->
+        <choice
+          v-for="choice in filteredChoices"
+          :key="choice.name"
+          :choice="choice"
+        >
+        </choice>
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -68,14 +73,15 @@ export default class FunctionsArea extends Vue {
   helpContent!: string;
 
   get filteredChoices(): AvailableChoice[] {
-    if (this.searchBarContent === '' || !this.searchBarVisible) {
+    if (!this.searchBarVisible || this.searchBarContent === '') {
       return this.choicesArray;
     }
     const newArray = this.choicesArray.filter((element: AvailableChoice) => {
       return this.choiceContainsKeyword(element, this.searchBarContent);
     });
     console.log(newArray);
-    return this.choicesArray;
+    // return this.choicesArray;
+    return newArray;
   }
 
   choiceContainsKeyword(choice: AvailableChoice, keyWord: string): boolean {
@@ -129,6 +135,22 @@ export default class FunctionsArea extends Vue {
       });
     }
   }
+
+  updated() {
+    this.helpButton = document.querySelector('#help_icon');
+    this.tooltip = document.querySelector('#help_tooltip');
+    if (this.showHelpIcon) {
+      this.createTooltip();
+
+      this.showEvents.forEach((event) => {
+        this.helpButton.addEventListener(event, this.showTooltip);
+      });
+
+      this.hideEvents.forEach((event) => {
+        this.helpButton.addEventListener(event, this.hideTooltip);
+      });
+    }
+  }
 }
 </script>
 
@@ -160,6 +182,7 @@ export default class FunctionsArea extends Vue {
 }
 
 .choice_pane_header {
+  margin-top: 10px;
   display: flex;
 }
 
@@ -196,6 +219,7 @@ export default class FunctionsArea extends Vue {
   display: none;
   max-width: 30%;
   text-align: left;
+  z-index: 100;
 }
 
 #help_tooltip[data-show] {
