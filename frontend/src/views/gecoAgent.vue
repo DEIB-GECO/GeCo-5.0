@@ -93,7 +93,10 @@ export default class GecoAgent extends Vue {
     parameters_list: this.parameterParser,
     available_choices: this.availableChoicesParser,
     tools_setup: this.addRemoveTools,
-    data_summary: this.setCharts
+    data_summary: this.setCharts,
+    download: (payload: any) => {
+      this.downloadFile(payload, 'links.txt', 'text/plain');
+    }
   };
 
   temporaryFunction(obg: any) {
@@ -133,6 +136,16 @@ export default class GecoAgent extends Vue {
     if (msg != '') {
       conversation.push({ sender: 'bot', text: msg });
     }
+  }
+
+  downloadFile(content: any, fileName: string, contentType: string) {
+    var a = document.createElement('a');
+    var file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+    // Per chiamarla:
+    // this.downloadFile(this.message, 'esempio.txt', 'text/plain');
   }
 }
 </script>
