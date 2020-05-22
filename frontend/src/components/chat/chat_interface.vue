@@ -1,14 +1,22 @@
 <template>
   <div class="chat_container">
-    <chat></chat>
+    <div class="chat" id="chat">
+      <div
+        v-for="item in conversation"
+        :key="item.id"
+        :class="['chat_line', item.sender]"
+      >
+        <div class="icon_container">
+          <font-awesome-icon
+            class="icon"
+            :icon="['fas', item.sender == 'user' ? 'user-astronaut' : 'robot']"
+            size="2x"
+          />
+        </div>
+        <div class="message_box">{{ item.text }}</div>
+      </div>
+    </div>
     <div class="interface">
-      <!-- <textarea
-        name="message_box"
-        id="message_box"
-        @change="$emit('update:textMessage', $event.target.value)"
-        v-bind:value="textMessage"
-        @keyup.enter="emitSend()"
-      ></textarea> -->
       <textarea
         name="message_box"
         id="message_box"
@@ -29,18 +37,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import Chat from './conversation.vue';
-// import Vue from 'vue';
 
 const conversationStore = namespace('gecoAgent/conversation');
 
-@Component({
-  components: {
-    Chat
-  }
-})
+@Component({})
 export default class ChatInterface extends Vue {
   @conversationStore.State('currentMessage') storeMessage!: string;
+  @conversationStore.State conversation!: MessageObject[];
+
   @conversationStore.Mutation editMessage!: (newMsg: string) => void;
 
   get message() {
@@ -61,6 +65,15 @@ export default class ChatInterface extends Vue {
       container.scrollTop = container.scrollHeight;
     }
   }
+  updated() {
+    this.scrollToEnd();
+  }
+
+  mounted() {
+    this.$nextTick(function() {
+      this.scrollToEnd();
+    });
+  }
 }
 </script>
 
@@ -70,7 +83,64 @@ export default class ChatInterface extends Vue {
   margin: auto;
   margin-bottom: 0vh;
   width: 95%;
-  // height: 100%;
+}
+
+.chat {
+  display: grid;
+  margin: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 46vh;
+  padding: 10px;
+}
+
+.chat_line {
+  display: flex;
+  height: fit-content;
+}
+
+.message_box {
+  width: fit-content;
+  max-width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.icon_container {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  height: 40px;
+}
+
+.user {
+  flex-direction: row-reverse;
+
+  .icon {
+    margin-left: 10px;
+  }
+
+  .message_box {
+    color: white;
+    background-color: #187795;
+  }
+}
+
+.bot {
+  flex-direction: row;
+
+  .icon {
+    margin-right: 10px;
+  }
+
+  .message_box {
+    color: white;
+    background-color: #38686a;
+  }
 }
 
 .interface {
