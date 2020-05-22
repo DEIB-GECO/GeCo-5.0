@@ -19,7 +19,7 @@
             class="download_icon"
             :icon="['fas', 'download']"
             size="1x"
-            @click="downloadFile(message, 'esempio.txt', 'text/plain')"
+            @click="downloadFile(linkList, 'esempio.txt', 'text/plain')"
             v-if="isDownloadButtonVisible"
           />
         </div>
@@ -94,7 +94,7 @@ export default class GecoAgent extends Vue {
   conversation?: MessageObject[] = [];
   fieldList = [];
   isDownloadButtonVisible = false;
-  linkList: any = [];
+  linkList!: any;
   messageTypes = [
     // { typeName: 'query', nameSpace: 'gecoAgent/queryParameters' },
     { typeName: 'message', nameSpace: 'gecoAgent/conversation' },
@@ -107,11 +107,12 @@ export default class GecoAgent extends Vue {
     available_choices: this.availableChoicesParser,
     tools_setup: this.addRemoveTools,
     data_summary: this.setCharts,
-    download: this.updateFileToDownload
+    dataset_download: this.updateFileToDownload
   };
 
   updateFileToDownload(payload: any) {
-    this.linkList = payload;
+    console.log('UPDATE LINK', payload);
+    this.linkList = payload.urls;
     this.isDownloadButtonVisible = true;
   }
 
