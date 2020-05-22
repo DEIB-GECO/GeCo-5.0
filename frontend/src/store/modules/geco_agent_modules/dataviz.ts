@@ -6,7 +6,24 @@ class DataViz extends VuexModule {
 
   @Mutation
   setCharts(newCharts: DataSummaryPayload): void {
+    newCharts.viz.map((singleChart) => {
+      const newData = singleChart;
+      newData.data = singleChart.data.map((x) => {
+        x.value = x.value ? x.value : 'N/D';
+        return x;
+      });
+      return newData;
+    });
     this.charts = newCharts.viz;
+  }
+
+  removeNulls(chartData: ChartData): ChartData {
+    const newData = chartData;
+    newData.data = chartData.data.map((x) => {
+      x.value = x.value ? x.value : 'N/D';
+      return x;
+    });
+    return newData;
   }
 }
 

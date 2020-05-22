@@ -128,18 +128,18 @@ export default class PieChart extends Vue {
       .attr('class', 'percent'); // add class 'percent' on the selection
 
     //I set here the style because in the css class isn't recognised
-    tooltip.style('background', '#eee');
-    tooltip.style('box-shadow', '#999999');
-    tooltip.style('color', '#333');
-    tooltip.style('display', 'none');
-    tooltip.style('font-size', '18px');
-    tooltip.style('left', '130px');
-    tooltip.style('padding', '10px');
-    tooltip.style('position', 'fixed');
-    tooltip.style('text-align', 'center');
-    tooltip.style('top', '95px');
-    tooltip.style('width', '80px');
-    tooltip.style('z-index', '10');
+    // tooltip.style('background', '#eee');
+    // tooltip.style('box-shadow', '#999999');
+    // tooltip.style('color', '#333');
+    // tooltip.style('display', 'none');
+    // tooltip.style('font-size', '18px');
+    // tooltip.style('left', '130px');
+    // tooltip.style('padding', '10px');
+    // tooltip.style('position', 'fixed');
+    // tooltip.style('text-align', 'center');
+    // tooltip.style('top', '95px');
+    // tooltip.style('width', '80px');
+    // tooltip.style('z-index', '10');
 
     //FINE peter
 
@@ -213,7 +213,7 @@ export default class PieChart extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .chart_container {
   border: solid 1px #0b3142;
   // overflow: auto;
