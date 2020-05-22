@@ -12,39 +12,43 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+// import Vue from 'vue';
 import Message from './message.vue';
+
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+
+const conversationStore = namespace('gecoAgent/conversation');
 
 import { mapState } from 'vuex';
 
-export default Vue.extend({
-  computed: {
-    ...mapState({
-      conversation: (state: any) => state.gecoAgent.conversation.conversation
-    })
-  },
+@Component({
   components: {
     Message
-  },
-  methods: {
-    scrollToEnd: function() {
-      const container = this.$el.querySelector('#chat');
-      // console.log(container);
-      if (container) {
-        container.scrollTop = container.scrollHeight;
-      }
+  }
+})
+export default class Conversation extends Vue {
+  @conversationStore.State conversation!: MessageObject[];
+
+  scrollToEnd() {
+    const container = this.$el.querySelector('#chat');
+    // console.log(container);
+    if (container) {
+      container.scrollTop = container.scrollHeight;
     }
-  },
-  updated: function() {
+  }
+
+  updated() {
     // console.log('chiamato updated');
     this.scrollToEnd();
-  },
-  mounted: function() {
+  }
+
+  mounted() {
     this.$nextTick(function() {
       this.scrollToEnd();
     });
   }
-});
+}
 </script>
 
 <style scoped lang="scss">
