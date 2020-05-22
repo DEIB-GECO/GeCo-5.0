@@ -226,6 +226,7 @@ export default class PieChart extends Vue {
   font-weight: bold;
 }
 
+
 .tooltip {
   // NOTE: the css written here is not recognized for
   // some reason --  use tooltip.style as above!
@@ -240,7 +241,7 @@ export default class PieChart extends Vue {
   text-align: center;
   top: 95px;
   min-width: 80px;
-  max-width: 130px;
+  // max-width: 130px;
   z-index: 10;
 }
 </style>

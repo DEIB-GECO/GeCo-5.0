@@ -60,7 +60,7 @@ export default class ChatInterface extends Vue {
 
   scrollToEnd() {
     const container = this.$el.querySelector('#chat');
-    console.log(container);
+    // console.log(container);
     if (container) {
       container.scrollTop = container.scrollHeight;
     }
