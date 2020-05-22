@@ -11,7 +11,18 @@
     </div>
     <div class="grid_container_lower_row">
       <div class="prova pane_border box_pane">
-        <div class="data_selection_box">Data Selection</div>
+        <div class="data_selection_box">
+          <div>
+            Data Selection
+          </div>
+          <font-awesome-icon
+            class="download_icon"
+            :icon="['fas', 'download']"
+            size="1x"
+            @click="downloadFile(message, 'esempio.txt', 'text/plain')"
+            v-if="isDownloadButtonVisible"
+          />
+        </div>
       </div>
       <div class="prova pane_border"><parameters-box></parameters-box></div>
     </div>
@@ -82,6 +93,8 @@ export default class GecoAgent extends Vue {
   }
   conversation?: MessageObject[] = [];
   fieldList = [];
+  isDownloadButtonVisible = false;
+  linkList: any = [];
   messageTypes = [
     // { typeName: 'query', nameSpace: 'gecoAgent/queryParameters' },
     { typeName: 'message', nameSpace: 'gecoAgent/conversation' },
@@ -94,13 +107,12 @@ export default class GecoAgent extends Vue {
     available_choices: this.availableChoicesParser,
     tools_setup: this.addRemoveTools,
     data_summary: this.setCharts,
-    download: (payload: any) => {
-      this.downloadFile(payload, 'links.txt', 'text/plain');
-    }
+    download: this.updateFileToDownload
   };
 
-  temporaryFunction(obg: any) {
-    console.log('TemporaryFunciton', obg);
+  updateFileToDownload(payload: any) {
+    this.linkList = payload;
+    this.isDownloadButtonVisible = true;
   }
 
   created() {
@@ -175,7 +187,7 @@ export default class GecoAgent extends Vue {
 
 .data_selection_box {
   width: 100px;
-
+  position: relative;
   border: solid 3px #0b3142;
   border-radius: 5px;
   padding: 20px;
@@ -188,5 +200,11 @@ export default class GecoAgent extends Vue {
   display: flex;
   width: 100%;
   align-items: center;
+}
+
+.download_icon {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
 }
 </style>

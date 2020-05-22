@@ -15,7 +15,8 @@ import {
   faSearch,
   faQuestionCircle,
   faPaperPlane,
-  faDna
+  faDna,
+  faDownload
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -30,7 +31,8 @@ library.add(
   faSearch,
   faQuestionCircle,
   faPaperPlane,
-  faDna
+  faDna,
+  faDownload
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
