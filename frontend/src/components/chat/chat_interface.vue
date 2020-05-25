@@ -15,6 +15,14 @@
         </div>
         <div class="message_box">{{ item.text }}</div>
       </div>
+      <div class="chat_line waiting_line bot" v-if="!isSendButtonActive">
+        <div class="icon_container">
+          <font-awesome-icon class="icon" :icon="['fas', 'robot']" size="2x" />
+        </div>
+        <div class="message_box waiting_box">
+          <img src="@/assets/img/Discuss.gif" class="waiting_animation" />
+        </div>
+      </div>
     </div>
     <div class="interface">
       <textarea
@@ -182,6 +190,16 @@ export default class ChatInterface extends Vue {
   height: 100%;
   width: 85%;
   resize: none;
+}
+
+.waiting_animation {
+  height: 60px;
+  transform: scaleY(-1);
+}
+
+.waiting_box {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 textarea {
