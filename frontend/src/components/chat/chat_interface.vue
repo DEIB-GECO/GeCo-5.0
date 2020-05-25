@@ -23,7 +23,10 @@
         v-model="message"
         @keyup.enter="emitSend()"
       ></textarea>
-      <button class="send_button" @click="emitSend()">
+      <button
+        :class="['send_button', isSendButtonActive ? 'active' : 'inactive']"
+        @click="emitSend()"
+      >
         <font-awesome-icon
           class="icon"
           :icon="['fas', 'paper-plane']"
@@ -42,10 +45,12 @@ const conversationStore = namespace('gecoAgent/conversation');
 
 @Component({})
 export default class ChatInterface extends Vue {
+  @conversationStore.State isSendButtonActive!: boolean;
   @conversationStore.State('currentMessage') storeMessage!: string;
   @conversationStore.State conversation!: MessageObject[];
 
   @conversationStore.Mutation editMessage!: (newMsg: string) => void;
+  // @conversationStore.Mutation setSendButtonStatus!: (newValue: boolean) => void;
 
   get message() {
     return this.storeMessage;
@@ -55,7 +60,10 @@ export default class ChatInterface extends Vue {
   }
 
   emitSend() {
-    this.$emit('emit-send');
+    if (this.isSendButtonActive) {
+      // this.setSendButtonStatus(false);
+      this.$emit('emit-send');
+    }
   }
 
   scrollToEnd() {
@@ -155,11 +163,19 @@ export default class ChatInterface extends Vue {
   width: 13%;
   min-width: 40px;
   margin-left: 2%;
-  background-color: #0b3142;
+  // background-color: #0b3142;
   color: white;
   border-width: 0;
   border-radius: 20px;
   text-shadow: 0px -2px #2980b9;
+}
+
+.active {
+  background-color: #0b3142;
+}
+
+.inactive {
+  background-color: #ecebe4;
 }
 
 #message_box {

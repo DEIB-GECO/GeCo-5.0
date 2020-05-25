@@ -3,7 +3,7 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 @Module({ namespaced: true })
 class Conversation extends VuexModule {
   currentMessage = '';
-
+  isSendButtonActive = true;
   conversation: MessageObject[] = [];
 
   @Mutation
@@ -24,6 +24,11 @@ class Conversation extends VuexModule {
   @Mutation
   editMessage(newMsg: string) {
     this.currentMessage = newMsg;
+  }
+
+  @Mutation
+  setSendButtonStatus(newValue: boolean) {
+    this.isSendButtonActive = newValue;
   }
 }
 export default Conversation;

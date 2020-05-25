@@ -62,6 +62,7 @@ export default class GecoAgent extends Vue {
   @tools.Mutation updateQueryParameters!: (newTool: string) => void;
   @conversationStore.Mutation addUserMessage!: (msg: string) => void;
   @conversationStore.Mutation editMessage!: (msg: string) => void;
+  @conversationStore.Mutation setSendButtonStatus!: (newValue: boolean) => void;
 
   @conversationStore.Mutation('parseJsonResponse') messageParser!: (
     msg: string
@@ -102,7 +103,7 @@ export default class GecoAgent extends Vue {
   ];
 
   jsonResponseParsingFunctions = {
-    message: this.messageParser,
+    message: this.unlockButtonAndParseMessage,
     parameters_list: this.parameterParser,
     available_choices: this.availableChoicesParser,
     tools_setup: this.addRemoveTools,
@@ -116,6 +117,12 @@ export default class GecoAgent extends Vue {
     this.isDownloadButtonVisible = true;
   }
 
+  unlockButtonAndParseMessage(msg: string) {
+    console.log('unlockButtonAndParseMessage invoked');
+    this.setSendButtonStatus(true);
+    this.messageParser(msg);
+  }
+
   created() {
     socket.on('json_response', (payload: any) => {
       console.log('server sent JSON_response', payload);
@@ -125,6 +132,7 @@ export default class GecoAgent extends Vue {
 
   sendMessage() {
     if (this.message != '') {
+      this.setSendButtonStatus(false);
       this.addUserMessage(this.message);
       socket.emit('my_event', { data: this.message });
       this.editMessage('');
