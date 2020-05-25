@@ -85,13 +85,14 @@ export default class PieChart extends Vue {
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
 
-    const color = d3.scaleOrdinal([
-      '#5ca4a9',
-      '#e6ebe0',
-      '#ed6a5a',
-      '#9bc1bc',
-      '#f4f1bb'
-    ]);
+    const color = d3.scaleOrdinal(['#941946', '#164ba4', '#fbacc9', '#a2f0fb']);
+    // const color = d3.scaleOrdinal([
+    //   '#5ca4a9',
+    //   '#e6ebe0',
+    //   '#ed6a5a',
+    //   '#9bc1bc',
+    //   '#f4f1bb'
+    // ]);
     // const color = d3.scaleOrdinal([
     //   '#1B998B',
     //   '#54457F',
@@ -225,7 +226,6 @@ export default class PieChart extends Vue {
   padding-top: 10px;
   font-weight: bold;
 }
-
 
 .tooltip {
   // NOTE: the css written here is not recognized for
