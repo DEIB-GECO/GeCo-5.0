@@ -40,7 +40,8 @@ import Toolbox from './../components/toolbox/toolbox_interface.vue';
 import ParametersBox from '@/components/ParametersBox.vue';
 import { conversation } from './../test/conversation';
 
-const socket = io('http://localhost:5980/test');
+const socket = io('/test', {path: '/geco_agent/socket.io'});
+// const socket = io('http://localhost:5980/test');
 const tools = namespace('tools');
 const conversationStore = namespace('gecoAgent/conversation');
 const parametersStore = namespace('gecoAgent/parametersBox');

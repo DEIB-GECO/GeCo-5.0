@@ -1,27 +1,57 @@
 #!/usr/bin/env python
+import json
+import os
 from threading import Lock
-from flask import Flask, render_template, session, request, copy_current_request_context
+
+import flask
+from flask import Blueprint, render_template
+from flask import Flask, session, request, copy_current_request_context
+from flask_session import Session
 from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
-from geco_conversation import StartAction, Utils
-import messages
-import json
 
+import messages
+from geco_conversation import StartAction, Utils
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
 async_mode = "gevent"
 
+base_url = '/geco_agent/'
+socketio_path = base_url + 'socket.io/'
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins='*', ping_timeout= 5000000,  manage_session=True)
+app.config['SESSION_TYPE'] = 'filesystem'
+# session config
+# app.config['SESSION_FILE_DIR'] = 'flask_session'
+# DEFAULT 31 days
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
+
+Session(app)
+
+# previous:
+# socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins='*',
+#                     ping_timeout= 5000000, manage_session=True)
+
+# TODO check if we need cors_allowed_origins, I think we don't need anymore.
+socketio = SocketIO(app, manage_session=False, async_mode=async_mode, cors_allowed_origins='*',
+                    path=socketio_path, logger=False, engineio_logger=False, debug=False, )
+
+simple_page = Blueprint('root_pages',
+                        __name__,
+                        static_folder='../frontend/dist/static',
+                        template_folder='../frontend/dist')
+
 thread = None
 thread_lock = Lock()
 interpreter = Interpreter.load("./model_dir/latest_model")
 
-#with open('logger.json', 'w') as f:
-#    json.dump({},f)
+if not os.path.exists('logger.json'):
+    with open('logger.json', 'w') as f:
+        json.dump({}, f)
+
 
 class ConversationDBExplore(object):
 
@@ -33,12 +63,12 @@ class ConversationDBExplore(object):
 
     def clear_entities(self):
         for key in self.entities.keys():
-            del(session['tmp_' + str(key)])
+            del (session['tmp_' + str(key)])
         self.entities = {}
 
     def set_logic(self, logic_class):
         self.logic = logic_class
-        self.logic.add_additional_status({k:session[k] for k in self.logic.required_additional_status()})
+        self.logic.add_additional_status({k: session[k] for k in self.logic.required_additional_status()})
         messages, next_state, delta_status = self.logic.on_enter_messages()
         for m in messages:
             self.say(m)
@@ -58,7 +88,6 @@ class ConversationDBExplore(object):
             print(type(next_state), next_state)
             self.set_logic(next_state)
 
-
     def __init__(self):
         self.user_message = {}
         self.bot_messages = []
@@ -73,13 +102,24 @@ class ConversationDBExplore(object):
         self.set_logic(StartAction({}))
 
 
+@simple_page.route('/')
+def index():
+    flask.current_app.logger.info("serve index")
+    return render_template('index.html', async_mode=socketio.async_mode)
+
+
 @app.route('/')
 def index():
-    return render_template('index.html', async_mode=socketio.async_mode)
+    flask.current_app.logger.info("serve index")
+    return render_template('my_index.html', async_mode=socketio.async_mode)
+
 
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
     user_message = message['data'].strip()
+    messages = session['messages']
+    messages.append('USER: ' + user_message)
+    session['messages'] = messages
 
     data = json.loads(open("logger.json").read())
     data[request.sid].append(user_message)
@@ -101,6 +141,11 @@ def test_message(message):
     for msg in session['status'].bot_messages:
         emit('json_response', msg)
         Utils.pyconsole_debug(msg)
+        # TODO CHECK
+        messages = session['messages']
+        messages.append(msg['payload'])
+        session['messages'] = messages
+
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload'])
 
@@ -110,7 +155,7 @@ def test_message(message):
     session['status'].clear_msgs()
 
 
-#TODO: maybe here we need to manage the session storing
+# TODO: maybe here we need to manage the session storing
 @socketio.on('disconnect_request', namespace='/test')
 def disconnect_request():
     @copy_current_request_context
@@ -127,7 +172,13 @@ def disconnect_request():
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-    session['status'] = ConversationDBExplore()
+    if 'status' not in session:
+        session['status'] = ConversationDBExplore()
+        session['messages'] = []
+    else:
+        for x in session['messages']:
+            if type(x) == str:
+                emit('json_response', Utils.chat_message('Previous chat: ' + x))
 
     #TO PUT FOR SAVE EVERY CONVERSATION FROM ALL CONNECTIONS AND REMOVE data= {} and data[request.sid]=[]
     with open('logger.json', 'r') as f:
@@ -138,6 +189,9 @@ def test_connect():
 
     for msg in session['status'].bot_messages:
         emit('json_response', msg)
+        messages = session['messages']
+        messages.append(msg['payload'])
+        session['messages'] = messages
         if msg['type']=='message':
             data[request.sid].append(msg['payload'])
 
@@ -152,5 +206,8 @@ def test_connect():
 def test_disconnect():
     print('Client disconnected', request.sid)
 
+
+app.register_blueprint(simple_page, url_prefix=base_url)
+
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='0.0.0.0', port=5981)
+    socketio.run(app, debug=True, host='0.0.0.0', port=5980)

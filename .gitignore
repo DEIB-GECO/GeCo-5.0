@@ -4,6 +4,7 @@ latest_model/
 flask_session/
 .DS_Store
 .vscode
+logger.json
 
 ########### PYTHON ###########
 # Byte-compiled / optimized / DLL files

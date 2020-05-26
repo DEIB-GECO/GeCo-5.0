@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home
   },
@@ -20,7 +20,7 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/geco_agent',
+    path: '/',
     name: 'GeCo 5.0',
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/gecoAgent.vue')
