@@ -1,0 +1,366 @@
+breast invasive carcinoma
+infiltrating breast cancer
+infiltrating breast carcinoma
+infiltrating carcinoma of breast
+infiltrating carcinoma of the breast
+invasive breast cancer
+invasive breast carcinoma
+invasive carcinoma of breast
+invasive carcinoma of the breast
+invasive mammary carcinoma
+granular cell carcinoma of kidney
+granular cell carcinoma of the kidney
+granular renal cell carcinoma
+kidney granular cell carcinoma
+kidney renal clear cell carcinoma
+adenocarcinoma of lung
+adenocarcinoma of the lung
+carcinoma of liver cells
+carcinoma of the liver cells
+hcc
+hepatocellular adenocarcinoma
+hepatocellular cancer
+hepatocellular carcinoma
+hepatoma
+liver cell carcinoma
+liver hepatocellular carcinoma
+primary carcinoma of liver cells
+primary carcinoma of the liver cells
+head and neck squamous cell carcinoma
+scchn
+squamous cell carcinoma of head and neck
+squamous cell carcinoma of the head and neck
+ovarian serous cystadenocarcinoma
+epidermoid cell carcinoma of lung
+epidermoid cell carcinoma of the lung
+epidermoid cell lung carcinoma
+lung squamous cell carcinoma
+squamous cell carcinoma of lung
+squamous cell carcinoma of the lung
+squamous cell lung cancer
+squamous cell lung carcinoma
+cancer of the thyroid
+cancer of thyroid
+carcinoma of the thyroid
+carcinoma of the thyroid gland
+carcinoma of thyroid
+carcinoma of thyroid gland
+thyroid cancer
+thyroid carcinoma
+thyroid gland cancer
+thyroid gland carcinoma
+uterine corpus endometrial carcinoma
+adenocarcinoma of prostate
+adenocarcinoma of the prostate
+prostate adenocarcinoma
+brain glioma
+brain lower grade glioma
+lower grade glioma
+adenocarcinoma of colon
+adenocarcinoma of the colon
+colon adenocarcinoma
+colonic adenocarcinoma
+cutaneous melanoma
+malignant cutaneous melanoma
+malignant melanoma of skin
+melanoma of skin
+melanoma of the skin
+skin cutaneous melanoma
+skin melanoma
+bladder transitional cell carcinoma
+bladder urothelial cancer
+bladder urothelial carcinoma
+transitional cell carcinoma of the urinary bladder
+urinary bladder transitional cell carcinoma
+urinary bladder urothelial carcinoma
+urothelial carcinoma of the urinary bladder
+adenocarcinoma of stomach
+adenocarcinoma of the stomach
+gastric adenocarcinoma
+stomach adenocarcinoma
+gbm
+glioblastoma
+glioblastoma multiforme
+grade iv astrocytic neoplasm
+grade iv astrocytic tumor
+grade iv astrocytoma
+malignant glioblastoma
+spongioblastoma multiforme
+who grade iv glioma
+chromophil carcinoma of kidney
+chromophil carcinoma of the kidney
+chromophil renal cell carcinoma
+kidney renal papillary cell carcinoma
+papillary renal cell cancer
+papillary renal cell carcinoma
+prcc
+childhood chronic myelogenous leukemia
+childhood chronic myeloid leukemia
+childhood cml
+cancer of cervix
+cancer of the cervix
+cancer of the uterine cervix
+cancer of uterine cervix
+carcinoma of cervix
+carcinoma of cervix uteri
+carcinoma of the cervix
+carcinoma of the cervix uteri
+carcinoma of the uterine cervix
+carcinoma of uterine cervix
+cervical cancer
+cervical carcinoma
+cervix cancer
+cervix carcinoma
+cervix uteri carcinoma
+uterine cervix cancer
+uterine cervix carcinoma
+sarcoma
+sarcoma of soft tissue and bone
+sarcoma of the soft tissue and bone
+acute granulocytic leukemia
+acute myeloblastic leukemia
+acute myelocytic leukemia
+acute myelogenous leukemia
+acute myelogenous leukemias
+acute myeloid leukemia
+acute nonlymphocytic leukemia
+aml
+anll
+cancer of esophagus
+cancer of the esophagus
+carcinoma of esophagus
+carcinoma of the esophagus
+esophageal cancer
+esophageal carcinoma
+esophagus carcinoma
+adenocarcinoma of pancreas
+adenocarcinoma of the pancreas
+pancreas adenocarcinoma
+pancreatic adenocarcinoma
+adrenal gland chromaffinoma
+adrenal gland chromaffin paraganglioma
+adrenal gland paraganglioma
+adrenal gland pheochromocytoma
+adrenal medullary paraganglioma
+adrenal medullary pheochromocytoma
+adrenal pheochromocytoma
+chromaffin paraganglioma of the adrenal gland
+intraadrenal paraganglioma
+pcc
+pheochromocythoma and paraganglioma
+pheochromocytoma
+pheochromocytoma and paraganglioma
+germ cell neoplasm of testis
+germ cell neoplasm of the testis
+germ cell tumor of testis
+germ cell tumor of the testis
+testicular germ cell neoplasm
+testicular germ cell neoplasms
+testicular germ cell tumor
+testicular germ cell tumors
+tgct
+adenocarcinoma of rectum
+adenocarcinoma of the rectum
+rectal adenocarcinoma
+rectum adenocarcinoma
+thymoma
+adrenal cortex adenocarcinoma
+adrenal cortex cancer
+adrenal cortex carcinoma
+adrenal cortical adenocarcinoma
+adrenal cortical carcinoma
+adrenocortical cancer
+adrenocortical carcinoma
+cancer of the adrenal cortex
+carcinoma of adrenal cortex
+carcinoma of the adrenal cortex
+cortical cell carcinoma
+mesothelioma
+intraocular melanoma
+melanoma of the uvea
+melanoma of uvea
+uveal melanoma
+chromophobe adenocarcinoma
+chromophobe carcinoma
+chromophobe carcinoma of kidney
+chromophobe carcinoma of the kidney
+chromophobe cell carcinoma of kidney
+chromophobe cell carcinoma of the kidney
+chromophobe renal cell cancer
+chromophobe renal cell carcinoma
+kidney chromophobe
+adenocarcinoma of breast
+adenocarcinoma of the breast
+breast adenocarcinoma
+mammary adenocarcinoma
+carcinosarcoma of the uterus
+uterine carcinosarcoma
+diffuse large b-cell lymphoma
+dlbcl
+lymphoid neoplasm diffuse large b-cell lymphoma
+cc
+cholangiocarcinoma
+cholangiocellular carcinoma
+cholangiosarcoma
+metastatic neuroblastoma
+metastatic neuroblastoma from bone marrow
+adenocarcinoma of cervix
+adenocarcinoma of cervix uteri
+adenocarcinoma of the cervix
+adenocarcinoma of the cervix uteri
+adenocarcinoma of the uterine cervix
+adenocarcinoma of uterine cervix
+cervical adenocarcinoma
+cervix adenocarcinoma
+cervix uteri adenocarcinoma
+uterine cervix adenocarcinoma
+b cell lymphoma
+b-cell lymphoma
+b-cell non-hodgkin lymphoma
+b-cell non hodgkin's lymphoma
+b-cell non-hodgkin's lymphoma
+lymphomas non-hodgkin's b-cell
+non-hodgkin's b-cell lymphoma
+non-hodgkin's lymphoma b-cell
+cancer of large bowel
+cancer of large intestine
+cancer of the large bowel
+cancer of the large intestine
+carcinoma of large bowel
+carcinoma of large intestine
+carcinoma of the large bowel
+carcinoma of the large intestine
+colorectal cancer
+colorectal carcinoma
+crc
+large bowel cancer
+large bowel carcinoma
+large intestine cancer
+large intestine carcinoma
+acute t cell leukemia
+acute t-cell leukemia
+acute t cell lymphoblastic leukemia
+acute t-cell lymphoblastic leukemia
+acute t cell lymphocytic leukemia
+acute t-cell lymphocytic leukemia
+precursor t-lymphoblastic leukemia
+t acute lymphoblastic leukemia
+t-all
+t-cell acute lymphoblastic leukemia
+t-cell acute lymphocytic leukemia
+t-cell all
+t-cell type acute leukemia
+diffuse histiocytic lymphoma
+diffuse histiocytic lymphomas
+diffuse large cell lymphoma
+diffuse large-cell lymphoma
+diffuse large-cell lymphomas
+diffuse large lymphoma
+histiocytic lymphoma
+histiocytic lymphomas
+human b cell non-hodgkin's lymphoma
+large b-cell lymphoma
+large cell lymphoma
+large-cell lymphoma
+large-cell lymphomas
+large lymphoma
+large lymphoma diffuse
+lymphoma diffuse large
+lymphoma large
+lymphoma large diffuse
+igl
+immunoglobulin a lambda myeloma
+immunoglobulin lambda gene
+immunoglobulin lambda locus
+lambda light chain gene
+clavien-dindo grade iv
+grade iv
+apparently healthy
+healthy
+adenocarcinoma of endometrium
+adenocarcinoma of the endometrium
+endometrial adenocarcinoma
+immunoblastic lymphoma
+cancer of pancreas
+cancer of the pancreas
+carcinoma of pancreas
+carcinoma of the pancreas
+exocrine cancer
+exocrine pancreas carcinoma
+pancreas cancer
+pancreas carcinoma
+pancreatic cancer
+pancreatic cancer (not islets)
+pancreatic carcinoma
+benign breast disease
+breast fibrocystic change
+breast fibrocystic disease
+cystic disease of breast
+cystic disease of the breast
+diffuse cystic mastopathy
+fibrocystic breast
+fibrocystic breast changes
+fibrocystic breast disease
+fibrocystic change of breast
+fibrocystic change of the breast
+fibrocystic disease
+fibrocystic disease of breast
+fibrocystic disease of the breast
+fibrocystic mastopathy
+mammary dysplasia
+es
+ewing sarcoma
+ewing's sarcoma
+ewing's tumor
+embryonal carcinoma
+malignant pluripotent embryonal carcinoma
+acute promyelocytic leukemia
+hypergranular acute promyelocytic leukemia
+typical acute promyelocytic leukemia
+breast ductal carcinoma
+duct carcinoma
+mammary ductal carcinoma
+igak myeloma
+multiple myeloma-iga
+adenocarcinoma of large bowel
+adenocarcinoma of large intestine
+adenocarcinoma of the large bowel
+adenocarcinoma of the large intestine
+colorectal adenocarcinoma
+large bowel adenocarcinoma
+large intestine adenocarcinoma
+cancer of prostate
+cancer of the prostate
+carcinoma of prostate
+carcinoma of the prostate
+prostate cancer
+prostate carcinoma
+malignant primitive neuroectodermal tumor
+neuroectodermal neoplasm
+neuroectodermal tumor
+neuroepithelioma
+pnet
+primitive neuroectodermal neoplasm
+primitive neuroectodermal tumor
+adenocystic carcinoma
+adenoid cystic cancer
+adenoid cystic carcinoma
+adenoma of parathyroid
+adenoma of the parathyroid gland
+cylindroid adenocarcinoma
+parathyroid adenoma
+parathyroid gland adenoma
+submaxillar tumor
+rb
+retinoblastoma
+primary hyperparathyroidism
+burkitt's lymphoma
+non-burkitt's lymphoma
+parkinson disease
+parkinson's disease
+medulloblastoma
+medulloblastomas
+cancer
+malignant melanoma
+melanoma
+neuroblastoma

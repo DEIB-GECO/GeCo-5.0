@@ -1,0 +1,435 @@
+breast
+mammary part of chest
+mammary region
+bronchus and lung
+lung/bronchus
+kidney
+renal
+brain
+fetal brain
+animal ovary
+female gonad
+female organism genitalia gonad
+female organism genitalia gonada
+female organism reproductive system gonad
+female organism reproductive system gonada
+female reproductive system gonad
+female reproductive system gonada
+genitalia of female organism gonad
+genitalia of female organism gonada
+gonada of female organism genitalia
+gonada of female organism reproductive system
+gonada of female reproductive system
+gonada of genitalia of female organism
+gonada of reproductive system of female organism
+gonad of female organism genitalia
+gonad of female organism reproductive system
+gonad of female reproductive system
+gonad of genitalia of female organism
+gonad of reproductive system of female organism
+ovarian
+ovary
+ovum-producing ovary
+reproductive system of female organism gonad
+reproductive system of female organism gonada
+thyroid
+thyroid gland
+male prostate
+prostate
+prostate gland
+prostatic
+body of uterus
+corpus uteri
+uterine body
+uterine corpus
+liver
+portion of skin
+region of skin
+skin
+skin region
+skin zone
+zone of skin
+colon
+colon crypt
+colonic
+gi colon
+large bowel
+hepatic body system
+hepatic organ system
+liver and intrahepatic bile ducts
+bladder
+urinary bladder
+fetal stomach
+gi stomach
+stomach
+canalis cervicis uteri
+caudal segment of uterus
+cervical
+cervical canal of uterus
+cervix
+cervix uteri
+neck of uterus
+uterine cervix
+adrenal
+adrenal gland
+fetal adrenal gland
+glandula adrenalis
+glandula suprarenalis
+esophageal
+esophagus
+gi esophagus
+gullet
+oesophagus
+pancreas
+pancreatic
+gonad of male genitalia
+gonad of male reproductive system
+male gonad
+testicle
+testicular
+testis
+other and unspecified parts of tongue
+other and unspecified parts of tongue icd-o-3
+laryngeal
+larynx
+connective subcutaneous and other soft tissues
+soft tissue
+human peritoneal membrane
+peritoneum
+retroperitoneum and peritoneum
+heart mediastinum and pleura
+pleura
+pleural tissue
+uterine
+uterus
+uterus nos
+fetal thymus
+thymic
+thymus
+thymus gland
+thymus organ
+hematopoietic and reticuloendothelial systems
+re system
+reticuloendothelial system
+gi rectum
+rectal
+rectum
+terminal portion of intestine
+eye
+eye and adnexa
+ocular
+optic
+blood
+portion of blood
+vertebrate blood
+rectosigmoid junction
+floor of mouth
+floor of oval cavity
+floor of the oval cavity
+mouth floor
+tonsil
+other and unspecified parts of mouth
+other and unspecified parts of mouth icd-o-3
+lymph node
+lymph nodes
+base of tongue
+pars posterior dorsi linguae
+pars posterior (dorsum linguae)
+pars posterior linguae
+pars postsulcalis (dorsum linguae)
+pharyngeal part of tongue
+pharyngeal portion of dorsum of tongue
+posterior part of dorsum of tongue
+posterior part of tongue
+postsulcal part of dorsum of tongue
+fetal liver
+hepatic
+lienal
+spleen
+splenic
+colon transversum
+transverse colon
+embryonic lung
+fetal lung
+lung
+pulmo
+pulmonary
+caput mediale musculus gastrocnemii
+caput mediale (musculus gastrocnemius)
+gastrocnemius medialis
+medial head of gastrocnemius
+medial head of gastrocnemius muscle
+gingiva
+gingival
+gum
+gums
+gum tissue
+muscle
+muscle structure
+musculus
+oral part of pharynx
+oropharyngeal
+oropharynx
+left lung cranial lobe
+left upper lobe
+left upper lobe of lung
+lobus superior pulmonis sinistri
+lobus superior (pulmo sinister)
+superior lobe of left lung
+upper lobe of left lung
+sigmoid colon
+hypopharyngeal
+hypopharynx
+laryngeal pharynx
+laryngopharynx
+esophagus muscularis mucosa
+esophagus muscularis mucosae
+lamina muscularis mucosae (oesphagus)
+lamina muscularis of esophageal mucous membrane
+muscularis mucosae of esophagus
+body of pancreas
+pancreas body
+pancreatic body
+medial popliteal nerve
+tibial nerve
+noduli lymphoidei aggregati
+peyer's patch
+cardiac
+chambered heart
+fetal heart
+heart
+vertebrate heart
+cardiac sphincter
+esophagus squamous epithelium
+gastroesophageal sphincter
+gastroesophageal sphincter muscle
+inferior esophageal sphincter
+tibial artery
+palate
+breast epithelium
+bowel
+gi intestine
+intestinal
+intestine
+cardiac left ventricle
+heart left ventricle
+left cardiac ventricle
+left ventricle
+left ventricle of heart
+vagina
+vaginal
+aorta thoracica
+thoracic aorta
+thoracic part of aorta
+auricula dextra
+right atrium auricular region
+right auricle
+right auricula
+right auricular region
+right auriculur appendix
+other and ill-defined sites
+other and ill-defined sites icd-o-3
+vascular
+vascular system
+parathyroid
+parathyroid adenoma
+parathyroid gland
+suprapubic skin
+allantoic placenta
+eutherian placenta
+fetal placenta
+placenta
+placental
+ascending aorta
+ascending thoracic aorta
+pars ascendens aortae
+adipose
+adipose tissue
+fat
+fat tissue
+fatty tissue
+labial
+lip
+bile tract
+biliary system
+biliary tract
+other and unspecified parts of biliary tract
+tract, biliary
+fetal small intestine
+small bowel
+small intestine
+central nervous system
+cns
+hind limb middle limb segment skin
+hind limb zeugopod skin
+lower leg skin
+connective tissue
+portion of connective tissue
+stromal connective
+textus connectivus
+liver right lobe
+lobus hepaticus dexter
+right liver lobe
+right lobe of liver
+duodenal
+duodenum
+gi duodenum
+coronary arterial tree
+coronary artery
+bone
+bone tissue
+calcium tissue
+osseous tissue
+osteogenic tissue
+fetal muscle leg
+leg muscle
+leg muscle organ
+leg skeletal muscle
+leg skeletal muscle tissue
+muscle leg
+muscle of hindlimb zeugopod or stylopod
+muscle of leg
+muscle of thigh or crus
+muscle of upper/lower leg
+muscle of upper or lower hindlimb segment
+muscle organ of leg
+skeletal muscle of leg
+inner layer of eyeball
+retina
+retinal
+retina of camera-type eye
+tunica interna of eyeball
+gallbladder
+gall bladder
+ans
+autonomic
+autonomic nervous system
+involuntary nervous system
+meninges
+omental fat depot
+omental fat pad
+other and unspecified male genital organs
+other and unspecified male genital organs icd-o-3
+other endocrine glands and related structures
+other endocrine glands and related structures icd-o-3
+peripheral nerves and autonomic nervous system
+cortex of frontal lobe
+frontal cortex
+frontal lobe cortex
+gray matter of frontal lobe
+grey matter of frontal lobe
+other and unspecified major salivary glands
+other and unspecified major salivary glands icd-o-3
+auricular
+ear
+unknown
+glossal
+lingual
+tongue
+arm bone
+arm bone organ
+bone of arm
+bone organ of arm
+cardiac right ventricle
+cerebellar
+cerebellum
+epencephalon-1
+free limb
+heart right ventricle
+infratentorial region
+left arm bone
+left leg bone
+leg bone
+limb
+limb sensu vertebrata
+pentadactyl limb
+psoas
+psoas muscle
+right arm bone
+right leg bone
+right ventricle
+right ventricle of heart
+tetrapod limb
+atrium sinistrum
+bulb
+bulbus
+cardiac left atrium
+central zone of follice
+cerebellar cortex
+chorda umbilicalis
+chorion
+chorionic
+chorion (vertebrates)
+cortex of cerebellar hemisphere
+embryonic chorion
+embryonic facial prominence
+fatty layer of subcutaneous tissue
+femoral
+femur
+fetal chorion
+fetal spinal cord
+funiculus umbilicalis
+germinal center
+globus pallidus
+gyrus frontalis medialis
+heart left atrium
+hypodermis fat layer
+intermediate frontal gyrus
+left atrium
+left atrium of heart
+left cardiac atrium
+left kidney
+light zone of follicle
+mb
+medial frontal gyrus
+medulla
+medulla oblongata
+mesencephalic
+midbrain
+middle frontal gyrus
+occipital lobe
+pale body
+paleostriatum
+pallidal
+panniculus adiposus
+panniculus adiposus telae subcutaneae
+panniculus adiposus (tela subcutanea)
+reaction center of follicle
+regio occipitalis
+right kidney
+spinal cord
+subcutaneous adipose tissue
+subcutaneous fat layer
+thigh bone
+umbilical
+umbilical cord
+uterine chorion
+vesical
+vesica urinaria
+endometrial
+endometrium
+tunica mucosa (endometrium)
+tunica mucosa uteri
+uterine endometrium
+ammon gyrus
+ammon horn
+ammon's horn
+caudate nucleus
+caudatus
+gyrus temporalis superior
+hippocampal
+hippocampus major
+hippocampus proper
+hippocampus proprius
+inferior parietal cortex
+inferior parietal lobule
+nucleus putamen
+pons
+pons of varolius
+pons varolii
+putamen
+superior temporal gyrus
+islet of langerhans
+pancreatic insula
+pancreatic islet
+systema nervosum centrale

@@ -1,0 +1,4 @@
+bed
+narrowpeak
+broadpeak
+gappedpeak
