@@ -63,16 +63,15 @@ class ExperimentAction(AbstractAction):
 
     def value_logic(self, message, intent, entities):
         request_field = self.status['field']
-        gcm_filter = {k:v for (k,v) in self.status.items() if k in experiment_fields}
 
         db = getattr(self.status["geno_surf"], request_field + '_db')
         given_value = entities[request_field] if (request_field in entities) else [message.strip().lower()]
         if request_field=='is_healthy':
 
             if intent == 'affirm':
-                self.status[request_field] = True
+                self.status[request_field] = ['true']
             else:
-                self.status[request_field] = False
+                self.status[request_field] = ['false']
 
             gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
             list_param = {x: x for x in self.status['geno_surf'].fields_names}
@@ -81,7 +80,7 @@ class ExperimentAction(AbstractAction):
             pie_charts = self.create_piecharts(gcm_filter)
             self.logic = self.field_logic
             return [Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
-                    Utils.choice('Available fields', list_param)] + pie_charts, None, {}
+                    Utils.choice('Available fields', list_param),Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
 
         elif given_value[0] not in db or message not in db:
 
@@ -93,15 +92,26 @@ class ExperimentAction(AbstractAction):
                    None, {}
 
         else:
-            self.status[request_field] = given_value
+            if request_field not in self.status or self.status[request_field]==[]:
+                self.status[request_field] = given_value
+            else:
+                self.status[request_field].append(given_value)
+
             gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
-            list_param = {x: x for x in self.status['geno_surf'].fields_names}
             if len(gcm_filter) > 0:
                 self.status['geno_surf'].update(gcm_filter)
+            list_param = {x: x for x in self.status['geno_surf'].fields_names}
             pie_charts = self.create_piecharts(gcm_filter)
-            self.logic = self.field_logic
-            return [Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
-                    Utils.choice('Available fields',list_param)] + pie_charts, None, {}
+            if len(list_param) > 0:
+                self.logic = self.field_logic
+                return [Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
+                        Utils.choice('Available fields',list_param),Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
+            else:
+                from .confirm import Confirm
+                fields = {x: self.status[x] for x in experiment_fields if x in self.status}
+                back = ExperimentAction
+
+                return [], Confirm({"fields": fields, "back": back}), {}
 
     def field_logic(self, message, intent, entities):
         temp = self.status.copy()
@@ -156,6 +166,7 @@ class ExperimentAction(AbstractAction):
 
     def add_value_logic(self, message, intent, entities):
         gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
+        print(gcm_filter)
         if len(gcm_filter) > 0:
             self.status['geno_surf'].update(gcm_filter)
 
@@ -175,7 +186,7 @@ class ExperimentAction(AbstractAction):
         else:
             list_param = {x: x for x in self.status['geno_surf'].fields_names}
             self.logic = self.field_logic
-            return [Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
+            return [Utils.chat_message("Sorry, I didn't understand. Do you want to change or add a new {}?".format(self.status['field'])),
              Utils.choice('Available fields', list_param)], None, {}
 
         fields = {x: self.status[x] for x in experiment_fields if x in self.status}

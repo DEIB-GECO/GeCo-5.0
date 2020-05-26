@@ -18,6 +18,8 @@ wgbs
 faire-seq
 rip-chip
 rrbs
+exome, high coverage, low coverage
 iclip
 rip-seq
+exome, exon targetted, high coverage, low coverage
 switchgear

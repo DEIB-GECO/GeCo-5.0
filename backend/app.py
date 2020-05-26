@@ -128,7 +128,7 @@ def test_message(message):
     intent = interpretation['intent']['name']
     entities = {}
     for e in interpretation['entities']:
-        if e['entity'] in entities:
+        if e['entity'] in entities and e['value'] not in entities[e['entity']]:
             entities[e['entity']].append(e['value'])
         else:
             entities[e['entity']] = [e['value']]

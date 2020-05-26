@@ -1,52 +1,33 @@
-expressed
-expression
 gene expression
-cna
-cnp
-cnv
-copy number alteration
-copy number polymorphism
-copy number variant
 copy number variation
 dna methylation
-dna methylation process
 transcription factor
-deviation
 simple nucleotide variation
-variant
-variation
-histone
-multiple transition abnormalities
-multiple transition mutations
 mutations
-transition mutations
-acrospiroma
-eccrine acrospiroma
-hidradenoma
 variants
+broad histone mark, histone
+histone, narrow histone mark
 histone modification
-post-translational histone modification
 rna binding protein
-rna-binding protein associated mrnas
-chromatin
 chromatin remodeler
-rna polymerase
 rna polymerase complex
 cofactor
-dna damage repair
 dna repair
-unscheduled dna synthesis
-open
 open chromatin
-opened
 cohesin
-cohesin subunit sa-1
-nuclear protein stromal antigen 1
-scc3 homolog 1
-stag1
-stromal antigen 1
 dna replication
-replication
-context
+chromatin remodeler, transcription factor
+chromatin remodeler, cofactor
+cofactor, transcription factor
 other context
-dna repair protein
+rna binding protein, chromatin remodeler
+dna repair, cofactor
+dna repair, rna binding protein, chromatin remodeler
+rna binding protein, cofactor
+dna repair, chromatin remodeler
+dna repair, rna binding protein
+chromatin remodeler, cofactor, transcription factor
+dna repair, dna replication
+dna replication, rna binding protein
+rna binding protein, transcription factor
+tag
