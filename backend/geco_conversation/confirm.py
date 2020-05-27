@@ -2,6 +2,7 @@ import messages
 from data_structure.data_structure import DataSet
 from .annotation_action import AnnotationAction
 from .experiment_action import ExperimentAction
+from .metadata_action import MetadataAction
 from geco_conversation import *
 
 
@@ -55,8 +56,9 @@ class Confirm(AbstractAction):
             msgs = []
             next_state = ExperimentAction(entities)
         else:
-            msgs = [Utils.chat_message(messages.bye_message)]
-            next_state = None
+            msgs = []
+            fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
+            next_state = MetadataAction({'fields': fields})
 
         return msgs, next_state, {}
 

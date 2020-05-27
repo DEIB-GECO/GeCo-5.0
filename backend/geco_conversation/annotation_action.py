@@ -33,6 +33,10 @@ class AnnotationAction(AbstractAction):
     def logic(self, message, intent, entities):
         from .confirm import Confirm
 
+        if 'source_ann' in self.status:
+            self.status['source'] = self.status['source_ann']
+            del(self.status['source_ann'])
+
         for field in annotation_fields:
             if field in self.status and len(self.status[field]) > 1:
                 self.status[field] = self.status[field][:1]
