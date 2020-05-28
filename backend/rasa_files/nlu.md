@@ -84,6 +84,9 @@
 - i need annotation
 - i am looking form annotation
 - i need structural annotation
+- I want to have [gene](content_type) annotation from [refseq](source_ann)
+- can i have data regarding [gencode](source_ann) from [hg19](assembly) annotations?
+- I would like to have [gene](content_type) annotation data from [gencode](source_ann)
 - [hg19](assembly)
 - [gene](content_type)
 - annotation for [hg19](assembly)
@@ -501,6 +504,7 @@
 - im looking for [y rna](content_type) annotations from [gencode](source_ann)
 - positions for [transcript](content_type) in [hg19](assembly)
 - [roadmap epigenomics](source_ann) coordinates for [utr](content_type)
+- i need annotation data from [gencode](source_ann)
 
 ## intent:retrieve_experiments
 - We would like to retrieve items of [hg19](assembly) assembly from [healthy]{"entity": "is_healthy", "value": "true"} [brain tissue]{"entity": "tissue", "value": "brain"} (and possibly its subparts) of male gender, up to 30 years old.
@@ -544,6 +548,10 @@
 - [tcga](source)
 - [cna](data_type)
 - [blood](tissue)
+- [kidney](tissue)
+- I would like to retrieve items from [tcga](source) regarding [kidney tissue]{"entity":"tissue", "value":"kidney"}
+- [kidney tissue]{"entity":"tissue", "value":"kidney"}
+- [heart tissue]{"entity":"tissue", "value":"heart, mediastinum, and pleura"}
 - I want experiment about [uveal melanoma](disease)
 - I need [large cell lymphoma; diffuse mixed histiocytic and lymphocytic lymphoma; follicular b cell lymphoma](disease)
 - I want experiment about [thyroid carcinoma](disease) for [hg19](assembly)
@@ -561,7 +569,7 @@
 - patients with [osteosarcoma](disease)
 - [primary culture](biosample_type) data
 - I need to select [other and ill-defined sites tissue]{"entity": "tissue", "value": "other and ill-defined sites"} data taken from [1000 genomes](source)
-- I need [caudate nucleus tissue]{"entity": "tissue", "value": "caudate nucleus"} data taken from [SOUR](source)
+- I need [caudate nucleus tissue]{"entity": "tissue", "value": "caudate nucleus"} data taken from [tcga](source)
 - i am looking form [broadpeak](file_format) experiments from [encode](source)
 - [gappedpeak](file_format) files from [tcga](source) for [hg19](assembly)
 - data regarding [gene expression quantification](data_type) for cell line [human embryonic kidney cell](cell)
@@ -596,7 +604,7 @@
 - patients with [carcinoma; large cell lung cancer](disease)
 - [tissue](biosample_type) data
 - I need to select [thoracic aorta tissue]{"entity": "tissue", "value": "thoracic aorta"} data taken from [tads](source)
-- I need [midbrain tissue]{"entity": "tissue", "value": "midbrain"} data taken from [SOUR](source)
+- I need [midbrain tissue]{"entity": "tissue", "value": "midbrain"} data taken from [tcga](source)
 - i am looking form [gappedpeak](file_format) experiments from [tcga](source)
 - [gappedpeak](file_format) files from [roadmap epigenomics](source) for [hg19](assembly)
 - data regarding [copy number segment](data_type) for cell line [22rv1](cell)
@@ -660,7 +668,7 @@
 - patients with [cholangiocarcinoma](disease)
 - [primary tissue](biosample_type) data
 - I need to select [psoas muscle tissue]{"entity": "tissue", "value": "psoas muscle"} data taken from [1000 genomes](source)
-- I need [omental fat pad tissue]{"entity": "tissue", "value": "omental fat pad"} data taken from [SOUR](source)
+- I need [omental fat pad tissue]{"entity": "tissue", "value": "omental fat pad"} data taken from [tads](source)
 - i am looking form [narrowpeak](file_format) experiments from [roadmap epigenomics](source)
 - [bed](file_format) files from [tcga](source) for [grch38](assembly)
 - data regarding [methylation beta value](data_type) for cell line [osteoblast primary cells](cell)
@@ -724,7 +732,7 @@
 - patients with [bladder urothelial carcinoma](disease)
 - [in vitro differentiated cells](biosample_type) data
 - I need to select [gi esophagus tissue]{"entity": "tissue", "value": "gi esophagus"} data taken from [encode](source)
-- I need [thyroid gland tissue]{"entity": "tissue", "value": "thyroid gland"} data taken from [SOUR](source)
+- I need [thyroid gland tissue]{"entity": "tissue", "value": "thyroid gland"} data taken from [encode](source)
 - i am looking form [bed](file_format) experiments from [tads](source)
 - [broadpeak](file_format) files from [encode](source) for [hg19](assembly)
 - data regarding [isoform quantification](data_type) for cell line [polynuclear neutrophilic leucocyte](cell)
@@ -756,7 +764,7 @@
 - patients with [adrenocortical carcinoma](disease)
 - [primary cell](biosample_type) data
 - I need to select [thymus tissue]{"entity": "tissue", "value": "thymus"} data taken from [roadmap epigenomics](source)
-- I need [retroperitoneum and peritoneum tissue]{"entity": "tissue", "value": "retroperitoneum and peritoneum"} data taken from [SOUR](source)
+- I need [retroperitoneum and peritoneum tissue]{"entity": "tissue", "value": "retroperitoneum and peritoneum"} data taken from [tads](source)
 - i am looking form [broadpeak](file_format) experiments from [1000 genomes](source)
 - [bed](file_format) files from [tads](source) for [grch38](assembly)
 - data regarding [variant calling](data_type) for cell line [heart muscle cell](cell)
@@ -820,7 +828,7 @@
 - patients with [neuroblastoma](disease)
 - [primary cell](biosample_type) data
 - I need to select [other and ill-defined sites in lip, oral cavity and pharynx tissue]{"entity": "tissue", "value": "other and ill-defined sites in lip, oral cavity and pharynx"} data taken from [1000 genomes](source)
-- I need [adrenal gland tissue]{"entity": "tissue", "value": "adrenal gland"} data taken from [SOUR](source)
+- I need [adrenal gland tissue]{"entity": "tissue", "value": "adrenal gland"} data taken from [tcga](source)
 - i am looking form [broadpeak](file_format) experiments from [encode](source)
 - [narrowpeak](file_format) files from [1000 genomes](source) for [hg19](assembly)
 - data regarding [gene expression quantification](data_type) for cell line [cardiomyocyte](cell)
@@ -901,7 +909,7 @@
 - we would like to have items from [grch38](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [fat tissue]{"entity": "tissue", "value": "fat"}
 - i want items from [grch38](assembly) from [tumoral]{"entity": "is_healthy", "value": "False"} [uterus tissue]{"entity": "tissue", "value": "uterus"}
 - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
-- can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [right lobe of liver](tissue)?i'm looking for data from [1000 genomes](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
+- can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [right lobe of liver](tissue)?i'm looking for data from [1000 genomes](source) regarding [healthy]{"entity": "is_healthy", "value":"True"} patients
 - i'm looking for data from [encode](source) regarding [tumoral]{"entity": "is_healthy", "value": "False"} patients
 - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [peripheral nerves and autonomic nervous system](tissue)?
 - can we have data from [healthy]{"entity": "is_healthy", "value": "True"} tissue from [heart left ventricle](tissue)?
@@ -948,7 +956,7 @@
 - patients with [head and neck squamous cell carcinoma](disease)
 - [primary culture](biosample_type) data
 - I need to select [other and ill-defined sites in lip, oral cavity and pharynx tissue]{"entity": "tissue", "value": "other and ill-defined sites in lip, oral cavity and pharynx"} data taken from [tcga](source)
-- I need [lymph nodes tissue]{"entity": "tissue", "value": "lymph nodes"} data taken from [SOUR](source)
+- I need [lymph nodes tissue]{"entity": "tissue", "value": "lymph nodes"} data taken from [tads](source)
 - i am looking form [bed](file_format) experiments from [tads](source)
 - [broadpeak](file_format) files from [1000 genomes](source) for [hg19](assembly)
 - data regarding [mirna expression quantification](data_type) for cell line [ms4221](cell)
@@ -980,7 +988,7 @@
 - patients with [adrenocortical carcinoma](disease)
 - [cell line](biosample_type) data
 - I need to select [sigmoid colon tissue]{"entity": "tissue", "value": "sigmoid colon"} data taken from [encode](source)
-- I need [unknown tissue]{"entity": "tissue", "value": "unknown"} data taken from [SOUR](source)
+- I need [unknown tissue]{"entity": "tissue", "value": "unknown"} data taken from [tads](source)
 - i am looking form [gappedpeak](file_format) experiments from [tads](source)
 - [gappedpeak](file_format) files from [roadmap epigenomics](source) for [hg19](assembly)
 - data regarding [gene expression quantification](data_type) for cell line [h1 derived mesenchymal stem cells](cell)
@@ -1012,7 +1020,7 @@
 - patients with [neuroblastoma](disease)
 - [in vitro differentiated cells](biosample_type) data
 - I need to select [retroperitoneum and peritoneum tissue]{"entity": "tissue", "value": "retroperitoneum and peritoneum"} data taken from [tcga](source)
-- I need [ovary tissue]{"entity": "tissue", "value": "ovary"} data taken from [SOUR](source)
+- I need [ovary tissue]{"entity": "tissue", "value": "ovary"} data taken from [encode](source)
 - i am looking form [narrowpeak](file_format) experiments from [tcga](source)
 - [broadpeak](file_format) files from [1000 genomes](source) for [grch38](assembly)
 - data regarding [variant calling](data_type) for cell line [gm12878 lymphoblastoid cells](cell)
@@ -1076,7 +1084,7 @@
 - patients with [malignant melanoma](disease)
 - [cell line](biosample_type) data
 - I need to select [peyer's patch tissue]{"entity": "tissue", "value": "peyer's patch"} data taken from [1000 genomes](source)
-- I need [other and unspecified parts of mouth tissue]{"entity": "tissue", "value": "other and unspecified parts of mouth"} data taken from [SOUR](source)
+- I need [other and unspecified parts of mouth tissue]{"entity": "tissue", "value": "other and unspecified parts of mouth"} data taken from [1000 genomes](source)
 - i am looking form [broadpeak](file_format) experiments from [encode](source)
 - [narrowpeak](file_format) files from [roadmap epigenomics](source) for [grch38](assembly)
 - data regarding [exon quantification](data_type) for cell line [oci-ly-3](cell)
@@ -1108,7 +1116,7 @@
 - patients with [esophageal carcinoma](disease)
 - [primary tissue](biosample_type) data
 - I need to select [suprapubic skin tissue]{"entity": "tissue", "value": "suprapubic skin"} data taken from [1000 genomes](source)
-- I need [other and unspecified male genital organs tissue]{"entity": "tissue", "value": "other and unspecified male genital organs"} data taken from [SOUR](source)
+- I need [other and unspecified male genital organs tissue]{"entity": "tissue", "value": "other and unspecified male genital organs"} data taken from [encode](source)
 - i am looking form [bed](file_format) experiments from [1000 genomes](source)
 - [gappedpeak](file_format) files from [encode](source) for [hg19](assembly)
 - data regarding [masked somatic mutation](data_type) for cell line [pmn](cell)
@@ -1204,7 +1212,7 @@
 - patients with [parkinson's disease](disease)
 - [primary tissue](biosample_type) data
 - I need to select [vagina tissue]{"entity": "tissue", "value": "vagina"} data taken from [roadmap epigenomics](source)
-- I need [umbilical cord tissue]{"entity": "tissue", "value": "umbilical cord"} data taken from [SOUR](source)
+- I need [umbilical cord tissue]{"entity": "tissue", "value": "umbilical cord"} data taken from [roadmap epigenomics](source)
 - i am looking form [bed](file_format) experiments from [encode](source)
 - [broadpeak](file_format) files from [1000 genomes](source) for [hg19](assembly)
 - data regarding [cnv](data_type) for cell line [t47d-mtvl](cell)
@@ -1380,7 +1388,7 @@
 - i'm looking for data from [1000 genomes](source) regarding [tumoral]{"entity": "is_healthy", "value": "False"} patients
 - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [uterine body]{"entity": "tissue", "value": "corpus uteri"}?
 - can we have data from [healthy]{"entity": "is_healthy", "value": "True"} tissue from [floor of oval cavity]{"entity": "tissue", "value": "floor of mouth"}?
-
+- i need [chip-seq](technique) experiment for cell line [IMR90](cell) of [CTCF](target) transcription factor
 
 
 ## intent:help
@@ -1398,6 +1406,7 @@
 - I am lost
 - what should I do?
 - what should I reply?
+
 
 ## synonym:breast
 - mammary part of chest
@@ -1779,3 +1788,118 @@
 - pheochromocytoma (adrenal)
 - pheochromocytoma and paraganglioma
 
+## synonym:genotyping array
+- genotyping by array
+## synonym:methylation array
+- methylation profiling by array
+## synonym:dna-seq
+- dna sequencing
+## synonym:exome, low coverage
+- low coverage, exome
+- whole exome
+## synonym:dna methylation 27
+- dna methylation 450
+## synonym:dnase-seq
+- genetic modification followed by dnase-seq
+## synonym:eclip
+- enhanced cross-linking immunoprecipitation high-throughput sequencing assay
+## synonym:chip-seq
+- chipseq
+- chip seq
+- chiseq
+- chip sequencing
+## synonym:rna-seq
+- rnaseq
+- rna seq
+- rna sequencing
+## synonym:mirna-seq
+- mirnaseq
+- mirna seq
+- mirna sequencing
+## synonym:rip-chip
+- rip-chip by array
+
+
+## synonym:k562
+- k-562
+-  k562 cell
+- k-562 cell
+## synonym:hepg2
+- hep-g2
+- hepg2 cell
+## synonym:hek293
+- human embryonic kidney cell
+## synonym:mcf-7
+- mcf-7 cell
+- mcf7 cell
+- mcf7-lted
+## synonym:lymphoblastoid cell line
+- ms4221
+## synonym:a549
+- a-549
+- a549 cell
+- bt-549
+## synonym:h1
+- h1-hesc
+## synonym:hct116
+- hct-116 cell
+- hct116 cell
+## synonym:mm.1s
+- mm.1 s
+- mm.1-s
+- mm.1s cell
+## synonym:gm23248
+- gm23248 cell
+## synonym:imr-90
+- imr90 fetal lung fibroblast cell line
+## synonym:pc-3
+- pc-3 cell
+- pc3 cell
+## synonym:cardiac muscle cell
+- cardiac muscle fiber
+- cardiac myocyte
+- cardiocyte
+- cardiomyocyte
+- heart muscle cell
+## synonym:skeletal muscle myoblast
+- skeletal myoblast
+## synonym:ishikawa
+- ishikawa cell
+## synonym:b cell
+- b-cell
+- b lymphocyte
+- b-lymphocyte
+## synonym:oci-ly3
+- oci-ly-3
+- oci-ly-3 cell
+## synonym:myotube
+- myotubule
+## synonym:smooth muscle cell
+- smooth muscle fiber
+- single cell sarcomere
+- smcs
+## synonym:panc1
+- panc-1
+## synonym:karpas-422
+- karpas 422 cell
+## synonym:oci-ly1
+- oci-ly8
+## synonym:h1 cells
+- h1-hesc
+## synonym:a549 etoh 0.02pct lung carcinoma cell line
+- bt-549
+## synonym:hsmm skeletal muscle myoblasts cells
+- skeletal myoblast
+## synonym:ecto neural progenitor cell
+- mouse neural progenitor cell
+- mouse npc
+
+## synonym:gene expression quantification
+- gene expression
+- gene expressions
+- gene expression quantifications
+## synonym:mirna expression quantification
+- mirna expressions
+- mirna quantifications
+- mirna expression quantifications
+- mirna expression

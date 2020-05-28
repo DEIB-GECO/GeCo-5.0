@@ -27,6 +27,7 @@ class ExperimentAction(AbstractAction):
         return msgs
 
     def logic(self, message, intent, entities):
+        from .confirm import Confirm
         if 'is_healthy' in self.status:
             if self.status['is_healthy']== ['healthy']:
                 self.status['is_healthy'] = [True]
@@ -50,12 +51,18 @@ class ExperimentAction(AbstractAction):
         #missing_fields = list(set(self.status['geno_surf'].fields_names).difference(set(self.status.keys())))
         missing_fields = self.status['geno_surf'].fields_names
         if message is None:
-            list_param = {x: x for x in missing_fields}
-            self.logic = self.field_logic
-            return [Utils.chat_message("Which field do you want to select?"),
-                    Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help),
-                    Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts, \
-                   None, {}
+            list_param = {x: x for x in missing_fields.difference(set(self.status.keys()))}
+            if len(list_param)!=0:
+                self.logic = self.field_logic
+                return [Utils.chat_message("Which field do you want to select?"),
+                        Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help),
+                        Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts, \
+                       None, {}
+            else:
+                fields = {x: self.status[x] for x in experiment_fields if x in self.status}
+                back = ExperimentAction
+
+                return [], Confirm({"fields": fields, "back": back}), {}
 
         return [], None, {}
 

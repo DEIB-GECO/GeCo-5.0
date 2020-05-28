@@ -61,7 +61,7 @@ class Geno_surf:
     def update(self, gcm):
         filter = ','.join([self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k,v) in gcm.items()])
         data = '{"gcm":{'+str(filter)+'},"type":"original","kv":{}}'
-        print(data)
+        #print(data)
         self.fields_names = []
         self.all_values = []
         for f in self.fields:
@@ -88,7 +88,7 @@ class Geno_surf:
             [self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v) in
                                  gcm.items()])
         data = '{"gcm":{' + str(filter) + '},"type":"original","kv":{}}'
-        print(data)
+        #print(data)
         response_post = requests.post(api_url + 'field/' + str(field), headers=headers_post, data=data)
         if response_post.status_code == 200:
             val = json.loads(response_post.content.decode('utf-8'))['values']
@@ -114,10 +114,11 @@ class Geno_surf:
         response_post = requests.post(api_url + 'pair/keys?q=' + str(string) + '&exact=false&rel_distance=3', headers=headers_post, data=data)
         if response_post.status_code == 200:
             pairs = json.loads(response_post.content.decode('utf-8'))['pairs']
-        keys = []
-        for k in pairs:
-            keys.append(k['key'])
-        return keys
+        #keys = []
+        #for k in pairs:
+        #    keys.append(k['key'])
+        #return
+        return pairs
 
     #Retrieves all values based on a user input string
     def find_values(self, gcm, string):
@@ -135,9 +136,12 @@ class Geno_surf:
             [self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v) in
                                  gcm.items()])
         data = '{"gcm":{' + str(filter) + '},"type":"original","kv":{}}'
-        response_post = requests.post(api_url + 'pair/' + str(key) + '/values?is_gcm = false & rel_distance = 3', headers=headers_post, data=data)
+        print(data)
+        response_post = requests.post(api_url + 'pair/' + str(key) + '/values?is_gcm=false&rel_distance=3', headers=headers_post, data=data)
         if response_post.status_code == 200:
-            values = json.loads(response_post.content.decode('utf-8'))['pairs']
+            values = json.loads(response_post.content.decode('utf-8'))
+            print('VALUES')
+            print(values)
         return values
 
 def check_existance(is_ann, fields_dict):

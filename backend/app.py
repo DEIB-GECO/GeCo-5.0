@@ -126,12 +126,13 @@ def test_message(message):
 
     interpretation = interpreter.parse(user_message)
     intent = interpretation['intent']['name']
+    print(interpretation['entities'])
     entities = {}
     for e in interpretation['entities']:
-        if e['entity'] in entities and e['value'] not in entities[e['entity']]:
-            entities[e['entity']].append(e['value'])
+        if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
+            entities[e['entity']].append(e['value'].lower().strip())
         else:
-            entities[e['entity']] = [e['value']]
+            entities[e['entity']] = [e['value'].lower().strip()]
 
     Utils.pyconsole_debug(intent)
     Utils.pyconsole_debug(entities)
@@ -175,10 +176,10 @@ def test_connect():
     if 'status' not in session:
         session['status'] = ConversationDBExplore()
         session['messages'] = []
-    else:
-        for x in session['messages']:
-            if type(x) == str:
-                emit('json_response', Utils.chat_message('Previous chat: ' + x))
+    #else:
+    #    for x in session['messages']:
+    #        if type(x) == str:
+    #            emit('json_response', Utils.chat_message('Previous chat: ' + x))
 
     #TO PUT FOR SAVE EVERY CONVERSATION FROM ALL CONNECTIONS AND REMOVE data= {} and data[request.sid]=[]
     with open('logger.json', 'r') as f:
