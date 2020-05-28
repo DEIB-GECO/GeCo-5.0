@@ -46,9 +46,11 @@ class Geno_surf:
         self.get_values()
 
     def get_values(self):
-        data = '{"gcm":{'+ \
-               self.is_ann_gcm +\
-               '},"type":"original","kv":{}}'
+        gcm = {'source': ["tcga", "encode", "roadmap epigenomics", "1000 genomes", "refseq"]}
+        filter = ','.join(
+            [self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v) in
+                                 gcm.items()])
+        data = '{"gcm":{' + str(filter) + '},"type":"original","kv":{}}'
         print(data)
         self.fields_names = []
         for f in self.fields:
@@ -59,9 +61,13 @@ class Geno_surf:
 
 
     def update(self, gcm):
-        filter = ','.join([self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k,v) in gcm.items()])
+        gcm_source =  {'source': ["tcga", "encode", "roadmap epigenomics", "1000 genomes", "refseq"]}
+        if 'source' not in gcm:
+            filter = ','.join([self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k,v) in gcm.items()]) + ','.join([gcm_source])
+        else:
+            filter = ','.join([self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k,v) in gcm.items()])
         data = '{"gcm":{'+str(filter)+'},"type":"original","kv":{}}'
-        #print(data)
+        print(data)
         self.fields_names = []
         self.all_values = []
         for f in self.fields:

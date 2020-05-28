@@ -51,7 +51,7 @@ class ExperimentAction(AbstractAction):
         #missing_fields = list(set(self.status['geno_surf'].fields_names).difference(set(self.status.keys())))
         missing_fields = self.status['geno_surf'].fields_names
         if message is None:
-            list_param = {x: x for x in missing_fields.difference(set(self.status.keys()))}
+            list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
             if len(list_param)!=0:
                 self.logic = self.field_logic
                 return [Utils.chat_message("Which field do you want to select?"),
