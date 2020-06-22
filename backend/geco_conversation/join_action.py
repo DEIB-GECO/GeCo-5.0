@@ -49,7 +49,6 @@ class JoinAction(AbstractAction):
             next_state = ExperimentAction(entities)
         else:
             msgs = []
-            fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
             # next_state = MetadataAction({'fields': fields})
             next_state = {}
 
