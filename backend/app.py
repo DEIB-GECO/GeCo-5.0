@@ -119,18 +119,16 @@ def index():
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
     user_message = message['data'].strip()
-    messages = session['messages']
-    messages.append('USER: ' + user_message)
-    session['messages'] = messages
+    add_session_message(session, {'sender':'user', 'message':user_message})
 
     data = json.loads(open("logger.json").read())
     data[request.sid].append(user_message)
 
-    if user_message == 'reset session':
+    interpretation = interpreter.parse(user_message)
+    intent = interpretation['intent']['name']
+    if intent == 'reset_session':
         reset(session)
     else:
-        interpretation = interpreter.parse(user_message)
-        intent = interpretation['intent']['name']
         print(interpretation['entities'])
         entities = {}
         for e in interpretation['entities']:
@@ -145,20 +143,54 @@ def test_message(message):
         session['status'].run(user_message, intent, entities)
 
     for msg in session['status'].bot_messages:
-        emit('json_response', msg)
         Utils.pyconsole_debug(msg)
-        # TODO CHECK
-        messages = session['messages']
-        messages.append(msg['payload'])
-        session['messages'] = messages
+        id = add_session_message(session, msg)
+        msg['message_id'] = id
+        emit('json_response', msg)
 
         if msg['type'] == 'message':
-            data[request.sid].append(msg['payload'])
+            data[request.sid].append(msg['payload']['message'])
 
     with open("logger.json", "w") as file:
         json.dump(data, file)
 
     session['status'].clear_msgs()
+
+def add_session_message(session, message):
+
+    msg = session['messages']
+    if len(msg)==0:
+        id = 0
+    else:
+        id = msg[-1]['message_id']+1
+    print(message)
+    if (message['type'] == "message"):
+        payload = message['payload']
+        msg.append({'sender': payload['sender'], 'message': payload['message'], 'message_id':id})
+        session['messages'] = msg
+    elif (message['type']!='tools_setup'):
+        session['last_json'][message['type']] = message + {'message_id':id}
+    else:
+        del session['last_json'][message['payload']['remove']]
+
+    return id
+
+
+@socketio.on('ack', namespace='/test')
+def test_ack_message(message):
+    user_message = int(message['message_id'])
+    if user_message == -1:
+        for x in session['messages']:
+            emit('json_response', {"type": "message", "payload": x})
+        for x in session['last_json']:
+            emit('json_response', x)
+    else:
+        for x in session['messages']:
+            if x['message_id']>user_message:
+                emit('json_response', {"type": "message", "payload": x})
+        for x in session['last_json']:
+            if x['message_id'] > user_message:
+                emit('json_response', x)
 
 
 # TODO: maybe here we need to manage the session storing
@@ -189,7 +221,7 @@ def reset(session):
 def test_connect():
     if 'status' not in session:
         reset(session)
-    # else:
+    #else:
     #    for x in session['messages']:
     #        if type(x) == str:
     #            emit('json_response', Utils.chat_message('Previous chat: ' + x))
@@ -202,12 +234,13 @@ def test_connect():
     # data[request.sid] = []
 
     for msg in session['status'].bot_messages:
+
+        id = add_session_message(session, msg)
+        msg['message_id'] = id
         emit('json_response', msg)
-        messages = session['messages']
-        messages.append(msg['payload'])
-        session['messages'] = messages
+
         if msg['type'] == 'message':
-            data[request.sid].append(msg['payload'])
+            data[request.sid].append(msg['payload']['message'])
 
     with open('logger.json', 'w') as file:
         json.dump(data, file)

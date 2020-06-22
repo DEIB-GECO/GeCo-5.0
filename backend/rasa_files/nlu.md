@@ -1445,6 +1445,16 @@
 - remove from the second datsaset the first one
 
 
+## intent:reset_session
+- reset session
+- reset
+- quit
+- escape
+- esc
+- restart
+- go back to the beginning
+- clear
+
 ## synonym:breast
 - mammary part of chest
 - mammary region

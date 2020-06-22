@@ -1,6 +1,8 @@
 
 class Utils(object):
-    def chat_message(payload):
+    def chat_message(message):
+        payload = {"sender": "bot",
+                   "message": message}
         return {"type" : "message", "payload" : payload}
 
     def choice(caption, list_params, show_search=False, show_details=False, show_help=False, helpIconContent=''):
