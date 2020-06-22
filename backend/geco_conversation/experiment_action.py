@@ -10,7 +10,7 @@ class ExperimentAction(AbstractAction):
         return self.logic(None, None, None)
 
     def help_message(self):
-        return [Utils.chat_message(messages.annotation_help)]
+        return [Utils.chat_message(messages.experiment_help)]
 
     def required_additional_status(self):
         return ['geno_surf']
@@ -43,13 +43,15 @@ class ExperimentAction(AbstractAction):
                     del (self.status[k])
 
         gcm_filter = {k:v for (k,v) in self.status.items() if k in experiment_fields}
-
+        print('GCM FILTER')
+        print(gcm_filter)
         if len(gcm_filter) > 0:
             self.status['geno_surf'].update(gcm_filter)
         pie_charts = self.create_piecharts(gcm_filter)
         #Find fields that are not already selected by the user
         #missing_fields = list(set(self.status['geno_surf'].fields_names).difference(set(self.status.keys())))
         missing_fields = self.status['geno_surf'].fields_names
+        print(missing_fields)
         if message is None:
             list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
             if len(list_param)!=0:
@@ -62,7 +64,7 @@ class ExperimentAction(AbstractAction):
                 fields = {x: self.status[x] for x in experiment_fields if x in self.status}
                 back = ExperimentAction
 
-                return [], Confirm({"fields": fields, "back": back}), {}
+                return [Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})], Confirm({"fields": fields, "back": back}), {}
 
         return [], None, {}
 

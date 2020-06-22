@@ -15,7 +15,6 @@ class MetadataAction(AbstractAction):
     def required_additional_status(self):
         return ['geno_surf','dataset_list']
 
-
     def logic(self, message, intent, entities):
         print(self.status['fields'])
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k!='name'}
@@ -33,9 +32,9 @@ class MetadataAction(AbstractAction):
                         Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})], \
                        None, {}
             elif len(self.available_keys)==1:
-                self.logic = self.value_logic
                 values = self.status['geno_surf'].find_key_values(gcm_filter, self.available_keys.keys[0])
                 list_param = {x['value']: x['value'] for x in values}
+                self.logic = self.value_logic
                 return [Utils.chat_message("Which value do you want to select?"),
                         Utils.choice('Available values', list_param, show_help=True,
                                      helpIconContent=messages.fields_help),
@@ -46,17 +45,30 @@ class MetadataAction(AbstractAction):
 
         return [], None, {}
 
+
+    def value_logic(self, message, intent, entities):
+        #gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'is_annotation']}
+        v = message.lower().strip()
+        print(self.available_values)
+        if v in self.available_values:
+            self.status[self.status['selected_key']] = v
+            return [Utils.chat_message("Ok, you selected {}".format(v)),
+                    Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields} + {
+                        self.status['selected_key']: v})], None, {}
+        return [], None, {}
+
     def key_logic(self, message, intent, entities):
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name','is_annotation']}
         #self.status['geno_surf'].update(gcm_filter)
-        print(gcm_filter)
+        #print(gcm_filter)
         k =  message.lower().strip()
         if k in self.available_keys:
             self.status['selected_key'] = k
-            self.available_values = self.status['geno_surf'].find_key_values(gcm_filter, k)
+            self.available_values = [val['value'] for val in self.status['geno_surf'].find_key_values(gcm_filter, k)]
             #print(values)
             list_param = {x['value']: x['value'] for x in self.available_values}
             self.logic = self.value_logic
+            print('CIAO')
             return [Utils.chat_message("Which value do you want to select?"),
                     Utils.choice('Available values',list_param, show_help=True, helpIconContent=messages.fields_help),
                     Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})], \
@@ -64,11 +76,3 @@ class MetadataAction(AbstractAction):
 
         return [], None, {}
 
-    def value_logic(self, message, intent, entities):
-        gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'is_annotation']}
-        v = message.lower().strip()
-        if v in self.available_values:
-            self.status[self.status['selected_key']] = v
-            return [Utils.chat_message("Ok, you selected {}".format(v)),
-                    Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields}+{self.status['selected_key']:v})], \
-                   None, {}

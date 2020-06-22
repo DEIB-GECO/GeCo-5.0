@@ -1310,8 +1310,13 @@
 - [bed](file_format) files from [roadmap epigenomics](source) for [grch38](assembly)
 - data regarding [gene quantification](data_type) for cell line [dohh2](cell)
 - i need cell [sknmc](cell)
+- i need [gene expression]{"entity":"data_type", "value":"gene expression quantification"}
+- i need [mirna quantifications]{"entity":"data_type", "value":"mirna expression quantification"}
+- i need [micro rna quantifications]{"entity":"data_type", "value":"mirna expression quantification"}
+- i need [mirna expressions]{"entity":"data_type", "value":"mirna expression quantification"}
 - can i have [cell line](biosample_type) data?
 - please give me [chd2](target) data
+- please give me [gene expression]{"entity": "data_type", "value": "gene expression quantification"} data
 - I would like to have data regarding [gum tissue]{"entity": "tissue", "value": "gum"} extracted with [chip-seq](technique)
 - can i have [hnf4a8](target) [chip-seq](technique) for cell line [su-dhl-6](cell)?
 - I am looking for [cnv](data_type) data extracted with [wxs](technique) from [1000 genomes](source)
@@ -1389,7 +1394,18 @@
 - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [uterine body]{"entity": "tissue", "value": "corpus uteri"}?
 - can we have data from [healthy]{"entity": "is_healthy", "value": "True"} tissue from [floor of oval cavity]{"entity": "tissue", "value": "floor of mouth"}?
 - i need [chip-seq](technique) experiment for cell line [IMR90](cell) of [CTCF](target) transcription factor
-
+- [gene expression]{"entity": "data_type", "value": "gene expression quantification"}
+- [gene expressions]{"entity": "data_type", "value": "gene expression quantification"}
+- [gene expression quantifications]{"entity": "data_type", "value": "gene expression quantification"}
+- [gene expression]{"entity": "data_type", "value": "gene expression quantification"} data
+- [gene expressions]{"entity": "data_type", "value": "gene expression quantification"} data
+- [mirna expession]{"entity": "data_type", "value": "mirna expression quantification"} data
+- i need [gene expresion]{"entity": "data_type", "value": "gene expression quantification"} data
+- i need [gene expression]{"entity": "data_type", "value": "gene expression quantification"}
+- i need [mirna expression]{"entity": "data_type", "value": "mirna expression quantification"}
+- i need [micro rna expressions]{"entity": "data_type", "value": "mirna expression quantification"}
+- I would like to have [gene expression]{"entity": "data_type", "value": "gene expression quantification"} data from [tcga](source)
+- I would like to have [mirna expression]{"entity": "data_type", "value": "mirna expression quantification"} data from [tcga](source)
 
 ## intent:help
 - What can I do?
@@ -1406,6 +1422,27 @@
 - I am lost
 - what should I do?
 - what should I reply?
+
+## intent:union
+- I want to do union the two datasets
+- I would like to do the union of the two datasets
+- union
+- do the union of the two datasets
+- compute the union of the two datasets
+
+## intent:join
+- I want to join the two datasets
+- I would like to join of the two datasets
+- join
+- join of the two datasets
+
+## intent:difference
+- I want to do the difference the two datasets
+- I would like to do the difference of the two datasets
+- difference
+- difference of the two datasets
+- remove from the first dataset the second one
+- remove from the second datsaset the first one
 
 
 ## synonym:breast
@@ -1898,6 +1935,7 @@
 - gene expression
 - gene expressions
 - gene expression quantifications
+
 ## synonym:mirna expression quantification
 - mirna expressions
 - mirna quantifications

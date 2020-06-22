@@ -79,6 +79,8 @@ class ConversationDBExplore(object):
             self.set_logic(next_state)
 
     def run(self, message, intent, entities):
+        print(self.logic)
+        print(message)
         messages, next_state, delta_status = self.logic.run(message, intent, entities)
         for m in messages:
             self.say(m)
