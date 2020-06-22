@@ -120,7 +120,7 @@ export default class GecoAgent extends Vue {
     this.isDownloadButtonVisible = true;
   }
 
-  unlockButtonAndParseMessage(msg: string) {
+  unlockButtonAndParseMessage(msg: MessageObject) {
     console.log('unlockButtonAndParseMessage invoked');
     this.setSendButtonStatus(true);
     this.messageParser(msg);
