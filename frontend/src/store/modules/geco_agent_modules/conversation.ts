@@ -7,8 +7,8 @@ class Conversation extends VuexModule {
   conversation: MessageObject[] = [];
 
   @Mutation
-  parseJsonResponse(msg: string) {
-    this.conversation.push({ sender: 'bot', text: msg });
+  parseJsonResponse(msg: MessageObject) {
+    this.conversation.push({ sender: msg.sender, text: msg.text });
   }
 
   @Mutation

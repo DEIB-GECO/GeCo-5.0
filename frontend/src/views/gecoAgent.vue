@@ -40,9 +40,10 @@ import Toolbox from './../components/toolbox/toolbox_interface.vue';
 import ParametersBox from '@/components/ParametersBox.vue';
 import { conversation } from './../test/conversation';
 
-const socket = io('/test', {path: '/geco_agent/socket.io'});
+const socket = io('/test', { path: '/geco_agent/socket.io' });
 // const socket = io('http://localhost:5980/test');
 const tools = namespace('tools');
+const gecoAgentStore = namespace('gecoAgent');
 const conversationStore = namespace('gecoAgent/conversation');
 const parametersStore = namespace('gecoAgent/parametersBox');
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
@@ -58,6 +59,7 @@ const dataVizStore = namespace('gecoAgent/DataViz');
 })
 export default class GecoAgent extends Vue {
   @conversationStore.State('currentMessage') message!: string;
+  @gecoAgentStore.State('lastMessageId') lastMessageId!: number;
 
   @tools.Mutation updateFieldList!: (newList: any) => void;
   @tools.Mutation updateQueryParameters!: (newTool: string) => void;
@@ -66,7 +68,7 @@ export default class GecoAgent extends Vue {
   @conversationStore.Mutation setSendButtonStatus!: (newValue: boolean) => void;
 
   @conversationStore.Mutation('parseJsonResponse') messageParser!: (
-    msg: string
+    msg: MessageObject
   ) => void;
   @parametersStore.Mutation('setParametersList') parameterParser!: (
     payload: Parameter[]
@@ -118,13 +120,14 @@ export default class GecoAgent extends Vue {
     this.isDownloadButtonVisible = true;
   }
 
-  unlockButtonAndParseMessage(msg: string) {
+  unlockButtonAndParseMessage(msg: MessageObject) {
     console.log('unlockButtonAndParseMessage invoked');
     this.setSendButtonStatus(true);
     this.messageParser(msg);
   }
 
   created() {
+    socket.emit('ack', { message_id: this.lastMessageId });
     socket.on('json_response', (payload: any) => {
       console.log('server sent JSON_response', payload);
       this.parseResponse(payload);
@@ -150,6 +153,8 @@ export default class GecoAgent extends Vue {
     if (data.show) {
       this.updateToolToShow(data.show);
     }
+    this.lastMessageId = data.message_id;
+    socket.emit('ack', { message_id: this.lastMessageId });
     // @ts-ignore
     this.jsonResponseParsingFunctions[data.type](data.payload);
   }
