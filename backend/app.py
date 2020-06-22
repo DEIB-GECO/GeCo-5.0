@@ -146,8 +146,6 @@ def test_message(message):
         Utils.pyconsole_debug(msg)
         id = add_session_message(session, msg)
         msg['message_id'] = id
-        print('HEY')
-        print(msg['type'])
         emit('json_response', msg)
 
         if msg['type'] == 'message':
@@ -173,7 +171,6 @@ def add_session_message(session, message):
     elif (message['type']!='tools_setup'):
         temp_d = dict(message)
         temp_d['message_id'] = id
-        print('HERE')
         print(temp_d)
         session['last_json'][message['type']] = temp_d
     else:
@@ -187,19 +184,21 @@ def add_session_message(session, message):
 @socketio.on('ack', namespace='/test')
 def test_ack_message(message):
     user_message = int(message['message_id'])
-    print(user_message)
     if 'messages' in session:
         if user_message == -1:
             for x in session['messages']:
-                emit('json_response', {"type": "message", "payload": x})
+                emit('json_response',
+                     {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']}, 'message_id': x['message_id']})
             for x in session['last_json']:
                 emit('json_response', session['last_json'][x])
         else:
             for x in session['messages']:
-                if x['message_id']>user_message:
-                    emit('json_response', {"type": "message", "payload": x})
+                if x['message_id']> user_message+1:
+                    emit('json_response',
+                         {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']}, 'message_id': x['message_id']})
+
             for x in session['last_json']:
-                if x['message_id'] > user_message:
+                if session['last_json'][x]['message_id'] > user_message+1:
                     emit('json_response', session['last_json'][x])
 
 # TODO: maybe here we need to manage the session storing

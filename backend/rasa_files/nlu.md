@@ -510,6 +510,9 @@
 - We would like to retrieve items of [hg19](assembly) assembly from [healthy]{"entity": "is_healthy", "value": "true"} [brain tissue]{"entity": "tissue", "value": "brain"} (and possibly its subparts) of male gender, up to 30 years old.
 - experiment
 - experiments
+- i need experiments
+- i want experiments
+- i need experimental data
 - experimental data
 - sample
 - samples
