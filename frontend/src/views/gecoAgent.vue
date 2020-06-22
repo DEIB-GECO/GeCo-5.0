@@ -1,9 +1,16 @@
 <template>
   <div class="container">
-    <h1>
-      GeCo Agent
-      <font-awesome-icon class="icon" :icon="['fas', 'dna']" size="1x" />
-    </h1>
+    <div class="title_bar">
+      <h1>
+        GeCo Agent
+        <font-awesome-icon class="icon" :icon="['fas', 'dna']" size="1x" />
+      </h1>
+      <div class="reset_button">
+        <font-awesome-icon class="icon" :icon="['fas', 'redo']" size="2x" />
+        Reset
+      </div>
+    </div>
+
     <div class="grid_container_upper_row">
       <chat @emit-send="sendMessage()" :textMessage.sync="message"></chat>
       <functions-area></functions-area>
@@ -129,8 +136,12 @@ export default class GecoAgent extends Vue {
   created() {
     socket.emit('ack', { message_id: this.lastMessageId });
     socket.on('json_response', (payload: any) => {
-      console.log('server sent JSON_response', payload);
-      this.parseResponse(payload);
+      if (payload.type) {
+        console.log('server sent JSON_response', payload);
+        this.parseResponse(payload);
+      } else {
+        console.log('ERRORE STRANO', payload);
+      }
     });
   }
 
@@ -181,6 +192,19 @@ export default class GecoAgent extends Vue {
 .container {
   height: 95vh;
   overflow: hidden;
+}
+
+.title_bar {
+  display: inline-grid;
+  grid-template-columns: 90% 10%;
+  width: 100%;
+}
+
+.reset_button {
+  float: right;
+  display: inline;
+  margin: auto;
+  font-weight: bold;
 }
 
 .grid_container_upper_row {
