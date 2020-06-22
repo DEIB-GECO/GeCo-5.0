@@ -191,7 +191,7 @@ export default class GecoAgent extends Vue {
   }
 
   reset(): void {
-    this.message = 'reset session';
+    this.editMessage('reset session');
     this.sendMessage();
   }
 }
