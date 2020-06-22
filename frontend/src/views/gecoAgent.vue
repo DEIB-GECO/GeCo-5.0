@@ -68,7 +68,7 @@ export default class GecoAgent extends Vue {
   @conversationStore.Mutation setSendButtonStatus!: (newValue: boolean) => void;
 
   @conversationStore.Mutation('parseJsonResponse') messageParser!: (
-    msg: string
+    msg: MessageObject
   ) => void;
   @parametersStore.Mutation('setParametersList') parameterParser!: (
     payload: Parameter[]
