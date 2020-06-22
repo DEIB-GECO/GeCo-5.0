@@ -96,7 +96,7 @@ class ConversationDBExplore(object):
         self.last_intent = None
         self.entities = {}
         self.logic = None
-        self.geno_surf=None
+        self.geno_surf = None
         session['selected_dataset'] = []
         session['dataset_list'] = []
 
@@ -126,20 +126,23 @@ def test_message(message):
     data = json.loads(open("logger.json").read())
     data[request.sid].append(user_message)
 
-    interpretation = interpreter.parse(user_message)
-    intent = interpretation['intent']['name']
-    print(interpretation['entities'])
-    entities = {}
-    for e in interpretation['entities']:
-        if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
-            entities[e['entity']].append(e['value'].lower().strip())
-        else:
-            entities[e['entity']] = [e['value'].lower().strip()]
+    if user_message == 'reset session':
+        reset(session)
+    else:
+        interpretation = interpreter.parse(user_message)
+        intent = interpretation['intent']['name']
+        print(interpretation['entities'])
+        entities = {}
+        for e in interpretation['entities']:
+            if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
+                entities[e['entity']].append(e['value'].lower().strip())
+            else:
+                entities[e['entity']] = [e['value'].lower().strip()]
 
-    Utils.pyconsole_debug(intent)
-    Utils.pyconsole_debug(entities)
+        Utils.pyconsole_debug(intent)
+        Utils.pyconsole_debug(entities)
 
-    session['status'].run(user_message, intent, entities)
+        session['status'].run(user_message, intent, entities)
 
     for msg in session['status'].bot_messages:
         emit('json_response', msg)
@@ -173,29 +176,37 @@ def disconnect_request():
          {'data': 'Disconnected!', 'count': session['receive_count']},
          callback=can_disconnect)
 
+
+def reset(session):
+    for k in list(session.keys()):
+        if not k.startswith("_"):
+            del session[k]
+    session['status'] = ConversationDBExplore()
+    session['messages'] = []
+
+
 @socketio.on('connect', namespace='/test')
 def test_connect():
     if 'status' not in session:
-        session['status'] = ConversationDBExplore()
-        session['messages'] = []
-    #else:
+        reset(session)
+    # else:
     #    for x in session['messages']:
     #        if type(x) == str:
     #            emit('json_response', Utils.chat_message('Previous chat: ' + x))
 
-    #TO PUT FOR SAVE EVERY CONVERSATION FROM ALL CONNECTIONS AND REMOVE data= {} and data[request.sid]=[]
+    # TO PUT FOR SAVE EVERY CONVERSATION FROM ALL CONNECTIONS AND REMOVE data= {} and data[request.sid]=[]
     with open('logger.json', 'r') as f:
         data = json.load(f)
-        data[request.sid]=[]
-    #data = {}
-    #data[request.sid] = []
+        data[request.sid] = []
+    # data = {}
+    # data[request.sid] = []
 
     for msg in session['status'].bot_messages:
         emit('json_response', msg)
         messages = session['messages']
         messages.append(msg['payload'])
         session['messages'] = messages
-        if msg['type']=='message':
+        if msg['type'] == 'message':
             data[request.sid].append(msg['payload'])
 
     with open('logger.json', 'w') as file:
