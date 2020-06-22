@@ -1,4 +1,7 @@
 // import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
+import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
 
 import conversation from './geco_agent_modules/conversation';
 import queryParameters from './geco_agent_modules/queryParameters';
@@ -18,5 +21,10 @@ export default {
     functionsArea,
     parametersBox,
     DataViz
+  },
+  mutations: {
+    updateLastMessageId(state: any, newValue: number): void {
+      state.lastMessageId = newValue;
+    }
   }
 };

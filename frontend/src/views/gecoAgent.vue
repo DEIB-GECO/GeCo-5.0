@@ -86,6 +86,7 @@ export default class GecoAgent extends Vue {
   @tools.Mutation removeSingleToolFromPane!: (tool: string) => void;
   @dataVizStore.Mutation setCharts!: (newCharts: DataSummaryPayload) => void;
   @dataVizStore.Action updateToolToShow!: (newTool: string) => void;
+  @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
     if (jsonPayload.add) {
@@ -164,7 +165,7 @@ export default class GecoAgent extends Vue {
     if (data.show) {
       this.updateToolToShow(data.show);
     }
-    this.lastMessageId = data.message_id;
+    this.updateLastMessageId(data.message_id);
     socket.emit('ack', { message_id: this.lastMessageId });
     // @ts-ignore
     this.jsonResponseParsingFunctions[data.type](data.payload);
