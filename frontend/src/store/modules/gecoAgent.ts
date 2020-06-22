@@ -21,10 +21,10 @@ export default {
     functionsArea,
     parametersBox,
     DataViz
-  },
-  mutations: {
-    updateLastMessageId(state: any, newValue: number): void {
-      state.lastMessageId = newValue;
-    }
   }
+  // mutations: {
+  //   updateLastMessageId(state: any, newValue: number): void {
+  //     state.lastMessageId = newValue;
+  //   }
+  // }
 };

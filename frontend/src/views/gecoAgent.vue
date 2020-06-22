@@ -5,7 +5,7 @@
         GeCo Agent
         <font-awesome-icon class="icon" :icon="['fas', 'dna']" size="1x" />
       </h1>
-      <div class="reset_button">
+      <div class="reset_button" @click="reset">
         <font-awesome-icon class="icon" :icon="['fas', 'redo']" size="2x" />
         Reset
       </div>
@@ -66,7 +66,7 @@ const dataVizStore = namespace('gecoAgent/DataViz');
 })
 export default class GecoAgent extends Vue {
   @conversationStore.State('currentMessage') message!: string;
-  @gecoAgentStore.State('lastMessageId') lastMessageId!: number;
+  // @gecoAgentStore.State('lastMessageId') lastMessageId!: number;
 
   @tools.Mutation updateFieldList!: (newList: any) => void;
   @tools.Mutation updateQueryParameters!: (newTool: string) => void;
@@ -86,7 +86,9 @@ export default class GecoAgent extends Vue {
   @tools.Mutation removeSingleToolFromPane!: (tool: string) => void;
   @dataVizStore.Mutation setCharts!: (newCharts: DataSummaryPayload) => void;
   @dataVizStore.Action updateToolToShow!: (newTool: string) => void;
-  @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
+  // @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
+
+  lastMessageId = -1;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
     if (jsonPayload.add) {
@@ -165,7 +167,8 @@ export default class GecoAgent extends Vue {
     if (data.show) {
       this.updateToolToShow(data.show);
     }
-    this.updateLastMessageId(data.message_id);
+    // this.updateLastMessageId(data.message_id);
+    this.lastMessageId = data.message_id;
     socket.emit('ack', { message_id: this.lastMessageId });
     // @ts-ignore
     this.jsonResponseParsingFunctions[data.type](data.payload);
@@ -185,6 +188,11 @@ export default class GecoAgent extends Vue {
     a.click();
     // Per chiamarla:
     // this.downloadFile(this.message, 'esempio.txt', 'text/plain');
+  }
+
+  reset(): void {
+    this.message = 'reset session';
+    this.sendMessage();
   }
 }
 </script>
