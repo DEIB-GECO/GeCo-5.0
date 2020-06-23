@@ -8,6 +8,7 @@ import queryParameters from './geco_agent_modules/queryParameters';
 import functionsArea from './geco_agent_modules/functionsArea';
 import parametersBox from './geco_agent_modules/parametersBox';
 import DataViz from './geco_agent_modules/dataviz';
+import process from './geco_agent_modules/process';
 
 export default {
   namespaced: true,
@@ -20,7 +21,8 @@ export default {
     queryParameters,
     functionsArea,
     parametersBox,
-    DataViz
+    DataViz,
+    process
   }
   // mutations: {
   //   updateLastMessageId(state: any, newValue: number): void {

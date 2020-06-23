@@ -18,9 +18,13 @@
     </div>
     <div class="grid_container_lower_row">
       <div class="prova pane_border box_pane">
-        <div class="data_selection_box">
+        <div
+          v-for="item in stepList"
+          :key="item.name"
+          class="data_selection_box"
+        >
           <div>
-            Data Selection
+            {{ item.name }}
           </div>
           <font-awesome-icon
             class="download_icon"
@@ -55,6 +59,7 @@ const conversationStore = namespace('gecoAgent/conversation');
 const parametersStore = namespace('gecoAgent/parametersBox');
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
 const dataVizStore = namespace('gecoAgent/DataViz');
+const processStore = namespace('gecoAgent/process');
 
 @Component({
   components: {
@@ -66,6 +71,7 @@ const dataVizStore = namespace('gecoAgent/DataViz');
 })
 export default class GecoAgent extends Vue {
   @conversationStore.State('currentMessage') message!: string;
+  @processStore.State stepList!: [ProcessStep];
   // @gecoAgentStore.State('lastMessageId') lastMessageId!: number;
 
   @tools.Mutation updateFieldList!: (newList: any) => void;
@@ -86,6 +92,9 @@ export default class GecoAgent extends Vue {
   @tools.Mutation removeSingleToolFromPane!: (tool: string) => void;
   @dataVizStore.Mutation setCharts!: (newCharts: DataSummaryPayload) => void;
   @dataVizStore.Action updateToolToShow!: (newTool: string) => void;
+  @processStore.Mutation('parseJsonResponse') processParser!: (
+    newProcess: ProcessPanePayload
+  ) => void;
   // @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
 
   lastMessageId = -1;
@@ -121,7 +130,8 @@ export default class GecoAgent extends Vue {
     available_choices: this.availableChoicesParser,
     tools_setup: this.addRemoveTools,
     data_summary: this.setCharts,
-    dataset_download: this.updateFileToDownload
+    dataset_download: this.updateFileToDownload,
+    process: this.processParser
   };
 
   updateFileToDownload(payload: any) {
@@ -214,7 +224,7 @@ export default class GecoAgent extends Vue {
 }
 
 .reset_button {
-  float: right;
+  /* float: right; */
   display: inline;
   margin: auto;
   font-weight: bold;
