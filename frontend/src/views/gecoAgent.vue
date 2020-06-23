@@ -131,7 +131,7 @@ export default class GecoAgent extends Vue {
     tools_setup: this.addRemoveTools,
     data_summary: this.setCharts,
     dataset_download: this.updateFileToDownload,
-    process: this.processParser
+    workflow: this.processParser
   };
 
   updateFileToDownload(payload: any) {
