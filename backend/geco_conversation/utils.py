@@ -79,10 +79,15 @@ class Utils(object):
                     "add" : [add],
                     "remove" : [remove]}}
 
-    def download(link_list):
-        return {"type" : "dataset_download",
-                "show" : "download",
-                "payload" : {'urls': link_list}}
+    def workflow(state, link_list=[]):
+        if link_list!=[]:
+            return {"type": "workflow",
+                    "payload": {"state": state}}
+        else:
+            return {"type": "workflow",
+                    "payload": {"state": state,
+                                "download": link_list}}
+
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))

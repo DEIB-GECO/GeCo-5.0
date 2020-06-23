@@ -516,6 +516,17 @@
 - experimental data
 - sample
 - samples
+- [data_type](field)
+- [file_format](field)
+- [disease](field)
+- [cell](field)
+- [biosample_type](field)
+- [feature](field)
+- [source](field)
+- [is_healthy](field)
+- [target](field)
+- [technique](field)
+- [tissue](field)
 - [narrow]{"entity": "file_format", "value": "narrowpeak"} files
 - [broad]{"entity": "file_format", "value": "broadpeak"} files
 - [broadpeak](file_format) experiments
@@ -1425,6 +1436,10 @@
 - I am lost
 - what should I do?
 - what should I reply?
+- I don't know what to do
+- what?
+- I don't know
+- sorry, can you explain?
 
 ## intent:union
 - I want to do union the two datasets

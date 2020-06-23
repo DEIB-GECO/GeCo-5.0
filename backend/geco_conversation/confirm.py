@@ -43,7 +43,7 @@ class Confirm(AbstractAction):
         return [Utils.chat_message("OK, dataset saved with name: " + name),
                 Utils.chat_message(messages.other_dataset),
                 Utils.param_list(self.status['fields']),
-                Utils.download(urls)],\
+                Utils.workflow('Data selection', urls)],\
                None, {"dataset_list": self.status['dataset_list']}
 
     def next_action_logic(self, message, intent, entities):
