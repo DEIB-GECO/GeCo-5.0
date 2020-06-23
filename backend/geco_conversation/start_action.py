@@ -20,15 +20,15 @@ class StartAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         if intent == 'retrieve_annotations':
-            msg = []
+            msg = [Utils.workflow('Data selection')]
             next_node = AnnotationAction(entities)
             new_status= {'geno_surf': Geno_surf(annotation_fields, True)}
         elif intent == 'retrieve_experiments':
-            msg = []
+            msg = [Utils.workflow('Data selection')]
             next_node = ExperimentAction(entities)
             new_status= {'geno_surf': Geno_surf(experiment_fields, False)}
         else:
-            msg = [Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?")]
+            msg = [Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?"),Utils.workflow('Data selection')]
             next_node = None
             new_status = {}
         return msg, next_node, new_status
