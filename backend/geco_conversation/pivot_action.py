@@ -20,11 +20,11 @@ class PivotAction(AbstractAction):
 
     def metadata_logic(self, message, intent, entities):
         self.logic = self.region_logic
-        return [Utils.chat_message("OK, which region data do you want to keep in the columns?")], None, {}
+        return [Utils.chat_message("And which region data do you want to keep in the columns?")], None, {}
 
     def region_logic(self, message, intent, entities):
         self.logic = self.value_logic
         return [Utils.chat_message("Finally, what are the values that you want to see?")], None, {}
 
     def value_logic(self, message, intent, entities):
-        return [Utils.chat_message("Ok, here is your table. You can also download it."),Utils.chat_message(messages.bye_message)], None, {}
+        return [Utils.chat_message("Here is your table. You can also download it."),Utils.chat_message(messages.bye_message)], None, {}

@@ -150,12 +150,32 @@ class Geno_surf:
             print(values)
         return values
 
-def check_existance(is_ann, fields_dict):
-    fields_dict['is_annotation'] = ['true']
-    data = '{"gcm":' + str(fields_dict).replace("'",'"') + ',"type":"synonym","kv":{}}'
+    def meta_table(self, gcm):
+        gcm_source = '"source": ["tcga","encode","roadmap epigenomics","1000 genomes","refseq"]'
+        if 'source' not in gcm:
+            filter = ','.join(
+                [self.is_ann_gcm] + [gcm_source] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v]))
+                                                    for (k, v) in gcm.items()])
+        else:
+            filter = ','.join(
+                [self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v) in
+                                     gcm.items()])
+        data = '{"gcm":{' + str(filter) + '},"type":"original","kv":{}}'
+
+        response_post = requests.post(api_url + 'query/table?agg=true&order_col=item_source_id&order_dir=asc&rel_distance=3', headers=headers_post, data=data)
+        val = []
+        if response_post.status_code == 200:
+            val.append(response_post.content.decode('utf-8').split(sep='\n'))
+        return val
+
+def check_existance(is_ann, gcm):
+    is_ann_gcm = '"is_annotation":["true"]' if is_ann else '"is_annotation":["false"]'
+    filter = ','.join([is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v) in gcm.items()])
+    data = '{"gcm":{' + str(filter) + '},"type":"original","kv":{}}'
     #print(data)
     response_post = requests.post(api_url + 'query/count?agg=false&rel_distance=3', headers=headers_post, data=data)
     if response_post.status_code == 200:
+        print(int(response_post.content.decode('utf-8').strip()))
         return int(response_post.content.decode('utf-8').strip())
     else:
         print("error")

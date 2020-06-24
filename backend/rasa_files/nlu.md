@@ -563,6 +563,14 @@
 - [cna](data_type)
 - [blood](tissue)
 - [kidney](tissue)
+- [gene expression]{"entity":"data_type", "value":"gene expression quantification"}
+- [gene expression]{"entity":"data_type", "value":"gene expression quantification"} data
+- [RNA expression]{"entity":"data_type", "value":"gene expression quantification"}
+- [RNA expression]{"entity":"data_type", "value":"gene expression quantification"} data
+- [rna expression]{"entity":"data_type", "value":"gene expression quantification"}
+- [rna expressions]{"entity":"data_type", "value":"gene expression quantification"}
+- [exon expressions]{"entity":"data_type", "value":"exon quantification"}
+- [exon expression]{"entity":"data_type", "value":"exon quantification"} data
 - I would like to retrieve items from [tcga](source) regarding [kidney tissue]{"entity":"tissue", "value":"kidney"}
 - [kidney tissue]{"entity":"tissue", "value":"kidney"}
 - [heart tissue]{"entity":"tissue", "value":"heart, mediastinum, and pleura"}
@@ -1420,6 +1428,13 @@
 - i need [micro rna expressions]{"entity": "data_type", "value": "mirna expression quantification"}
 - I would like to have [gene expression]{"entity": "data_type", "value": "gene expression quantification"} data from [tcga](source)
 - I would like to have [mirna expression]{"entity": "data_type", "value": "mirna expression quantification"} data from [tcga](source)
+- i need [rna]{"entity": "data_type", "value": "gene expression quantification"} data
+- i need [exon expressions]{"entity": "data_type", "value": "exon quantification"}
+- i need [dna-methylation]{"entity": "data_type", "value": "dna methylation"}
+- [exon expressions]{"entity": "data_type", "value": "exon quantification"}
+- [exon quantification]{"entity": "data_type", "value": "exon quantification"}
+- [exon quantifications]{"entity": "data_type", "value": "exon quantification"}
+- [tcga](source) [gene expression]{"entity": "data_type", "value": "gene expression quantification"} [kidney](tissue) [hg19](assembly) 
 
 ## intent:help
 - What can I do?
@@ -1443,6 +1458,9 @@
 
 ## intent:union
 - I want to do union the two datasets
+- can you do the union?
+- do union
+- UNION
 - I would like to do the union of the two datasets
 - union
 - do the union of the two datasets
@@ -1453,6 +1471,12 @@
 - I would like to join of the two datasets
 - join
 - join of the two datasets
+- JOIN
+- i need to join 
+- i want to do the join
+- can you join them?
+- join them
+- put them together with the join
 
 ## intent:difference
 - I want to do the difference the two datasets
@@ -1963,9 +1987,12 @@
 - gene expression
 - gene expressions
 - gene expression quantifications
+- rna expression
+- gene quantifications
 
 ## synonym:mirna expression quantification
 - mirna expressions
 - mirna quantifications
 - mirna expression quantifications
 - mirna expression
+- microrna expression

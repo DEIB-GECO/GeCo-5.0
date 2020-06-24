@@ -146,6 +146,7 @@ def test_message(message):
         Utils.pyconsole_debug(msg)
         id = add_session_message(session, msg)
         msg['message_id'] = id
+        print(type(msg))
         emit('json_response', msg)
 
         if msg['type'] == 'message':
@@ -190,6 +191,7 @@ def test_ack_message(message):
                 emit('json_response',
                      {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']}, 'message_id': x['message_id']})
             for x in session['last_json']:
+                print( type(session['last_json'][x]))
                 emit('json_response', session['last_json'][x])
         else:
             for x in session['messages']:
@@ -199,6 +201,7 @@ def test_ack_message(message):
 
             for x in session['last_json']:
                 if session['last_json'][x]['message_id'] > user_message+1:
+                    print(type(session['last_json'][x]))
                     emit('json_response', session['last_json'][x])
 
 # TODO: maybe here we need to manage the session storing

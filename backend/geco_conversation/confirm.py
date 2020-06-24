@@ -10,7 +10,7 @@ from geco_conversation import *
 class Confirm(AbstractAction):
 
     def on_enter_messages(self):
-        return [Utils.chat_message("Do you want to keep your selection?")], None, {}
+        return [Utils.chat_message("You can see your choices in the bottom right panel.\nDo you want to keep your selection?")], None, {}
 
     def help_message(self):
         return [Utils.chat_message(messages.confirm_help)]
@@ -39,11 +39,12 @@ class Confirm(AbstractAction):
         self.status['fields'].update({'name':name})
         self.logic = self.next_action_logic
 
+        print(Utils.workflow('Data selection', True, urls))
 
-        return [Utils.chat_message("OK, dataset saved with name: " + name),
+        return [Utils.chat_message("OK, dataset saved with name: " + name + ".\nYou can download the data by clicking on the arrow in the bottom panel."),
                 Utils.chat_message(messages.other_dataset),
                 Utils.param_list(self.status['fields']),
-                Utils.workflow('Data selection', urls)],\
+                Utils.workflow('Data selection', True, urls)],\
                None, {"dataset_list": self.status['dataset_list']}
 
     def next_action_logic(self, message, intent, entities):
@@ -56,15 +57,16 @@ class Confirm(AbstractAction):
         elif intent == "retrieve_experiments":
             msgs = []
             next_state = ExperimentAction(entities)
-        elif len(self.status['dataset_list'])==2:
-            msgs = []
-            #next_state = MetadataAction({'fields': fields})
-            next_state = BinaryAction({})
+        # elif len(self.status['dataset_list'])==2:
+        #    msgs = [Utils.workflow('Dataset elaboration')]
+        #    #next_state = MetadataAction({'fields': fields})
+        #    next_state = BinaryAction({})
         else:
-            msgs = []
+            msgs = [messages.bye_message, Utils.workflow('END')]
             fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
-            # next_state = MetadataAction({'fields': fields})
-            next_state = {}
+            #next_state = MetadataAction({'fields': fields})
+            next_state = StartAction({})
+
 
         return msgs, next_state, {}
 

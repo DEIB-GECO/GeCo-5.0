@@ -111,7 +111,8 @@ class AnnotationAction(AbstractAction):
                     msg, nx, delta = self.logic(None, None, None)
                     return [Utils.param_list(list_param)] + msg + pie_charts, nx, delta
 
-        fields = {x: self.status[x] for x in annotation_fields}
+        fields = {k: v for (k, v) in self.status.items() if k in annotation_fields}
+        #fields = {x: self.status[x] for x in annotation_fields}
         samples = check_existance(True, fields)
 
         back = AnnotationAction
