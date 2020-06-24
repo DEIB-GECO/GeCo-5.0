@@ -48,7 +48,7 @@ class UnionAction(AbstractAction):
             msgs = []
             next_state = ExperimentAction(entities)
         else:
-            msgs = []
+            msgs = [Utils.workflow('Table creation')]
             next_state = PivotAction({})
 
         return msgs, next_state, {}

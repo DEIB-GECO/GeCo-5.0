@@ -2,6 +2,7 @@ from get_api import experiment_fields
 import messages
 import numpy as np
 import time
+from get_api import check_existance
 from geco_conversation import *
 
 class ExperimentAction(AbstractAction):
@@ -43,28 +44,41 @@ class ExperimentAction(AbstractAction):
                     del (self.status[k])
 
         gcm_filter = {k:v for (k,v) in self.status.items() if k in experiment_fields}
-        print('GCM FILTER')
-        print(gcm_filter)
+
         if len(gcm_filter) > 0:
             self.status['geno_surf'].update(gcm_filter)
         pie_charts = self.create_piecharts(gcm_filter)
         #Find fields that are not already selected by the user
         #missing_fields = list(set(self.status['geno_surf'].fields_names).difference(set(self.status.keys())))
         missing_fields = self.status['geno_surf'].fields_names
-        print(missing_fields)
-        if message is None:
-            list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
-            if len(list_param)!=0:
-                self.logic = self.field_logic
-                return [Utils.chat_message("Which field do you want to select?"),
-                        Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help),
-                        Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts, \
-                       None, {}
-            else:
-                fields = {x: self.status[x] for x in experiment_fields if x in self.status}
-                back = ExperimentAction
 
-                return [Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})], Confirm({"fields": fields, "back": back}), {}
+        fields = {k: v for (k, v) in self.status.items() if k in experiment_fields}
+        print(fields)
+        samples = check_existance(False, fields)
+        print(samples)
+        if samples > 0:
+            print('entro1')
+            print(samples)
+            if message is None:
+                list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
+                if len(list_param)!=0:
+                    self.logic = self.field_logic
+                    return [Utils.chat_message("Which field do you want to select?"),
+                            Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help),
+                            Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts, \
+                           None, {}
+                else:
+                    fields = {x: self.status[x] for x in experiment_fields if x in self.status}
+                    back = ExperimentAction
+
+                    return [Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})], Confirm({"fields": fields, "back": back}), {}
+        else:
+            print('entro2')
+            print(samples)
+            for x in experiment_fields:
+                if x in self.status:
+                    del self.status[x]
+            return [Utils.param_list(fields), Utils.chat_message(messages.no_exp_found)], self, {}
 
         return [], None, {}
 
@@ -203,3 +217,5 @@ class ExperimentAction(AbstractAction):
         back = ExperimentAction
 
         return [], Confirm({"fields": fields, "back": back}), {}
+
+

@@ -79,14 +79,14 @@ class Utils(object):
                     "add" : [add],
                     "remove" : [remove]}}
 
-    def workflow(state, link_list=[]):
-        if link_list!=[]:
-            return {"type": "workflow",
-                    "payload": {"state": state}}
-        else:
+    def workflow(state, download=False, link_list=[]):
+        if download:
             return {"type": "workflow",
                     "payload": {"state": state,
-                                "download": link_list}}
+                                "url": link_list[0]}}
+        else:
+            return {"type": "workflow",
+                    "payload": {"state": state}}
 
 
     def pyconsole_debug(payload):
