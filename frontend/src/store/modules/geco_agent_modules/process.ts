@@ -16,6 +16,7 @@ class Process extends VuexModule {
   parseJsonResponse(payload: ProcessPanePayload): void {
     const lastElement = this.stepList.pop();
     if (payload.url) {
+      console.log("PROCESS: c'e' un url!");
       if (lastElement) {
         lastElement.urlList = payload.url;
         lastElement.isDownloadButtonVisible = true;
@@ -24,9 +25,11 @@ class Process extends VuexModule {
     } else {
       if (this.lastElementName != payload.state) {
         if (lastElement) {
+          console.log('PROCESS: completo il precedente step');
           lastElement.state = 'completed';
           this.stepList.push(lastElement);
         }
+        console.log('PROCESS: inserisco nuovo step');
         this.stepList.push({
           name: payload.state,
           urlList: [],
@@ -35,7 +38,10 @@ class Process extends VuexModule {
         });
         this.lastElementName = payload.state;
       } else {
+        console.log('PROCESS: si chiama uguale-> salto ');
+
         if (lastElement) {
+          console.log('PROCESS: pusho quello vecchio');
           this.stepList.push(lastElement);
         }
       }

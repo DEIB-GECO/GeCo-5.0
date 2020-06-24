@@ -21,7 +21,7 @@
         <div
           v-for="item in stepList"
           :key="item.name"
-          class="data_selection_box"
+          :class="['process_step_box', item.state]"
         >
           <div>
             {{ item.name }}
@@ -210,7 +210,7 @@ export default class GecoAgent extends Vue {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 @import '../style/base.scss';
 .container {
   height: 95vh;
@@ -247,7 +247,7 @@ export default class GecoAgent extends Vue {
   width: 80%;
 }
 
-.data_selection_box {
+.process_step_box {
   width: 100px;
   position: relative;
   border: solid 3px #0b3142;
@@ -256,6 +256,15 @@ export default class GecoAgent extends Vue {
   float: left;
   margin-left: 10px;
   font-weight: bold;
+}
+
+.completed {
+  background-color: #0b3142;
+  color: white;
+
+  .download_icon {
+    color: white;
+  }
 }
 
 .prova {
