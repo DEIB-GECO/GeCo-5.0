@@ -34,6 +34,10 @@ class Process extends VuexModule {
           state: 'active'
         });
         this.lastElementName = payload.state;
+      } else {
+        if (lastElement) {
+          this.stepList.push(lastElement);
+        }
       }
     }
   }
