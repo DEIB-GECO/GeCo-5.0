@@ -97,6 +97,8 @@ export default class GecoAgent extends Vue {
   ) => void;
   // @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
 
+  @processStore.Mutation resetProcess!: () => void;
+
   lastMessageId = -1;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
@@ -206,6 +208,9 @@ export default class GecoAgent extends Vue {
     ) {
       this.editMessage('reset session');
       this.sendMessage();
+      this.resetProcess();
+      this.updateFieldList([]);
+      this.parameterParser([]);
     }
   }
 }

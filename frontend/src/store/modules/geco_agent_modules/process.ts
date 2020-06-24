@@ -47,6 +47,12 @@ class Process extends VuexModule {
       }
     }
   }
+
+  @Mutation
+  resetProcess() {
+    this.stepList = [];
+    this.lastElementName = '';
+  }
 }
 
 export default Process;
