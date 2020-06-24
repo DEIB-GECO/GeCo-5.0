@@ -62,7 +62,7 @@ class Confirm(AbstractAction):
         #    #next_state = MetadataAction({'fields': fields})
         #    next_state = BinaryAction({})
         else:
-            msgs = [messages.bye_message, Utils.workflow('END')]
+            msgs = [Utils.chat_message(messages.bye_message), Utils.workflow('END')]
             fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
             #next_state = MetadataAction({'fields': fields})
             next_state = StartAction({})
