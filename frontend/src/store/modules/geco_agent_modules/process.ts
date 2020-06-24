@@ -2,14 +2,15 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 
 @Module({ namespaced: true })
 class Process extends VuexModule {
-  stepList: [ProcessStep] = [
-    {
-      name: 'Data Selection',
-      urlList: [],
-      isDownloadButtonVisible: false,
-      state: 'active'
-    }
+  stepList: ProcessStep[] = [
+    // {
+    //   name: 'Data Selection',
+    //   urlList: [],
+    //   isDownloadButtonVisible: false,
+    //   state: 'active'
+    // }
   ];
+  lastElementName = '';
 
   @Mutation
   parseJsonResponse(payload: ProcessPanePayload): void {
@@ -21,16 +22,19 @@ class Process extends VuexModule {
         this.stepList.push(lastElement);
       }
     } else {
-      if (lastElement) {
-        lastElement.state = 'completed';
-        this.stepList.push(lastElement);
+      if (this.lastElementName != payload.state) {
+        if (lastElement) {
+          lastElement.state = 'completed';
+          this.stepList.push(lastElement);
+        }
+        this.stepList.push({
+          name: payload.state,
+          urlList: [],
+          isDownloadButtonVisible: false,
+          state: 'active'
+        });
+        this.lastElementName = payload.state;
       }
-      this.stepList.push({
-        name: payload.state,
-        urlList: [],
-        isDownloadButtonVisible: false,
-        state: 'active'
-      });
     }
   }
 }
