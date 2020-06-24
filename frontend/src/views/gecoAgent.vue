@@ -30,8 +30,8 @@
             class="download_icon"
             :icon="['fas', 'download']"
             size="1x"
-            @click="downloadFile(linkList, 'esempio.txt', 'text/plain')"
-            v-if="isDownloadButtonVisible"
+            @click="downloadFile(item.urlList, 'esempio.txt', 'text/plain')"
+            v-if="item.isDownloadButtonVisible"
           />
         </div>
       </div>
