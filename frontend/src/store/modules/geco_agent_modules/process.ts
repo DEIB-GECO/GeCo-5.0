@@ -29,14 +29,16 @@ class Process extends VuexModule {
           lastElement.state = 'completed';
           this.stepList.push(lastElement);
         }
-        console.log('PROCESS: inserisco nuovo step');
-        this.stepList.push({
-          name: payload.state,
-          urlList: [],
-          isDownloadButtonVisible: false,
-          state: 'active'
-        });
-        this.lastElementName = payload.state;
+        if (payload.state != 'END') {
+          console.log('PROCESS: inserisco nuovo step');
+          this.stepList.push({
+            name: payload.state,
+            urlList: [],
+            isDownloadButtonVisible: false,
+            state: 'active'
+          });
+          this.lastElementName = payload.state;
+        }
       } else {
         console.log('PROCESS: si chiama uguale-> salto ');
 
