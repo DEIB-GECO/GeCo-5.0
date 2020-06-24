@@ -82,14 +82,12 @@ class ExperimentAction(AbstractAction):
 
         return [], None, {}
 
-
-
     def value_logic(self, message, intent, entities):
         request_field = self.status['field']
 
         db = getattr(self.status["geno_surf"], request_field + '_db')
-        given_value = entities[request_field] if (request_field in entities) else [message.strip().lower()]
-        if request_field=='is_healthy':
+        given_value = entities[request_field] if ((request_field in entities) and (entities[request_field][0] in db)) else [message.strip().lower()]
+        if request_field == 'is_healthy':
 
             if intent == 'affirm':
                 self.status[request_field] = ['true']
@@ -103,7 +101,8 @@ class ExperimentAction(AbstractAction):
             pie_charts = self.create_piecharts(gcm_filter)
             self.logic = self.field_logic
             return [Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
-                    Utils.choice('Available fields', list_param),Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
+                    Utils.choice('Available fields', list_param), Utils.param_list(
+                    {k: v for (k, v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
 
         elif given_value[0] not in db or message not in db:
 
@@ -115,7 +114,7 @@ class ExperimentAction(AbstractAction):
                    None, {}
 
         else:
-            if request_field not in self.status or self.status[request_field]==[]:
+            if request_field not in self.status or self.status[request_field] == []:
                 self.status[request_field] = given_value
             else:
                 self.status[request_field].append(given_value)
@@ -128,13 +127,16 @@ class ExperimentAction(AbstractAction):
             if len(list_param) > 0:
                 self.logic = self.field_logic
                 return [Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
-                        Utils.choice('Available fields',list_param),Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
+                        Utils.choice('Available fields', list_param), Utils.param_list(
+                        {k: v for (k, v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
             else:
                 from .confirm import Confirm
                 fields = {x: self.status[x] for x in experiment_fields if x in self.status}
                 back = ExperimentAction
 
                 return [], Confirm({"fields": fields, "back": back}), {}
+
+
 
     def field_logic(self, message, intent, entities):
         temp = self.status.copy()

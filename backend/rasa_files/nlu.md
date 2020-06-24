@@ -505,6 +505,13 @@
 - positions for [transcript](content_type) in [hg19](assembly)
 - [roadmap epigenomics](source_ann) coordinates for [utr](content_type)
 - i need annotation data from [gencode](source_ann)
+- [rnase p rna](content_type)
+- [rnase mrp rna](content_type)
+- annotations from [gencode](source)
+- annotations for [gencode](source)
+- [gencode](source)
+- [genes]{"entity":"content_type", "value":"gene"} from [gencode](source)
+- [repeat region](content_type) annotations
 
 ## intent:retrieve_experiments
 - We would like to retrieve items of [hg19](assembly) assembly from [healthy]{"entity": "is_healthy", "value": "true"} [brain tissue]{"entity": "tissue", "value": "brain"} (and possibly its subparts) of male gender, up to 30 years old.
@@ -513,6 +520,7 @@
 - i need experiments
 - i want experiments
 - i need experimental data
+- experimental data from [tcga](source)
 - experimental data
 - sample
 - samples
