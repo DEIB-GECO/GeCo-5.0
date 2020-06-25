@@ -512,6 +512,9 @@
 - [gencode](source)
 - [genes]{"entity":"content_type", "value":"gene"} from [gencode](source)
 - [repeat region](content_type) annotations
+- [simple nucleotide variation](feature)
+- I want [simple nucleotide variation](feature)
+- I need data from [dna repair](feature)
 
 ## intent:retrieve_experiments
 - We would like to retrieve items of [hg19](assembly) assembly from [healthy]{"entity": "is_healthy", "value": "true"} [brain tissue]{"entity": "tissue", "value": "brain"} (and possibly its subparts) of male gender, up to 30 years old.
