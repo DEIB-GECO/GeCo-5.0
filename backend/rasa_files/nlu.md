@@ -807,6 +807,11 @@
 - [bed](file_format) files from [tads](source) for [grch38](assembly)
 - data regarding [variant calling](data_type) for cell line [heart muscle cell](cell)
 - i need cell [hl60 cell](cell)
+- [expression]{"entity":"data_type", "value":"gene expression quantification"} data
+- [expressions]{"entity":"data_type", "value":"gene expression quantification"} data
+- i want [expression]{"entity":"data_type", "value":"gene expression quantification"} data
+- i need [expressions]{"entity":"data_type", "value":"gene expression quantification"}
+- [expression]{"entity":"data_type", "value":"gene expression quantification"} 
 - can i have [tissue](biosample_type) data?
 - please give me [gcr](target) data
 - I would like to have data regarding [midbrain](tissue) extracted with [genetic modification followed by dnase-seq](technique)
