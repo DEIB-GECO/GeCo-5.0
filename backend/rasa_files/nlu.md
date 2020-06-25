@@ -512,9 +512,7 @@
 - [gencode](source)
 - [genes]{"entity":"content_type", "value":"gene"} from [gencode](source)
 - [repeat region](content_type) annotations
-- [simple nucleotide variation](feature)
-- I want [simple nucleotide variation](feature)
-- I need data from [dna repair](feature)
+
 
 ## intent:retrieve_experiments
 - We would like to retrieve items of [hg19](assembly) assembly from [healthy]{"entity": "is_healthy", "value": "true"} [brain tissue]{"entity": "tissue", "value": "brain"} (and possibly its subparts) of male gender, up to 30 years old.
@@ -527,6 +525,9 @@
 - experimental data
 - sample
 - samples
+- [simple nucleotide variation](feature)
+- I want [simple nucleotide variation](feature)
+- I need data from [dna repair](feature)
 - [data_type](field)
 - [file_format](field)
 - [disease](field)
@@ -613,6 +614,7 @@
 - can i have [ptbp1](target) [chip-seq](technique) for cell line [helper t cell](cell)?
 - I am looking for [masked somatic mutation](data_type) data extracted with [genetic modification followed by dnase-seq](technique) from [tads](source)
 - data for [copy number variation](feature) for [ovary](tissue)
+- i need samples for [copy number variation](feature) for [ovary](tissue)
 - samples of [tag](feature) of patients affected by [cervical squamous cell carcinoma and endocervical adenocarcinoma](disease)
 - I would like to have [hg19](assembly) assembly data for [tumoral]{"entity":"is_healthy", "value":False} patients with [breast cancer (adenocarcinoma)](disease)
 - I would like to have [hg19](assembly) assembly data for [healthy]{"entity":"is_healthy", "value":True} patients with [b cell lymphoma](disease)
