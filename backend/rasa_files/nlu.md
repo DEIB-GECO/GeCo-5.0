@@ -774,6 +774,9 @@
 - i need cell [megakaryocytic myelosclerosis](cell)
 - can i have [cell line](biosample_type) data?
 - please give me [hyplip1](target) data
+- [transcription factors]{"entity":"feature", "value":"transcription factor"} for [cervical adenocarcinoma](disease)
+- [variants](feature) regarding [kidney](tissue)
+- [mutations](feature)
 - I would like to have data regarding [palate](tissue) extracted with [rrbs](technique)
 - can i have [znf217](target) [dna methylation 450](technique) for cell line [primary monocytes from peripheral blood](cell)?
 - I am looking for [dna methylation](data_type) data extracted with [dna methylation 27](technique) from [tcga](source)
