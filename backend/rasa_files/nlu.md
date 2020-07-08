@@ -575,7 +575,12 @@
 - [cna](data_type)
 - [blood](tissue)
 - [kidney](tissue)
+- [transcription factors]{"entity":"feature", "value":"transcription factor"}
+- [transcription factors]{"entity":"feature", "value":"transcription factor"} for [cervical carcinoma]{"entity":"disease", "value":"cervical adenocarcinoma"}
 - [gene expression]{"entity":"data_type", "value":"gene expression quantification"}
+- [gene expressions]{"entity":"data_type", "value":"gene expression quantification"}
+- [gene expressions]{"entity":"data_type", "value":"gene expression quantification"} datasets
+- [gene expressions]{"entity":"data_type", "value":"gene expression quantification"} data
 - [gene expression]{"entity":"data_type", "value":"gene expression quantification"} data
 - [RNA expression]{"entity":"data_type", "value":"gene expression quantification"}
 - [RNA expression]{"entity":"data_type", "value":"gene expression quantification"} data
@@ -1507,6 +1512,29 @@
 - remove from the first dataset the second one
 - remove from the second datsaset the first one
 
+## intent:chitchat
+- interesting datasets
+- data
+- ciao
+- love
+- other
+- intersting analysis
+- biological data
+- genomic data
+- how is the weather tomorrow?
+- can we speak about something else?
+- analysis
+
+## intent:name
+- what is your name?
+- who are you?
+- what's your name?
+- what do you do?
+
+## intent:mood
+- how are you?
+- how is your mood?
+- are you well?
 
 ## intent:reset_session
 - reset session

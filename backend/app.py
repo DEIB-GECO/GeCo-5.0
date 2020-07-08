@@ -16,7 +16,7 @@ from geco_conversation import StartAction, Utils
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
-async_mode = "gevent"
+async_mode = "eventlet"
 
 base_url = '/geco_agent/'
 socketio_path = base_url + 'socket.io/'
@@ -246,7 +246,6 @@ def test_connect():
     # data[request.sid] = []
 
     for msg in session['status'].bot_messages:
-
         id = add_session_message(session, msg)
         msg['message_id'] = id
         #emit('json_response', msg)

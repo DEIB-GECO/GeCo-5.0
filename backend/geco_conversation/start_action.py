@@ -27,6 +27,14 @@ class StartAction(AbstractAction):
             msg = [Utils.workflow('Data selection')]
             next_node = ExperimentAction(entities)
             new_status= {'geno_surf': Geno_surf(experiment_fields, False)}
+        elif intent == 'name':
+            msg = [Utils.chat_message(messages.gecoagent)]
+            next_node = StartAction({})
+            new_status = {}
+        elif intent == 'mood':
+            msg = [Utils.chat_message(messages.mood)]
+            next_node = StartAction({})
+            new_status = {}
         else:
             msg = [Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?"),Utils.workflow('Data selection')]
             next_node = None
