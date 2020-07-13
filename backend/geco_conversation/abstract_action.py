@@ -1,4 +1,8 @@
 from abc import ABC, abstractmethod
+from geco_conversation.utils import Utils
+import messages
+import random
+import jokes
 
 
 class AbstractAction(ABC):
@@ -17,6 +21,7 @@ class AbstractAction(ABC):
     def help_message(self):
         pass
 
+
     @abstractmethod
     def logic(self, message, intent, entities):
         pass
@@ -28,5 +33,16 @@ class AbstractAction(ABC):
     def run(self, message, intent, entities):
         if intent == "help":
             return self.help_message(), None, {}
+        elif intent == 'name':
+            msg = [Utils.chat_message(messages.gecoagent)]
+            return msg, None, {}
+        elif intent == 'mood':
+            msg = [Utils.chat_message(messages.mood)]
+            return msg, None, {}
+        elif intent == 'joke':
+            joke = random.choice(jokes.jokes)
+            msg = [Utils.chat_message(joke)]
+            return msg, None, {}
         else:
             return self.logic(message, intent, entities)
+

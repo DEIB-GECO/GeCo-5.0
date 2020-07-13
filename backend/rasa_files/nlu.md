@@ -76,6 +76,8 @@
 - add another
 - put one more
 - add
+- new 
+- new one
 
 
 ## intent:retrieve_annotations
@@ -1463,6 +1465,7 @@
 - [exon expressions]{"entity": "data_type", "value": "exon quantification"}
 - [exon quantification]{"entity": "data_type", "value": "exon quantification"}
 - [exon quantifications]{"entity": "data_type", "value": "exon quantification"}
+- [jund](target)
 - [tcga](source) [gene expression]{"entity": "data_type", "value": "gene expression quantification"} [kidney](tissue) [hg19](assembly) 
 
 ## intent:help
