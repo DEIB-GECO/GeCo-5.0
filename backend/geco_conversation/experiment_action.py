@@ -151,7 +151,7 @@ class ExperimentAction(AbstractAction):
         gcm_filter = {k:v for (k,v) in self.status.items() if k in experiment_fields}
         #if len(gcm_filter) > 0:
         #    self.status['geno_surf'].update(gcm_filter)
-        pie_charts = self.create_piecharts(gcm_filter)
+        #pie_charts = self.create_piecharts(gcm_filter)
         if intent!='deny':
             missing_fields = list(set(self.status['geno_surf'].fields_names).difference(set(self.status.keys())))
 
