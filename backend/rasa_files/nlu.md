@@ -75,6 +75,7 @@
 - i would like to add another one
 - add another
 - put one more
+- add
 
 
 ## intent:retrieve_annotations
@@ -507,10 +508,11 @@
 - i need annotation data from [gencode](source_ann)
 - [rnase p rna](content_type)
 - [rnase mrp rna](content_type)
-- annotations from [gencode](source)
-- annotations for [gencode](source)
+- annotations from [gencode](source_ann)
+- annotations for [gencode](source_ann)
 - [gencode](source)
-- [genes]{"entity":"content_type", "value":"gene"} from [gencode](source)
+- [sequence feature](content_type)
+- [genes]{"entity":"content_type", "value":"gene"} from [gencode](source_ann)
 - [repeat region](content_type) annotations
 
 
@@ -1327,6 +1329,7 @@
 - [broadpeak](file_format) files from [roadmap epigenomics](source) for [hg19](assembly)
 - data regarding [dna seq](data_type) for cell line [dnd-41](cell)
 - i need cell [panc1](cell)
+- [diseade]{"entity":"field", "value":disease}
 - can i have [esc derived cell line](biosample_type) data?
 - please give me [nslp2](target) data
 - I would like to have data regarding [organ system, hepatic]{"entity": "tissue", "value": "liver and intrahepatic bile ducts"} extracted with [chip-seq](technique)
@@ -1479,6 +1482,8 @@
 - what should I reply?
 - I don't know what to do
 - what?
+- I have a question
+- can I ask you something?
 - I don't know
 - sorry, can you explain?
 
@@ -1511,6 +1516,12 @@
 - difference of the two datasets
 - remove from the first dataset the second one
 - remove from the second datsaset the first one
+
+## intent:joke
+- tell me a joke
+- let's joke
+- joke
+- Can you tell me a joke?
 
 ## intent:chitchat
 - interesting datasets

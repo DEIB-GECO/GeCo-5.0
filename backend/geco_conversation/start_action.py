@@ -1,4 +1,6 @@
 import messages
+import random
+import jokes
 from .utils import Utils
 from .abstract_action import AbstractAction
 from .annotation_action import AnnotationAction
@@ -29,11 +31,16 @@ class StartAction(AbstractAction):
             new_status= {'geno_surf': Geno_surf(experiment_fields, False)}
         elif intent == 'name':
             msg = [Utils.chat_message(messages.gecoagent)]
-            next_node = StartAction({})
+            next_node = None
             new_status = {}
         elif intent == 'mood':
             msg = [Utils.chat_message(messages.mood)]
-            next_node = StartAction({})
+            next_node = None
+            new_status = {}
+        elif intent == 'joke':
+            joke = random.choice(jokes.jokes)
+            msg = [Utils.chat_message(joke)]
+            next_node = None
             new_status = {}
         else:
             msg = [Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?"),Utils.workflow('Data selection')]

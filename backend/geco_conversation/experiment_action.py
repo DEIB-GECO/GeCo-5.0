@@ -86,7 +86,7 @@ class ExperimentAction(AbstractAction):
         request_field = self.status['field']
 
         db = getattr(self.status["geno_surf"], request_field + '_db')
-        given_value = entities[request_field] if ((request_field in entities) and (entities[request_field][0] in db)) else [message.strip().lower()]
+        given_value = entities[request_field] if ((request_field in entities)) else [message.strip().lower()]
         if request_field == 'is_healthy':
 
             if intent == 'affirm':
@@ -104,20 +104,13 @@ class ExperimentAction(AbstractAction):
                     Utils.choice('Available fields', list_param), Utils.param_list(
                     {k: v for (k, v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
 
-        elif given_value[0] not in db or message not in db:
-
-            list_param = {x: x for x in getattr(self.status['geno_surf'], str(request_field) + '_db')}
-
-            choice = [True if len(list_param) > 10 else False]
-            return [Utils.chat_message("The {} {} not valid, insert a valid one".format(request_field, given_value)),
-                    Utils.choice(request_field, list_param, show_search=choice)], \
-                   None, {}
-
-        else:
-            if request_field not in self.status or self.status[request_field] == []:
-                self.status[request_field] = given_value
-            else:
-                self.status[request_field].append(given_value)
+        elif any(elem in db for elem in given_value):
+            for i in range(len(given_value)):
+                if given_value[i] in db:
+                    if request_field in self.status:
+                        self.status[request_field].append(given_value[i])
+                    else:
+                        self.status[request_field] = [given_value[i]]
 
             gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
             if len(gcm_filter) > 0:
@@ -136,6 +129,14 @@ class ExperimentAction(AbstractAction):
 
                 return [], Confirm({"fields": fields, "back": back}), {}
 
+        else:
+
+            list_param = {x: x for x in getattr(self.status['geno_surf'], str(request_field) + '_db')}
+
+            choice = [True if len(list_param) > 10 else False]
+            return [Utils.chat_message("The {} {} not valid, insert a valid one".format(request_field, given_value)),
+                    Utils.choice(request_field, list_param, show_search=choice)], \
+                   None, {}
 
 
     def field_logic(self, message, intent, entities):
@@ -148,8 +149,8 @@ class ExperimentAction(AbstractAction):
 
         from .confirm import Confirm
         gcm_filter = {k:v for (k,v) in self.status.items() if k in experiment_fields}
-        if len(gcm_filter) > 0:
-            self.status['geno_surf'].update(gcm_filter)
+        #if len(gcm_filter) > 0:
+        #    self.status['geno_surf'].update(gcm_filter)
         pie_charts = self.create_piecharts(gcm_filter)
         if intent!='deny':
             missing_fields = list(set(self.status['geno_surf'].fields_names).difference(set(self.status.keys())))
@@ -162,27 +163,33 @@ class ExperimentAction(AbstractAction):
                 choice = [True if len(list_param)>10 else False]
                 self.logic = self.value_logic
                 return [Utils.chat_message("Please provide a {}".format(field[0])),
-                        Utils.choice(field[0], list_param, show_search=choice)] + pie_charts, \
+                        Utils.choice(field[0], list_param, show_search=choice)], \
                        None, {}
+                #return [Utils.chat_message("Please provide a {}".format(field[0])),
+                 #       Utils.choice(field[0], list_param, show_search=choice)] + pie_charts, \
+                 #      None, {}
             elif field[0] in self.status['geno_surf'].fields_names and (field[0]!='is_healthy'):
                 self.status['field'] = field[0]
                 list_param = {x: x for x in getattr(self.status['geno_surf'], str(field[0]) + '_db')}
                 choice = [True if len(list_param) > 10 else False]
                 self.logic = self.add_value_logic
                 return [Utils.chat_message("Do you want to change the {} or add a new {}?".format(field[0], field[0])),
-                        Utils.choice(field[0], list_param, show_search=choice)] + pie_charts, \
+                        Utils.choice(field[0], list_param, show_search=choice)], \
                        None, {}
+                #return [Utils.chat_message("Do you want to change the {} or add a new {}?".format(field[0], field[0])),
+                 #       Utils.choice(field[0], list_param, show_search=choice)] + pie_charts, \
+                  #     None, {}
             elif (field[0]=='is_healthy'):
                 self.status['field'] = field[0]
                 list_param = {x: x for x in getattr(self.status['geno_surf'], str(field[0]) + '_db')}
                 self.logic = self.value_logic
                 return [Utils.chat_message("Do you want healthy patients?"),
-                        Utils.choice(field[0], list_param)] + pie_charts, \
+                        Utils.choice(field[0], list_param)], \
                        None, {}
             else:
                 list_param = {x: x for x in missing_fields}
                 return [Utils.chat_message("Sorry, your choice is not available. Please reinsert one."),
-                        Utils.choice('Available fields', list_param)] + pie_charts, None, {}
+                        Utils.choice('Available fields', list_param)] , None, {}
 
         fields = {x:self.status[x] for x in experiment_fields if x in self.status}
         back = ExperimentAction
