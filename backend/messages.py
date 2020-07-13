@@ -1,3 +1,5 @@
+gecoagent = "I am GecoAgent, your assistant through the extraction, the analysis and the visualization of genomic data. Let's proceed with the analysis."
+mood = "I am good thank you! Let's proceed with the analysis."
 initial_greeting = "Hi, there!"
 start_init = "What data are you looking for?"
 start_help = "You can define the dataset you need for your analysis.\nStart by defining if you want annotation data or experimental data."

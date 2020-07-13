@@ -25,6 +25,7 @@ class AnnotationAction(AbstractAction):
             assembly_val = self.status['geno_surf'].retrieve_values(gcm_filter, 'assembly')
             values['Assembly'] = assembly_val
         source_val = self.status['geno_surf'].retrieve_values(gcm_filter, 'source')
+        print(source_val)
         values['Source'] = source_val
         msgs.append(Utils.pie_chart(values))
         return msgs
@@ -37,19 +38,18 @@ class AnnotationAction(AbstractAction):
             self.status['source'] = self.status['source_ann']
             del(self.status['source_ann'])
 
-        for field in annotation_fields:
-            if field in self.status and len(self.status[field]) > 1:
-                self.status[field] = self.status[field][:1]
+        #for field in annotation_fields:
+        #    if field in self.status and len(self.status[field]) > 1:
+        #        self.status[field] = self.status[field][:1]
 
         gcm_filter = {k: v for (k, v) in self.status.items() if k in annotation_fields}
-        print(gcm_filter)
+
         self.status['geno_surf'].update(gcm_filter)
         pie_charts = self.create_piecharts(gcm_filter)
         Utils.pyconsole_debug(self.status)
 
         if message is None:
             if "content_type" not in self.status:
-                db = self.status['geno_surf'].content_type_db
                 list_param = {x: x for x in self.status['geno_surf'].content_type_db}
                 return [Utils.chat_message("Please provide a content (annotation) type"),
                         Utils.choice("content_type", list_param)] + pie_charts, \
@@ -70,17 +70,30 @@ class AnnotationAction(AbstractAction):
         else:
             if "content_type" not in self.status:
                 content_type = entities['content_type'] if "content_type" in entities else [message.strip().lower()]
-                if content_type[0] not in self.status["geno_surf"].content_type_db:
-                    list_param = {x: x for x in self.status['geno_surf'].content_type_db}
-                    return [Utils.chat_message("Content type {} not valid, insert a valid one".format(content_type)),
-                            Utils.choice("content_type", list_param)] + pie_charts, \
-                           None, {}
-                else:
-                    self.status['content_type'] = content_type
+                print(content_type)
+                if any(elem in self.status["geno_surf"].content_type_db for elem in content_type):
+                    print('ENTER QUIIII')
+                    for i in range(len(content_type)):
+                        print(content_type[i])
+                        if content_type[i] in self.status["geno_surf"].content_type_db:
+                            if 'content_type' in self.status:
+                                self.status['content_type'].append(content_type[i])
+                            else:
+                                self.status['content_type']= [content_type[i]]
+                            print('STATUS')
+                            print(self.status['content_type'])
+                    # self.status['content_type'] = content_type
                     pie_charts = self.create_piecharts(gcm_filter)
                     list_param = {x: self.status[x] for x in annotation_fields if x in self.status}
                     msg, nx, delta = self.logic(None, None, None)
                     return [Utils.param_list(list_param)] + msg + pie_charts, nx, delta
+                else:
+                    list_param = {x: x for x in self.status['geno_surf'].content_type_db}
+                    return [Utils.chat_message("Content type {} not valid, insert a valid one".format(content_type)),
+                            Utils.choice("content_type", list_param)] + pie_charts, \
+                           None, {}
+
+
 
             elif "assembly" not in self.status:
                 assembly = entities['assembly'] if "assembly" in entities else [message.strip().lower()]
@@ -99,17 +112,23 @@ class AnnotationAction(AbstractAction):
 
             elif "source" not in self.status:
                 source = entities['source'] if "source" in entities else [message.strip().lower()]
-                if source[0] not in self.status["geno_surf"].source_db:
-                    list_param = {x: x for x in self.status['geno_surf'].source_db}
-                    return [Utils.chat_message("Source {} not valid, insert a valid one".format(source)),
-                            Utils.choice("source", list_param)] + pie_charts, \
-                           None, {}
-                else:
-                    self.status['source'] = source
+                if any(elem in self.status["geno_surf"].source_db for elem in source):
+                    for i in range(len(source)):
+                        if source[i] in self.status["geno_surf"].source_db:
+                            if 'source' in self.status:
+                                self.status['source'].append(source[i])
+                            else:
+                                self.status['source'] = [source[i]]
                     pie_charts = self.create_piecharts(gcm_filter)
                     list_param = {x: self.status[x] for x in annotation_fields if x in self.status}
                     msg, nx, delta = self.logic(None, None, None)
                     return [Utils.param_list(list_param)] + msg + pie_charts, nx, delta
+                else:
+                    list_param = {x: x for x in self.status['geno_surf'].source_db}
+                    return [Utils.chat_message("Source {} not valid, insert a valid one".format(source)),
+                            Utils.choice("source", list_param)] + pie_charts, \
+                           None, {}
+
 
         fields = {k: v for (k, v) in self.status.items() if k in annotation_fields}
         #fields = {x: self.status[x] for x in annotation_fields}

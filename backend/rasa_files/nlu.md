@@ -75,6 +75,7 @@
 - i would like to add another one
 - add another
 - put one more
+- add
 
 
 ## intent:retrieve_annotations
@@ -505,6 +506,15 @@
 - positions for [transcript](content_type) in [hg19](assembly)
 - [roadmap epigenomics](source_ann) coordinates for [utr](content_type)
 - i need annotation data from [gencode](source_ann)
+- [rnase p rna](content_type)
+- [rnase mrp rna](content_type)
+- annotations from [gencode](source_ann)
+- annotations for [gencode](source_ann)
+- [gencode](source)
+- [sequence feature](content_type)
+- [genes]{"entity":"content_type", "value":"gene"} from [gencode](source_ann)
+- [repeat region](content_type) annotations
+
 
 ## intent:retrieve_experiments
 - We would like to retrieve items of [hg19](assembly) assembly from [healthy]{"entity": "is_healthy", "value": "true"} [brain tissue]{"entity": "tissue", "value": "brain"} (and possibly its subparts) of male gender, up to 30 years old.
@@ -513,9 +523,13 @@
 - i need experiments
 - i want experiments
 - i need experimental data
+- experimental data from [tcga](source)
 - experimental data
 - sample
 - samples
+- [simple nucleotide variation](feature)
+- I want [simple nucleotide variation](feature)
+- I need data from [dna repair](feature)
 - [data_type](field)
 - [file_format](field)
 - [disease](field)
@@ -563,7 +577,12 @@
 - [cna](data_type)
 - [blood](tissue)
 - [kidney](tissue)
+- [transcription factors]{"entity":"feature", "value":"transcription factor"}
+- [transcription factors]{"entity":"feature", "value":"transcription factor"} for [cervical carcinoma]{"entity":"disease", "value":"cervical adenocarcinoma"}
 - [gene expression]{"entity":"data_type", "value":"gene expression quantification"}
+- [gene expressions]{"entity":"data_type", "value":"gene expression quantification"}
+- [gene expressions]{"entity":"data_type", "value":"gene expression quantification"} datasets
+- [gene expressions]{"entity":"data_type", "value":"gene expression quantification"} data
 - [gene expression]{"entity":"data_type", "value":"gene expression quantification"} data
 - [RNA expression]{"entity":"data_type", "value":"gene expression quantification"}
 - [RNA expression]{"entity":"data_type", "value":"gene expression quantification"} data
@@ -602,6 +621,7 @@
 - can i have [ptbp1](target) [chip-seq](technique) for cell line [helper t cell](cell)?
 - I am looking for [masked somatic mutation](data_type) data extracted with [genetic modification followed by dnase-seq](technique) from [tads](source)
 - data for [copy number variation](feature) for [ovary](tissue)
+- i need samples for [copy number variation](feature) for [ovary](tissue)
 - samples of [tag](feature) of patients affected by [cervical squamous cell carcinoma and endocervical adenocarcinoma](disease)
 - I would like to have [hg19](assembly) assembly data for [tumoral]{"entity":"is_healthy", "value":False} patients with [breast cancer (adenocarcinoma)](disease)
 - I would like to have [hg19](assembly) assembly data for [healthy]{"entity":"is_healthy", "value":True} patients with [b cell lymphoma](disease)
@@ -761,6 +781,9 @@
 - i need cell [megakaryocytic myelosclerosis](cell)
 - can i have [cell line](biosample_type) data?
 - please give me [hyplip1](target) data
+- [transcription factors]{"entity":"feature", "value":"transcription factor"} for [cervical adenocarcinoma](disease)
+- [variants](feature) regarding [kidney](tissue)
+- [mutations](feature)
 - I would like to have data regarding [palate](tissue) extracted with [rrbs](technique)
 - can i have [znf217](target) [dna methylation 450](technique) for cell line [primary monocytes from peripheral blood](cell)?
 - I am looking for [dna methylation](data_type) data extracted with [dna methylation 27](technique) from [tcga](source)
@@ -791,6 +814,11 @@
 - [bed](file_format) files from [tads](source) for [grch38](assembly)
 - data regarding [variant calling](data_type) for cell line [heart muscle cell](cell)
 - i need cell [hl60 cell](cell)
+- [expression]{"entity":"data_type", "value":"gene expression quantification"} data
+- [expressions]{"entity":"data_type", "value":"gene expression quantification"} data
+- i want [expression]{"entity":"data_type", "value":"gene expression quantification"} data
+- i need [expressions]{"entity":"data_type", "value":"gene expression quantification"}
+- [expression]{"entity":"data_type", "value":"gene expression quantification"} 
 - can i have [tissue](biosample_type) data?
 - please give me [gcr](target) data
 - I would like to have data regarding [midbrain](tissue) extracted with [genetic modification followed by dnase-seq](technique)
@@ -1301,6 +1329,7 @@
 - [broadpeak](file_format) files from [roadmap epigenomics](source) for [hg19](assembly)
 - data regarding [dna seq](data_type) for cell line [dnd-41](cell)
 - i need cell [panc1](cell)
+- [diseade]{"entity":"field", "value":disease}
 - can i have [esc derived cell line](biosample_type) data?
 - please give me [nslp2](target) data
 - I would like to have data regarding [organ system, hepatic]{"entity": "tissue", "value": "liver and intrahepatic bile ducts"} extracted with [chip-seq](technique)
@@ -1453,6 +1482,8 @@
 - what should I reply?
 - I don't know what to do
 - what?
+- I have a question
+- can I ask you something?
 - I don't know
 - sorry, can you explain?
 
@@ -1486,6 +1517,35 @@
 - remove from the first dataset the second one
 - remove from the second datsaset the first one
 
+## intent:joke
+- tell me a joke
+- let's joke
+- joke
+- Can you tell me a joke?
+
+## intent:chitchat
+- interesting datasets
+- data
+- ciao
+- love
+- other
+- intersting analysis
+- biological data
+- genomic data
+- how is the weather tomorrow?
+- can we speak about something else?
+- analysis
+
+## intent:name
+- what is your name?
+- who are you?
+- what's your name?
+- what do you do?
+
+## intent:mood
+- how are you?
+- how is your mood?
+- are you well?
 
 ## intent:reset_session
 - reset session

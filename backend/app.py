@@ -246,7 +246,6 @@ def test_connect():
     # data[request.sid] = []
 
     for msg in session['status'].bot_messages:
-
         id = add_session_message(session, msg)
         msg['message_id'] = id
         #emit('json_response', msg)
