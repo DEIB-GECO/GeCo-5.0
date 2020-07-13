@@ -127,7 +127,15 @@ def test_message(message):
     interpretation = interpreter.parse(user_message)
     intent = interpretation['intent']['name']
     if intent == 'reset_session':
-        reset(session)
+        session['status'].bot_messages.append(Utils.chat_message('Are you sure to reset the session?'))
+    elif session.get('previous_intent')=='reset_session':
+        if intent=='affirm':
+            reset(session)
+        elif intent=='deny':
+            session['status'].bot_messages.append(Utils.chat_message('Ok, I don\'t reset the session.\n The last message was:'))
+            session['status'].bot_messages.append(Utils.chat_message(session['messages'][-4]['text']))
+        else:
+            session['status'].bot_messages.append(Utils.chat_message('Sorry, I didn\'t understand.\n Are you sure to reset the session?'))
     else:
         print(interpretation['entities'])
         entities = {}
@@ -156,6 +164,7 @@ def test_message(message):
         json.dump(data, file)
 
     session['status'].clear_msgs()
+    session['previous_intent']= intent
 
 def add_session_message(session, message):
 

@@ -1535,7 +1535,6 @@
 - intersting analysis
 - biological data
 - genomic data
-- how is the weather tomorrow?
 - can we speak about something else?
 - analysis
 
@@ -1549,6 +1548,13 @@
 - how are you?
 - how is your mood?
 - are you well?
+
+## intent:weather
+- how is today the weather?
+- can you tell me the weather?
+- do you know the weather?
+- how is the weather tomorrow?
+- weather
 
 ## intent:reset_session
 - reset session
