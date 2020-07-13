@@ -158,6 +158,10 @@ export default class GecoAgent extends Vue {
         console.log('ERRORE STRANO', payload);
       }
     });
+    socket.on('reconnect', () => {
+      socket.emit('ack', { message_id: this.lastMessageId });
+      console.log('RECONNECT! Mando ack');
+    });
   }
 
   sendMessage() {
