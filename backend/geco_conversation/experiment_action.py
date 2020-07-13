@@ -86,7 +86,7 @@ class ExperimentAction(AbstractAction):
         request_field = self.status['field']
 
         db = getattr(self.status["geno_surf"], request_field + '_db')
-        given_value = entities[request_field] if ((request_field in entities)) else [message.strip().lower()]
+        given_value = entities[request_field] if ((request_field in entities) and (any(elem in db for elem in entities[request_field]))) else [message.strip().lower()]
         if request_field == 'is_healthy':
 
             if intent == 'affirm':
