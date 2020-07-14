@@ -9,6 +9,9 @@ from flask import Flask, session, request, copy_current_request_context
 from flask_session import Session
 from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
+from database import get_db_uri
+from database import db
+from database import t_flatten_gecoagent
 
 import messages
 from geco_conversation import StartAction, Utils
@@ -22,6 +25,11 @@ base_url = '/geco_agent/'
 socketio_path = base_url + 'socket.io/'
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = get_db_uri()
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+
 app.config['SECRET_KEY'] = 'secret!'
 app.config['SESSION_TYPE'] = 'filesystem'
 # session config
@@ -240,6 +248,8 @@ def reset(session):
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
+    result = db.engine.execute("select * from dw.flatten_gecoagent limit 10").fetchall()
+    print(result)
     if 'status' not in session:
         reset(session)
     #else:
@@ -278,3 +288,4 @@ app.register_blueprint(simple_page, url_prefix=base_url)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', port=5980)
+
