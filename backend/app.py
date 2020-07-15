@@ -11,7 +11,7 @@ from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
 from database import get_db_uri
 from database import db
-from database import t_flatten_gecoagent
+#from database import t_flatten_gecoagent
 
 import messages
 from geco_conversation import StartAction, Utils
@@ -248,8 +248,8 @@ def reset(session):
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-    result = db.engine.execute("select * from dw.flatten_gecoagent limit 10").fetchall()
-    print(result)
+    #result = db.engine.execute("select * from dw.flatten_gecoagent limit 10").fetchall()
+    #print(result)
     if 'status' not in session:
         reset(session)
     #else:
