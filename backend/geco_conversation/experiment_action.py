@@ -1,8 +1,5 @@
-from get_api import experiment_fields
+from database import experiment_fields
 import messages
-import numpy as np
-import time
-from get_api import check_existance
 from geco_conversation import *
 
 class ExperimentAction(AbstractAction):
@@ -32,7 +29,6 @@ class ExperimentAction(AbstractAction):
         if 'is_healthy' in self.status:
             if self.status['is_healthy']== ['healthy']:
                 self.status['is_healthy'] = [True]
-                print(self.status['is_healthy'])
             if self.status['is_healthy'] == ['tumoral']:
                 self.status['is_healthy'] = [False]
 
@@ -53,8 +49,8 @@ class ExperimentAction(AbstractAction):
         missing_fields = self.status['geno_surf'].fields_names
 
         fields = {k: v for (k, v) in self.status.items() if k in experiment_fields}
-        print(fields)
-        samples = check_existance(False, fields)
+
+        samples = self.status['geno_surf'].check_existance(fields)
         print(samples)
         if samples > 0:
             print('entro1')
@@ -198,7 +194,7 @@ class ExperimentAction(AbstractAction):
 
     def add_value_logic(self, message, intent, entities):
         gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
-        print(gcm_filter)
+
         if len(gcm_filter) > 0:
             self.status['geno_surf'].update(gcm_filter)
 

@@ -59,7 +59,7 @@ class Geno_surf:
                 self.fields_names.append(f)
                 setattr(self, (str(f) + '_db'), values)
 
-
+    '''
     def update(self, gcm):
         gcm_source =  '"source": ["tcga","encode","roadmap epigenomics","1000 genomes","refseq"]'
         if 'source' not in gcm:
@@ -88,7 +88,7 @@ class Geno_surf:
                 values = []
             if values!=[]:
                 setattr(self, (str(f) + '_db'), values)
-
+    
     def retrieve_values(self, gcm, field):
         filter = ','.join(
             [self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v) in
@@ -99,7 +99,7 @@ class Geno_surf:
         if response_post.status_code == 200:
             val = json.loads(response_post.content.decode('utf-8'))['values']
         return val
-
+    '''
     def download(self, gcm):
         filter = ','.join(
             [self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v) in
@@ -184,3 +184,8 @@ def check_existance(is_ann, gcm):
 
 #c= Geno_surf(experiment_fields, False)
 #c.update({'source':["tcga","encode","roadmap epigenomics","1000 genomes","refseq"]})
+#rpint(c.retrieve_values({'source':["tcga"]},'disease'))
+
+
+
+

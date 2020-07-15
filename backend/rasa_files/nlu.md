@@ -57,6 +57,10 @@
  - ok
  - i agree
  - top
+ - yeah
+ - yep
+ - sure
+ - ok thanks
 
 ## intent:deny
  - no
@@ -64,6 +68,7 @@
  - no way
  - not really
  - none
+ - any
  
 ## intent:change_option
  - I want to change it
@@ -2603,6 +2608,8 @@
 - do you know the weather?
 - how is the weather tomorrow?
 - weather
+- how is the weather?
+- is it raining?
 
 ## intent:reset_session
 - reset session

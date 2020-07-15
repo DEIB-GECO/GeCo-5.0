@@ -1,4 +1,4 @@
-from get_api import annotation_fields, check_existance
+from database import annotation_fields
 import messages
 from geco_conversation import *
 
@@ -132,7 +132,7 @@ class AnnotationAction(AbstractAction):
 
         fields = {k: v for (k, v) in self.status.items() if k in annotation_fields}
         #fields = {x: self.status[x] for x in annotation_fields}
-        samples = check_existance(True, fields)
+        samples = self.status['geno_surf'].check_existance(fields)
 
         back = AnnotationAction
 

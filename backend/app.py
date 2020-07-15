@@ -11,6 +11,8 @@ from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
 from database import get_db_uri
 from database import db
+from database import DB
+from database import experiment_fields
 #from database import t_flatten_gecoagent
 
 import messages
