@@ -1,8 +1,5 @@
-from get_api import experiment_fields
+from database import experiment_fields
 import messages
-import numpy as np
-import time
-from get_api import check_existance
 from geco_conversation import *
 
 class ExperimentAction(AbstractAction):
@@ -32,7 +29,6 @@ class ExperimentAction(AbstractAction):
         if 'is_healthy' in self.status:
             if self.status['is_healthy']== ['healthy']:
                 self.status['is_healthy'] = [True]
-                print(self.status['is_healthy'])
             if self.status['is_healthy'] == ['tumoral']:
                 self.status['is_healthy'] = [False]
 
@@ -53,8 +49,8 @@ class ExperimentAction(AbstractAction):
         missing_fields = self.status['geno_surf'].fields_names
 
         fields = {k: v for (k, v) in self.status.items() if k in experiment_fields}
-        print(fields)
-        samples = check_existance(False, fields)
+
+        samples = self.status['geno_surf'].check_existance(fields)
         print(samples)
         if samples > 0:
             print('entro1')
@@ -71,7 +67,9 @@ class ExperimentAction(AbstractAction):
                     fields = {x: self.status[x] for x in experiment_fields if x in self.status}
                     back = ExperimentAction
 
-                    return [Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})], Confirm({"fields": fields, "back": back}), {}
+                    return [Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})],\
+                           Confirm({"fields": fields, "back": back}),\
+                           {}
         else:
             print('entro2')
             print(samples)
@@ -101,8 +99,9 @@ class ExperimentAction(AbstractAction):
             pie_charts = self.create_piecharts(gcm_filter)
             self.logic = self.field_logic
             return [Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
-                    Utils.choice('Available fields', list_param), Utils.param_list(
-                    {k: v for (k, v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
+                    Utils.choice('Available fields', list_param),
+                    Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields})]+ \
+                   pie_charts, None, {}
 
         elif any(elem in db for elem in given_value):
             for i in range(len(given_value)):
@@ -127,7 +126,9 @@ class ExperimentAction(AbstractAction):
                 fields = {x: self.status[x] for x in experiment_fields if x in self.status}
                 back = ExperimentAction
 
-                return [], Confirm({"fields": fields, "back": back}), {}
+                return [Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields})],\
+                       Confirm({"fields": fields, "back": back}),\
+                       {}
 
         else:
 
@@ -198,7 +199,7 @@ class ExperimentAction(AbstractAction):
 
     def add_value_logic(self, message, intent, entities):
         gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
-        print(gcm_filter)
+
         if len(gcm_filter) > 0:
             self.status['geno_surf'].update(gcm_filter)
 
@@ -225,6 +226,8 @@ class ExperimentAction(AbstractAction):
 
         back = ExperimentAction
 
-        return [], Confirm({"fields": fields, "back": back}), {}
+        return [Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields})],\
+               Confirm({"fields": fields, "back": back}), \
+               {}
 
 

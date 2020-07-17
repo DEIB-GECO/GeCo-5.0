@@ -47,7 +47,7 @@ class AbstractAction(ABC):
             return msg, None, {}
         elif intent == 'weather':
             response = requests.get('https://www.metaweather.com/api/location/718345/')
-            msg = [Utils.chat_message('Here in Milan the weather forecast says ' + json.loads(response.content.decode('utf-8'))['consolidated_weather'][0]['weather_state_name'].lower())]
+            msg = [Utils.chat_message('Here in Milan the weather forecast says: ' + json.loads(response.content.decode('utf-8'))['consolidated_weather'][0]['weather_state_name'].lower())]
             return msg, None, {}
         else:
             return self.logic(message, intent, entities)

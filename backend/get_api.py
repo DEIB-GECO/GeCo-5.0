@@ -1,3 +1,4 @@
+'''
 import json
 import requests
 
@@ -88,7 +89,7 @@ class Geno_surf:
                 values = []
             if values!=[]:
                 setattr(self, (str(f) + '_db'), values)
-
+    
     def retrieve_values(self, gcm, field):
         filter = ','.join(
             [self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v) in
@@ -184,3 +185,8 @@ def check_existance(is_ann, gcm):
 
 #c= Geno_surf(experiment_fields, False)
 #c.update({'source':["tcga","encode","roadmap epigenomics","1000 genomes","refseq"]})
+#rpint(c.retrieve_values({'source':["tcga"]},'disease'))
+
+'''
+
+

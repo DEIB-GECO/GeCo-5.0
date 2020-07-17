@@ -1,7 +1,5 @@
-from get_api import experiment_fields
+from database import experiment_fields
 import messages
-import numpy as np
-import time
 from geco_conversation import *
 
 class MetadataAction(AbstractAction):

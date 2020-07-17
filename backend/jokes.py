@@ -5,4 +5,7 @@ jokes=['Did you hear about the famous microbiologist who visited 30 different co
  'Did you just mutate for a stop codon? Because you\'re talking nonsense!',
  'Q: What is the fastest way to determine the sex of a chromosome? \nA: Pull down its genes!',
  'Q: Y\'all want to hear a Potassium joke? A: K',
- 'I’ve never been a good swimmer, my DNA almost drowned in its gene pool.']
+ 'I’ve never been a good swimmer, my DNA almost drowned in its gene pool.',
+ 'Why are tertiary structures selfish? Because the amino acids are all wrapped up in themselves.',
+ 'How can you better understand genetics in cold weather? Put your codon!',
+  'Do you know why the geneticist went to dental school? He was looking for an oral high gene.']

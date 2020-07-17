@@ -1,11 +1,9 @@
 import messages
-import random
-import jokes
 from .utils import Utils
 from .abstract_action import AbstractAction
 from .annotation_action import AnnotationAction
 from .experiment_action import ExperimentAction
-from get_api import Geno_surf, experiment_fields, annotation_fields
+from database import DB, experiment_fields, annotation_fields
 
 class StartAction(AbstractAction):
 
@@ -24,11 +22,11 @@ class StartAction(AbstractAction):
         if intent == 'retrieve_annotations':
             msg = [Utils.workflow('Data selection')]
             next_node = AnnotationAction(entities)
-            new_status= {'geno_surf': Geno_surf(annotation_fields, True)}
+            new_status= {'geno_surf': DB(annotation_fields, True)}
         elif intent == 'retrieve_experiments':
             msg = [Utils.workflow('Data selection')]
             next_node = ExperimentAction(entities)
-            new_status= {'geno_surf': Geno_surf(experiment_fields, False)}
+            new_status= {'geno_surf': DB(experiment_fields, False)}
         else:
             msg = [Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?"),Utils.workflow('Data selection')]
             next_node = None
