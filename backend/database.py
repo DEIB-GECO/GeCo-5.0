@@ -17,27 +17,6 @@ def get_db_uri():
 
 db = SQLAlchemy()
 
-t_flatten_gecoagent = db.Table(
-    'flatten_gecoagent',
-    db.Column('item_id', db.Integer),
-    db.Column('biosample_type', db.Text, index=True),
-    db.Column('tissue', db.Text, index=True),
-    db.Column('cell', db.Text),
-    db.Column('is_healthy', db.Boolean, index=True),
-    db.Column('disease', db.Text, index=True),
-    db.Column('dataset_name', db.Text, index=True),
-    db.Column('data_type', db.Text, index=True),
-    db.Column('file_format', db.Text, index=True),
-    db.Column('assembly', db.Text, index=True),
-    db.Column('is_annotation', db.Boolean, index=True),
-    db.Column('technique', db.Text, index=True),
-    db.Column('feature', db.Text, index=True),
-    db.Column('target', db.Text, index=True),
-    db.Column('content_type', db.Text, index=True),
-    db.Column('source', db.Text, index=True),
-    schema='dw'
-)
-
 annotation_fields = ["content_type", "assembly", "source"]
 experiment_fields = ['source', 'data_type', 'assembly', 'file_format', 'biosample_type', 'tissue', 'cell', 'disease', 'is_healthy', 'technique', 'feature', 'target']
 
@@ -52,7 +31,6 @@ class DB:
     def get_values(self, is_ann):
         self.fields_names = []
         for f in self.fields:
-            #query = t_flatten_gecoagent.select(str(f)).where(self.is_ann_gcm).groupby(str(f))
             res = db.engine.execute("select {} from dw.flatten_gecoagent where {} group by {}".format(f,self.is_ann_gcm,f)).fetchall()
             res = [i[0] for i in res]
             if res!=[]:
@@ -73,11 +51,8 @@ class DB:
         self.fields_names = []
         self.all_values = []
         for f in self.fields:
-            #query = t_flatten_gecoagent.select(f).where(filter).groupby(f)
             val = db.engine.execute("select {} from dw.flatten_gecoagent where {} group by {}".format(f, filter, f)).fetchall()
             val = [i[0] for i in val]
-            print(val)
-            #val = db.engine.execute(query).fetchall()
             values = []
             if (val != []) and (len(val) > 1):
                 self.fields_names.append(f)
@@ -96,9 +71,7 @@ class DB:
         filter = ' and '.join(
             [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
                                  gcm.items()])
-        #query = t_flatten_gecoagent.select(f).where(filter).groupby(f)
         val = db.engine.execute("select {}, count({}) from dw.flatten_gecoagent where {} group by {}".format(f, f, filter, f)).fetchall()
-        #val = db.engine.execute(query).fetchall()
 
         val = [{"value":i[0],"count":i[1]} for i in val]
 
@@ -117,7 +90,74 @@ class DB:
             print("error")
             return 0
 
+    def download(self, gcm):
+        filter = ' and '.join(
+            [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
+                                 gcm.items()])
+
+        links = db.engine.execute(
+            "select local_url  from dw.flatten_gecoagent where {} group by local_url".format(filter)).fetchall()
+        val = [i[0] for i in links]
+        print(val)
+        return val
+
+    def query(self, gcm):
+        filter = ' and '.join(
+            [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
+                                 gcm.items()])
+
+        query= "select item_id  from dw.flatten_gecoagent where {} group by item_id".format(filter)
+
+        return query
+
+    # Retrieves all keys based on a user input string
+    def find_keys(self, filter, string):
+        query = self.query(filter)
+        print(query)
+        keys = db.engine.execute(
+            "select key  from dw.unified_pair_gecoagent where {} and key like '%{}%' group by keys".format(query, string)).fetchall()
+        print(keys)
+        keys = [i[0] for i in keys]
+        return keys
+
+    # Retrieves all values based on a user input string
+    def find_values(self, filter, string):
+        query = self.query(filter)
+        values = db.engine.execute(
+            "select distinct(key), value  from dw.unified_pair_gecoagent where {} and value like '%{}%'".format(query, string)).fetchall()
+        val = [{"key":i[0],"value":i[1]} for i in values]
+        return val
+
+    def find_key_values(self, filter, key):
+        query = self.query(filter)
+        values = db.engine.execute(
+            "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where {} and key={}".format(query, key)).fetchall()
+        val = [{"value": i[0], "count": i[1]} for i in values]
+        return values
+
 '''
+    def meta_table(self, gcm):
+        gcm_source = '"source": ["tcga","encode","roadmap epigenomics","1000 genomes","refseq"]'
+        if 'source' not in gcm:
+            filter = ','.join(
+                [self.is_ann_gcm] + [gcm_source] + [
+                    '\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v]))
+                    for (k, v) in gcm.items()])
+        else:
+            filter = ','.join(
+                [self.is_ann_gcm] + ['\"{}\":[{}]'.format(k, ",".join(['\"{}\"'.format(x) for x in v])) for (k, v)
+                                     in
+                                     gcm.items()])
+        data = '{"gcm":{' + str(filter) + '},"type":"original","kv":{}}'
+
+        response_post = requests.post(
+            api_url + 'query/table?agg=true&order_col=item_source_id&order_dir=asc&rel_distance=3',
+            headers=headers_post, data=data)
+        val = []
+        if response_post.status_code == 200:
+            val.append(response_post.content.decode('utf-8').split(sep='\n'))
+        return val
+
 def generate_where_pairs(pair_query):
     searched = pair_query.keys()
 

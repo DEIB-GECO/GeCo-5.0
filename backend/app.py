@@ -223,6 +223,10 @@ def test_ack_message(message):
                     print(type(session['last_json'][x]))
                     emit('json_response', session['last_json'][x])
 
+@socketio.on('reset', namespace='/test')
+def reset():
+    reset(session)
+
 # TODO: maybe here we need to manage the session storing
 @socketio.on('disconnect_request', namespace='/test')
 def disconnect_request():

@@ -40,7 +40,7 @@ class Confirm(AbstractAction):
         self.status['fields'].update({'name':name})
         self.logic = self.next_action_logic
 
-        print(Utils.workflow('Data selection', True, urls))
+       # print(Utils.workflow('Data selection', True, urls))
 
         return [Utils.chat_message("OK, dataset saved with name: " + name + ".\nYou can download the data by clicking on the arrow in the bottom panel."),
                 Utils.chat_message(messages.other_dataset),
@@ -63,10 +63,11 @@ class Confirm(AbstractAction):
         #    #next_state = MetadataAction({'fields': fields})
         #    next_state = BinaryAction({})
         else:
-            msgs = [Utils.chat_message(messages.bye_message), Utils.workflow('END')]
+            #msgs = [Utils.chat_message(messages.bye_message), Utils.workflow('END')]
+            msgs = []
             fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
-            #next_state = MetadataAction({'fields': fields})
-            next_state = EmptyAction({})
+            next_state = MetadataAction({'fields': fields})
+            #next_state = EmptyAction({})
 
 
         return msgs, next_state, {}

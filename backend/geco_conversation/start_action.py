@@ -1,6 +1,4 @@
 import messages
-import random
-import jokes
 from .utils import Utils
 from .abstract_action import AbstractAction
 from .annotation_action import AnnotationAction

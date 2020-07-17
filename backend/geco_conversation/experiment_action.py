@@ -67,7 +67,9 @@ class ExperimentAction(AbstractAction):
                     fields = {x: self.status[x] for x in experiment_fields if x in self.status}
                     back = ExperimentAction
 
-                    return [Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})], Confirm({"fields": fields, "back": back}), {}
+                    return [Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})],\
+                           Confirm({"fields": fields, "back": back}),\
+                           {}
         else:
             print('entro2')
             print(samples)
@@ -97,8 +99,9 @@ class ExperimentAction(AbstractAction):
             pie_charts = self.create_piecharts(gcm_filter)
             self.logic = self.field_logic
             return [Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
-                    Utils.choice('Available fields', list_param), Utils.param_list(
-                    {k: v for (k, v) in self.status.items() if k in experiment_fields})] + pie_charts, None, {}
+                    Utils.choice('Available fields', list_param),
+                    Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields})]+ \
+                   pie_charts, None, {}
 
         elif any(elem in db for elem in given_value):
             for i in range(len(given_value)):
@@ -123,7 +126,9 @@ class ExperimentAction(AbstractAction):
                 fields = {x: self.status[x] for x in experiment_fields if x in self.status}
                 back = ExperimentAction
 
-                return [], Confirm({"fields": fields, "back": back}), {}
+                return [Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields})],\
+                       Confirm({"fields": fields, "back": back}),\
+                       {}
 
         else:
 
@@ -221,6 +226,8 @@ class ExperimentAction(AbstractAction):
 
         back = ExperimentAction
 
-        return [], Confirm({"fields": fields, "back": back}), {}
+        return [Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields})],\
+               Confirm({"fields": fields, "back": back}), \
+               {}
 
 
