@@ -210,8 +210,12 @@ export default class GecoAgent extends Vue {
     if (
       window.confirm('Do you want to lose all your progresses and start over?')
     ) {
-      this.editMessage('reset session');
-      this.sendMessage();
+      socket.emit('reset', {});
+
+      this.editMessage('');
+      console.log('mandato RESET');
+      // this.editMessage('reset session');
+      // this.sendMessage();
       this.resetProcess();
       this.updateFieldList([]);
       this.parameterParser([]);
