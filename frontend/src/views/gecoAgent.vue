@@ -211,6 +211,7 @@ export default class GecoAgent extends Vue {
       window.confirm('Do you want to lose all your progresses and start over?')
     ) {
       socket.emit('reset', {});
+      socket.emit('ack', { message_id: 0 });
 
       this.editMessage('');
       console.log('mandato RESET');
