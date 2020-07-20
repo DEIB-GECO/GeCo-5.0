@@ -164,7 +164,6 @@ def test_message(message):
         Utils.pyconsole_debug(msg)
         id = add_session_message(session, msg)
         msg['message_id'] = id
-        print(type(msg))
         emit('json_response', msg)
 
         if msg['type'] == 'message':
@@ -191,7 +190,6 @@ def add_session_message(session, message):
     elif (message['type']!='tools_setup'):
         temp_d = dict(message)
         temp_d['message_id'] = id
-        print(temp_d)
         session['last_json'][message['type']] = temp_d
     else:
         for x in message['payload']['remove']:
@@ -224,7 +222,7 @@ def test_ack_message(message):
                     emit('json_response', session['last_json'][x])
 
 @socketio.on('reset', namespace='/test')
-def reset():
+def reset_button(message):
     reset(session)
 
 # TODO: maybe here we need to manage the session storing
@@ -244,6 +242,7 @@ def disconnect_request():
 
 
 def reset(session):
+    print('RESETTTTTTTAAAAAAAAA')
     for k in list(session.keys()):
         if not k.startswith("_"):
             del session[k]

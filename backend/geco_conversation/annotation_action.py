@@ -25,7 +25,6 @@ class AnnotationAction(AbstractAction):
             assembly_val = self.status['geno_surf'].retrieve_values(gcm_filter, 'assembly')
             values['Assembly'] = assembly_val
         source_val = self.status['geno_surf'].retrieve_values(gcm_filter, 'source')
-        print(source_val)
         values['Source'] = source_val
         msgs.append(Utils.pie_chart(values))
         return msgs

@@ -18,8 +18,8 @@ class MetadataAction(AbstractAction):
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k!='name'}
         #self.status['geno_surf'].update(gcm_filter)
 
-        keys = self.status['geno_surf'].find_keys(gcm_filter, '%')
-        self.available_keys = {x['key']: x['key'] for x in keys if x['count_values'] > 1}
+        keys = self.status['geno_surf'].find_all_keys(gcm_filter)
+        self.available_keys = {x: x for x in keys if keys[x]>1}
 
         if message is None:
 
@@ -62,9 +62,9 @@ class MetadataAction(AbstractAction):
         k =  message.lower().strip()
         if k in self.available_keys:
             self.status['selected_key'] = k
-            self.available_values = [val['value'] for val in self.status['geno_surf'].find_key_values(gcm_filter, k)]
+            self.available_values = [val['value'] for val in self.status['geno_surf'].find_key_values(gcm_filter, str(k))]
             #print(values)
-            list_param = {x['value']: x['value'] for x in self.available_values}
+            list_param = {x: x for x in self.available_values}
             self.logic = self.value_logic
             print('CIAO')
             return [Utils.chat_message("Which value do you want to select?"),
