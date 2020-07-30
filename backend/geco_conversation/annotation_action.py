@@ -33,6 +33,7 @@ class AnnotationAction(AbstractAction):
     def logic(self, message, intent, entities):
         from .confirm import Confirm
 
+
         if 'source_ann' in self.status:
             self.status['source'] = self.status['source_ann']
             del(self.status['source_ann'])
@@ -69,18 +70,13 @@ class AnnotationAction(AbstractAction):
         else:
             if "content_type" not in self.status:
                 content_type = entities['content_type'] if "content_type" in entities else [message.strip().lower()]
-                print(content_type)
                 if any(elem in self.status["geno_surf"].content_type_db for elem in content_type):
-                    print('ENTER QUIIII')
                     for i in range(len(content_type)):
-                        print(content_type[i])
                         if content_type[i] in self.status["geno_surf"].content_type_db:
                             if 'content_type' in self.status:
                                 self.status['content_type'].append(content_type[i])
                             else:
                                 self.status['content_type']= [content_type[i]]
-                            print('STATUS')
-                            print(self.status['content_type'])
                     # self.status['content_type'] = content_type
                     pie_charts = self.create_piecharts(gcm_filter)
                     list_param = {x: self.status[x] for x in annotation_fields if x in self.status}

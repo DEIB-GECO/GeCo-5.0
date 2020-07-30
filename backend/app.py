@@ -132,6 +132,8 @@ def test_message(message):
     add_session_message(session, {'type':'message', 'payload':{'text':user_message, 'sender':'user'}})
 
     data = json.loads(open("logger.json").read())
+
+
     data[request.sid].append(user_message)
 
     interpretation = interpreter.parse(user_message)
@@ -208,7 +210,7 @@ def test_ack_message(message):
                 emit('json_response',
                      {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']}, 'message_id': x['message_id']})
             for x in session['last_json']:
-                print( type(session['last_json'][x]))
+                #print( type(session['last_json'][x]))
                 emit('json_response', session['last_json'][x])
         else:
             for x in session['messages']:
@@ -218,12 +220,22 @@ def test_ack_message(message):
 
             for x in session['last_json']:
                 if session['last_json'][x]['message_id'] > user_message+1:
-                    print(type(session['last_json'][x]))
+                    #print(type(session['last_json'][x]))
                     emit('json_response', session['last_json'][x])
 
 @socketio.on('reset', namespace='/test')
 def reset_button(message):
     reset(session)
+    for msg in session['status'].bot_messages:
+        Utils.pyconsole_debug(msg)
+        id = add_session_message(session, msg)
+        msg['message_id'] = id
+        emit('json_response', msg)
+    #with open("logger.json", "w") as file:
+    #    json.dump(data, file)
+
+    session['status'].clear_msgs()
+    session['previous_intent']= None
 
 # TODO: maybe here we need to manage the session storing
 @socketio.on('disconnect_request', namespace='/test')

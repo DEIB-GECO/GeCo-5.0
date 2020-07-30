@@ -101,26 +101,43 @@ class DB:
         print(val)
         return val
 
-    def query(self, gcm):
+    def query_field(self, gcm):
         filter = ' and '.join(
             [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
                                  gcm.items()])
 
         query= "select item_id from dw.flatten_gecoagent where {} group by item_id".format(filter)
+        return query
 
+    def query_key(self, gcm):
+        query=""
+        i = 1
+        for k in gcm:
+            if i<len(gcm):
+                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id) and".format(k, gcm[k]).replace('[','(').replace(']',')')
+            else:
+                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id)".format(k, gcm[k]).replace('[','(').replace(']',')')
+            i+=1
         return query
 
     # Retrieves all keys based on a user input string
-    def find_all_keys(self, filter):
-        query = self.query(filter)
-        print(query)
-        keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
+    def find_all_keys(self, filter, filter2={}):
+        query = self.query_field(filter)
+        if filter2!={}:
+            query2 = self.query_key(filter2)
+            print("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(
+                    query, query2))
+            keys = db.engine.execute(
+                "select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(
+                    query, query2)).fetchall()
+        else:
+            keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
         keys = {i[0]:i[1] for i in keys}
         print(keys)
         return keys
 
     def find_keys(self, filter, string):
-        query = self.query(filter)
+        query = self.query_field(filter)
         print(query)
         keys = db.engine.execute("select key from dw.unified_pair_gecoagent where key like '%{}%' and item_id in ({}) group by key".format(string, query)).fetchall()
         print(keys)
@@ -129,18 +146,48 @@ class DB:
 
     # Retrieves all values based on a user input string
     def find_values(self, filter, string):
-        query = self.query(filter)
+        query = self.query_field(filter)
         values = db.engine.execute(
             "select distinct(key), value  from dw.unified_pair_gecoagent where item_id in ({}) and value like '%{}%'".format(query, string)).fetchall()
         val = [{"key":i[0],"value":i[1]} for i in values]
         return val
 
-    def find_key_values(self, filter, key):
-        query = self.query(filter)
-        values = db.engine.execute(
-            "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' group by value".format(query, str(key))).fetchall()
+    def find_key_values(self, key, filter, filter2={}):
+        query = self.query_field(filter)
+        if filter2!={}:
+            query2 = self.query_key(filter2)
+            print("select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and {} and key in ('{}') group by value".format(
+                    query, query2, str(key)))
+            values = db.engine.execute(
+                "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and {} and key in ('{}') group by value".format(
+                    query, query2, str(key))).fetchall()
+        else:
+            values = db.engine.execute(
+                "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(query, str(key))).fetchall()
         val = [{"value": i[0], "count": i[1]} for i in values]
-        return values
+        number = True
+        for i in values:
+            if str(i[0]).isnumeric()!=True and i[0]!=None:
+                print(i[0])
+                number = False
+        return val, number
+
+
+    def download_filter_meta(self, gcm, filter2):
+        filter = ' and '.join(
+            [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
+                                 gcm.items()])
+        if filter2!={}:
+            query = self.query_key(filter2)
+            links = db.engine.execute("select local_url  from dw.flatten_gecoagent where {} and {} group by local_url".format(filter, query)).fetchall()
+        else:
+            links = db.engine.execute(
+                "select local_url  from dw.flatten_gecoagent where {} group by local_url".format(filter)).fetchall()
+
+        val = [i[0] for i in links]
+        print(val)
+        return val
+
 
 '''
     def meta_table(self, gcm):

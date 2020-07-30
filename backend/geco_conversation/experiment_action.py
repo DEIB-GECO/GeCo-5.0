@@ -26,6 +26,7 @@ class ExperimentAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm
+
         if 'is_healthy' in self.status:
             if self.status['is_healthy']== ['healthy']:
                 self.status['is_healthy'] = [True]
@@ -53,8 +54,6 @@ class ExperimentAction(AbstractAction):
         samples = self.status['geno_surf'].check_existance(fields)
         print(samples)
         if samples > 0:
-            print('entro1')
-            print(samples)
             if message is None:
                 list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
                 if len(list_param)!=0:
@@ -71,8 +70,6 @@ class ExperimentAction(AbstractAction):
                            Confirm({"fields": fields, "back": back}),\
                            {}
         else:
-            print('entro2')
-            print(samples)
             for x in experiment_fields:
                 if x in self.status:
                     del self.status[x]

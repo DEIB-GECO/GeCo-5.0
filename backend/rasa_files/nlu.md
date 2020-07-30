@@ -69,7 +69,14 @@
  - not really
  - none
  - any
- 
+
+## intent:back
+ - go back
+ - back
+ - undo
+ - i want to go back
+ - i need to go back
+
 ## intent:change_option
  - I want to change it
  - can i change it?

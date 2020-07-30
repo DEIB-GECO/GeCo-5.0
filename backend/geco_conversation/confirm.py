@@ -20,12 +20,21 @@ class Confirm(AbstractAction):
         return ['geno_surf','dataset_list']
 
     def logic(self, message, intent, entities):
-        if intent == "affirm":
-            self.logic = self.set_name_logic
-            return [Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)], None, {}
+        if self.status['back']!=MetadataAction:
+            if intent == "affirm":
+                self.logic = self.set_name_logic
+                return [Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)], None, {}
+            else:
+                self.logic = self.change_selection_logic
+                return [Utils.chat_message("Do you want to restart the selection from scratch?")], None, {}
         else:
-            self.logic = self.change_selection_logic
-            return [Utils.chat_message("Do you want to restart the selection from scratch?")], None, {}
+            if intent == "affirm":
+                self.logic=self.next_action_logic
+                fields = self.status['fields'].copy()
+                del(fields['metadata'])
+                urls = self.status['geno_surf'].download_filter_meta(fields,self.status['fields']['metadata'])
+
+                return [Utils.chat_message("You can download the data by clicking on the arrow in the bottom panel."),Utils.chat_message(messages.other_dataset)], None, {}
 
     def set_name_logic(self, message, intent, entities):
         if intent != "deny":
@@ -38,15 +47,14 @@ class Confirm(AbstractAction):
         ds = DataSet(self.status['fields'], name)
         self.status['dataset_list'].append(ds)
         self.status['fields'].update({'name':name})
-        self.logic = self.next_action_logic
-
+        #self.logic = self.next_action_logic
+        fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
        # print(Utils.workflow('Data selection', True, urls))
 
         return [Utils.chat_message("OK, dataset saved with name: " + name + ".\nYou can download the data by clicking on the arrow in the bottom panel."),
-                Utils.chat_message(messages.other_dataset),
                 Utils.param_list(self.status['fields']),
                 Utils.workflow('Data selection', True, urls)],\
-               None, {"dataset_list": self.status['dataset_list']}
+               MetadataAction({'fields': fields}), {"dataset_list": self.status['dataset_list']}
 
     def next_action_logic(self, message, intent, entities):
         if intent == "affirm":
@@ -63,12 +71,10 @@ class Confirm(AbstractAction):
         #    #next_state = MetadataAction({'fields': fields})
         #    next_state = BinaryAction({})
         else:
-            #msgs = [Utils.chat_message(messages.bye_message), Utils.workflow('END')]
-            msgs = []
+            msgs = [Utils.chat_message(messages.bye_message), Utils.workflow('END')]
+            #msgs = []
             fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
-            next_state = MetadataAction({'fields': fields})
-            #next_state = EmptyAction({})
-
+            next_state = EmptyAction({})
 
         return msgs, next_state, {}
 
