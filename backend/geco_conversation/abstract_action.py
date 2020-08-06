@@ -5,11 +5,13 @@ import random
 import requests
 import jokes
 import json
+import copy
 
 
 class AbstractAction(ABC):
     def __init__(self, status):
         self.status = status
+        self.backup_status = None
 
     @abstractmethod
     def on_enter_messages(self):
@@ -35,6 +37,9 @@ class AbstractAction(ABC):
     def run(self, message, intent, entities):
         if intent == "help":
             return self.help_message(), None, {}
+        elif intent == "back":
+            self.restore_backup()
+            return self.logic(message, self.backup_status.intent, self.backup_status.entities)
         elif intent == 'name':
             msg = [Utils.chat_message(messages.gecoagent)]
             return msg, None, {}
@@ -51,4 +56,24 @@ class AbstractAction(ABC):
             return msg, None, {}
         else:
             return self.logic(message, intent, entities)
+
+    def create_backup(self):
+        self.backup_status = BackupStatus(self.logic, copy.deepcopy(self.status))
+
+
+    def restore_backup(self):
+        if self.backup_status!=None:
+            self.logic = self.backup_status.logic
+            self.status = copy.deepcopy(self.backup_status.status)
+
+
+
+class BackupStatus:
+    def __init__(self, logic, status, entities = None, intent = None):
+        self.logic = logic
+        self.status = status
+        self.entities = entities
+        self.intent = intent
+
+
 
