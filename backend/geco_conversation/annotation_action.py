@@ -33,10 +33,7 @@ class AnnotationAction(AbstractAction):
     def logic(self, message, intent, entities):
         from .confirm import Confirm
 
-        self.create_backup(intent, entities)
-        print('Backup')
-        print(self.backup_status.status)
-        print(self.backup_status.logic)
+
         if 'source_ann' in self.status:
             self.status['source'] = self.status['source_ann']
             del(self.status['source_ann'])
@@ -65,6 +62,7 @@ class AnnotationAction(AbstractAction):
             elif "source" not in self.status:
                 if len(self.status['geno_surf'].source_db)>1:
                     list_param = {x: x for x in self.status['geno_surf'].source_db}
+
                     return [Utils.chat_message("Please provide a source"),
                             Utils.choice("source", list_param)] + pie_charts, \
                            None, {}
@@ -72,6 +70,7 @@ class AnnotationAction(AbstractAction):
                     self.status['source'] = self.status['geno_surf'].source_db
         else:
             if "content_type" not in self.status:
+                self.create_backup(intent, entities)
                 content_type = entities['content_type'] if "content_type" in entities else [message.strip().lower()]
                 if any(elem in self.status["geno_surf"].content_type_db for elem in content_type):
                     for i in range(len(content_type)):
@@ -94,6 +93,7 @@ class AnnotationAction(AbstractAction):
 
 
             elif "assembly" not in self.status:
+                self.create_backup(intent, entities)
                 assembly = entities['assembly'] if "assembly" in entities else [message.strip().lower()]
                 if assembly[0] not in self.status["geno_surf"].assembly_db:
                     db = self.status["geno_surf"].assembly_db
@@ -109,6 +109,7 @@ class AnnotationAction(AbstractAction):
                     return [Utils.param_list(list_param)] + msg + pie_charts, nx, delta
 
             elif "source" not in self.status:
+                self.create_backup(intent, entities)
                 source = entities['source'] if "source" in entities else [message.strip().lower()]
                 if any(elem in self.status["geno_surf"].source_db for elem in source):
                     for i in range(len(source)):

@@ -19,6 +19,7 @@ class StartAction(AbstractAction):
         return []
 
     def logic(self, message, intent, entities):
+        self.create_backup(intent, entities)
         if intent == 'retrieve_annotations':
             msg = [Utils.workflow('Data selection')]
             next_node = AnnotationAction(entities)

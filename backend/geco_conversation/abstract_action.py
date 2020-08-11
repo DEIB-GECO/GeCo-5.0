@@ -38,12 +38,16 @@ class AbstractAction(ABC):
         if intent == "help":
             return self.help_message(), None, {}
         elif intent == "back":
-            self.restore_backup()
+            #self.restore_backup()
             print('logic1')
-            if self.backup_status.entities!=None and self.backup_status.intent!=None:
+            if self.backup_status.status!=None:
+                self.status = copy.deepcopy(self.backup_status.status)
+            print('logic2')
+            #if self.backup_status.entities!=None and self.backup_status.intent!=None:
+            if True:
                 print('logic')
                 print(self.logic)
-                return self.logic(message, self.backup_status.intent, self.backup_status.entities)
+                return self.backup_status.logic(message, self.backup_status.intent, self.backup_status.entities)
         elif intent == 'name':
             msg = [Utils.chat_message(messages.gecoagent)]
             return msg, None, {}
@@ -79,7 +83,7 @@ class BackupStatus:
     def __init__(self, logic, status, intent = None,  entities = None):
         self.logic = logic
         self.status = status
-        self.entities = entities
+        self.entities = entities if entities!=None else []
         self.intent = intent
         #self.message = message
 
