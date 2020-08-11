@@ -120,6 +120,8 @@ class MetadataAction(AbstractAction):
                         Utils.param_list(self.status['fields'])], \
                        None, {}
             else:
+                [int(i) for i in self.available_values]
+                list_param = {x: x for x in self.available_values}
                 self.logic = self.value_number_logic
                 return [Utils.chat_message("Which range of values do you want? You can see the values in the histogram."),
                         Utils.param_list(self.status['fields'])], \

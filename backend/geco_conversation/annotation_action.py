@@ -33,7 +33,10 @@ class AnnotationAction(AbstractAction):
     def logic(self, message, intent, entities):
         from .confirm import Confirm
 
-
+        self.create_backup(intent, entities)
+        print('Backup')
+        print(self.backup_status.status)
+        print(self.backup_status.logic)
         if 'source_ann' in self.status:
             self.status['source'] = self.status['source_ann']
             del(self.status['source_ann'])

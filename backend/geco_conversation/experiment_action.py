@@ -26,7 +26,7 @@ class ExperimentAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm
-
+        self.create_backup(intent, entities)
         if 'is_healthy' in self.status:
             if self.status['is_healthy']== ['healthy']:
                 self.status['is_healthy'] = [True]
@@ -78,6 +78,7 @@ class ExperimentAction(AbstractAction):
         return [], None, {}
 
     def value_logic(self, message, intent, entities):
+        self.create_backup(intent, entities)
         request_field = self.status['field']
 
         db = getattr(self.status["geno_surf"], request_field + '_db')
@@ -138,6 +139,7 @@ class ExperimentAction(AbstractAction):
 
 
     def field_logic(self, message, intent, entities):
+        self.create_backup(intent, entities)
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in experiment_fields:
@@ -195,6 +197,8 @@ class ExperimentAction(AbstractAction):
         return [], Confirm({"fields":fields, "back":back}), {}
 
     def add_value_logic(self, message, intent, entities):
+        self.create_backup(intent, entities)
+
         gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
 
         if len(gcm_filter) > 0:

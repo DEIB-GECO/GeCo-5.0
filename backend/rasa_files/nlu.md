@@ -76,6 +76,13 @@
  - undo
  - i want to go back
  - i need to go back
+ - undo last operation
+ - i want to select another
+ - select another
+ - go back to previous choice
+ - go back to last message
+ - undo
+ - redo
 
 ## intent:change_option
  - I want to change it
