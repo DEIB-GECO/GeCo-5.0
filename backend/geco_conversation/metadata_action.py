@@ -1,6 +1,8 @@
 from database import experiment_fields
+import re
 import messages
 from geco_conversation import *
+import statistics
 
 class MetadataAction(AbstractAction):
 
@@ -120,11 +122,14 @@ class MetadataAction(AbstractAction):
                         Utils.param_list(self.status['fields'])], \
                        None, {}
             else:
-                [int(i) for i in self.available_values]
-                list_param = {x: x for x in self.available_values}
+                numeric_values = [int(i) for i in self.available_values]
+                minimum = min(numeric_values)
+                maximum = max(numeric_values)
+                average = statistics.mean(numeric_values)
+                list_param = {'min: {}'.format(minimum):minimum, 'max: {}'.format(maximum):maximum, 'mean: {}'.format(average):average}
                 self.logic = self.value_number_logic
                 return [Utils.chat_message("Which range of values do you want? You can see the values in the histogram."),
-                        Utils.param_list(self.status['fields'])], \
+                        Utils.choice('Ranges',list_param, show_help=True, helpIconContent=messages.fields_help),Utils.param_list(self.status['fields'])], \
                        None, {}
 
         return [], None, {}
@@ -156,13 +161,36 @@ class MetadataAction(AbstractAction):
                    None, {}
 
     def value_number_logic(self, message, intent, entities):
+        value_low = -99999999999999999999999999999999999999999999999999999
+        value_high = 99999999999999999999999999999999999999999999999999999
         v = message.lower().strip()
-        if v in self.available_values:
-            self.status['fields']['metadata'][self.selected_key].append(v)
-            return [Utils.chat_message("Ok, you selected {}".format(v)),
+        high = ['lower than', 'lower', 'smaller than', 'smaller', 'max is', 'max', 'maximum is', 'maximum', 'less than', 'less']
+        low = ['higher than', 'higher', 'bigger than', 'bigger', 'min is', 'min', 'minimum is', 'minimum', 'more than', 'more']
+        for l in high:
+            if l in v:
+                res = re.search(r'{0}\s*(\d+)'.format(re.escape(l)), message)
+                value_high = int(res.group(1))
+                print(value_high)
+                break
+
+        for h in low:
+            if h in v:
+                res = re.search(r'{0}\s*(\d+)'.format(re.escape(h)), message)
+                value_low = int(res.group(1))
+                print(value_low)
+                break
+
+        numeric_values = [int(i) for i in self.available_values]
+        print(numeric_values)
+        for v in numeric_values:
+            if (v>value_low) and (v<value_high):
+                self.status['fields']['metadata'][self.selected_key].append(v)
+        print(self.status['fields']['metadata'][self.selected_key])
+        if len(self.status['fields']['metadata'][self.selected_key])>0:
+            return [Utils.chat_message("Ok!"),
                     Utils.param_list(self.status['fields'])], None, {}
         else:
             self.logic = self.metadata_logic
-            return [Utils.chat_message("You selected {}, not present in the choices".format(v)),
+            return [Utils.chat_message("There aren't available data for the requested values."),
                     Utils.chat_message("Do you want to filter on other metadata?"),
                     Utils.param_list(self.status['fields'])], None, {}
