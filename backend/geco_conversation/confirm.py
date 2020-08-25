@@ -32,6 +32,7 @@ class Confirm(AbstractAction):
                 self.logic=self.next_action_logic
                 fields = self.status['fields'].copy()
                 del(fields['metadata'])
+                del(fields['name'])
                 urls = self.status['geno_surf'].download_filter_meta(fields,self.status['fields']['metadata'])
 
                 return [Utils.chat_message("You can download the data by clicking on the arrow in the bottom panel."),Utils.chat_message(messages.other_dataset)], None, {}

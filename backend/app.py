@@ -11,6 +11,7 @@ from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
 from database import get_db_uri
 from database import db
+from geco_conversation import Context
 from database import DB
 from database import experiment_fields
 #from database import t_flatten_gecoagent
@@ -63,56 +64,57 @@ if not os.path.exists('logger.json'):
         json.dump({}, f)
 
 
-class ConversationDBExplore(object):
 
-    def say(self, msg):
-        self.bot_messages.append(msg)
 
-    def clear_msgs(self):
-        self.bot_messages = []
+def say(self, msg):
+    self.bot_messages.append(msg)
+    #session['context'].conversation.append('bot:' + msg)
 
-    def clear_entities(self):
-        for key in self.entities.keys():
-            del (session['tmp_' + str(key)])
-        self.entities = {}
+def clear_msgs(self):
+    self.bot_messages = []
 
-    def set_logic(self, logic_class):
-        self.logic = logic_class
-        self.logic.add_additional_status({k: session[k] for k in self.logic.required_additional_status()})
-        messages, next_state, delta_status = self.logic.on_enter_messages()
-        for m in messages:
-            self.say(m)
-        for k in delta_status:
-            session[k] = delta_status[k]
-        if next_state is not None:
-            print(type(next_state), next_state)
-            self.set_logic(next_state)
+def clear_entities(self):
+    for key in self.entities.keys():
+        del (session['tmp_' + str(key)])
+    self.entities = {}
 
-    def run(self, message, intent, entities):
-        print(self.logic)
-        print(message)
-        messages, next_state, delta_status = self.logic.run(message, intent, entities)
-        for m in messages:
-            self.say(m)
-        for k in delta_status:
-            session[k] = delta_status[k]
-        if next_state is not None:
-            print(type(next_state), next_state)
-            self.set_logic(next_state)
+def set_logic(self, logic_class):
+    self.logic = logic_class
+    self.logic.add_additional_status({k: session[k] for k in self.logic.required_additional_status()})
+    messages, next_state, delta_status = self.logic.on_enter_messages()
+    for m in messages:
+        self.say(m)
+    for k in delta_status:
+        session[k] = delta_status[k]
+    if next_state is not None:
+        print(type(next_state), next_state)
+        self.set_logic(next_state)
 
-    def __init__(self):
-        self.user_message = {}
-        self.bot_messages = []
-        self.last_intent = None
-        self.entities = {}
-        self.logic = None
-        self.geno_surf = None
-        session['selected_dataset'] = []
-        session['dataset_list'] = []
+def run(self, message, intent, entities):
+    print(self.logic)
+    print(message)
+    messages, next_state, delta_status = self.logic.run(message, intent, entities)
+    for m in messages:
+        self.say(m)
+    for k in delta_status:
+        session[k] = delta_status[k]
+    if next_state is not None:
+        print(type(next_state), next_state)
+        self.set_logic(next_state)
+'''
+def __init__(self):
+    self.user_message = {}
+    self.bot_messages = []
+    self.last_intent = None
+    self.entities = {}
+    self.logic = None
+    self.geno_surf = None
+    session['selected_dataset'] = []
+    session['dataset_list'] = []
 
-        self.say(Utils.chat_message(messages.initial_greeting))
-        self.set_logic(StartAction({}))
-
+    self.say(Utils.chat_message(messages.initial_greeting))
+    self.set_logic(StartAction({}))
+'''
 
 @simple_page.route('/')
 def index():
@@ -254,25 +256,27 @@ def disconnect_request():
 
 
 def reset(session):
-    print('RESETTTTTTTAAAAAAAAA')
     for k in list(session.keys()):
         if not k.startswith("_"):
             del session[k]
-    session['status'] = ConversationDBExplore()
+    #session['status'] = ConversationDBExplore()
+
+    say(Utils.chat_message(messages.initial_greeting))
+    set_logic(StartAction({}))
+
     session['messages'] = []
     session['last_json'] = {}
 
+    init_context(session)
+
+def init_context(session):
+    session['context'] = Context()
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-    #result = db.engine.execute("select * from dw.flatten_gecoagent limit 10").fetchall()
-    #print(result)
-    if 'status' not in session:
+
+    if 'context' not in session:
         reset(session)
-    #else:
-    #    for x in session['messages']:
-    #        if type(x) == str:
-    #            emit('json_response', Utils.chat_message('Previous chat: ' + x))
 
     # TO PUT FOR SAVE EVERY CONVERSATION FROM ALL CONNECTIONS AND REMOVE data= {} and data[request.sid]=[]
     with open('logger.json', 'r') as f:
@@ -284,7 +288,6 @@ def test_connect():
     for msg in session['status'].bot_messages:
         id = add_session_message(session, msg)
         msg['message_id'] = id
-        #emit('json_response', msg)
 
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload']['text'])
@@ -292,8 +295,8 @@ def test_connect():
     with open('logger.json', 'w') as file:
         json.dump(data, file)
 
-    session['status'].clear_msgs()
-    session['status'].clear_entities()
+    #session['status'].clear_msgs()
+    #session['status'].clear_entities()
 
 
 @socketio.on('disconnect', namespace='/test')

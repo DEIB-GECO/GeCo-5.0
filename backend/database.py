@@ -114,10 +114,11 @@ class DB:
         i = 1
         for k in gcm:
             if i<len(gcm):
-                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id) and".format(k, gcm[k]).replace('[','(').replace(']',')')
+                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id) and ".format(k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')
             else:
-                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id)".format(k, gcm[k]).replace('[','(').replace(']',')')
+                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id)".format(k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')
             i+=1
+
         return query
 
     # Retrieves all keys based on a user input string
@@ -125,8 +126,9 @@ class DB:
         query = self.query_field(filter)
         if filter2!={}:
             query2 = self.query_key(filter2)
-            print("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(
-                    query, query2))
+
+            #print("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(
+            #       query, query2))
             keys = db.engine.execute(
                 "select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(
                     query, query2)).fetchall()
