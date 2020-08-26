@@ -65,9 +65,8 @@ if not os.path.exists('logger.json'):
 
 
 
-
-def say(self, msg):
-    self.bot_messages.append(msg)
+'''def say(self, msg):
+    bot_messages.append(msg)
     #session['context'].conversation.append('bot:' + msg)
 
 def clear_msgs(self):
@@ -101,7 +100,7 @@ def run(self, message, intent, entities):
     if next_state is not None:
         print(type(next_state), next_state)
         self.set_logic(next_state)
-'''
+
 def __init__(self):
     self.user_message = {}
     self.bot_messages = []
@@ -131,6 +130,7 @@ def index():
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
     user_message = message['data'].strip()
+    session['context'].add_user_msg(user_message)
     add_session_message(session, {'type':'message', 'payload':{'text':user_message, 'sender':'user'}})
 
     data = json.loads(open("logger.json").read())
@@ -141,15 +141,18 @@ def test_message(message):
     interpretation = interpreter.parse(user_message)
     intent = interpretation['intent']['name']
     if intent == 'reset_session':
-        session['status'].bot_messages.append(Utils.chat_message('Are you sure to reset the session?'))
+        #session['status'].bot_messages.append(Utils.chat_message('Are you sure to reset the session?'))
+        pass
     elif session.get('previous_intent')=='reset_session':
         if intent=='affirm':
             reset(session)
         elif intent=='deny':
-            session['status'].bot_messages.append(Utils.chat_message('Ok, I don\'t reset the session.\n The last message was:'))
-            session['status'].bot_messages.append(Utils.chat_message(session['messages'][-4]['text']))
+            pass
+            #session['status'].bot_messages.append(Utils.chat_message('Ok, I don\'t reset the session.\n The last message was:'))
+            #session['status'].bot_messages.append(Utils.chat_message(session['messages'][-4]['text']))
         else:
-            session['status'].bot_messages.append(Utils.chat_message('Sorry, I didn\'t understand.\n Are you sure to reset the session?'))
+            pass
+            #session['status'].bot_messages.append(Utils.chat_message('Sorry, I didn\'t understand.\n Are you sure to reset the session?'))
     else:
         print(interpretation['entities'])
         entities = {}
@@ -162,8 +165,8 @@ def test_message(message):
         Utils.pyconsole_debug(intent)
         Utils.pyconsole_debug(entities)
 
-        session['status'].run(user_message, intent, entities)
-
+        #session['status'].run(user_message, intent, entities)
+    '''
     for msg in session['status'].bot_messages:
         Utils.pyconsole_debug(msg)
         id = add_session_message(session, msg)
@@ -172,11 +175,11 @@ def test_message(message):
 
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload']['text'])
-
+    '''
     with open("logger.json", "w") as file:
         json.dump(data, file)
 
-    session['status'].clear_msgs()
+    #session['status'].clear_msgs()
     session['previous_intent']= intent
 
 def add_session_message(session, message):
@@ -222,21 +225,21 @@ def test_ack_message(message):
 
             for x in session['last_json']:
                 if session['last_json'][x]['message_id'] > user_message+1:
-                    #print(type(session['last_json'][x]))
                     emit('json_response', session['last_json'][x])
+
 
 @socketio.on('reset', namespace='/test')
 def reset_button(message):
     reset(session)
-    for msg in session['status'].bot_messages:
+    for msg in session['context'].top_bot_msgs():
         Utils.pyconsole_debug(msg)
         id = add_session_message(session, msg)
         msg['message_id'] = id
-        emit('json_response', msg)
+        #emit('json_response', msg)
     #with open("logger.json", "w") as file:
     #    json.dump(data, file)
 
-    session['status'].clear_msgs()
+    #session['status'].clear_msgs()
     session['previous_intent']= None
 
 # TODO: maybe here we need to manage the session storing
@@ -260,23 +263,27 @@ def reset(session):
         if not k.startswith("_"):
             del session[k]
     #session['status'] = ConversationDBExplore()
+    session['context'] = Context()
 
-    say(Utils.chat_message(messages.initial_greeting))
-    set_logic(StartAction({}))
+    bot_msg = Utils.chat_message(messages.bye_message)
+    bot_logic = StartAction.logic
 
     session['messages'] = []
     session['last_json'] = {}
 
-    init_context(session)
+    session['context'].add_step(bot_msg, logic=bot_logic)
+    #emit("json_response", session['context'].top_bot_msgs())
 
-def init_context(session):
-    session['context'] = Context()
+
+
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
 
+
     if 'context' not in session:
         reset(session)
+
 
     # TO PUT FOR SAVE EVERY CONVERSATION FROM ALL CONNECTIONS AND REMOVE data= {} and data[request.sid]=[]
     with open('logger.json', 'r') as f:
@@ -285,9 +292,12 @@ def test_connect():
     # data = {}
     # data[request.sid] = []
 
-    for msg in session['status'].bot_messages:
+
+
+    for msg in session['context'].top_bot_msgs():
         id = add_session_message(session, msg)
         msg['message_id'] = id
+
 
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload']['text'])
