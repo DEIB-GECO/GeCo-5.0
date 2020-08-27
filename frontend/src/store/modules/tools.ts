@@ -25,7 +25,7 @@ class Tools extends VuexModule {
     // { name: 'Metadata', component: 'metadata' },
     // { name: 'Field Explorer', component: 'field' },
     // { name: 'Query', component: 'query' }
-    // { name: 'Data', component: 'dataviz' }
+    { name: 'Data', component: 'dataviz' }
   ];
 
   @Mutation
