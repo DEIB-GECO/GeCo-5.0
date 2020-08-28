@@ -11,8 +11,8 @@ import { select, event } from 'd3-selection';
 import { scaleOrdinal, scaleLinear } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import { axisBottom, axisLeft } from 'd3-axis';
-import { entries } from 'd3-collection';
-import { sum, histogram, min, max } from 'd3-array';
+// import { entries } from 'd3-collection';
+import { sum, histogram, min, max, bin, Bin, extent } from 'd3-array';
 import makeid from '@/utils/makeid';
 import { histDistExampleData } from '@/test/histDistExampleData';
 
@@ -29,12 +29,14 @@ const d3 = Object.assign(
     scaleLinear,
     // pie,
     // arc,
-    entries,
+    // entries,
     histogram,
     min,
     max,
     axisBottom,
-    axisLeft
+    axisLeft,
+    bin,
+    extent
   }
 );
 
@@ -59,9 +61,9 @@ export default class HistDistChart extends Vue {
   //     this.plotPie();
   //   }
 
-  width = 200;
-  height = 200;
-  margin = 10;
+  width = 400;
+  height = 300;
+  margin = 40;
 
   nBin = 10;
 
@@ -71,64 +73,98 @@ export default class HistDistChart extends Vue {
 
   // deatiled guide: https://codepen.io/thecraftycoderpdx/pen/jZyzKo
   plotPie() {
-    const svg = d3.select<Element, PieData>('#' + this.chartDivId);
+    const svg = d3.select<Element, any>('#' + this.chartDivId);
 
     const g = svg
-      .append('g')
-      .attr('transform', 'translate(' + this.margin + ',' + this.margin + ')');
+      .append('svg')
+      .attr('width', this.width)
+      .attr('height', this.height);
+    // .append('g')
+    // .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
 
-    const x = scaleLinear<number>().rangeRound([0, this.width]);
-    const y = d3.scaleLinear().range([this.height, 0]);
+    const bin = d3.bin();
+    // .domain([min, max])
+    // .thresholds(x.ticks(40));
 
-    var histogram = d3
-      .histogram()
-      .value(function(d) {
-        return d.date;
-      })
-      .domain(x.domain())
-      .thresholds(x.ticks(d3.timeMonth));
+    const bins = bin(this.chartData);
 
-    console.log('DATA: ', bins);
+    const maxBins = d3.max(bins, (d) => d.length);
+    const count = this.chartData.length;
+
+    const y = d3
+      .scaleLinear()
+      .domain([0, maxBins])
+      .nice()
+      .range([this.height - this.margin, this.margin]);
+
+    const x = d3
+      .scaleLinear()
+      .domain(d3.extent(this.chartData))
+      .nice()
+      .range([this.margin, this.width - this.margin]);
+
+    // const yAxis = (g) =>
+    //   g
+    //     .attr('transform', `translate(${this.margin},0)`)
+    //     .call(d3.axisLeft(y).ticks(this.height / 25))
+    //     .call((g) => g.select('.domain').remove());
+
+    const yAxis = (g) =>
+      g
+        .attr('transform', `translate(${this.margin},0)`)
+        .call(d3.axisLeft(y).ticks(this.height / 40))
+        .call((g) => g.select('.domain').remove());
+    // .call((g) =>
+    //   g
+    //     .select('.tick:last-of-type text')
+    //     .clone()
+    //     .attr('x', 4)
+    //     .attr('text-anchor', 'start')
+    //     .attr('font-weight', 'bold')
+    //     .text('ciao')
+    // );
+
     console.log('BINS:', bins);
 
-    y.domain([
-      0,
-      +d3.max(bins, function(d: any) {
-        console.log("questo e' d: ", d);
-        return d.length;
-      })
-    ]);
+    const xAxis = (g: any) =>
+      g
+        .attr('transform', `translate(0,${this.height - this.margin})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0))
+        .call((g: any) =>
+          g
+            .append('text')
+            .attr('x', this.width - this.margin)
+            .attr('y', -4)
+            .attr('fill', '#000')
+            .attr('font-weight', 'bold')
+            .attr('text-anchor', 'end')
+            .text(this.chartTitle)
+        );
 
-    svg
+    g.append('g')
       .selectAll('rect')
       .data(bins)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', 1)
-      .attr('transform', function(d: any) {
-        return 'translate(' + x(d.x0) + ',' + y(d.length) + ')';
-      })
-      .attr('width', function(d: any) {
-        return x(d.x1) - x(d.x0) - 1;
-      })
-      .attr('height', function(d: any) {
-        return +this.height - y(d.length);
-      });
+      .join('rect')
+      .attr('fill', '#444')
+      .attr('x', (d: Bin<any, any>) => x(d.x0) + 1)
+      .attr('width', (d: Bin<any, any>) => Math.max(0, x(d.x1) - x(d.x0) - 1))
+      .attr('height', (d: Bin<any, any>) => y(0) - y(d.length))
+      .attr('y', (d: Bin<any, any>) => y(d.length));
 
-    svg
-      .append('g')
-      .attr('transform', 'translate(0,' + this.height + ')')
+    g.append('g')
+      .attr('transform', 'translate(0,' + (this.height - this.margin) + ')')
       .call(d3.axisBottom(x));
 
-    svg.append('g').call(d3.axisLeft(y));
+    g.append('g').call(yAxis);
+    // svg.append("g")
+    //   .call(d3.axisLeft(y));
 
     return svg.node();
   }
 
   mounted() {
     this.plotPie();
-    console.log(this.chartData);
+    // console.log(this.chartData);
   }
 }
 </script>
@@ -138,7 +174,7 @@ export default class HistDistChart extends Vue {
   border: solid 1px #0b3142;
   // overflow: auto;
   position: relative;
-  max-height: 230px;
+  max-height: 330px;
 }
 
 .piechart_title {

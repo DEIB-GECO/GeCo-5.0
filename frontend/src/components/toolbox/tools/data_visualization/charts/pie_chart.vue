@@ -11,7 +11,7 @@ import { select, event } from 'd3-selection';
 import { scaleOrdinal } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import { pie, arc, PieArcDatum } from 'd3-shape';
-import { entries } from 'd3-collection';
+// import { entries } from 'd3-collection';
 import { sum } from 'd3-array';
 import makeid from '@/utils/makeid';
 
@@ -26,8 +26,8 @@ const d3 = Object.assign(
     select,
     scaleOrdinal,
     pie,
-    arc,
-    entries
+    arc
+    // entries
   }
 );
 
@@ -127,20 +127,6 @@ export default class PieChart extends Vue {
     tooltip
       .append('div') // add divs to the tooltip defined above
       .attr('class', 'percent'); // add class 'percent' on the selection
-
-    //I set here the style because in the css class isn't recognised
-    // tooltip.style('background', '#eee');
-    // tooltip.style('box-shadow', '#999999');
-    // tooltip.style('color', '#333');
-    // tooltip.style('display', 'none');
-    // tooltip.style('font-size', '18px');
-    // tooltip.style('left', '130px');
-    // tooltip.style('padding', '10px');
-    // tooltip.style('position', 'fixed');
-    // tooltip.style('text-align', 'center');
-    // tooltip.style('top', '95px');
-    // tooltip.style('width', '80px');
-    // tooltip.style('z-index', '10');
 
     //FINE peter
 
