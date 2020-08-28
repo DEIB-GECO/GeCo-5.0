@@ -11,7 +11,7 @@ import { select, event } from 'd3-selection';
 import { scaleOrdinal, scaleLinear } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import { axisBottom, axisLeft } from 'd3-axis';
-// import { entries } from 'd3-collection';
+// @ts-ignore
 import { sum, histogram, min, max, bin, Bin, extent } from 'd3-array';
 import makeid from '@/utils/makeid';
 import { histDistExampleData } from '@/test/histDistExampleData';
@@ -103,26 +103,11 @@ export default class HistDistChart extends Vue {
       .nice()
       .range([this.margin, this.width - this.margin]);
 
-    // const yAxis = (g) =>
-    //   g
-    //     .attr('transform', `translate(${this.margin},0)`)
-    //     .call(d3.axisLeft(y).ticks(this.height / 25))
-    //     .call((g) => g.select('.domain').remove());
-
     const yAxis = (g) =>
       g
         .attr('transform', `translate(${this.margin},0)`)
         .call(d3.axisLeft(y).ticks(this.height / 40))
-        .call((g) => g.select('.domain').remove());
-    // .call((g) =>
-    //   g
-    //     .select('.tick:last-of-type text')
-    //     .clone()
-    //     .attr('x', 4)
-    //     .attr('text-anchor', 'start')
-    //     .attr('font-weight', 'bold')
-    //     .text('ciao')
-    // );
+        .call((g: any) => g.select('.domain').remove());
 
     console.log('BINS:', bins);
 
