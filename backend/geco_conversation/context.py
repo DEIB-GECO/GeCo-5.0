@@ -58,7 +58,7 @@ class Context:
         '''
 
     def add_step(self, bot_msgs = None, node = None, logic = None, user_msg = None):
-        if logic == None and node != None:
+        if logic == None:
             self.history.append(Step(bot_msgs, node, node.logic, user_msg))
         else:
             self.history.append(Step(bot_msgs, node, logic, user_msg))

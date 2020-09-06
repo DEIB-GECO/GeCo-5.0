@@ -79,10 +79,11 @@ def clear_entities(self):
 def set_logic(logic_class):
     session['context'].add_step(node=logic_class)
     print('ciao2')
+    print(session['context'].history)
     #session['context'].top_node().add_additional_status({k: session[k] for k in session['context'].top_node().required_additional_status()})
-    logic_class.add_additional_status({k: session[k] for k in logic_class.required_additional_status()})
-    messages, next_state, delta_status = logic_class.on_enter_messages()
-    session['context'].add_step(bot_msgs=messages, node=logic_class)
+    session['context'].top_node().add_additional_status({k: session[k] for k in session['context'].top_node().required_additional_status()})
+    messages, next_state, delta_status = session['context'].top_node().on_enter_messages()
+    #session['context'].add_step(bot_msgs=messages, node=logic_class)
     for msg in messages:
         session['context'].add_bot_msg(msg)
     for k in delta_status:
