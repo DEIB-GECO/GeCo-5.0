@@ -12,11 +12,10 @@ from rasa.nlu.model import Interpreter
 from database import get_db_uri
 from database import db
 from geco_conversation import Context
-from database import DB
-from database import experiment_fields
-#from database import t_flatten_gecoagent
+import geco_conversation
 
 import messages
+
 from geco_conversation import StartAction, Utils
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
@@ -76,31 +75,56 @@ def clear_entities(self):
     for key in self.entities.keys():
         del (session['tmp_' + str(key)])
     self.entities = {}
-
-def set_logic(self, logic_class):
-    self.logic = logic_class
-    self.logic.add_additional_status({k: session[k] for k in self.logic.required_additional_status()})
-    messages, next_state, delta_status = self.logic.on_enter_messages()
-    for m in messages:
-        self.say(m)
+'''
+def set_logic(logic_class):
+    #session['context'].add_step(node=logic_class)
+    #session['context'].top_node().add_additional_status({k: session[k] for k in session['context'].top_node().required_additional_status()})
+    logic_class.add_additional_status({k: session[k] for k in logic_class.required_additional_status()})
+    messages, next_state, delta_status = logic_class.on_enter_messages()
+    session['context'].add_step(bot_msgs=messages, node=logic_class)
+    for msg in messages:
+        session['context'].add_bot_msg(msg)
     for k in delta_status:
         session[k] = delta_status[k]
     if next_state is not None:
-        print(type(next_state), next_state)
-        self.set_logic(next_state)
+        #session['context'].add_step(node=next_state)
+        set_logic(next_state)
 
-def run(self, message, intent, entities):
-    print(self.logic)
-    print(message)
-    messages, next_state, delta_status = self.logic.run(message, intent, entities)
-    for m in messages:
-        self.say(m)
+
+
+
+def run(message, intent, entities):
+    print('**************************************')
+    for h in session['context'].history:
+        print('----START-----')
+        print(h.bot_msgs)
+        print(h.user_msg)
+        print(h.node)
+        print(h.logic)
+        print('----END-----')
+   # print(session['context'].top_logic())
+   # print(session['context'].top_node())
+    #print(session['context'].top_delta())
+    print('**************************************')
+    #session['context']
+    messages, next_state, delta_status = session['context'].top_node().run(message, intent, entities)
+    session['context'].add_step(bot_msgs = messages, node = session['context'].top_node())
+    for msg in messages:
+        #print(session['context'].top_bot_msgs())
+        session['context'].add_bot_msg(msg)
+    #session['context'].add_bot_msgs(messages)
     for k in delta_status:
         session[k] = delta_status[k]
     if next_state is not None:
-        print(type(next_state), next_state)
-        self.set_logic(next_state)
-
+        session['context'].add_step(node=next_state)
+        set_logic(next_state)
+    else:
+        #session['context'].add_step(node=session['context'].history[-1].node)
+        #session['context'].add_node(session['context'].history[-2].node)
+        set_logic(session['context'].top_node())
+     #   print(session['context'].history[-1].node)
+    #   session['context'].add_step(node = session['context'].history[-1].node)
+'''
 def __init__(self):
     self.user_message = {}
     self.bot_messages = []
@@ -153,6 +177,23 @@ def test_message(message):
         else:
             pass
             #session['status'].bot_messages.append(Utils.chat_message('Sorry, I didn\'t understand.\n Are you sure to reset the session?'))
+    elif intent == 'back':
+        session['context'].pop()
+        print(session['context'].payload.status)
+        #self.status = self.context.top_status()
+        #self.logic = self.context.top_logic()
+        interpretation = interpreter.parse(session['context'].last_valid_user_msg())
+
+        intent = interpretation['intent']['name']
+        entities = {}
+        for e in interpretation['entities']:
+            if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
+                entities[e['entity']].append(e['value'].lower().strip())
+            else:
+                entities[e['entity']] = [e['value'].lower().strip()]
+
+        #run(user_message, intent, entities)
+
     else:
         print(interpretation['entities'])
         entities = {}
@@ -165,17 +206,17 @@ def test_message(message):
         Utils.pyconsole_debug(intent)
         Utils.pyconsole_debug(entities)
 
-        #session['status'].run(user_message, intent, entities)
-    '''
-    for msg in session['status'].bot_messages:
-        Utils.pyconsole_debug(msg)
+        session['context'].modify_status(entities)
+        run(user_message, intent, entities)
+
+    for msg in session['context'].top_bot_msgs():
         id = add_session_message(session, msg)
         msg['message_id'] = id
         emit('json_response', msg)
 
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload']['text'])
-    '''
+
     with open("logger.json", "w") as file:
         json.dump(data, file)
 
@@ -191,6 +232,7 @@ def add_session_message(session, message):
         id = msg[-1]['message_id']+1
 
     if (message['type'] == "message"):
+       # print(message)
         payload = message['payload']
         msg.append({'sender': payload['sender'], 'text': payload['text'], 'message_id':id})
         session['messages'] = msg
@@ -232,7 +274,7 @@ def test_ack_message(message):
 def reset_button(message):
     reset(session)
     for msg in session['context'].top_bot_msgs():
-        Utils.pyconsole_debug(msg)
+        #Utils.pyconsole_debug(msg)
         id = add_session_message(session, msg)
         msg['message_id'] = id
         #emit('json_response', msg)
@@ -263,16 +305,26 @@ def reset(session):
         if not k.startswith("_"):
             del session[k]
     #session['status'] = ConversationDBExplore()
+    #session['context'] = Context(interpreter)
     session['context'] = Context()
-
-    bot_msg = Utils.chat_message(messages.bye_message)
+    bot_msg = [Utils.chat_message(messages.initial_greeting)]
+    bot_node = StartAction(session['context'])
     bot_logic = StartAction.logic
 
     session['messages'] = []
     session['last_json'] = {}
 
-    session['context'].add_step(bot_msg, logic=bot_logic)
-    #emit("json_response", session['context'].top_bot_msgs())
+    session['context'].add_step(bot_msg, node = bot_node, logic=bot_logic)
+    #print('***ADD STEP***')
+    #print(session['context'].top_bot_msgs())
+    #for msg in session['context'].top_bot_msgs():
+    #    id = add_session_message(session, msg)
+    #    msg['message_id'] = id
+#
+    #session['context'].first_node = bot_node
+    set_logic(StartAction(session['context']))
+    #set_logic(session['context'].top_node())
+
 
 
 
@@ -280,10 +332,8 @@ def reset(session):
 @socketio.on('connect', namespace='/test')
 def test_connect():
 
-
     if 'context' not in session:
         reset(session)
-
 
     # TO PUT FOR SAVE EVERY CONVERSATION FROM ALL CONNECTIONS AND REMOVE data= {} and data[request.sid]=[]
     with open('logger.json', 'r') as f:
@@ -291,13 +341,10 @@ def test_connect():
         data[request.sid] = []
     # data = {}
     # data[request.sid] = []
-
-
-
+   # print(session['context'].top_bot_msgs())
     for msg in session['context'].top_bot_msgs():
         id = add_session_message(session, msg)
         msg['message_id'] = id
-
 
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload']['text'])

@@ -13,7 +13,7 @@ class MetadataAction(AbstractAction):
 
         self.keys = self.status['geno_surf'].find_all_keys(gcm_filter)
         self.available_keys = {x.replace('_', ' '): x for x in self.keys if self.keys[x] > 1}
-        print(self.available_keys)
+        #print(self.available_keys)
         if len(self.available_keys) >= 1:
             return [Utils.chat_message("You can also select samples with specific conditions. Do you want to filter on metadata?")], None, {}
         else:

@@ -33,11 +33,17 @@ class AnnotationAction(AbstractAction):
     def logic(self, message, intent, entities):
         from .confirm import Confirm
 
-
         if 'source_ann' in self.status:
             self.status['source'] = self.status['source_ann']
             del(self.status['source_ann'])
-
+        '''
+        if any(elem in self.status for elem in annotation_fields):
+            for elem in annotation_fields:
+                if elem in self.status:
+                    for e in self.status[elem]:
+                        if e not in getattr(self.status["geno_surf"], elem):
+                            del(self.status[elem])
+          '''
         #for field in annotation_fields:
         #    if field in self.status and len(self.status[field]) > 1:
         #        self.status[field] = self.status[field][:1]
@@ -51,11 +57,13 @@ class AnnotationAction(AbstractAction):
         if message is None:
             if "content_type" not in self.status:
                 list_param = {x: x for x in self.status['geno_surf'].content_type_db}
+
                 return [Utils.chat_message("Please provide a content (annotation) type"),
                         Utils.choice("content_type", list_param)] + pie_charts, \
                        None, {}
             elif "assembly" not in self.status:
                 list_param = {x: x for x in self.status['geno_surf'].assembly_db}
+
                 return [Utils.chat_message("Please provide an assembly"),
                         Utils.choice("assembly", list_param)] + pie_charts, \
                        None, {}
@@ -70,15 +78,18 @@ class AnnotationAction(AbstractAction):
                     self.status['source'] = self.status['geno_surf'].source_db
         else:
             if "content_type" not in self.status:
-                self.create_backup(intent, entities)
                 content_type = entities['content_type'] if "content_type" in entities else [message.strip().lower()]
                 if any(elem in self.status["geno_surf"].content_type_db for elem in content_type):
                     for i in range(len(content_type)):
                         if content_type[i] in self.status["geno_surf"].content_type_db:
                             if 'content_type' in self.status:
+                                self.context.top_delta().update_value('content_type', self.status['content_type'],
+                                                                self.status['content_type'].append(content_type[i]))
                                 self.status['content_type'].append(content_type[i])
                             else:
                                 self.status['content_type']= [content_type[i]]
+
+                                self.context.top_delta().insert_value('content_type')
                     # self.status['content_type'] = content_type
                     pie_charts = self.create_piecharts(gcm_filter)
                     list_param = {x: self.status[x] for x in annotation_fields if x in self.status}
@@ -93,7 +104,6 @@ class AnnotationAction(AbstractAction):
 
 
             elif "assembly" not in self.status:
-                self.create_backup(intent, entities)
                 assembly = entities['assembly'] if "assembly" in entities else [message.strip().lower()]
                 if assembly[0] not in self.status["geno_surf"].assembly_db:
                     db = self.status["geno_surf"].assembly_db
@@ -103,21 +113,23 @@ class AnnotationAction(AbstractAction):
                            None, {}
                 else:
                     self.status['assembly'] = assembly
+                    self.context.top_delta().insert_value('assembly')
                     pie_charts = self.create_piecharts(gcm_filter)
                     list_param = {x: self.status[x] for x in annotation_fields if x in self.status}
                     msg, nx, delta = self.logic(None, None, None)
                     return [Utils.param_list(list_param)] + msg + pie_charts, nx, delta
 
             elif "source" not in self.status:
-                self.create_backup(intent, entities)
                 source = entities['source'] if "source" in entities else [message.strip().lower()]
                 if any(elem in self.status["geno_surf"].source_db for elem in source):
                     for i in range(len(source)):
                         if source[i] in self.status["geno_surf"].source_db:
                             if 'source' in self.status:
+                                self.context.top_delta().update_value('source', self.status['source'], self.status['source'].append(source[i]))
                                 self.status['source'].append(source[i])
                             else:
                                 self.status['source'] = [source[i]]
+                                self.context.top_delta().insert_value('source')
                     pie_charts = self.create_piecharts(gcm_filter)
                     list_param = {x: self.status[x] for x in annotation_fields if x in self.status}
                     msg, nx, delta = self.logic(None, None, None)
@@ -132,13 +144,16 @@ class AnnotationAction(AbstractAction):
         fields = {k: v for (k, v) in self.status.items() if k in annotation_fields}
         #fields = {x: self.status[x] for x in annotation_fields}
         samples = self.status['geno_surf'].check_existance(fields)
-
-        back = AnnotationAction
+        self.status = {}
+        self.status['fields'] = fields
+        self.status['back'] = AnnotationAction
 
         if samples > 0:
-            return [Utils.param_list(fields)], Confirm({"geno_surf": self.status['geno_surf'], "fields": fields, "back": back}), {}
+            return [Utils.param_list(fields)], Confirm(self.context), {}#{"geno_surf": self.status['geno_surf'], "fields": fields, "back": back}), {}
         else:
             for a in annotation_fields:
+                self.context.top_delta().delete_value(a, self.status[a])
                 del self.status[a]
+
             return [Utils.param_list(fields),Utils.chat_message(messages.no_ann_found)], self, {}
 

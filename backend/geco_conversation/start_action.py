@@ -19,14 +19,19 @@ class StartAction(AbstractAction):
         return []
 
     def logic(self, message, intent, entities):
-        self.create_backup(intent, entities)
+        self.logic = self.logic_intent
+        list_param = {'Annotations': 'annotations', 'Experimental data': 'experiments'}
+        return [Utils.chat_message(messages.start_init),
+                Utils.choice("Data available", list_param)], None, {}
+
+    def logic_intent(self, message, intent, entities):
         if intent == 'retrieve_annotations':
             msg = [Utils.workflow('Data selection')]
-            next_node = AnnotationAction(entities)
+            next_node = AnnotationAction(self.context)
             new_status= {'geno_surf': DB(annotation_fields, True)}
         elif intent == 'retrieve_experiments':
             msg = [Utils.workflow('Data selection')]
-            next_node = ExperimentAction(entities)
+            next_node = ExperimentAction(self.context)
             new_status= {'geno_surf': DB(experiment_fields, False)}
         else:
             msg = [Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?"),Utils.workflow('Data selection')]
