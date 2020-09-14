@@ -1,5 +1,5 @@
 <template>
-  <div class="data_viz">
+  <div class="data_viz" :style="gridDimension">
     <div
       v-for="chart in charts"
       :key="chart.title"
@@ -39,6 +39,14 @@ export default class DataVisualization extends Vue {
   updated() {
     console.log('data_visualizaiton updated with following data:', this.charts);
   }
+
+  get gridDimendion() {
+    const gridSizeDefinition =
+      this.charts.length > 1 ? 'auto auto auto' : 'auto';
+    return {
+      'grid-template-columns': gridSizeDefinition
+    };
+  }
 }
 </script>
 
@@ -47,9 +55,8 @@ export default class DataVisualization extends Vue {
 .data_viz {
   max-height: 70vh !important;
   overflow-y: scroll;
-  // overflow-x: hidden;
+  margin: auto;
   position: relative;
   display: grid;
-  grid-template-columns: auto auto auto;
 }
 </style>

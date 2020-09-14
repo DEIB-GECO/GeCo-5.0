@@ -11,6 +11,7 @@ import { select, event } from 'd3-selection';
 import { scaleOrdinal, scaleLinear } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import { axisBottom, axisLeft } from 'd3-axis';
+import { line } from 'd3-shape';
 
 import { sum, histogram, min, max, bin, Bin, extent } from 'd3-array';
 import makeid from '@/utils/makeid';
@@ -27,23 +28,22 @@ const d3 = Object.assign(
     select,
     scaleOrdinal,
     scaleLinear,
-    // pie,
-    // arc,
-    // entries,
     histogram,
     min,
     max,
     axisBottom,
     axisLeft,
     bin,
-    extent
+    extent,
+    line
   }
 );
 
 @Component
 export default class HistDistChart extends Vue {
   @Prop({
-    default: () => histDistExampleData
+    // default: () => histDistExampleData
+    // default: () => [5, 5, 5, 6, 7, 8, 2, 3, 4, 4, 2, 5]
   })
   chartData!: any[];
 
@@ -54,12 +54,14 @@ export default class HistDistChart extends Vue {
   })
   chartTitle!: string;
 
-  //   @Watch('chartData')
-  //   dataChanged() {
-  //     const svg = d3.select<Element, PieDataPairs>('#' + this.chartDivId);
-  //     svg.selectAll('*').remove();
-  //     this.plotPie();
-  //   }
+  frequencyArray: [number, number][] = [];
+
+  @Watch('chartData')
+  dataChanged() {
+    const svg = d3.select<Element, PieDataPairs>('#' + this.chartDivId);
+    svg.selectAll('*').remove();
+    this.plotPie();
+  }
 
   width = 400;
   height = 300;
@@ -74,18 +76,17 @@ export default class HistDistChart extends Vue {
   // deatiled guide: https://codepen.io/thecraftycoderpdx/pen/jZyzKo
   // guide no. 2: https://www.d3-graph-gallery.com/graph/shape.html#myline
   plotPie() {
+    this.frequencyArray = this.computeFrequencies(this.chartData);
+
     const svg = d3.select<Element, any>('#' + this.chartDivId);
 
     const g = svg
       .append('svg')
       .attr('width', this.width)
       .attr('height', this.height);
-    // .append('g')
-    // .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
 
+    //Histogram
     const bin = d3.bin();
-    // .domain([min, max])
-    // .thresholds(x.ticks(40));
 
     const bins = bin(this.chartData);
 
@@ -101,6 +102,8 @@ export default class HistDistChart extends Vue {
     const dataDomain = d3.extent(this.chartData)
       ? d3.extent(this.chartData)
       : [0, 1];
+    console.log('Data Domain: ', dataDomain);
+
     const x = d3
       .scaleLinear()
       .domain(dataDomain)
@@ -140,20 +143,61 @@ export default class HistDistChart extends Vue {
       .attr('height', (d: any) => y(0) - y(d.length))
       .attr('y', (d: any) => y(d.length));
 
+    //Line plot
+    /*
+    const xDist = d3
+      .scaleLinear()
+      .domain(dataDomain)
+      .nice()
+      .range([this.margin, this.width - this.margin]);
+
+    const yDist = d3
+      .scaleLinear()
+      .domain([0, 4]) // input
+      .range([this.height, 0]); // output
+
+    const lineFunc = d3
+      .line()
+      .x(function(d) {
+        return xDist(d[0]);
+      })
+      .y(function(d) {
+        return yDist(d[1]);
+      });
+
+    g.append('path')
+      .datum(this.frequencyArray)
+      .attr('fill', 'none')
+      .attr('stroke', '#187795')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-linejoin', 'round')
+      .attr('d', lineFunc);
+
+    */
+
     g.append('g')
       .attr('transform', 'translate(0,' + (this.height - this.margin) + ')')
       .call(d3.axisBottom(x));
 
     g.append('g').call(yAxis);
-    // svg.append("g")
-    //   .call(d3.axisLeft(y));
 
+    console.log('frequencies:', this.frequencyArray);
+    console.log('frequencies:', this.frequencyArray);
     return svg.node();
+  }
+
+  computeFrequencies(numberList: number[]): Array<[number, number]> {
+    const map = numberList.reduce(
+      (acc: any, e: any) => acc.set(e, (acc.get(e) || 0) + 1),
+      new Map()
+    );
+    const myArray = [...map.entries()].sort();
+    return myArray;
   }
 
   mounted() {
     this.plotPie();
-    // console.log(this.chartData);
+    this.computeFrequencies(this.chartData);
   }
 }
 </script>
