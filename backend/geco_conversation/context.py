@@ -1,5 +1,11 @@
 from geco_conversation import StartAction
 
+import messages
+
+from geco_conversation import StartAction, Utils
+
+
+
 class Delta:
 
     def insert_value(self, name):
@@ -23,9 +29,9 @@ class Delta:
 
 class Step:
     # Manca delta context
-    def __init__(self, bot_msgs, node= None, logic = None, user_msg = None):
+    def __init__(self, bot_msgs, node= None, user_msg = None):
         self.node = node
-        self.logic = logic  #forse TUPLA (node, logic)
+        #self.logic = logic  #forse TUPLA (node, logic)
         self.bot_msgs = bot_msgs
         self.user_msg = user_msg
         self.delta = Delta()
@@ -34,6 +40,14 @@ class Payload:
     def __init__(self):
         self.status = {}
 
+class Data_Extraction:
+    def __init__(self):
+        self.datasets = []
+        self.binary = []
+        self.unary = []
+        self.table = {}
+
+
 class Context:
 
     def __init__(self):
@@ -41,14 +55,9 @@ class Context:
         self.history = []
 
         self.payload = Payload()
-        '''
-        self.data_extraction = {
-            'datasets' : [],
-            'binary' : [],
-            'unary' : [],
-            'table' : []
-        }
 
+        self.data_extraction = Data_Extraction()
+        '''
         self.data_analysis = {
             'par_tuning' : [],
             'validation' : [],
@@ -57,20 +66,17 @@ class Context:
         
         '''
 
-    def add_step(self, bot_msgs = None, node = None, logic = None, user_msg = None):
-        if logic == None:
-            self.history.append(Step(bot_msgs, node, node.logic, user_msg))
-        else:
-            self.history.append(Step(bot_msgs, node, logic, user_msg))
+    def add_step(self, bot_msgs = None, node = None, user_msg = None):
+        self.history.append(Step(bot_msgs, node, user_msg))
 
     def top_bot_msgs(self):
-        return self.history[-1].bot_msgs
+        if len(self.history)>=2:
+            return self.history[-2].bot_msgs
+        else:
+            return self.history[-1].bot_msgs
 
     def top_user_msg(self):
         return self.history[-1].user_msg
-
-    def top_logic(self):
-        return self.history[-1].logic
 
     def top_node(self):
         return self.history[-1].node
@@ -85,7 +91,7 @@ class Context:
         if type(self.history[-1].bot_msgs)== list:
             self.history[-1].bot_msgs.append(bot_msg)
         elif self.history[-1].bot_msgs==None:
-            self.history[-1].bot_msgs = bot_msg
+            self.history[-1].bot_msgs = [bot_msg]
         else:
             self.history[-1].bot_msgs = [self.history[-1].bot_msgs, bot_msg]
 
@@ -101,10 +107,6 @@ class Context:
 
     def add_node(self, node):
         self.history[-1].node = node
-        self.history[-1].logic = node.logic
-
-    def add_logic(self, logic):
-        self.history[-1].logic = logic
 
     def add_delta(self, delta):
         self.history[-1].delta = delta
@@ -114,16 +116,12 @@ class Context:
         for i in range(len(self.history)):
             print(i)
             print(self.history[i].node)
-            print(self.history[i].logic)
         print('-----------------BEFORE------------------------')
-        print(self.top_logic())
         print(self.top_node())
         del (self.history[-1])
         print('-----------------AFTER-------------------------')
-        print(self.top_logic())
         print(self.top_node())
         self.revert()
-        #elf.history[-1].node.status = self.history[-2].delta
 
     def last_valid_user_msg(self):
         return self.history[-1].user_msg
@@ -145,3 +143,5 @@ class Context:
 
     def modify_status(self, dict):
         self.payload.status.update(dict)
+
+

@@ -2,16 +2,13 @@ import messages
 from data_structure.data_structure import DataSet
 from .annotation_action import AnnotationAction
 from .experiment_action import ExperimentAction
-from .metadata_action import MetadataAction
+from .metadata_action import FilterMetadataAction, MetadataAction
 from .binary_action import BinaryAction
 from geco_conversation import *
 from .empty_state import EmptyAction
 
 
 class Confirm(AbstractAction):
-
-    def on_enter_messages(self):
-        return [Utils.chat_message("You can see your choices in the bottom right panel.\nDo you want to keep your selection?")], None, {}
 
     def help_message(self):
         return [Utils.chat_message(messages.confirm_help)]
@@ -20,82 +17,90 @@ class Confirm(AbstractAction):
         return ['geno_surf','dataset_list']
 
     def logic(self, message, intent, entities):
-        if self.status['back']!=MetadataAction:
+
+        if message is None:
+            print(self.status)
+            self.context.add_bot_msgs([Utils.chat_message("You can see your choices in the bottom right panel.\nDo you want to keep your selection?"), Utils.param_list(self.status['fields'])])
+            return None, False
+
+        if self.context.payload.back!= MetadataAction:
             if intent == "affirm":
-                self.logic = self.set_name_logic
-                return [Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)], None, {}
+                self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
+                return RenameAction(self.context), False
             else:
-                self.logic = self.change_selection_logic
-                return [Utils.chat_message("Do you want to restart the selection from scratch?")], None, {}
+                self.context.add_bot_msgs([Utils.chat_message("Do you want to restart the selection from scratch?")])
+                return ChangeSelectionAction(self.context), False
+
         else:
             if intent == "affirm":
-                self.logic=self.next_action_logic
                 fields = self.status['fields'].copy()
                 del(fields['metadata'])
                 del(fields['name'])
-                urls = self.status['geno_surf'].download_filter_meta(fields,self.status['fields']['metadata'])
+                urls = self.context.payload.database.download_filter_meta(fields,self.status['fields']['metadata'])
 
-                return [Utils.chat_message("You can download the data by clicking on the arrow in the bottom panel."),Utils.chat_message(messages.other_dataset)], None, {}
+                self.context.add_bot_msgs([Utils.chat_message("You can download the data by clicking on the arrow in the bottom panel."),Utils.chat_message(messages.other_dataset), Utils.workflow('Data selection', True, urls)])
+                return StartAction(self.context), False
 
-    def set_name_logic(self, message, intent, entities):
+class RenameAction(AbstractAction):
+    def help_message(self):
+        return [Utils.chat_message(messages.confirm_help)]
+
+    def required_additional_status(self):
+        return ['geno_surf','dataset_list']
+
+    def logic(self, message, intent, entities):
         if intent != "deny":
             name = message.strip()
         else:
-            name = "DS_" + str(len(self.status['dataset_list']) +1 )
+            name = "DS_" + str(len(self.context.data_extraction.datasets) +1 )
 
-        urls = self.status['geno_surf'].download(self.status['fields'])
+        urls = self.context.payload.database.download(self.status['fields'])
 
         ds = DataSet(self.status['fields'], name)
-        self.status['dataset_list'].append(ds)
+        self.context.data_extraction.datasets.append(ds)
         self.status['fields'].update({'name':name})
-        #self.logic = self.next_action_logic
         fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
-       # print(Utils.workflow('Data selection', True, urls))
 
-        return [Utils.chat_message("OK, dataset saved with name: " + name + ".\nYou can download the data by clicking on the arrow in the bottom panel."),
-                Utils.param_list(self.status['fields']),
-                Utils.workflow('Data selection', True, urls)],\
-               MetadataAction({'fields': fields}), {"dataset_list": self.status['dataset_list']}
+        self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name + ".\nYou can download the data by clicking on the arrow in the bottom panel."),
+                Utils.param_list(fields), Utils.workflow('Data selection', True, urls)])
+        return FilterMetadataAction(self.context), True
 
-    def next_action_logic(self, message, intent, entities):
-        if intent == "affirm":
-            msgs = []
-            next_state = StartAction({})
-        elif intent == "retrieve_annotations":
-            msgs = []
-            next_state = AnnotationAction(entities)
-        elif intent == "retrieve_experiments":
-            msgs = []
-            next_state = ExperimentAction(entities)
-        # elif len(self.status['dataset_list'])==2:
-        #    msgs = [Utils.workflow('Dataset elaboration')]
-        #    #next_state = MetadataAction({'fields': fields})
-        #    next_state = BinaryAction({})
-        else:
-            msgs = [Utils.chat_message(messages.bye_message), Utils.workflow('END')]
-            #msgs = []
-            fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
-            next_state = EmptyAction({})
 
-        return msgs, next_state, {}
+class ChangeSelectionAction(AbstractAction):
+    def help_message(self):
+        return [Utils.chat_message(messages.confirm_help)]
 
-    def change_selection_logic(self, message, intent, entities):
+    def required_additional_status(self):
+        return ['geno_surf', 'dataset_list']
+
+    def logic(self, message, intent, entities):
         if intent == "affirm":
             from .start_action import StartAction
-            return [], StartAction({}), {}
+            return StartAction({}), True
         else:
             list_param = {x: x for x in self.status['fields']}
             self.logic = self.change_single_field_logic
-            return [Utils.chat_message("Which field do you want to change?"),
-                    Utils.choice("Fields selected", list_param)], None, {}
+            self.context.add_bot_msgs([Utils.chat_message("Which field do you want to change?"),
+                    Utils.choice("Fields selected", list_param)])
+            return ChangeFieldAction(self.context), False
 
-    def change_single_field_logic(self, message, intent, entities):
+class ChangeFieldAction(AbstractAction):
+    def help_message(self):
+        return [Utils.chat_message(messages.confirm_help)]
+
+    def required_additional_status(self):
+        return ['geno_surf', 'dataset_list']
+
+
+    def logic(self, message, intent, entities):
         selected_field = message.strip().lower()
 
         if selected_field in self.status['fields']:
-            list_param = {x: x for x in getattr(self.status['geno_surf'], str(selected_field) + '_db')}
+            list_param = {x: x for x in getattr(self.context.payload.database, str(selected_field) + '_db')}
             fields = {k:v for (k,v) in self.status['fields'].items() if k != selected_field}
-            return [Utils.choice(str(selected_field), list_param)], self.status['back'](fields), {}
+            self.context.add_bot_msgs([Utils.choice(str(selected_field), list_param)])
+            return self.status['back'](self.context), True
         else:
-            return [Utils.chat_message("The field is not valid, please select another one")], None, {}
+            self.context.add_bot_msgs([Utils.chat_message("The field is not valid, please select another one")])
+            return None, False
 

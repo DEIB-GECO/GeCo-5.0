@@ -1,0 +1,100 @@
+-- View: dw.flatten_gecoagent
+
+-- DROP MATERIALIZED VIEW dw.flatten_gecoagent;
+
+CREATE MATERIALIZED VIEW dw.flatten_gecoagent
+TABLESPACE default_ts
+AS
+ SELECT DISTINCT i.item_id,
+    lower(b.biosample_type::text) AS biosample_type,
+    lower(b.tissue::text) AS tissue,
+    lower(b.cell::text) AS cell,
+    b.is_healthy,
+    lower(b.disease::text) AS disease,
+    lower(d.dataset_name::text) AS dataset_name,
+    lower(d.data_type::text) AS data_type,
+    lower(d.file_format::text) AS file_format,
+    lower(d.assembly::text) AS assembly,
+    d.is_annotation,
+    lower(et.technique::text) AS technique,
+    lower(et.feature::text) AS feature,
+    lower(et.target::text) AS target,
+    lower(i.content_type::text) AS content_type,
+    lower(p.source::text) AS source,
+    i.local_url
+   FROM dw.item i
+     JOIN dataset d USING (dataset_id)
+     JOIN experiment_type et USING (experiment_type_id)
+     JOIN case2item c2i USING (item_id)
+     JOIN case_study cs USING (case_study_id)
+     JOIN project p USING (project_id)
+     JOIN replicate2item r2i USING (item_id)
+     JOIN dw.replicate r USING (replicate_id)
+     JOIN biosample b USING (biosample_id)
+     JOIN donor d2 USING (donor_id)
+WITH NO DATA;
+
+ALTER TABLE dw.flatten_gecoagent
+    OWNER TO geco;
+
+
+CREATE INDEX flatten_gecoagent_assembly_idx
+    ON dw.flatten_gecoagent USING btree
+    (assembly COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_biosample_type_idx
+    ON dw.flatten_gecoagent USING btree
+    (biosample_type COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_content_type_idx
+    ON dw.flatten_gecoagent USING btree
+    (content_type COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_data_type_idx
+    ON dw.flatten_gecoagent USING btree
+    (data_type COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_dataset_name_idx
+    ON dw.flatten_gecoagent USING btree
+    (dataset_name COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_disease_idx
+    ON dw.flatten_gecoagent USING btree
+    (disease COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_disease_idx1
+    ON dw.flatten_gecoagent USING btree
+    (disease COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_feature_idx
+    ON dw.flatten_gecoagent USING btree
+    (feature COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_file_format_idx
+    ON dw.flatten_gecoagent USING btree
+    (file_format COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_is_annotation_idx
+    ON dw.flatten_gecoagent USING btree
+    (is_annotation)
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_is_healthy_idx
+    ON dw.flatten_gecoagent USING btree
+    (is_healthy)
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_source_idx
+    ON dw.flatten_gecoagent USING btree
+    (source COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_target_idx
+    ON dw.flatten_gecoagent USING btree
+    (target COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_technique_idx
+    ON dw.flatten_gecoagent USING btree
+    (technique COLLATE pg_catalog."default")
+    TABLESPACE default_ts;
+CREATE INDEX flatten_gecoagent_tissue_idx
+    ON dw.flatten_gecoagent USING btree
+    (tissue COLLATE pg_catalog."default")
+    TABLESPACE default_ts;

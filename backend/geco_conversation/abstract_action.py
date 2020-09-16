@@ -14,10 +14,6 @@ class AbstractAction(ABC):
         self.status = self.context.payload.status
 
     @abstractmethod
-    def on_enter_messages(self):
-        pass
-
-    @abstractmethod
     def required_additional_status(self):
         pass
 
@@ -32,27 +28,27 @@ class AbstractAction(ABC):
 
     def add_additional_status(self, additional_status):
         for k in additional_status:
-            self.status[k] = additional_status[k]
+            setattr(self.context.payload, str(k), additional_status[k])
 
     def run(self, message, intent, entities):
         if intent == "help":
-            return self.help_message(), None, {}
+            self.help_message()
+            return None, False
         elif intent == 'name':
-            msg = [Utils.chat_message(messages.gecoagent)]
-            return msg, None, {}
+            self.context.add_bot_msgs([Utils.chat_message(messages.gecoagent)])
+            return None, False
         elif intent == 'mood':
-            msg = [Utils.chat_message(messages.mood)]
-            return msg, None, {}
+            self.context.add_bot_msgs([Utils.chat_message(messages.mood)])
+            return None, False
         elif intent == 'joke':
             joke = random.choice(jokes.jokes)
-            msg = [Utils.chat_message(joke)]
-            return msg, None, {}
+            self.context.add_bot_msgs([Utils.chat_message(joke)])
+            return None, False
         elif intent == 'weather':
             response = requests.get('https://www.metaweather.com/api/location/718345/')
-            msg = [Utils.chat_message('Here in Milan the weather forecast says: ' + json.loads(response.content.decode('utf-8'))['consolidated_weather'][0]['weather_state_name'].lower())]
-            return msg, None, {}
+            self.context.add_bot_msgs([Utils.chat_message('Here in Milan the weather forecast says: ' + json.loads(response.content.decode('utf-8'))['consolidated_weather'][0]['weather_state_name'].lower())])
+            return None, False
         else:
-            #self.logic = self.context.top_logic()
             return self.logic(message, intent, entities)
 
 

@@ -1,0 +1,49 @@
+-- View: dw.gcm_pair_gecoagent
+
+-- DROP MATERIALIZED VIEW dw.gcm_pair_gecoagent;
+
+CREATE MATERIALIZED VIEW dw.gcm_pair_gecoagent
+TABLESPACE default_ts
+AS
+ SELECT flatten.item_id,
+    'species'::text AS key,
+    flatten.species AS value,
+    'donor'::text AS table_name
+   FROM dw.flatten
+UNION
+ SELECT flatten.item_id,
+    'age'::text AS key,
+    flatten.age::text AS value,
+    'donor'::text AS table_name
+   FROM dw.flatten
+UNION
+ SELECT flatten.item_id,
+    'gender'::text AS key,
+    flatten.gender AS value,
+    'donor'::text AS table_name
+   FROM dw.flatten
+UNION
+ SELECT flatten.item_id,
+    'ethnicity'::text AS key,
+    flatten.ethnicity AS value,
+    'donor'::text AS table_name
+   FROM dw.flatten
+UNION
+ SELECT flatten.item_id,
+    'biological_replicate_count'::text AS key,
+    flatten.biological_replicate_count::text AS value,
+    'replicate'::text AS table_name
+   FROM dw.flatten
+UNION
+ SELECT flatten.item_id,
+    'technical_replicate_count'::text AS key,
+    flatten.technical_replicate_count::text AS value,
+    'replicate'::text AS table_name
+   FROM dw.flatten
+WITH DATA;
+
+ALTER TABLE dw.gcm_pair_gecoagent
+    OWNER TO geco;
+
+GRANT ALL ON TABLE dw.gcm_pair_gecoagent TO geco;
+GRANT SELECT ON TABLE dw.gcm_pair_gecoagent TO geco_ro;
