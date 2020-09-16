@@ -1,0 +1,35 @@
+-- View: dw.unified_pair_gecoagent
+
+-- DROP MATERIALIZED VIEW dw.unified_pair_gecoagent;
+
+CREATE MATERIALIZED VIEW dw.unified_pair_gecoagent
+TABLESPACE default_ts
+AS
+ SELECT pair.item_id,
+    lower(pair.key::text)::character varying(128) AS key,
+    lower(pair.value::text) AS value,
+    false AS is_gcm
+   FROM pair
+UNION
+ SELECT gcm_pair_gecoagent.item_id,
+    lower(gcm_pair_gecoagent.key)::character varying(128) AS key,
+    lower(gcm_pair_gecoagent.value) AS value,
+    true AS is_gcm
+   FROM dw.gcm_pair_gecoagent
+WITH NO DATA;
+
+ALTER TABLE dw.unified_pair_gecoagent
+    OWNER TO geco;
+
+GRANT ALL ON TABLE dw.unified_pair_gecoagent TO geco;
+GRANT SELECT ON TABLE dw.unified_pair_gecoagent TO geco_ro;
+
+CREATE INDEX unified_pair_item_id_idx
+    ON dw.unified_pair_gecoagent USING btree
+    (item_id)
+    TABLESPACE default_ts;
+CREATE UNIQUE INDEX unified_pair_unique_idx
+    ON dw.unified_pair_gecoagent USING btree
+    (item_id, key COLLATE pg_catalog."default", value COLLATE pg_catalog."default", is_gcm)
+    TABLESPACE default_ts;
+    TABLESPACE default_ts;
