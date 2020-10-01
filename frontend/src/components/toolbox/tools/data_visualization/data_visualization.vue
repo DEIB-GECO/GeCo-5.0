@@ -1,5 +1,5 @@
 <template>
-  <div class="data_viz">
+  <div class="data_viz" :style="gridDimension">
     <div
       v-for="chart in charts"
       :key="chart.title"
@@ -14,17 +14,20 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import PieChart from './charts/pie_chart.vue';
+import HistDistChart from './charts/HistDistChart.vue';
 
 const datavizStore = namespace('gecoAgent/DataViz');
 
 @Component({
   components: {
-    PieChart
+    PieChart,
+    HistDistChart
   }
 })
 export default class DataVisualization extends Vue {
   availableCharts = {
-    pieChart: 'PieChart'
+    pieChart: 'PieChart',
+    histDistChart: 'HistDistChart'
   };
 
   @datavizStore.State charts!: ChartData[];
@@ -36,6 +39,14 @@ export default class DataVisualization extends Vue {
   updated() {
     console.log('data_visualizaiton updated with following data:', this.charts);
   }
+
+  get gridDimendion() {
+    const gridSizeDefinition =
+      this.charts.length > 1 ? 'auto auto auto' : 'auto';
+    return {
+      'grid-template-columns': gridSizeDefinition
+    };
+  }
 }
 </script>
 
@@ -44,9 +55,8 @@ export default class DataVisualization extends Vue {
 .data_viz {
   max-height: 70vh !important;
   overflow-y: scroll;
-  // overflow-x: hidden;
+  margin: auto;
   position: relative;
   display: grid;
-  grid-template-columns: auto auto auto;
 }
 </style>

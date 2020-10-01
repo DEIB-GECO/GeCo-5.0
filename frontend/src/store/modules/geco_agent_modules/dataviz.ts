@@ -2,7 +2,12 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 
 @Module({ namespaced: true })
 class DataViz extends VuexModule {
-  charts: ChartData[] = [];
+  charts: ChartData[] = [
+    // {
+    //   title: 'Ciao',
+    //   vizType: 'histDistChart'
+    // }
+  ];
 
   @Mutation
   setCharts(newCharts: DataSummaryPayload): void {
@@ -17,7 +22,7 @@ class DataViz extends VuexModule {
     this.charts = newCharts.viz;
   }
 
-  removeNulls(chartData: ChartData): ChartData {
+  removeNulls(chartData: PieData): PieData {
     const newData = chartData;
     newData.data = chartData.data.map((x) => {
       x.value = x.value ? x.value : 'N/D';
