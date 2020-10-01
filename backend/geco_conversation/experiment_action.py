@@ -31,7 +31,7 @@ class ExperimentAction(AbstractAction):
         self.context.payload.back = ExperimentAction
 
         if 'is_healthy' in self.status:
-            if self.status['is_healthy']== ['healthy']:
+            if self.status['is_healthy'] == ['healthy']:
                 self.status['is_healthy'] = [True]
                 self.context.top_delta().insert_value('is_healthy')
             if self.status['is_healthy'] == ['tumoral']:

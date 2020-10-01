@@ -54,9 +54,12 @@ class AnnotationAction(AbstractAction):
             if message is None:
                 list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
                 if len(list_param)!=0:
-                    self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?"),
-                            Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help),
+                    #self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?"),
+                     #       Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help),
+                     #       Utils.param_list({k:v for (k,v) in self.status.items() if k in annotation_fields})] + pie_charts)
+                    self.context.add_bot_msgs([Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help),
                             Utils.param_list({k:v for (k,v) in self.status.items() if k in annotation_fields})] + pie_charts)
+                    self.context.payload.function = 'Field'
                     return FieldAction(self.context), False
                 else:
                     fields = {x: self.status[x] for x in annotation_fields if x in self.status}

@@ -39,6 +39,7 @@ class Step:
 class Payload:
     def __init__(self):
         self.status = {}
+        self.function = None
 
 class Data_Extraction:
     def __init__(self):

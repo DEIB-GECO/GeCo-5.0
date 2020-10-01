@@ -1,0 +1,7 @@
+STATE;FUNCTION;MESSAGE
+AnnotationAction;Help;"""I guide you toward the selection of the type, assembly and provider of your annotations. \nIf you've already selected some of them, proceed with the others, otherwise start with the content type.\nYou can see the possible choices on the right. """
+AnnotationAction;Field;"""Which field do you want to select?"""
+AnnotationAction;None;"""I could not find any annotation file with the filters you selected. Please insert one by one."""
+FieldAction;Field;"""Please provide a {}"""
+FieldAction;is_healthy;"""Do you want healthy patients?"""
+FieldAction;Not_available;"""Sorry, your choice is not available. Please reinsert one."

@@ -13,6 +13,7 @@ from database import get_db_uri
 from database import db
 from geco_conversation import Context
 import geco_conversation
+import pandas as pd
 
 import messages
 
@@ -71,6 +72,8 @@ class ConversationDBExplore(object):
         self.context = Context()
         self.geno_surf = None
         session['context']=self.context
+        self.msgs = pd.read_csv('mex.csv', sep=';', header=0)
+        print(self.msgs.head())
 
         self.context.add_step(bot_msgs=Utils.chat_message(messages.initial_greeting), node= StartAction(self.context))
         self.run(None, None, None)
@@ -78,13 +81,28 @@ class ConversationDBExplore(object):
     def say(self, msg):
         self.context.add_bot_msg(msg)
 
+    def answer(self, msg):
+        node = str(type(self.context.top_node()).__name__)
+        if node in list(self.msgs['STATE'].values):
+            for i in self.msgs[self.msgs['STATE']==node].index:
+                print(self.msgs['FUNCTION'][i])
+                print(self.context.payload.function)
+                if self.context.payload.function == self.msgs['FUNCTION'][i]:
+                    message = self.msgs['MESSAGE'][i]
+                    self.context.add_bot_msgs([message])
+                    print(self.context.history[-1].bot_msgs)
+                    print(self.context.history[-2].bot_msgs)
+                    return
+
     def clear_msgs(self):
         self.bot_messages = []
 
 
     def run(self, message, intent, entities):
+        #enter is for the first time you enter in the state
         next_state, enter = self.context.top_node().run(message, intent, entities)
-        print(message)
+        self.answer(self)
+
         if next_state is not None:
             #session['context'].top_node().add_additional_status({k: session[k] for k in session['context'].top_node().required_additional_status()})
             self.context.add_step(node=next_state)
@@ -92,6 +110,9 @@ class ConversationDBExplore(object):
                 self.run(None, None, None)
         else:
             self.context.add_step(node=self.context.top_node())
+
+
+
 
 
     def receive(self, message):
