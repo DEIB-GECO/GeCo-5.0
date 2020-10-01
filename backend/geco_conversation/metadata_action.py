@@ -160,6 +160,13 @@ class StringValueAction(AbstractAction):
             return MetadataAction(self.context), False
 
 class RangeValueAction(AbstractAction):
+
+    def help_message(self):
+        return [Utils.chat_message(messages.annotation_help)]
+
+    def required_additional_status(self):
+        return ['geno_surf', 'dataset_list']
+
     def logic(self, message, intent, entities):
         value_low = -99999999999999999999999999999999999999999999999999999
         value_high = 99999999999999999999999999999999999999999999999999999
