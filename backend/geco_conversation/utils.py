@@ -73,6 +73,15 @@ class Utils(object):
                     "viz":viz
                 }}
 
+    def hist(values):
+        viz = {"vizType": "hist_dist_chart",
+            "data": values}
+
+        return {"type": "data_summary",
+                "payload": {
+                    "viz": viz
+                }}
+
     def tools_setup(add, remove):
         return {"type" : "tools_setup",
                 "payload": {

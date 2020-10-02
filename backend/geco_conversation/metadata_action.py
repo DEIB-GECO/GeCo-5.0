@@ -112,7 +112,7 @@ class KeyAction(AbstractAction):
                 average = statistics.mean(numeric_values)
                 list_param = {'min: {}'.format(minimum):minimum, 'max: {}'.format(maximum):maximum, 'mean: {}'.format(average):average}
 
-                self.context.add_bot_msgs([Utils.chat_message("Which range of values do you want? You can see the values in the histogram."),
+                self.context.add_bot_msgs([Utils.chat_message("Which range of values do you want? You can see the values in the histogram."),Utils.hist(numeric_values),
                         Utils.choice('Ranges',list_param, show_help=True, helpIconContent=messages.fields_help),Utils.param_list(self.status['fields'])])
                 return RangeValueAction(self.context), False
 

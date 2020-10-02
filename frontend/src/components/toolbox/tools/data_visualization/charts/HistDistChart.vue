@@ -13,7 +13,7 @@ import { schemeCategory10 } from 'd3-scale-chromatic';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from 'd3-shape';
 
-import { sum, histogram, min, max, bin, Bin, extent } from 'd3-array';
+import { sum, histogram, min, max, Bin, extent, bin} from 'd3-array';
 import makeid from '@/utils/makeid';
 import { histDistExampleData } from '@/test/histDistExampleData';
 
