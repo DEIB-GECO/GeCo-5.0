@@ -84,7 +84,6 @@ class ConversationDBExplore(object):
 
     def run(self, message, intent, entities):
         next_state, enter = self.context.top_node().run(message, intent, entities)
-        print(message)
         if next_state is not None:
             #session['context'].top_node().add_additional_status({k: session[k] for k in session['context'].top_node().required_additional_status()})
             self.context.add_step(node=next_state)
@@ -115,6 +114,7 @@ class ConversationDBExplore(object):
             session['context'].pop()
 
         else:
+            session['context'].add_user_msg(message)
             print(interpretation['entities'])
             entities = {}
             for e in interpretation['entities']:
@@ -147,22 +147,35 @@ def index():
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
     user_message = message['data'].strip()
-    session['context'].add_user_msg(user_message)
+    #session['context'].add_user_msg(user_message)
     add_session_message(session, {'type':'message', 'payload':{'text':user_message, 'sender':'user'}})
 
     data = json.loads(open("logger.json").read())
 
-
     data[request.sid].append(user_message)
     session['fsa'].receive(user_message)
+    #print('HEREEEE I AMMMMMMMMMM')
+    #for i in session['context'].history:
+    #    print('####')
+    #    print(i.user_msg)
+    #    print('*****')
+    #    print(i.bot_msgs)
+    if (session['context'].top_bot_msgs()!=None):
+        for msg in session['context'].top_bot_msgs():
+            id = add_session_message(session, msg)
+            msg['message_id'] = id
+            emit('json_response', msg)
 
-    for msg in session['context'].top_bot_msgs():
-        id = add_session_message(session, msg)
-        msg['message_id'] = id
-        emit('json_response', msg)
+            if msg['type'] == 'message':
+                data[request.sid].append(msg['payload']['text'])
+    else:
+        for msg in session['context'].history[-3].bot_msgs:
+            id = add_session_message(session, msg)
+            msg['message_id'] = id
+            emit('json_response', msg)
 
-        if msg['type'] == 'message':
-            data[request.sid].append(msg['payload']['text'])
+            if msg['type'] == 'message':
+                data[request.sid].append(msg['payload']['text'])
 
     with open("logger.json", "w") as file:
         json.dump(data, file)
@@ -218,11 +231,18 @@ def test_ack_message(message):
 
 @socketio.on('reset', namespace='/test')
 def reset_button(message):
+    with open('logger.json', 'r') as f:
+        data = json.load(f)
+        data[request.sid] = []
     reset(session)
+
     for msg in session['context'].top_bot_msgs():
         #Utils.pyconsole_debug(msg)
         id = add_session_message(session, msg)
         msg['message_id'] = id
+        if msg['type'] == 'message':
+            data[request.sid].append(msg['payload']['text'])
+
         #emit('json_response', msg)
     #with open("logger.json", "w") as file:
     #    json.dump(data, file)
@@ -268,12 +288,12 @@ def test_connect():
     # data = {}
     # data[request.sid] = []
 
-    for msg in session['context'].top_bot_msgs():
-        id = add_session_message(session, msg)
-        msg['message_id'] = id
+    #for msg in session['context'].top_bot_msgs():
+     #   id = add_session_message(session, msg)
+    #    msg['message_id'] = id
 
-        if msg['type'] == 'message':
-            data[request.sid].append(msg['payload']['text'])
+    #    if msg['type'] == 'message':
+    #        data[request.sid].append(msg['payload']['text'])
 
     with open('logger.json', 'w') as file:
         json.dump(data, file)
@@ -290,5 +310,5 @@ def test_disconnect():
 app.register_blueprint(simple_page, url_prefix=base_url)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='0.0.0.0', port=5980)
+    socketio.run(app, debug=False, host='0.0.0.0', port=5980)
 

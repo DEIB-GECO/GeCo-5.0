@@ -75,6 +75,48 @@ class MetadataAction(AbstractAction):
             back = MetadataAction
             return Confirm(self.context), True
 
+        else:
+            gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k != 'name' and k != 'metadata'}
+            meta_filter = {k: v for (k, v) in self.status['fields']['metadata'].items()}
+
+            k = message.lower().strip()
+            if k.replace('_', ' ') in self.status['available_keys']:
+                self.status['key'] = k
+                self.status['fields']['metadata'].update({self.status['key']: []})
+                values, number = self.context.payload.database.find_key_values(str(k), gcm_filter, meta_filter)
+                self.status['available_values'] = [val['value'] for val in values]
+
+                list_param_chosen = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
+                list_param_chosen.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
+                                          self.status['fields']['metadata'] if
+                                          self.status['fields']['metadata'][x] != []})
+
+                if number == False:
+                    list_param = {x: x for x in self.status['available_values']}
+
+                    self.context.add_bot_msgs([Utils.chat_message(
+                        "Which value do you want to select?\nIf you want more, please separate them using ';'."),
+                                               Utils.choice('Available values', list_param, show_help=True,
+                                                            helpIconContent=messages.fields_help),
+                                               Utils.param_list(list_param_chosen)])
+                    return StringValueAction(self.context), False
+                else:
+                    numeric_values = [int(i) for i in self.status['available_values'] if i != None]
+                    minimum = min(numeric_values)
+                    maximum = max(numeric_values)
+                    average = statistics.mean(numeric_values)
+                    list_param = {'min: {}'.format(minimum): minimum, 'max: {}'.format(maximum): maximum,
+                                  'mean: {}'.format(average): average}
+
+                    self.context.add_bot_msgs([Utils.chat_message(
+                        "Which range of values do you want? You can see the values in the histogram."),
+                                               Utils.hist(numeric_values),
+                                               Utils.choice('Ranges', list_param, show_help=True,
+                                                            helpIconContent=messages.fields_help),
+                                               Utils.param_list(self.status['fields'])])
+                    return RangeValueAction(self.context), False
+
+
 class KeyAction(AbstractAction):
 
     def help_message(self):
@@ -94,8 +136,8 @@ class KeyAction(AbstractAction):
             values, number = self.context.payload.database.find_key_values(str(k), gcm_filter, meta_filter)
             self.status['available_values'] = [val['value'] for val in values]
 
-            list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
-            list_param.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
+            list_param_chosen = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
+            list_param_chosen.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
                                self.status['fields']['metadata'] if self.status['fields']['metadata'][x]!=[]})
 
             if number==False:
@@ -103,18 +145,23 @@ class KeyAction(AbstractAction):
 
                 self.context.add_bot_msgs([Utils.chat_message("Which value do you want to select?\nIf you want more, please separate them using ';'."),
                         Utils.choice('Available values',list_param, show_help=True, helpIconContent=messages.fields_help),
-                        Utils.param_list(list_param)])
+                        Utils.param_list(list_param_chosen)])
                 return StringValueAction(self.context), False
             else:
                 numeric_values = [int(i) for i in self.status['available_values'] if i!=None]
-                minimum = min(numeric_values)
-                maximum = max(numeric_values)
-                average = statistics.mean(numeric_values)
-                list_param = {'min: {}'.format(minimum):minimum, 'max: {}'.format(maximum):maximum, 'mean: {}'.format(average):average}
+                if len(numeric_values)>1:
+                    minimum = min(numeric_values)
+                    maximum = max(numeric_values)
+                    average = statistics.mean(numeric_values)
+                    list_param = {'min: {}'.format(minimum):minimum, 'max: {}'.format(maximum):maximum, 'mean: {}'.format(average):average}
 
-                self.context.add_bot_msgs([Utils.chat_message("Which range of values do you want? You can see the values in the histogram."),Utils.hist(numeric_values),
-                        Utils.choice('Ranges',list_param, show_help=True, helpIconContent=messages.fields_help),Utils.param_list(self.status['fields'])])
-                return RangeValueAction(self.context), False
+                    self.context.add_bot_msgs([Utils.chat_message("Which range of values do you want? You can see the values in the histogram."),Utils.hist(numeric_values),
+                            Utils.choice('Ranges',list_param, show_help=True, helpIconContent=messages.fields_help),Utils.param_list(self.status['fields'])])
+                    return RangeValueAction(self.context), False
+                else:
+                    self.context.add_bot_msgs([Utils.chat_message("Please choose another key.")])
+                    del(self.status['key'])
+                    return None, False
 
         return None, False
 
@@ -190,16 +237,16 @@ class RangeValueAction(AbstractAction):
         numeric_values = [int(i) for i in self.status['available_values'] if i!=None]
         for v in numeric_values:
             if (v>value_low) and (v<value_high):
-                self.status['fields']['metadata'][self.selected_key].append(v)
+                self.status['fields']['metadata'][self.status['key']].append(v)
 
         list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x!='metadata'}
         list_param.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in self.status['fields']['metadata']})
 
-        if len(self.status['fields']['metadata'][self.selected_key])>0:
+        if len(self.status['fields']['metadata'][self.status['key']])>0:
             self.context.add_bot_msgs([Utils.chat_message("Ok!"),Utils.chat_message("Do you want to filter on other metadata?"),
                     Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
                                  helpIconContent=messages.fields_help),
-                    Utils.param_list(list_param)])
+                    Utils.param_list(list_param), Utils.hist(numeric_values)])
             return MetadataAction(self.context), False
         else:
             self.context.add_bot_msgs([Utils.chat_message("There aren't available data for the requested values."),

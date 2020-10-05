@@ -68,12 +68,25 @@ class Context:
 
     def add_step(self, bot_msgs = None, node = None, user_msg = None):
         self.history.append(Step(bot_msgs, node, user_msg))
+        print('---NEW STEP---')
+        print(bot_msgs)
+        print(node)
+        print(user_msg)
+        print('---------------')
 
     def top_bot_msgs(self):
-        if len(self.history)>=2:
+        if len(self.history)>2:
+            print(self.history[-3].bot_msgs)
+        if (len(self.history) >= 2) and (self.history[-2].bot_msgs!=None):
             return self.history[-2].bot_msgs
-        else:
+        elif (self.history[-1].bot_msgs != None):
             return self.history[-1].bot_msgs
+        else:
+            return self.history[-3].bot_msgs
+       # if len(self.history)>=2:
+        #    return self.history[-2].bot_msgs
+        #else:
+         #   return self.history[-1].bot_msgs
 
     def top_user_msg(self):
         return self.history[-1].user_msg
@@ -87,6 +100,7 @@ class Context:
     def add_user_msg(self, user_msg):
         self.history[-1].user_msg = user_msg
 
+
     def add_bot_msg(self, bot_msg):
         if type(self.history[-1].bot_msgs)== list:
             self.history[-1].bot_msgs.append(bot_msg)
@@ -95,10 +109,9 @@ class Context:
         else:
             self.history[-1].bot_msgs = [self.history[-1].bot_msgs, bot_msg]
 
-
     def add_bot_msgs(self, bot_msgs):
-        if self.history[-1].bot_msgs!=None:
-            if type(self.history[-1].bot_msgs)=='list':
+        if (self.history[-1].bot_msgs!=None):
+            if isinstance(self.history[-1].bot_msgs, list):
                 self.history[-1].bot_msgs.extend(bot_msgs)
             else:
                 self.history[-1].bot_msgs=[self.history[-1].bot_msgs].extend(bot_msgs)
@@ -116,9 +129,14 @@ class Context:
         for i in range(len(self.history)):
             print(i)
             print(self.history[i].node)
+            print(self.history[i].user_msg)
+            print(self.history[i].bot_msgs)
         print('-----------------BEFORE------------------------')
         print(self.top_node())
         del (self.history[-1])
+        print(self.history[-2].bot_msgs)
+        #self.history[-2].bot_msgs=None
+        self.history[-2].user_msg=None
         print('-----------------AFTER-------------------------')
         print(self.top_node())
         self.revert()
@@ -137,6 +155,18 @@ class Context:
 
         if hasattr(self.history[-1].delta, 'update'):
             for elem in self.history[-1].delta.update:
+                self.payload.status[elem['variable']]=elem['new_value']
+
+        if hasattr(self.history[-2].delta, 'insertion'):
+            for i in self.history[-2].delta.insertion:
+                del (self.payload.status[i])
+
+        if hasattr(self.history[-2].delta, 'deletion'):
+            for elem in self.history[-2].delta.deletion:
+                self.payload.status[elem['variable']]=elem['value']
+
+        if hasattr(self.history[-2].delta, 'update'):
+            for elem in self.history[-2].delta.update:
                 self.payload.status[elem['variable']]=elem['new_value']
 
         return
