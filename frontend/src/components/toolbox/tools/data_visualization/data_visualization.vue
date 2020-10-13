@@ -40,7 +40,7 @@ export default class DataVisualization extends Vue {
     console.log('data_visualizaiton updated with following data:', this.charts);
   }
 
-  get gridDimendion() {
+  get gridDimension() {
     const gridSizeDefinition =
       this.charts.length > 1 ? 'auto auto auto' : 'auto';
     return {
