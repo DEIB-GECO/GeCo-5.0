@@ -9,9 +9,6 @@ class FilterMetadataAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(messages.annotation_help)]
 
-    def required_additional_status(self):
-        return ['geno_surf','dataset_list']
-
     def logic(self, message, intent, entities):
         from.confirm import Confirm
         self.status['fields'].update({'metadata': {}})
@@ -33,13 +30,10 @@ class MetadataAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(messages.annotation_help)]
 
-    def required_additional_status(self):
-        return ['geno_surf','dataset_list']
-
     def logic(self, message, intent, entities):
         from .confirm import Confirm
+        self.context.payload.back = MetadataAction
         if intent == 'affirm':
-            #self.status['fields'].update({'metadata':{}})
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name','metadata']}
 
             #keys = self.status['geno_surf'].find_all_keys(gcm_filter)
@@ -68,11 +62,9 @@ class MetadataAction(AbstractAction):
                                Utils.param_list(self.status['fields'])])
                     return RangeValueAction(self.context), False
             else:
-                back = MetadataAction
                 return Confirm(self.context), True
 
         elif intent == 'deny':
-            back = MetadataAction
             return Confirm(self.context), True
 
         else:
@@ -110,7 +102,7 @@ class MetadataAction(AbstractAction):
 
                     self.context.add_bot_msgs([Utils.chat_message(
                         "Which range of values do you want? You can see the values in the histogram."),
-                                               Utils.hist(numeric_values),
+                                               Utils.hist(numeric_values, self.status['key']),
                                                Utils.choice('Ranges', list_param, show_help=True,
                                                             helpIconContent=messages.fields_help),
                                                Utils.param_list(self.status['fields'])])
@@ -121,9 +113,6 @@ class KeyAction(AbstractAction):
 
     def help_message(self):
         return [Utils.chat_message(messages.annotation_help)]
-
-    def required_additional_status(self):
-        return ['geno_surf','dataset_list']
 
     def logic(self, message, intent, entities):
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k != 'name' and k != 'metadata'}
@@ -155,7 +144,7 @@ class KeyAction(AbstractAction):
                     average = statistics.mean(numeric_values)
                     list_param = {'min: {}'.format(minimum):minimum, 'max: {}'.format(maximum):maximum, 'mean: {}'.format(average):average}
 
-                    self.context.add_bot_msgs([Utils.chat_message("Which range of values do you want? You can see the values in the histogram."),Utils.hist(numeric_values),
+                    self.context.add_bot_msgs([Utils.chat_message("Which range of values do you want? You can see the values in the histogram."),Utils.hist(numeric_values, self.status['key']),
                             Utils.choice('Ranges',list_param, show_help=True, helpIconContent=messages.fields_help),Utils.param_list(self.status['fields'])])
                     return RangeValueAction(self.context), False
                 else:
@@ -169,9 +158,6 @@ class StringValueAction(AbstractAction):
 
     def help_message(self):
         return [Utils.chat_message(messages.annotation_help)]
-
-    def required_additional_status(self):
-        return ['geno_surf','dataset_list']
 
     def logic(self, message, intent, entities):
         values = message.lower().strip().split(';')
@@ -246,7 +232,7 @@ class RangeValueAction(AbstractAction):
             self.context.add_bot_msgs([Utils.chat_message("Ok!"),Utils.chat_message("Do you want to filter on other metadata?"),
                     Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
                                  helpIconContent=messages.fields_help),
-                    Utils.param_list(list_param), Utils.hist(numeric_values)])
+                    Utils.param_list(list_param), Utils.hist(numeric_values, self.status['key'])])
             return MetadataAction(self.context), False
         else:
             self.context.add_bot_msgs([Utils.chat_message("There aren't available data for the requested values."),

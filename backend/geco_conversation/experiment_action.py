@@ -8,9 +8,6 @@ class ExperimentAction(AbstractAction):
         self.context.add_bot_msgs([Utils.chat_message(messages.experiment_help)])
         return None, False
 
-    def required_additional_status(self):
-        return ['geno_surf']
-
     def create_piecharts(self, gcm_filter):
         msgs = []
         msgs.append(Utils.tools_setup('dataviz','dataset'))

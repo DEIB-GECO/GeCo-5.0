@@ -1,28 +1,21 @@
 #!/usr/bin/env python
 import json
 import os
-from threading import Lock
-
 import flask
+from threading import Lock
 from flask import Blueprint, render_template
 from flask import Flask, session, request, copy_current_request_context
 from flask_session import Session
 from flask_socketio import SocketIO, emit, disconnect
-
+from rasa.nlu.model import Interpreter
 from database import get_db_uri
 from database import db
-from geco_conversation import Context
-import geco_conversation
-
+from geco_conversation import Context, StartAction, Utils
 import messages
-
-from geco_conversation import StartAction, Utils
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
-from rasa.nlu.model import Interpreter
-
 async_mode = "gevent"
 
 base_url = '/geco_agent/'
@@ -71,26 +64,20 @@ class ConversationDBExplore(object):
         self.context = Context()
         self.geno_surf = None
         session['context']=self.context
-
-        self.context.add_step(bot_msgs=Utils.chat_message(messages.initial_greeting), node= StartAction(self.context))
+        self.context.add_step(bot_msgs=Utils.chat_message(messages.initial_greeting), action= StartAction(self.context))
         self.run(None, None, None)
-
-    def say(self, msg):
-        self.context.add_bot_msg(msg)
 
     def clear_msgs(self):
         self.bot_messages = []
 
-
     def run(self, message, intent, entities):
-        next_state, enter = self.context.top_node().run(message, intent, entities)
+        next_state, enter = self.context.top_action().run(message, intent, entities)
         if next_state is not None:
-            #session['context'].top_node().add_additional_status({k: session[k] for k in session['context'].top_node().required_additional_status()})
-            self.context.add_step(node=next_state)
+            self.context.add_step(action=next_state)
             if enter:
                 self.run(None, None, None)
         else:
-            self.context.add_step(node=self.context.top_node())
+            self.context.add_step(action=self.context.top_action())
 
 
     def receive(self, message):
@@ -115,51 +102,36 @@ class ConversationDBExplore(object):
 
         else:
             session['context'].add_user_msg(message)
-            print(interpretation['entities'])
             entities = {}
             for e in interpretation['entities']:
                 if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
                     entities[e['entity']].append(e['value'].lower().strip())
                 else:
                     entities[e['entity']] = [e['value'].lower().strip()]
-
-            Utils.pyconsole_debug(intent)
-            Utils.pyconsole_debug(entities)
-
+            #Utils.pyconsole_debug(intent)
+            #Utils.pyconsole_debug(entities)
             session['context'].modify_status(entities)
             self.run(message, intent, entities)
-
-
-
 
 @simple_page.route('/')
 def index():
     flask.current_app.logger.info("serve index")
     return render_template('index.html', async_mode=socketio.async_mode)
 
-
 @app.route('/')
 def index():
     flask.current_app.logger.info("serve index")
     return render_template('my_index.html', async_mode=socketio.async_mode)
 
-
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
     user_message = message['data'].strip()
-    #session['context'].add_user_msg(user_message)
     add_session_message(session, {'type':'message', 'payload':{'text':user_message, 'sender':'user'}})
 
     data = json.loads(open("logger.json").read())
 
     data[request.sid].append(user_message)
     session['fsa'].receive(user_message)
-    #print('HEREEEE I AMMMMMMMMMM')
-    #for i in session['context'].history:
-    #    print('####')
-    #    print(i.user_msg)
-    #    print('*****')
-    #    print(i.bot_msgs)
     if (session['context'].top_bot_msgs()!=None):
         for msg in session['context'].top_bot_msgs():
             id = add_session_message(session, msg)
@@ -216,7 +188,6 @@ def test_ack_message(message):
                 emit('json_response',
                      {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']}, 'message_id': x['message_id']})
             for x in session['last_json']:
-                #print( type(session['last_json'][x]))
                 emit('json_response', session['last_json'][x])
         else:
             for x in session['messages']:
@@ -237,7 +208,6 @@ def reset_button(message):
     reset(session)
 
     for msg in session['context'].top_bot_msgs():
-        #Utils.pyconsole_debug(msg)
         id = add_session_message(session, msg)
         msg['message_id'] = id
         if msg['type'] == 'message':
@@ -256,7 +226,6 @@ def disconnect_request():
     @copy_current_request_context
     def can_disconnect():
         disconnect()
-
     session['receive_count'] = session.get('receive_count', 0) + 1
     # for this emit we use a callback function
     # when the callback function is invoked we know that the message has been
@@ -264,7 +233,6 @@ def disconnect_request():
     emit('json_response',
          {'data': 'Disconnected!', 'count': session['receive_count']},
          callback=can_disconnect)
-
 
 def reset(session):
     for k in list(session.keys()):
@@ -277,7 +245,6 @@ def reset(session):
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-
     if 'context' not in session:
         reset(session)
 
@@ -301,7 +268,6 @@ def test_connect():
     #session['status'].clear_msgs()
     #session['status'].clear_entities()
 
-
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
     print('Client disconnected', request.sid)
@@ -311,4 +277,3 @@ app.register_blueprint(simple_page, url_prefix=base_url)
 
 if __name__ == '__main__':
     socketio.run(app, debug=False, host='0.0.0.0', port=5980)
-

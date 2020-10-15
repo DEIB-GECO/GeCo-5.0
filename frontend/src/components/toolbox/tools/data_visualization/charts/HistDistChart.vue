@@ -128,6 +128,7 @@ export default class HistDistChart extends Vue {
             .attr('x', this.width - this.margin)
             .attr('y', -4)
             .attr('fill', '#000')
+            //.attr("transform", "translate(-10,10)rotate(-45)")
             .attr('font-weight', 'bold')
             .attr('text-anchor', 'end')
             .text(this.chartTitle)

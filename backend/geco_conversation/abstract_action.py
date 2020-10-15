@@ -5,30 +5,21 @@ import random
 import requests
 import jokes
 import json
-import copy
 
 
 class AbstractAction(ABC):
+
     def __init__(self, context):
         self.context = context
         self.status = self.context.payload.status
 
     @abstractmethod
-    def required_additional_status(self):
-        pass
-
-    @abstractmethod
     def help_message(self):
         pass
-
 
     @abstractmethod
     def logic(self, message, intent, entities):
         pass
-
-    def add_additional_status(self, additional_status):
-        for k in additional_status:
-            setattr(self.context.payload, str(k), additional_status[k])
 
     def run(self, message, intent, entities):
         if intent == "help":

@@ -10,9 +10,6 @@ class StartAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(messages.start_help)]
 
-    def required_additional_status(self):
-        return []
-
     def logic(self, message, intent, entities):
         if message is None:
             list_param = {'Annotations': 'annotations', 'Experimental data': 'experiments'}

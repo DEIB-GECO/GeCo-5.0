@@ -65,7 +65,6 @@ class RenameAction(AbstractAction):
                 Utils.param_list(fields), Utils.workflow('Data selection', True, urls)])
         return FilterMetadataAction(self.context), True
 
-
 class ChangeSelectionAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(messages.confirm_help)]

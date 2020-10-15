@@ -1,11 +1,6 @@
-from sqlalchemy import BigInteger, Boolean, Column, Integer, Table, Text, UniqueConstraint
 from flask_sqlalchemy import SQLAlchemy
 
 def get_db_uri():
-    # postgres_url = get_env_variable("POSTGRES_URL")
-    # postgres_user = get_env_variable("POSTGRES_USER")
-    # postgres_pw = get_env_variable("POSTGRES_PW")
-    # postgres_db = get_env_variable("POSTGRES_DB")
     postgres_url = "localhost"
     postgres_user = "geco_ro"
     postgres_pw = "geco78"
@@ -48,6 +43,7 @@ class DB:
             filter = ' and '.join(
                 [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
                                      gcm.items()])
+
         self.fields_names = []
         self.all_values = []
         for f in self.fields:
@@ -98,7 +94,6 @@ class DB:
         links = db.engine.execute(
             "select local_url  from dw.flatten_gecoagent where {} group by local_url".format(filter)).fetchall()
         val = [i[0] for i in links]
-        #print(val)
         return val
 
     def query_field(self, gcm):
@@ -118,7 +113,6 @@ class DB:
             else:
                 query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id)".format(k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')
             i+=1
-
         return query
 
     # Retrieves all keys based on a user input string
@@ -126,23 +120,17 @@ class DB:
         query = self.query_field(filter)
         if filter2!={}:
             query2 = self.query_key(filter2)
-
-            #print("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(
-            #       query, query2))
             keys = db.engine.execute(
                 "select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(
                     query, query2)).fetchall()
         else:
             keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
         keys = {i[0]:i[1] for i in keys}
-        #print(keys)
         return keys
 
     def find_keys(self, filter, string):
         query = self.query_field(filter)
-        #print(query)
         keys = db.engine.execute("select key from dw.unified_pair_gecoagent where key like '%{}%' and item_id in ({}) group by key".format(string, query)).fetchall()
-        #print(keys)
         keys = [i[0] for i in keys]
         return keys
 
@@ -158,8 +146,6 @@ class DB:
         query = self.query_field(filter)
         if filter2!={}:
             query2 = self.query_key(filter2)
-            #print("select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and {} and key in ('{}') group by value".format(
-                    #query, query2, str(key)))
             values = db.engine.execute(
                 "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and {} and key in ('{}') group by value".format(
                     query, query2, str(key))).fetchall()
@@ -170,10 +156,8 @@ class DB:
         number = True
         for i in values:
             if str(i[0]).isnumeric()!=True and i[0]!=None:
-                #print(i[0])
                 number = False
         return val, number
-
 
     def download_filter_meta(self, gcm, filter2):
         filter = ' and '.join(
@@ -187,9 +171,7 @@ class DB:
                 "select local_url  from dw.flatten_gecoagent where {} group by local_url".format(filter)).fetchall()
 
         val = [i[0] for i in links]
-        #print(val)
         return val
-
 
 '''
     def meta_table(self, gcm):

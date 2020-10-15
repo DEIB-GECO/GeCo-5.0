@@ -28,10 +28,8 @@ class Delta:
 
 
 class Step:
-    # Manca delta context
-    def __init__(self, bot_msgs, node= None, user_msg = None):
-        self.node = node
-        #self.logic = logic  #forse TUPLA (node, logic)
+    def __init__(self, bot_msgs, action= None, user_msg = None):
+        self.action = action
         self.bot_msgs = bot_msgs
         self.user_msg = user_msg
         self.delta = Delta()
@@ -47,15 +45,11 @@ class Data_Extraction:
         self.unary = []
         self.table = {}
 
-
 class Context:
 
     def __init__(self):
-
         self.history = []
-
         self.payload = Payload()
-
         self.data_extraction = Data_Extraction()
         '''
         self.data_analysis = {
@@ -66,13 +60,8 @@ class Context:
         
         '''
 
-    def add_step(self, bot_msgs = None, node = None, user_msg = None):
-        self.history.append(Step(bot_msgs, node, user_msg))
-        print('---NEW STEP---')
-        print(bot_msgs)
-        print(node)
-        print(user_msg)
-        print('---------------')
+    def add_step(self, bot_msgs = None, action = None, user_msg = None):
+        self.history.append(Step(bot_msgs, action, user_msg))
 
     def top_bot_msgs(self):
         if len(self.history)>2:
@@ -91,8 +80,8 @@ class Context:
     def top_user_msg(self):
         return self.history[-1].user_msg
 
-    def top_node(self):
-        return self.history[-1].node
+    def top_action(self):
+        return self.history[-1].action
 
     def top_delta(self):
         return self.history[-1].delta
@@ -118,8 +107,8 @@ class Context:
         else:
             self.history[-1].bot_msgs = bot_msgs
 
-    def add_node(self, node):
-        self.history[-1].node = node
+    def add_action(self, action):
+        self.history[-1].action = action
 
     def add_delta(self, delta):
         self.history[-1].delta = delta
@@ -128,17 +117,16 @@ class Context:
         print('***CONTEXT***')
         for i in range(len(self.history)):
             print(i)
-            print(self.history[i].node)
+            print(self.history[i].action)
             print(self.history[i].user_msg)
             print(self.history[i].bot_msgs)
         print('-----------------BEFORE------------------------')
-        print(self.top_node())
+        print(self.top_action())
         del (self.history[-1])
         print(self.history[-2].bot_msgs)
-        #self.history[-2].bot_msgs=None
         self.history[-2].user_msg=None
         print('-----------------AFTER-------------------------')
-        print(self.top_node())
+        print(self.top_action())
         self.revert()
 
     def last_valid_user_msg(self):
