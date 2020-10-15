@@ -12,8 +12,9 @@ import { scaleOrdinal, scaleLinear } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from 'd3-shape';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import { sum, histogram, min, max, Bin, extent, bin} from 'd3-array';
+import { sum, histogram, min, max, Bin, extent, bin } from 'd3-array';
 import makeid from '@/utils/makeid';
 import { histDistExampleData } from '@/test/histDistExampleData';
 
@@ -118,22 +119,6 @@ export default class HistDistChart extends Vue {
 
     console.log('BINS:', bins);
 
-    const xAxis = (g: any) =>
-      g
-        .attr('transform', `translate(0,${this.height - this.margin})`)
-        .call(d3.axisBottom(x).tickSizeOuter(0))
-        .call((g: any) =>
-          g
-            .append('text')
-            .attr('x', this.width - this.margin)
-            .attr('y', -4)
-            .attr('fill', '#000')
-            //.attr("transform", "translate(-10,10)rotate(-45)")
-            .attr('font-weight', 'bold')
-            .attr('text-anchor', 'end')
-            .text(this.chartTitle)
-        );
-
     g.append('g')
       .selectAll('rect')
       .data(bins)
@@ -178,7 +163,12 @@ export default class HistDistChart extends Vue {
 
     g.append('g')
       .attr('transform', 'translate(0,' + (this.height - this.margin) + ')')
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+      .attr('transform', 'translate(-10,5)rotate(-45)')
+      .style('text-anchor', 'end');
+    // .style('font-size', 20)
+    // .style('fill', '#69a3b2');
 
     g.append('g').call(yAxis);
 
@@ -208,7 +198,7 @@ export default class HistDistChart extends Vue {
   border: solid 1px #0b3142;
   // overflow: auto;
   position: relative;
-  max-height: 330px;
+  max-height: 350px;
 }
 
 .piechart_title {

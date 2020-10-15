@@ -13,11 +13,12 @@ class DataViz extends VuexModule {
   setCharts(newCharts: DataSummaryPayload): void {
     newCharts.viz.map((singleChart) => {
       const newData = singleChart;
-      if (newData.vizType=='pie-chart'){
-      newData.data = singleChart.data.map((x) => {
-        x.value = x.value ? x.value : 'N/D';
-        return x;
-      });}
+      if (newData.vizType == 'pie-chart') {
+        newData.data = singleChart.data.map((x) => {
+          x.value = x.value ? x.value : 'N/D';
+          return x;
+        });
+      }
       return newData;
     });
     this.charts = newCharts.viz;
