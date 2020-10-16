@@ -1,4 +1,4 @@
-from database import experiment_fields
+from data_structure.database import experiment_fields
 from geco_conversation import *
 
 class ExperimentAction(AbstractAction):

@@ -8,9 +8,9 @@ from flask import Flask, session, request, copy_current_request_context
 from flask_session import Session
 from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
-from database import get_db_uri, db
+from data_structure.database import get_db_uri, db
 from geco_conversation import *
-from context import Context
+from data_structure.context import Context
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose

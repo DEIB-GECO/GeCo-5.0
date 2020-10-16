@@ -1,4 +1,4 @@
-from database import annotation_fields
+from data_structure.database import annotation_fields
 from geco_conversation import *
 
 class AnnotationAction(AbstractAction):

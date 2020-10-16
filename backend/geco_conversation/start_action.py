@@ -1,6 +1,6 @@
 from geco_conversation import *
 from .abstract_action import AbstractAction
-from database import DB, experiment_fields, annotation_fields
+from data_structure.database import DB, experiment_fields, annotation_fields
 
 class StartAction(AbstractAction):
 
