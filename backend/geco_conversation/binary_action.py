@@ -1,5 +1,5 @@
-import messages
-from .utils import Utils
+from messages import messages
+from utils.utils import Utils
 from .abstract_action import AbstractAction
 from .union_action import UnionAction
 from .join_action import JoinAction

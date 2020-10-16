@@ -1,11 +1,10 @@
 from database import experiment_fields, annotation_fields
-import messages
 from geco_conversation import *
 
 class ValueAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(messages.experiment_help)]
+        return [Utils.chat_message(helpMessages.value_help)]
 
     def logic(self, message, intent, entities):
         if self.context.payload.back == AnnotationAction:
@@ -13,7 +12,7 @@ class ValueAction(AbstractAction):
         elif self.context.payload.back == ExperimentAction:
             available_fields = experiment_fields
 
-        request_field = self.status['field']
+        request_field = self.status['field'][-1]
         db = getattr(self.context.payload.database, request_field + '_db')
         given_value = entities[request_field] if ((request_field in entities) and (any(elem in db for elem in entities[request_field]))) else [message.strip().lower()]
 
@@ -38,7 +37,7 @@ class ValueAction(AbstractAction):
             if len(gcm_filter) > 0:
                 self.context.payload.database.update(gcm_filter)
 
-            self.context.add_bot_msgs([Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
+            self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
                     Utils.choice('Available fields', list_param),
                     Utils.param_list({k: v for (k, v) in self.status.items() if k in available_fields})] + \
                    Utils.create_piecharts(self.context,gcm_filter))
@@ -47,8 +46,6 @@ class ValueAction(AbstractAction):
         elif any(elem in db for elem in given_value):
             for i in range(len(given_value)):
                 if given_value[i] in db:
-                    print('-------------')
-                    print(given_value[i])
                     if request_field in self.status:
                         if given_value[i] not in self.status[request_field]:
                             self.context.top_delta().update_value(request_field, self.status[request_field],
@@ -63,21 +60,19 @@ class ValueAction(AbstractAction):
                 self.context.payload.database.update(gcm_filter)
             list_param = {x: x for x in self.context.payload.database.fields_names}
 
-            print('**************************')
-            print(self.status.items())
             if len(list_param) > 0:
-                self.context.add_bot_msgs([Utils.chat_message("Do you want to filter more? If so, which one do you want to select now?"),
+                self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
                         Utils.choice('Available fields', list_param), Utils.param_list(
                         {k: v for (k, v) in self.status.items() if (k in available_fields) and (any(elem in db for elem in v))})] + Utils.create_piecharts(self.context,gcm_filter))
                 return FieldAction(self.context), False
             else:
-                from .confirm import Confirm
+                from .askconfirm import AskConfirm
                 fields = {x: self.status[x] for x in available_fields if x in self.status}
                 self.status.clear()
                 self.status['fields'] = fields
                 print(self.status)
                 self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
-                return Confirm(self.context), True
+                return AskConfirm(self.context), True
 
         else:
             list_param = {x: x for x in getattr(self.context.payload.database, str(request_field) + '_db')}

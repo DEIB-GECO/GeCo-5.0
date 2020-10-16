@@ -1,6 +1,4 @@
-import messages
-from .annotation_action import AnnotationAction
-from .experiment_action import ExperimentAction
+from messages import messages
 from geco_conversation import *
 
 class PivotAction(AbstractAction):
@@ -27,4 +25,5 @@ class PivotAction(AbstractAction):
         return [Utils.chat_message("Finally, what are the values that you want to see?")], None, {}
 
     def value_logic(self, message, intent, entities):
-        return [Utils.chat_message("Here is your table. You can also download it."),Utils.chat_message(messages.bye_message)], None, {}
+        return [Utils.chat_message("Here is your table. You can also download it."), Utils.chat_message(
+            messages.bye_message)], None, {}

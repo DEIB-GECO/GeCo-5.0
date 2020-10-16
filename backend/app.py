@@ -8,10 +8,9 @@ from flask import Flask, session, request, copy_current_request_context
 from flask_session import Session
 from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
-from database import get_db_uri
-from database import db
-from geco_conversation import Context, StartAction, Utils
-import messages
+from database import get_db_uri, db
+from geco_conversation import *
+from context import Context
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -72,12 +71,18 @@ class ConversationDBExplore(object):
 
     def run(self, message, intent, entities):
         next_state, enter = self.context.top_action().run(message, intent, entities)
+        print('NODE')
+        print(self.context.history[-1].action)
+        print(self.context.history[-1].bot_msgs)
+        print(self.context.history[-1].user_msg)
         if next_state is not None:
             self.context.add_step(action=next_state)
             if enter:
                 self.run(None, None, None)
-        else:
-            self.context.add_step(action=self.context.top_action())
+                return
+        #else:
+            #self.context.add_step(action=self.context.top_action())
+        return
 
 
     def receive(self, message):
@@ -276,4 +281,4 @@ def test_disconnect():
 app.register_blueprint(simple_page, url_prefix=base_url)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=False, host='0.0.0.0', port=5980)
+    socketio.run(app, debug=True, host='0.0.0.0', port=5980)

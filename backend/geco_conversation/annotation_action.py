@@ -1,7 +1,5 @@
 from database import annotation_fields
-import messages
 from geco_conversation import *
-from .field_action import FieldAction
 
 class AnnotationAction(AbstractAction):
 
@@ -9,23 +7,8 @@ class AnnotationAction(AbstractAction):
         self.context.add_bot_msgs([Utils.chat_message(messages.annotation_help)])
         return None, False
 
-    def create_piecharts(self, gcm_filter):
-        msgs = []
-        msgs.append(Utils.tools_setup('dataviz','dataset'))
-        values = {}
-        if 'content_type' not in self.status:
-            content_type_val = self.context.payload.database.retrieve_values(gcm_filter, 'content_type')
-            values['Content Type'] = content_type_val
-        if 'assembly' not in self.status:
-            assembly_val = self.context.payload.database.retrieve_values(gcm_filter, 'assembly')
-            values['Assembly'] = assembly_val
-        source_val = self.context.payload.database.retrieve_values(gcm_filter, 'source')
-        values['Source'] = source_val
-        msgs.append(Utils.pie_chart(values))
-        return msgs
-
     def logic(self, message, intent, entities):
-        from .confirm import Confirm
+        from .askconfirm import AskConfirm
         self.context.payload.back = AnnotationAction
 
         temp = self.status.copy()
@@ -51,7 +34,7 @@ class AnnotationAction(AbstractAction):
             #list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
             if len(list_param)!=0:
                 self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?"),
-                        Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help),
+                        Utils.choice('Available fields', list_param, show_help=True, helpIconContent=helpMessages.fields_help),
                         Utils.param_list({k:v for (k,v) in self.status.items() if k in annotation_fields})] + Utils.create_piecharts(self.context,gcm_filter))
                 return FieldAction(self.context), False
             else:
@@ -59,7 +42,7 @@ class AnnotationAction(AbstractAction):
                 self.status.clear()
                 self.status['fields'] = fields
                 self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
-                return Confirm(self.context), True
+                return AskConfirm(self.context), True
 
         else:
             for x in annotation_fields:

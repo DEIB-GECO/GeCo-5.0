@@ -1,6 +1,4 @@
-import messages
-from .annotation_action import AnnotationAction
-from .experiment_action import ExperimentAction
+from messages import messages
 from .pivot_action import PivotAction
 from geco_conversation import *
 
@@ -10,7 +8,7 @@ class UnionAction(AbstractAction):
         names = {}
         for i in range(len(self.status['dataset_list'])):
             names["DS_" + str(i)] = self.status['dataset_list'][i].name
-        return [Utils.chat_message("Now you have a single dataset."), Utils.chat_message(messages.assign_name),Utils.param_list(names)], None, {}
+        return [Utils.chat_message("Now you have a single dataset."), Utils.chat_message(messages.assign_name), Utils.param_list(names)], None, {}
 
     def help_message(self):
         return [Utils.chat_message(messages.union_help)]

@@ -1,14 +1,11 @@
 from abc import ABC, abstractmethod
-from geco_conversation.utils import Utils
-import messages
+from geco_conversation import *
 import random
 import requests
-import jokes
 import json
 
 
 class AbstractAction(ABC):
-
     def __init__(self, context):
         self.context = context
         self.status = self.context.payload.status

@@ -1,7 +1,5 @@
-import messages
+from messages import messages
 from data_structure.data_structure import DataSet
-from .annotation_action import AnnotationAction
-from .experiment_action import ExperimentAction
 from .metadata_action import MetadataAction
 from geco_conversation import *
 
@@ -61,8 +59,7 @@ class Confirm(AbstractAction):
 
     def change_binary_logic(self, message, intent, entities):
         if intent == "affirm":
-            from .confirm import confirm
-            return [], Confirm({}), {}
+            return [], AskConfirm({}), {}
         else:
             from .start_action import StartAction
             return [], StartAction({}), {}

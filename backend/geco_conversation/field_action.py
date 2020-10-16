@@ -1,14 +1,13 @@
 from database import experiment_fields, annotation_fields
-import messages
 from geco_conversation import *
 
 class FieldAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(messages.experiment_help)]
+        return [Utils.chat_message(helpMessages.fields_help)]
 
     def logic(self, message, intent, entities):
-        from .confirm import Confirm
+        from .askconfirm import AskConfirm
         from .annotation_action import AnnotationAction
         from .experiment_action import ExperimentAction
         from .value_action import ValueAction
@@ -33,8 +32,14 @@ class FieldAction(AbstractAction):
             field = entities['field'] if 'field' in entities else [message.strip().lower()]
 
             if field[0] in missing_fields and (field[0] != 'is_healthy'):
-                self.context.top_delta().insert_value('field')
-                self.status['field'] = field[0]
+                if 'field' in self.status:
+                    old = self.status['field'].copy()
+                    self.status['field'].append(field[0])
+                    self.context.top_delta().update_value('field', old, self.status['field'])
+                else:
+                    self.context.top_delta().insert_value('field')
+                    self.status['field'] = [field[0]]
+
                 list_param = {x: x for x in getattr(self.context.payload.database, str(field[0]) + '_db')}
                 choice = [True if len(list_param) > 10 else False]
                 self.context.add_bot_msgs([Utils.chat_message("Please provide a {}".format(field[0])),
@@ -42,7 +47,13 @@ class FieldAction(AbstractAction):
                 return ValueAction(self.context), False
 
             elif field[0] in self.context.payload.database.fields_names and (field[0] != 'is_healthy'):
-                self.status['field'] = field[0]
+                if 'field' in self.status:
+                    old = self.status['field'].copy()
+                    self.status['field'].append(field[0])
+                    self.context.top_delta().update_value('field', old, self.status['field'])
+                else:
+                    self.context.top_delta().insert_value('field')
+                    self.status['field'] = [field[0]]
                 list_param = {x: x for x in getattr(self.context.payload.database, str(field[0]) + '_db')}
                 choice = [True if len(list_param) > 10 else False]
 
@@ -51,14 +62,19 @@ class FieldAction(AbstractAction):
                 return ChangeAddAction(self.context), False
 
             elif (field[0] == 'is_healthy'):
-                self.context.top_delta().insert_value('field')
-                self.status['field'] = field[0]
-                self.context.add_bot_msgs([Utils.chat_message("Do you want healthy patients?")])
+                if 'field' in self.status:
+                    old = self.status['field'].copy()
+                    self.status['field'].append(field[0])
+                    self.context.top_delta().update_value('field', old, self.status['field'])
+                else:
+                    self.context.top_delta().insert_value('field')
+                    self.status['field'] = [field[0]]
+                self.context.add_bot_msgs([Utils.chat_message(messages.healthy_patients)])
                 return ValueAction(self.context), False
 
             else:
                 list_param = {x: x for x in missing_fields}
-                self.context.add_bot_msgs([Utils.chat_message("Sorry, your choice is not available. Please reinsert one."),
+                self.context.add_bot_msgs([Utils.chat_message(messages.wrong_choice),
                         Utils.choice('Available fields', list_param)])
                 return None, False
 
@@ -66,6 +82,6 @@ class FieldAction(AbstractAction):
         self.status.clear()
         self.status['fields'] = fields
         self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
-        return Confirm(self.context), True
+        return AskConfirm(self.context), True
 
 

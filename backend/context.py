@@ -1,11 +1,3 @@
-from geco_conversation import StartAction
-
-import messages
-
-from geco_conversation import StartAction, Utils
-
-
-
 class Delta:
 
     def insert_value(self, name):
@@ -91,6 +83,7 @@ class Context:
 
 
     def add_bot_msg(self, bot_msg):
+        print()
         if type(self.history[-1].bot_msgs)== list:
             self.history[-1].bot_msgs.append(bot_msg)
         elif self.history[-1].bot_msgs==None:
@@ -145,17 +138,17 @@ class Context:
             for elem in self.history[-1].delta.update:
                 self.payload.status[elem['variable']]=elem['new_value']
 
-        if hasattr(self.history[-2].delta, 'insertion'):
-            for i in self.history[-2].delta.insertion:
-                del (self.payload.status[i])
-
-        if hasattr(self.history[-2].delta, 'deletion'):
-            for elem in self.history[-2].delta.deletion:
-                self.payload.status[elem['variable']]=elem['value']
-
-        if hasattr(self.history[-2].delta, 'update'):
-            for elem in self.history[-2].delta.update:
-                self.payload.status[elem['variable']]=elem['new_value']
+        # if hasattr(self.history[-2].delta, 'insertion'):
+        #     for i in self.history[-2].delta.insertion:
+        #         del (self.payload.status[i])
+        #
+        # if hasattr(self.history[-2].delta, 'deletion'):
+        #     for elem in self.history[-2].delta.deletion:
+        #         self.payload.status[elem['variable']]=elem['value']
+        #
+        # if hasattr(self.history[-2].delta, 'update'):
+        #     for elem in self.history[-2].delta.update:
+        #         self.payload.status[elem['variable']]=elem['new_value']
 
         return
 

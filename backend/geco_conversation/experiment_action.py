@@ -1,5 +1,4 @@
 from database import experiment_fields
-import messages
 from geco_conversation import *
 
 class ExperimentAction(AbstractAction):
@@ -8,21 +7,8 @@ class ExperimentAction(AbstractAction):
         self.context.add_bot_msgs([Utils.chat_message(messages.experiment_help)])
         return None, False
 
-    def create_piecharts(self, gcm_filter):
-        msgs = []
-        msgs.append(Utils.tools_setup('dataviz','dataset'))
-        values = {k:v for (k,v) in list(
-            sorted(
-                [(x, self.context.payload.database.retrieve_values(gcm_filter, x)) for x in self.context.payload.database.fields_names if x not in self.status and x!='is_healthy'],
-                key = lambda x : len(x[1])))[:6]}
-
-        msgs.append(Utils.pie_chart(values))
-        return msgs
-
-
     def logic(self, message, intent, entities):
-        from .confirm import Confirm
-        from .value_action import ValueAction
+        from .askconfirm import AskConfirm
         from .field_action import FieldAction
 
         self.context.payload.back = ExperimentAction
@@ -46,7 +32,6 @@ class ExperimentAction(AbstractAction):
 
         if len(gcm_filter) > 0:
             self.context.payload.database.update(gcm_filter)
-        pie_charts = self.create_piecharts(gcm_filter)
         #Find fields that are not already selected by the user
         #missing_fields = list(set(self.context.payload.database.fields_names).difference(set(self.status.keys())))
         missing_fields = self.context.payload.database.fields_names
@@ -60,14 +45,17 @@ class ExperimentAction(AbstractAction):
                 list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
                 if len(list_param)!=0:
                     #print(self.logic)
-                    self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?"), Utils.choice('Available fields',list_param, show_help=True, helpIconContent=messages.fields_help), Utils.param_list({k:v for (k,v) in self.status.items() if k in experiment_fields})] + pie_charts)
+                    self.context.add_bot_msgs([Utils.chat_message(messages.choice_field),
+                                               Utils.choice('Available fields', list_param, show_help=True, helpIconContent=helpMessages.fields_help),
+                                               Utils.param_list({k:v for (k, v) in self.status.items() if k in experiment_fields})]+
+                                              Utils.create_piecharts(self.context,gcm_filter))
                     return FieldAction(self.context), False
                 else:
                     fields = {x: self.status[x] for x in experiment_fields if x in self.status}
                     self.status.clear()
                     self.status['fields'] = fields
                     self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
-                    return Confirm(self.context), True
+                    return AskConfirm(self.context), True
         else:
             for x in experiment_fields:
                 if x in self.status:

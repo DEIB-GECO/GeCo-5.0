@@ -1,5 +1,5 @@
 <template>
-  <div class="chart_container">
+  <div class="hist_container">
     <div class="piechart_title">{{ chartTitle }}</div>
     <div :id="chartDivId"></div>
   </div>
@@ -65,8 +65,8 @@ export default class HistDistChart extends Vue {
   }
 
   width = 400;
-  height = 300;
-  margin = 40;
+  height = 400;
+  margin = 60;
 
   nBin = 10;
 
@@ -194,11 +194,11 @@ export default class HistDistChart extends Vue {
 </script>
 
 <style lang="scss">
-.chart_container {
-  border: solid 1px #0b3142;
+.hist_container {
+  //border: solid 1px #0b3142;
   // overflow: auto;
   position: relative;
-  max-height: 350px;
+  height: 99.5%;
 }
 
 .piechart_title {
