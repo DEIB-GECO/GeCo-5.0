@@ -9,7 +9,11 @@ class AskConfirm(AbstractAction):
     def logic(self, message, intent, entities):
 
         if message is None:
-            self.context.add_bot_msgs([Utils.chat_message(messages.confirm_selection), Utils.param_list(self.status['fields'])])
+            list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
+            if 'metadata' in self.status['fields']:
+                list_param.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
+                               self.status['fields']['metadata']})
+            self.context.add_bot_msgs([Utils.chat_message(messages.confirm_selection), Utils.param_list(list_param)])
             return Confirm(self.context), False
 
 class Confirm(AbstractAction):
@@ -25,17 +29,23 @@ class Confirm(AbstractAction):
             else:
                 self.context.add_bot_msgs([Utils.chat_message(messages.restart_selection)])
                 return ChangeSelectionAction(self.context), False
-
         else:
             if intent == "affirm":
                 fields = self.status['fields'].copy()
                 del(fields['metadata'])
                 del(fields['name'])
                 urls = self.context.payload.database.download_filter_meta(fields,self.status['fields']['metadata'])
+                list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
+                list_param.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
+                                   self.status['fields']['metadata']})
+                list_param_ds = list_param.copy()
+                name = list_param['name']
+                del(list_param_ds['name'])
+                ds = DataSet(list_param_ds, name)
+                self.context.data_extraction.datasets.append(ds)
 
-                self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.chat_message(
-                    messages.other_dataset), Utils.workflow('Data selection', True, urls)])
-                return StartAction(self.context), False
+                self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.param_list(list_param),Utils.workflow('Data selection', True, urls)])
+                return GmqlAction(self.context), True
 
 class RenameAction(AbstractAction):
     def help_message(self):
@@ -49,13 +59,12 @@ class RenameAction(AbstractAction):
 
         urls = self.context.payload.database.download(self.status['fields'])
 
-        ds = DataSet(self.status['fields'], name)
-        self.context.data_extraction.datasets.append(ds)
+        #ds = DataSet(self.status['fields'], name)
+        #self.context.data_extraction.datasets.append(ds)
         self.status['fields'].update({'name':name})
-        fields = {x: self.status['fields'][x] for x in self.status['fields'] if x in self.status['fields']}
-
+        list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
         self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),Utils.chat_message(messages.download),
-                Utils.param_list(fields), Utils.workflow('Data selection', True, urls)])
+                Utils.param_list(list_param), Utils.workflow('Data selection', True, urls)])
         return FilterMetadataAction(self.context), True
 
 class ChangeSelectionAction(AbstractAction):

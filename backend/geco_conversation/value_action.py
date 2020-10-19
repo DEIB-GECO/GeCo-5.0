@@ -66,7 +66,7 @@ class ValueAction(AbstractAction):
                         {k: v for (k, v) in self.status.items() if (k in available_fields) and (any(elem in db for elem in v))})] + Utils.create_piecharts(self.context,gcm_filter))
                 return FieldAction(self.context), False
             else:
-                from .askconfirm import AskConfirm
+                from .confirm import AskConfirm
                 fields = {x: self.status[x] for x in available_fields if x in self.status}
                 self.status.clear()
                 self.status['fields'] = fields

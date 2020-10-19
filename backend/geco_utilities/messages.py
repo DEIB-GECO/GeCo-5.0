@@ -23,6 +23,7 @@ other_metadata = "Do you want to filter on other metadata?"
 other_dataset = "Do you want to select another dataset?"
 no_metadata_range = "There aren't available data for the requested values."
 bye_message = "Ok, thank you! Bye!"
+gmql_operations = 'Do you want to modify the extracted data using a GMQL operation? If so, which one do you want?'
 no_ann_found = "I could not find any annotation file with the filters you selected. Please insert one by one."
 no_exp_found = "I could not find any data with the filters you selected. Please insert one by one."
 start_binary = 'Do you want to put together the two extracted datasets? If so, which operation do you want to perform?'

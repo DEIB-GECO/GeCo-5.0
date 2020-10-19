@@ -7,7 +7,7 @@ class FieldAction(AbstractAction):
         return [Utils.chat_message(helpMessages.fields_help)]
 
     def logic(self, message, intent, entities):
-        from .askconfirm import AskConfirm
+        from .confirm import AskConfirm
         from .annotation_action import AnnotationAction
         from .experiment_action import ExperimentAction
         from .value_action import ValueAction

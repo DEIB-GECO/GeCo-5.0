@@ -7,24 +7,21 @@ class BinaryAction(AbstractAction):
 
 
     def help_message(self):
-        return [Utils.chat_message(messages.binary_help)]
+        return [Utils.chat_message(helpMessages.unary_help)]
 
 
     def logic(self, message, intent, entities):
-        if intent == 'join':
-            msg = []
+        if intent == 'project_metadata':
+            msg = [Utils.chat_message('Sorry, this option is not implemented yet.')]
             next_node = JoinAction({})
-            new_status= {}
-        elif intent == 'union':
-            msg = []
+        elif intent == 'project_region':
+            msg = [Utils.chat_message('Sorry, this option is not implemented yet.')]
             next_node = UnionAction({})
-            new_status= {}
-        elif intent == 'difference':
+        elif intent == 'cover':
             msg = [Utils.chat_message('Sorry, this option is not implemented yet.')]
             next_node = None
-            new_status= {}
         else:
             msg = [Utils.chat_message("Sorry, I did not get. Which operation do you want to perform?")]
             next_node = None
-            new_status = {}
-        return msg, next_node, new_status
+        self.context.add_bot_msgs(msg)
+        return next_node, False

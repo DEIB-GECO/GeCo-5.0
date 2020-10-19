@@ -8,15 +8,15 @@ class FilterMetadataAction(AbstractAction):
         return [Utils.chat_message(helpMessages.metadata_help)]
 
     def logic(self, message, intent, entities):
-
+        from .confirm import AskConfirm
         self.status['fields'].update({'metadata': {}})
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
 
         keys = self.context.payload.database.find_all_keys(gcm_filter)
         self.status['available_keys'] = {x.replace('_', ' '): x for x in keys if keys[x] > 1}
-
+        list_param = {k:self.status['fields'][k] for k in self.status['fields'] if k!='metadata'}
         if len(self.status['available_keys']) >= 1:
-            self.context.add_bot_msgs([Utils.chat_message(messages.metadata_filter)])
+            self.context.add_bot_msgs([Utils.chat_message(messages.metadata_filter), Utils.param_list(list_param)])
             return MetadataAction(self.context), False
         else:
             self.context.payload.back = MetadataAction
@@ -29,33 +29,33 @@ class MetadataAction(AbstractAction):
         return [Utils.chat_message(helpMessages.metadata_help)]
 
     def logic(self, message, intent, entities):
-        from .askconfirm import AskConfirm
+        from .confirm import AskConfirm
         self.context.payload.back = MetadataAction
         if intent == 'affirm':
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name','metadata']}
 
             #keys = self.status['geno_surf'].find_all_keys(gcm_filter)
             #self.available_keys = {x.replace('_', ' '): x for x in keys if keys[x] > 1}
+            list_param = {k: self.status['fields'][k] for k in self.status['fields'] if k != 'metadata'}
 
             if len(self.status['available_keys']) > 1:
                 self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_choice),
                         Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
                                      helpIconContent=helpMessages.fields_help),
-                        Utils.param_list(self.status['fields'])])
+                        Utils.param_list(list_param)])
                 return KeyAction(self.context), False
             elif len(self.status['available_keys']) == 1:
                 values, number = self.context.payload.database.find_key_values(gcm_filter, self.status['available_keys'].keys[0])
                 if number == False:
-                    list_param = {x['value']: x['value'] for x in values}
-
+                    list_values = {x['value']: x['value'] for x in values}
                     self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_value),
-                            Utils.choice('Available values', list_param, show_help=True,
+                            Utils.choice('Available values', list_values, show_help=True,
                                          helpIconContent=helpMessages.fields_help),
-                            Utils.param_list(self.status['fields'])])
+                            Utils.param_list(list_param)])
                     return StringValueAction(self.context), False
                 else:
                     self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_range),
-                               Utils.param_list(self.status['fields'])])
+                               Utils.param_list(list_param)])
                     return RangeValueAction(self.context), False
             else:
                 return AskConfirm(self.context), True

@@ -12,6 +12,7 @@ metadata_help = 'You can filter on particular data related to the sample or to t
 metadata_key_help = 'You can filter on particular data related to the sample or to the experiment.\nYou can see the metadata on the right.'
 metadata_string_help = 'You can select many values and write them separated with ;.'
 metadata_range_help = 'You can decide either the range of the values that you want or the exact value.'
+unary_help = 'You can do some operations on the selected data, such as creation of other metadata or region data, or the union of all the regions into one sample.'
 binary_help = "You can put together the two extracted datasets by means of three main operations: join, union and difference.\nYou can also use one of your datasets in order to map it into the other."
 union_help = "The UNION operation is used to integrate samples of two datasets within a single dataset"
 join_help = "The JOIN operator takes in input two datasets and returns a dataset of samples kept according to joinby condition."

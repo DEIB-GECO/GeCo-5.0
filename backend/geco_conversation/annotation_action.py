@@ -8,7 +8,7 @@ class AnnotationAction(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
-        from .askconfirm import AskConfirm
+        from .confirm import AskConfirm
         self.context.payload.back = AnnotationAction
 
         temp = self.status.copy()

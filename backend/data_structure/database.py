@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+
 
 def get_db_uri():
     postgres_url = "localhost"
@@ -10,7 +12,10 @@ def get_db_uri():
                                                                  url=postgres_url,
                                                                  db=postgres_db)
 
-db = SQLAlchemy()
+#db = SQLAlchemy()
+
+db_string = get_db_uri()
+db = create_engine(db_string)
 
 annotation_fields = ["content_type", "assembly", "source"]
 experiment_fields = ['source', 'data_type', 'assembly', 'file_format', 'biosample_type', 'tissue', 'cell', 'disease', 'is_healthy', 'technique', 'feature', 'target']

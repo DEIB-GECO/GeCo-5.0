@@ -18,7 +18,6 @@ class Delta:
         else:
             self.update = [{'variable': name, 'new': new_value, 'old': old_value}]
 
-
 class Step:
     def __init__(self, bot_msgs, action= None, user_msg = None):
         self.action = action
@@ -56,14 +55,13 @@ class Context:
         self.history.append(Step(bot_msgs, action, user_msg))
 
     def top_bot_msgs(self):
-        if len(self.history)>2:
-            print(self.history[-3].bot_msgs)
-        if (len(self.history) >= 2) and (self.history[-2].bot_msgs!=None):
-            return self.history[-2].bot_msgs
-        elif (self.history[-1].bot_msgs != None):
+        if (self.history[-1].bot_msgs != None):
             return self.history[-1].bot_msgs
-        else:
-            return self.history[-3].bot_msgs
+        elif (len(self.history) >= 2) and (self.history[-2].bot_msgs!=None):
+            return self.history[-2].bot_msgs
+        return None
+        #else:
+         #   return self.history[-3].bot_msgs
        # if len(self.history)>=2:
         #    return self.history[-2].bot_msgs
         #else:
@@ -107,20 +105,13 @@ class Context:
         self.history[-1].delta = delta
 
     def pop(self):
-        print('***CONTEXT***')
-        for i in range(len(self.history)):
-            print(i)
-            print(self.history[i].action)
-            print(self.history[i].user_msg)
-            print(self.history[i].bot_msgs)
-        print('-----------------BEFORE------------------------')
-        print(self.top_action())
         del (self.history[-1])
-        print(self.history[-2].bot_msgs)
-        self.history[-2].user_msg=None
-        print('-----------------AFTER-------------------------')
-        print(self.top_action())
         self.revert()
+        action = self.history[-1].action
+        del (self.history[-1])
+        self.add_step(action=action)
+        #self.history[-2].bot_msgs = None
+
 
     def last_valid_user_msg(self):
         return self.history[-1].user_msg

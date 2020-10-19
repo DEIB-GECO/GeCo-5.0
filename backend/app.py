@@ -8,7 +8,7 @@ from flask import Flask, session, request, copy_current_request_context
 from flask_session import Session
 from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
-from data_structure.database import get_db_uri, db
+#from data_structure.database import get_db_uri, db
 from geco_conversation import *
 from data_structure.context import Context
 
@@ -21,10 +21,10 @@ base_url = '/geco_agent/'
 socketio_path = base_url + 'socket.io/'
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = get_db_uri()
+#app.config['SQLALCHEMY_DATABASE_URI'] = get_db_uri()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db.init_app(app)
+#db.init_app(app)
 
 app.config['SECRET_KEY'] = 'secret!'
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -61,8 +61,7 @@ class ConversationDBExplore(object):
 
     def __init__(self):
         self.context = Context()
-        self.geno_surf = None
-        session['context']=self.context
+        #session['context']=self.context
         self.context.add_step(bot_msgs=Utils.chat_message(messages.initial_greeting), action= StartAction(self.context))
         self.run(None, None, None)
 
@@ -71,42 +70,41 @@ class ConversationDBExplore(object):
 
     def run(self, message, intent, entities):
         next_state, enter = self.context.top_action().run(message, intent, entities)
-        print('NODE')
-        print(self.context.history[-1].action)
-        print(self.context.history[-1].bot_msgs)
-        print(self.context.history[-1].user_msg)
+        print('CONTEXT')
+        print(self.context.top_action())
+        for x in self.context.top_bot_msgs():
+            if x['type'] == 'message':
+                print(x)
+        print(self.context.top_user_msg())
+        print('-----------------------')
         if next_state is not None:
             self.context.add_step(action=next_state)
             if enter:
                 self.run(None, None, None)
-                return
-        #else:
-            #self.context.add_step(action=self.context.top_action())
-        return
+        else:
+            self.context.add_step(action=self.context.top_action())
+
 
 
     def receive(self, message):
         interpretation = interpreter.parse(message)
         intent = interpretation['intent']['name']
         if intent == 'reset_session':
-            # session['status'].bot_messages.append(Utils.chat_message('Are you sure to reset the session?'))
-            pass
+            session['dm'].context.add_bot_msg(Utils.chat_message('Are you sure to reset the session?'))
+
         elif session.get('previous_intent') == 'reset_session':
             if intent == 'affirm':
-                #reset(session)
-                pass
+                reset(session)
             elif intent == 'deny':
-                pass
-                # session['status'].bot_messages.append(Utils.chat_message('Ok, I don\'t reset the session.\n The last message was:'))
-                # session['status'].bot_messages.append(Utils.chat_message(session['messages'][-4]['text']))
+                session['dm'].context.add_bot_msg(Utils.chat_message('Ok, I don\'t reset the session.\n The last message was:'))
+                session['dm'].context.add_bot_msg(Utils.chat_message(session['messages'][-4]['text']))
             else:
-                pass
-                # session['status'].bot_messages.append(Utils.chat_message('Sorry, I didn\'t understand.\n Are you sure to reset the session?'))
+                session['dm'].context.add_bot_msg(Utils.chat_message('Sorry, I didn\'t understand.\n Are you sure to reset the session?'))
         elif intent == 'back':
-            session['context'].pop()
-
+            self.context.pop()
+           # self.run(None,None,None)
         else:
-            session['context'].add_user_msg(message)
+            self.context.add_user_msg(message)
             entities = {}
             for e in interpretation['entities']:
                 if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
@@ -115,7 +113,7 @@ class ConversationDBExplore(object):
                     entities[e['entity']] = [e['value'].lower().strip()]
             #Utils.pyconsole_debug(intent)
             #Utils.pyconsole_debug(entities)
-            session['context'].modify_status(entities)
+            self.context.modify_status(entities)
             self.run(message, intent, entities)
 
 @simple_page.route('/')
@@ -123,10 +121,10 @@ def index():
     flask.current_app.logger.info("serve index")
     return render_template('index.html', async_mode=socketio.async_mode)
 
-@app.route('/')
-def index():
-    flask.current_app.logger.info("serve index")
-    return render_template('my_index.html', async_mode=socketio.async_mode)
+#@app.route('/')
+#def index():
+ #   flask.current_app.logger.info("serve index")
+ #   return render_template('my_index.html', async_mode=socketio.async_mode)
 
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
@@ -136,23 +134,23 @@ def test_message(message):
     data = json.loads(open("logger.json").read())
 
     data[request.sid].append(user_message)
-    session['fsa'].receive(user_message)
-    if (session['context'].top_bot_msgs()!=None):
-        for msg in session['context'].top_bot_msgs():
+    session['dm'].receive(user_message)
+    if (session['dm'].context.top_bot_msgs()!=None):
+        for msg in session['dm'].context.top_bot_msgs():
             id = add_session_message(session, msg)
             msg['message_id'] = id
             emit('json_response', msg)
 
             if msg['type'] == 'message':
                 data[request.sid].append(msg['payload']['text'])
-    else:
-        for msg in session['context'].history[-3].bot_msgs:
-            id = add_session_message(session, msg)
-            msg['message_id'] = id
-            emit('json_response', msg)
-
-            if msg['type'] == 'message':
-                data[request.sid].append(msg['payload']['text'])
+    # else:
+    #     for msg in session['context'].history[-3].bot_msgs:
+    #         id = add_session_message(session, msg)
+    #         msg['message_id'] = id
+    #         emit('json_response', msg)
+    #
+    #         if msg['type'] == 'message':
+    #             data[request.sid].append(msg['payload']['text'])
 
     with open("logger.json", "w") as file:
         json.dump(data, file)
@@ -212,7 +210,7 @@ def reset_button(message):
         data[request.sid] = []
     reset(session)
 
-    for msg in session['context'].top_bot_msgs():
+    for msg in session['dm'].context.top_bot_msgs():
         id = add_session_message(session, msg)
         msg['message_id'] = id
         if msg['type'] == 'message':
@@ -245,12 +243,12 @@ def reset(session):
             del session[k]
     session['messages'] = []
     session['last_json'] = {}
-    session['fsa']= ConversationDBExplore()
+    session['dm']= ConversationDBExplore()
 
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-    if 'context' not in session:
+    if 'dm' not in session:
         reset(session)
 
     # TO PUT FOR SAVE EVERY CONVERSATION FROM ALL CONNECTIONS AND REMOVE data= {} and data[request.sid]=[]
@@ -259,13 +257,14 @@ def test_connect():
         data[request.sid] = []
     # data = {}
     # data[request.sid] = []
+    if session['dm'].context.top_bot_msgs()!=None:
+        for msg in session['dm'].context.top_bot_msgs():
+            id = add_session_message(session, msg)
+            msg['message_id'] = id
+            #emit('json_response', msg)
 
-    #for msg in session['context'].top_bot_msgs():
-     #   id = add_session_message(session, msg)
-    #    msg['message_id'] = id
-
-    #    if msg['type'] == 'message':
-    #        data[request.sid].append(msg['payload']['text'])
+            if msg['type'] == 'message':
+                data[request.sid].append(msg['payload']['text'])
 
     with open('logger.json', 'w') as file:
         json.dump(data, file)

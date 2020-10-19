@@ -8,8 +8,8 @@ class ExperimentAction(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
-        from .askconfirm import AskConfirm
-        from .field_action import FieldAction
+        from .confirm import AskConfirm
+        #from .field_action import FieldAction
 
         self.context.payload.back = ExperimentAction
 
