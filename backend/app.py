@@ -42,7 +42,7 @@ Session(app)
 
 # TODO check if we need cors_allowed_origins, I think we don't need anymore.
 socketio = SocketIO(app, manage_session=False, async_mode=async_mode, cors_allowed_origins='*',
-                    path=socketio_path, logger=False, engineio_logger=False, debug=False, )
+                    path=socketio_path, logger=False, engineio_logger=False, debug=False)
 
 simple_page = Blueprint('root_pages',
                         __name__,
@@ -70,20 +70,14 @@ class ConversationDBExplore(object):
 
     def run(self, message, intent, entities):
         next_state, enter = self.context.top_action().run(message, intent, entities)
-        print('CONTEXT')
-        print(self.context.top_action())
-        for x in self.context.top_bot_msgs():
-            if x['type'] == 'message':
-                print(x)
-        print(self.context.top_user_msg())
-        print('-----------------------')
         if next_state is not None:
             self.context.add_step(action=next_state)
             if enter:
                 self.run(None, None, None)
         else:
             self.context.add_step(action=self.context.top_action())
-
+        print('STATUS')
+        print(self.context.payload.status)
 
 
     def receive(self, message):
@@ -91,7 +85,7 @@ class ConversationDBExplore(object):
         intent = interpretation['intent']['name']
         if intent == 'reset_session':
             session['dm'].context.add_bot_msg(Utils.chat_message('Are you sure to reset the session?'))
-
+            session['previous_intent'] = 'reset_session'
         elif session.get('previous_intent') == 'reset_session':
             if intent == 'affirm':
                 reset(session)
@@ -210,18 +204,11 @@ def reset_button(message):
         data[request.sid] = []
     reset(session)
 
-    for msg in session['dm'].context.top_bot_msgs():
-        id = add_session_message(session, msg)
-        msg['message_id'] = id
-        if msg['type'] == 'message':
-            data[request.sid].append(msg['payload']['text'])
-
         #emit('json_response', msg)
     #with open("logger.json", "w") as file:
     #    json.dump(data, file)
 
     #session['status'].clear_msgs()
-    session['previous_intent']= None
 
 # TODO: maybe here we need to manage the session storing
 @socketio.on('disconnect_request', namespace='/test')
@@ -245,6 +232,12 @@ def reset(session):
     session['last_json'] = {}
     session['dm']= ConversationDBExplore()
 
+    if session['dm'].context.top_bot_msgs() != None:
+        for msg in session['dm'].context.top_bot_msgs():
+            id = add_session_message(session, msg)
+            msg['message_id'] = id
+
+
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
@@ -259,10 +252,6 @@ def test_connect():
     # data[request.sid] = []
     if session['dm'].context.top_bot_msgs()!=None:
         for msg in session['dm'].context.top_bot_msgs():
-            id = add_session_message(session, msg)
-            msg['message_id'] = id
-            #emit('json_response', msg)
-
             if msg['type'] == 'message':
                 data[request.sid].append(msg['payload']['text'])
 

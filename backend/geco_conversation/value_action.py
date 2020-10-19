@@ -19,17 +19,19 @@ class ValueAction(AbstractAction):
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in available_fields:
-                self.status[k] = [x for x in v if x in getattr(self.context.payload.database, str(k) + '_db')]
+                self.context.payload.replace(k, [x for x in v if
+                                                 x in getattr(self.context.payload.database, str(k) + '_db')])
                 if len(self.status[k]) == 0:
-                    del (self.status[k])
+                    self.context.payload.delete(k)
 
         if request_field == 'is_healthy':
             if intent == 'affirm':
-                self.status[request_field] = ['true']
+                #self.status[request_field] = ['true']
+                self.context.payload.insert('is_healthy', ['true'])
             else:
-                self.status[request_field] = ['false']
+                #self.status[request_field] = ['false']
+                self.context.payload.insert('is_healthy', ['false'])
 
-            self.context.top_delta().insert_value(request_field)
 
             gcm_filter = {k: v for (k, v) in self.status.items() if (k in available_fields)}
             list_param = {x: x for x in self.context.payload.database.fields_names}
@@ -48,12 +50,12 @@ class ValueAction(AbstractAction):
                 if given_value[i] in db:
                     if request_field in self.status:
                         if given_value[i] not in self.status[request_field]:
-                            self.context.top_delta().update_value(request_field, self.status[request_field],
-                                                              self.status[request_field].append(given_value[i]))
-                            self.status[request_field].append(given_value[i])
+                            #self.context.top_delta().update_value(request_field, self.status[request_field],
+                                                             # self.status[request_field].append(given_value[i]))
+                            self.context.payload.update(request_field,given_value[i])
+                            #self.status[request_field].append(given_value[i])
                     else:
-                        self.context.top_delta().insert_value(request_field)
-                        self.status[request_field] = [given_value[i]]
+                        self.context.payload.insert(request_field, [given_value[i]])
 
             gcm_filter = {k: v for (k, v) in self.status.items() if k in available_fields}
             if len(gcm_filter) > 0:
@@ -68,9 +70,8 @@ class ValueAction(AbstractAction):
             else:
                 from .confirm import AskConfirm
                 fields = {x: self.status[x] for x in available_fields if x in self.status}
-                self.status.clear()
-                self.status['fields'] = fields
-                print(self.status)
+                self.context.payload.clear()
+                self.context.payload.insert('fields', fields)
                 self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
                 return AskConfirm(self.context), True
 

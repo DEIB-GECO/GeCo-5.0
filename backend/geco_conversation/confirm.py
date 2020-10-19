@@ -61,7 +61,8 @@ class RenameAction(AbstractAction):
 
         #ds = DataSet(self.status['fields'], name)
         #self.context.data_extraction.datasets.append(ds)
-        self.status['fields'].update({'name':name})
+        self.context.payload.update('fields', {'name':name})
+        #self.status['fields'].update({'name':name})
         list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
         self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),Utils.chat_message(messages.download),
                 Utils.param_list(list_param), Utils.workflow('Data selection', True, urls)])

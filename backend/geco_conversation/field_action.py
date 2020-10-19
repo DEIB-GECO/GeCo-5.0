@@ -21,11 +21,12 @@ class FieldAction(AbstractAction):
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in available_fields:
-                self.status[k] = [x for x in v if x in getattr(self.context.payload.database, str(k) + '_db')]
+                self.context.payload.replace(k, [x for x in v if
+                                                 x in getattr(self.context.payload.database, str(k) + '_db')])
                 if len(self.status[k]) == 0:
-                    del (self.status[k])
+                    self.context.payload.delete(k)
             else:
-                del(self.status[k])
+                self.context.payload.delete(k)
 
         if intent != 'deny':
             missing_fields = list(set(self.context.payload.database.fields_names).difference(set(self.status.keys())))
@@ -33,12 +34,13 @@ class FieldAction(AbstractAction):
 
             if field[0] in missing_fields and (field[0] != 'is_healthy'):
                 if 'field' in self.status:
-                    old = self.status['field'].copy()
-                    self.status['field'].append(field[0])
-                    self.context.top_delta().update_value('field', old, self.status['field'])
+                    #old = self.status['field'].copy()
+                    #self.status['field'].append(field[0])
+                    self.context.payload.update('field', field[0])
                 else:
-                    self.context.top_delta().insert_value('field')
-                    self.status['field'] = [field[0]]
+                    self.context.payload.insert('field', field[0])
+                    #self.context.top_delta().insert_value('field')
+                    #self.status['field'] = [field[0]]
 
                 list_param = {x: x for x in getattr(self.context.payload.database, str(field[0]) + '_db')}
                 choice = [True if len(list_param) > 10 else False]
@@ -48,12 +50,9 @@ class FieldAction(AbstractAction):
 
             elif field[0] in self.context.payload.database.fields_names and (field[0] != 'is_healthy'):
                 if 'field' in self.status:
-                    old = self.status['field'].copy()
-                    self.status['field'].append(field[0])
-                    self.context.top_delta().update_value('field', old, self.status['field'])
+                    self.context.payload.update('field', field[0])
                 else:
-                    self.context.top_delta().insert_value('field')
-                    self.status['field'] = [field[0]]
+                    self.context.payload.insert('field', field[0])
                 list_param = {x: x for x in getattr(self.context.payload.database, str(field[0]) + '_db')}
                 choice = [True if len(list_param) > 10 else False]
 
@@ -63,12 +62,9 @@ class FieldAction(AbstractAction):
 
             elif (field[0] == 'is_healthy'):
                 if 'field' in self.status:
-                    old = self.status['field'].copy()
-                    self.status['field'].append(field[0])
-                    self.context.top_delta().update_value('field', old, self.status['field'])
+                    self.context.payload.update('field', field[0])
                 else:
-                    self.context.top_delta().insert_value('field')
-                    self.status['field'] = [field[0]]
+                    self.context.payload.insert('field', field[0])
                 self.context.add_bot_msgs([Utils.chat_message(messages.healthy_patients)])
                 return ValueAction(self.context), False
 
@@ -79,8 +75,8 @@ class FieldAction(AbstractAction):
                 return None, False
 
         fields = {x: self.status[x] for x in available_fields if x in self.status}
-        self.status.clear()
-        self.status['fields'] = fields
+        self.context.payload.clear()
+        self.context.payload.insert('fields', fields)
         self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
         return AskConfirm(self.context), True
 

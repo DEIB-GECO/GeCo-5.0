@@ -9,11 +9,11 @@ class FilterMetadataAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         from .confirm import AskConfirm
-        self.status['fields'].update({'metadata': {}})
+        self.context.payload.update('fields',{'metadata': {}})
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
 
         keys = self.context.payload.database.find_all_keys(gcm_filter)
-        self.status['available_keys'] = {x.replace('_', ' '): x for x in keys if keys[x] > 1}
+        self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
         list_param = {k:self.status['fields'][k] for k in self.status['fields'] if k!='metadata'}
         if len(self.status['available_keys']) >= 1:
             self.context.add_bot_msgs([Utils.chat_message(messages.metadata_filter), Utils.param_list(list_param)])
@@ -69,10 +69,11 @@ class MetadataAction(AbstractAction):
 
             k = message.lower().strip()
             if k.replace('_', ' ') in self.status['available_keys']:
-                self.status['key'] = k
-                self.status['fields']['metadata'].update({self.status['key']: []})
+                self.context.payload.insert('key',k)
+                meta = self.status['fields'].copy().update({self.status['key']: []})
+                self.context.payload.replace('fields', meta)
                 values, number = self.context.payload.database.find_key_values(str(k), gcm_filter, meta_filter)
-                self.status['available_values'] = [val['value'] for val in values]
+                self.context.payload.insert('available_values',[val['value'] for val in values])
 
                 list_param_chosen = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
                 list_param_chosen.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
@@ -114,10 +115,11 @@ class KeyAction(AbstractAction):
 
         k =  message.lower().strip()
         if k.replace('_', ' ') in self.status['available_keys']:
-            self.status['key']= k
-            self.status['fields']['metadata'].update({self.status['key']:[]})
+            self.context.payload.insert('key',k)
+            meta = self.status['fields'].copy().update({self.status['key']: []})
+            self.context.payload.replace('fields',meta)
             values, number = self.context.payload.database.find_key_values(str(k), gcm_filter, meta_filter)
-            self.status['available_values'] = [val['value'] for val in values]
+            self.context.payload.insert('available_values',[val['value'] for val in values])
 
             list_param_chosen = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
             list_param_chosen.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
@@ -143,7 +145,7 @@ class KeyAction(AbstractAction):
                     return RangeValueAction(self.context), False
                 else:
                     self.context.add_bot_msgs([Utils.chat_message(messages.other_metadatum)])
-                    del(self.status['key'])
+                    self.context.payload.delete('key')
                     return None, False
 
         return None, False
@@ -159,11 +161,13 @@ class StringValueAction(AbstractAction):
         for v in values:
             v=v.strip()
             if v in self.status['available_values']:
-                self.status['fields']['metadata'][self.status['key']].append(v)
+                val = self.status['fields']['metadata'][self.status['key']].copy().append(v)
+                self.context.payload.replace('fields', val)
             else:
                 not_present.append(v)
         if len(self.status['fields']['metadata'][self.status['key']])==0:
-            del(self.status['fields']['metadata'][self.status['key']])
+            self.context.payload.delete('fields', self.status['fields']['metadata'][self.status['key']])
+            #del(self.status['fields']['metadata'][self.status['key']])
         #self.status['fields']['metadata'].update({self.status['selected_key']: self.status[self.status['selected_key']]})
 
         list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
@@ -179,7 +183,8 @@ class StringValueAction(AbstractAction):
             return MetadataAction(self.context), False
         else:
             if not_present==values:
-                del(self.status[self.status['key']])
+                self.context.payload.delete(self.status['key'])
+                #del(self.status[self.status['key']])
             self.context.add_bot_msgs([Utils.chat_message("You selected {}, not present in the choices.\nThe other choices are in the bottom right pane.".format(",".join(i for i in not_present))),
                     Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
                                  helpIconContent=helpMessages.fields_help),
@@ -191,8 +196,6 @@ class RangeValueAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.metadata_range_help)]
 
-    def required_additional_status(self):
-        return ['geno_surf', 'dataset_list']
 
     def logic(self, message, intent, entities):
         value_low = -99999999999999999999999999999999999999999999999999999
@@ -217,7 +220,9 @@ class RangeValueAction(AbstractAction):
         numeric_values = [int(i) for i in self.status['available_values'] if i!=None]
         for v in numeric_values:
             if (v>value_low) and (v<value_high):
-                self.status['fields']['metadata'][self.status['key']].append(v)
+                val = self.status['fields']['metadata'][self.status['key']].copy().append(v)
+                self.context.payload.replace('fields', val)
+                #self.status['fields']['metadata'][self.status['key']].append(v)
 
         list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x!='metadata'}
         list_param.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in self.status['fields']['metadata']})

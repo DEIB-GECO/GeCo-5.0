@@ -14,9 +14,9 @@ class AnnotationAction(AbstractAction):
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in annotation_fields:
-                self.status[k] = [x for x in v if x in getattr(self.context.payload.database, str(k) + '_db')]
+                self.context.payload.replace(k, [x for x in v if x in getattr(self.context.payload.database, str(k) + '_db')])
                 if len(self.status[k]) == 0:
-                    del (self.status[k])
+                    self.context.payload.delete(k)
 
         gcm_filter = {k: v for (k, v) in self.status.items() if k in annotation_fields}
 
@@ -39,14 +39,14 @@ class AnnotationAction(AbstractAction):
                 return FieldAction(self.context), False
             else:
                 fields = {x: self.status[x] for x in annotation_fields if x in self.status}
-                self.status.clear()
-                self.status['fields'] = fields
+                self.context.payload.clear()
+                self.context.payload.insert('fields', fields)
                 self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
                 return AskConfirm(self.context), True
 
         else:
             for x in annotation_fields:
                 if x in self.status:
-                    del self.status[x]
+                    self.context.payload.delete(x)
             self.context.add_bot_msgs([Utils.param_list(gcm_filter), Utils.chat_message(messages.no_exp_found)])
             return None, False

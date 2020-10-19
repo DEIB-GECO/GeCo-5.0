@@ -15,18 +15,16 @@ class ExperimentAction(AbstractAction):
 
         if 'is_healthy' in self.status:
             if self.status['is_healthy']== ['healthy']:
-                self.status['is_healthy'] = [True]
-                self.context.top_delta().insert_value('is_healthy')
+                self.context.payload.insert('is_healthy', True)
             if self.status['is_healthy'] == ['tumoral']:
-                self.status['is_healthy'] = [False]
-                self.context.top_delta().insert_value('is_healthy')
+                self.context.payload.insert('is_healthy', False)
 
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in experiment_fields:
-                self.status[k] = [x for x in v if x in getattr(self.context.payload.database, str(k) + '_db')]
+                self.context.payload.replace(k, [x for x in v if x in getattr(self.context.payload.database, str(k) + '_db')])
                 if len(self.status[k]) == 0:
-                    del (self.status[k])
+                    self.context.payload.delete(k)
 
         gcm_filter = {k:v for (k,v) in self.status.items() if k in experiment_fields}
 
@@ -52,14 +50,14 @@ class ExperimentAction(AbstractAction):
                     return FieldAction(self.context), False
                 else:
                     fields = {x: self.status[x] for x in experiment_fields if x in self.status}
-                    self.status.clear()
-                    self.status['fields'] = fields
+                    self.context.payload.clear()
+                    self.context.payload.insert('fields', fields)
                     self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
                     return AskConfirm(self.context), True
         else:
             for x in experiment_fields:
                 if x in self.status:
-                    del self.status[x]
+                    self.context.payload.delete(x)
             self.context.add_bot_msgs([Utils.param_list(fields), Utils.chat_message(messages.no_exp_found)])
             return None, False
 

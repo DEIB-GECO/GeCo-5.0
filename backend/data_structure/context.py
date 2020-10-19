@@ -26,8 +26,47 @@ class Step:
         self.delta = Delta()
 
 class Payload:
-    def __init__(self):
+    def __init__(self, context):
+        self.context = context
         self.status = {}
+
+    def insert(self, key, value):
+        if isinstance(value, list):
+            self.status[key]=value
+        else:
+            self.status[key] = [value]
+        self.context.top_delta().insert_value(key)
+
+    def update(self, key, new_value):
+        old = self.status[key]
+        if isinstance(old, list):
+            self.status[key].append(new_value)
+        elif isinstance(old, dict):
+            self.status[key].update(new_value)
+        self.context.top_delta().update_value(key, old, self.status[key])
+
+    def replace(self, key, new):
+        old = self.status[key]
+        self.status[key] = new
+        if old!=new:
+            self.context.top_delta().update_value(key, old, self.status[key])
+
+    def delete(self, key, value=None):
+        if value==None:
+            del (self.status[key])
+            self.context.top_delta().delete_value(key, value)
+        elif self.status[key]==value:
+            del(self.status[key])
+            self.context.top_delta().delete_value(key, value)
+        else:
+            old = self.status[key].copy()
+            self.status[key] = old.remove(value)
+            self.context.top_delta().update_value(key, old, self.status[key])
+
+    def clear(self):
+        for x in self.status:
+            self.context.top_delta.delete_value(x, self.status[x])
+        self.status.clear()
 
 class Data_Extraction:
     def __init__(self):
@@ -40,7 +79,7 @@ class Context:
 
     def __init__(self):
         self.history = []
-        self.payload = Payload()
+        self.payload = Payload(self)
         self.data_extraction = Data_Extraction()
         '''
         self.data_analysis = {
@@ -79,7 +118,6 @@ class Context:
     def add_user_msg(self, user_msg):
         self.history[-1].user_msg = user_msg
 
-
     def add_bot_msg(self, bot_msg):
         print()
         if type(self.history[-1].bot_msgs)== list:
@@ -98,9 +136,6 @@ class Context:
         else:
             self.history[-1].bot_msgs = bot_msgs
 
-    def add_action(self, action):
-        self.history[-1].action = action
-
     def add_delta(self, delta):
         self.history[-1].delta = delta
 
@@ -111,7 +146,6 @@ class Context:
         del (self.history[-1])
         self.add_step(action=action)
         #self.history[-2].bot_msgs = None
-
 
     def last_valid_user_msg(self):
         return self.history[-1].user_msg
