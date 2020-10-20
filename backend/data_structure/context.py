@@ -31,7 +31,7 @@ class Payload:
         self.status = {}
 
     def insert(self, key, value):
-        if isinstance(value, list):
+        if isinstance(value, list) or isinstance(value, dict):
             self.status[key]=value
         else:
             self.status[key] = [value]
@@ -65,7 +65,7 @@ class Payload:
 
     def clear(self):
         for x in self.status:
-            self.context.top_delta.delete_value(x, self.status[x])
+            self.context.top_delta().delete_value(x, self.status[x])
         self.status.clear()
 
 class Data_Extraction:

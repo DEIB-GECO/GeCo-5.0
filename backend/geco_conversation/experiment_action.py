@@ -15,9 +15,9 @@ class ExperimentAction(AbstractAction):
 
         if 'is_healthy' in self.status:
             if self.status['is_healthy']== ['healthy']:
-                self.context.payload.insert('is_healthy', True)
+                self.context.payload.insert('is_healthy', ['true'])
             if self.status['is_healthy'] == ['tumoral']:
-                self.context.payload.insert('is_healthy', False)
+                self.context.payload.insert('is_healthy', ['false'])
 
         temp = self.status.copy()
         for (k, v) in temp.items():
@@ -52,7 +52,7 @@ class ExperimentAction(AbstractAction):
                     fields = {x: self.status[x] for x in experiment_fields if x in self.status}
                     self.context.payload.clear()
                     self.context.payload.insert('fields', fields)
-                    self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
+                    self.context.add_bot_msgs([Utils.param_list(fields)])
                     return AskConfirm(self.context), True
         else:
             for x in experiment_fields:

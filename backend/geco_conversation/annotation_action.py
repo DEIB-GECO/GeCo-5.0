@@ -41,7 +41,7 @@ class AnnotationAction(AbstractAction):
                 fields = {x: self.status[x] for x in annotation_fields if x in self.status}
                 self.context.payload.clear()
                 self.context.payload.insert('fields', fields)
-                self.context.add_bot_msgs([Utils.param_list(self.status['fields'])])
+                self.context.add_bot_msgs([Utils.param_list(fields)])
                 return AskConfirm(self.context), True
 
         else:

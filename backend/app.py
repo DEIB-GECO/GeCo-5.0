@@ -76,8 +76,6 @@ class ConversationDBExplore(object):
                 self.run(None, None, None)
         else:
             self.context.add_step(action=self.context.top_action())
-        print('STATUS')
-        print(self.context.payload.status)
 
 
     def receive(self, message):
