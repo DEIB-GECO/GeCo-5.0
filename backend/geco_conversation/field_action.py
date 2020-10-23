@@ -6,8 +6,11 @@ class FieldAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.fields_help)]
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
-        from .confirm import AskConfirm
+        from .confirm import Confirm
         from .annotation_action import AnnotationAction
         from .experiment_action import ExperimentAction
         from .value_action import ValueAction
@@ -78,6 +81,6 @@ class FieldAction(AbstractAction):
         self.context.payload.clear()
         self.context.payload.insert('fields', fields)
         self.context.add_bot_msgs([Utils.param_list(fields)])
-        return AskConfirm(self.context), True
+        return Confirm(self.context), True
 
 

@@ -2,13 +2,16 @@ import re
 import statistics
 from geco_conversation import *
 
-class FilterMetadataAction(AbstractAction):
+class FilterMetadata(AbstractAction):
 
     def help_message(self):
         return [Utils.chat_message(helpMessages.metadata_help)]
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
-        from .confirm import AskConfirm
+        from .confirm import Confirm
         self.context.payload.update('fields',{'metadata': {}})
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
 
@@ -20,7 +23,7 @@ class FilterMetadataAction(AbstractAction):
             return MetadataAction(self.context), False
         else:
             self.context.payload.back = MetadataAction
-            return AskConfirm(self.context), True
+            return Confirm(self.context), True
 
 
 class MetadataAction(AbstractAction):
@@ -28,8 +31,11 @@ class MetadataAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.metadata_help)]
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
-        from .confirm import AskConfirm
+        from .confirm import Confirm
         self.context.payload.back = MetadataAction
         if intent == 'affirm':
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name','metadata']}
@@ -58,10 +64,10 @@ class MetadataAction(AbstractAction):
                                Utils.param_list(list_param)])
                     return RangeValueAction(self.context), False
             else:
-                return AskConfirm(self.context), True
+                return Confirm(self.context), True
 
         elif intent == 'deny':
-            return AskConfirm(self.context), True
+            return Confirm(self.context), True
 
         else:
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k != 'name' and k != 'metadata'}
@@ -110,6 +116,9 @@ class KeyAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.metadata_key_help)]
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k != 'name' and k != 'metadata'}
         meta_filter = {k: v for (k, v) in self.status['fields']['metadata'].items()}
@@ -157,6 +166,9 @@ class StringValueAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.metadata_string_help)]
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
         values = message.lower().strip().split(';')
         not_present = []
@@ -199,6 +211,8 @@ class RangeValueAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.metadata_range_help)]
 
+    def on_enter(self):
+        pass
 
     def logic(self, message, intent, entities):
         value_low = -99999999999999999999999999999999999999999999999999999

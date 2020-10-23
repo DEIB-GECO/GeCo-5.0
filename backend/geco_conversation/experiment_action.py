@@ -7,8 +7,11 @@ class ExperimentAction(AbstractAction):
         self.context.add_bot_msgs([Utils.chat_message(messages.experiment_help)])
         return None, False
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
-        from .confirm import AskConfirm
+        from .confirm import Confirm
         #from .field_action import FieldAction
 
         self.context.payload.back = ExperimentAction
@@ -53,7 +56,7 @@ class ExperimentAction(AbstractAction):
                     self.context.payload.clear()
                     self.context.payload.insert('fields', fields)
                     self.context.add_bot_msgs([Utils.param_list(fields)])
-                    return AskConfirm(self.context), True
+                    return Confirm(self.context), True
         else:
             for x in experiment_fields:
                 if x in self.status:

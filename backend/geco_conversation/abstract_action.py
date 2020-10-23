@@ -15,6 +15,10 @@ class AbstractAction(ABC):
         pass
 
     @abstractmethod
+    def on_enter(self):
+        pass
+
+    @abstractmethod
     def logic(self, message, intent, entities):
         pass
 
@@ -22,6 +26,9 @@ class AbstractAction(ABC):
         if intent == "help":
             self.help_message()
             return None, False
+        else:
+            return self.logic(message, intent, entities)
+        '''
         elif intent == 'name':
             self.context.add_bot_msgs([Utils.chat_message(messages.gecoagent)])
             return None, False
@@ -36,8 +43,9 @@ class AbstractAction(ABC):
             response = requests.get('https://www.metaweather.com/api/location/718345/')
             self.context.add_bot_msgs([Utils.chat_message('Here in Milan the weather forecast says: ' + json.loads(response.content.decode('utf-8'))['consolidated_weather'][0]['weather_state_name'].lower())])
             return None, False
-        else:
-            return self.logic(message, intent, entities)
+       '''
+        #else:
+         #   return self.logic(message, intent, entities)
 
 
 

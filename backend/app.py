@@ -63,17 +63,21 @@ class ConversationDBExplore(object):
         self.context = Context()
         #session['context']=self.context
         self.context.add_step(bot_msgs=Utils.chat_message(messages.initial_greeting), action= StartAction(self.context))
-        self.run(None, None, None)
+        self.enter()
 
     def clear_msgs(self):
         self.bot_messages = []
+
+    def enter(self):
+        self.context.top_action().on_enter()
+        self.context.add_step(action=self.context.top_action())
 
     def run(self, message, intent, entities):
         next_state, enter = self.context.top_action().run(message, intent, entities)
         if next_state is not None:
             self.context.add_step(action=next_state)
             if enter:
-                self.run(None, None, None)
+                self.enter()
         else:
             self.context.add_step(action=self.context.top_action())
 

@@ -6,6 +6,9 @@ class JoinAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(messages.join_help)]
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
 
         names = {}

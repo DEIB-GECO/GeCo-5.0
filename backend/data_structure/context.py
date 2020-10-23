@@ -75,11 +75,34 @@ class Data_Extraction:
         self.unary = []
         self.table = {}
 
-class Context:
+class Operation:
+    def __init__(self, type, name, dict):
+        self.type = type
+        self.name = name
+        self.parameters = dict
 
+class Workflow(list):
+    def __init__(self):
+        self = []
+
+    def add_gmql(self, name, dict):
+        self.append((Operation('gmql', name, dict), False))
+
+    def add_pivot(self, name, dict):
+        self.append((Operation('pivot', name, dict), False))
+
+    def add_analysis(self, name, dict):
+        self.append((Operation('analysis', name, dict), False))
+
+    def run(self):
+        #run logic
+        pass
+
+class Context:
     def __init__(self):
         self.history = []
         self.payload = Payload(self)
+        self.workflow = Workflow()
         self.data_extraction = Data_Extraction()
         '''
         self.data_analysis = {
@@ -87,7 +110,6 @@ class Context:
             'validation' : [],
             'algorithms' : []
         }
-        
         '''
 
     def add_step(self, bot_msgs = None, action = None, user_msg = None):

@@ -6,6 +6,9 @@ class ValueAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.value_help)]
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
         if self.context.payload.back == AnnotationAction:
             available_fields = annotation_fields
@@ -68,12 +71,12 @@ class ValueAction(AbstractAction):
                         {k: v for (k, v) in self.status.items() if (k in available_fields) and (any(elem in db for elem in v))})] + Utils.create_piecharts(self.context,gcm_filter))
                 return FieldAction(self.context), False
             else:
-                from .confirm import AskConfirm
+                from .confirm import Confirm
                 fields = {x: self.status[x] for x in available_fields if x in self.status}
                 self.context.payload.clear()
                 self.context.payload.insert('fields', fields)
                 self.context.add_bot_msgs([Utils.param_list(fields)])
-                return AskConfirm(self.context), True
+                return Confirm(self.context), True
 
         else:
             list_param = {x: x for x in getattr(self.context.payload.database, str(request_field) + '_db')}

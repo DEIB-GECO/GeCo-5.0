@@ -6,6 +6,9 @@ class ChangeAddAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.change_add_help)]
 
+    def on_enter(self):
+        pass
+
     def logic(self, message, intent, entities):
         gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
 
@@ -35,7 +38,7 @@ class ChangeAddAction(AbstractAction):
         self.status['fields'] = fields
         self.status['back'] = ExperimentAction
         self.context.add_bot_msgs([Utils.param_list({k: v for (k, v) in self.status.items() if k in experiment_fields})])
-        return AskConfirm(self.context), False
+        return Confirm(self.context), False
 
 
 
