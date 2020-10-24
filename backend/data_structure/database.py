@@ -31,7 +31,7 @@ class ExperimentDB():
         for x in gcm.keys():
             self.filtered = self[self[x]==gcm[x]]
 
-exp_db = ExperimentDB()
+#exp_db = ExperimentDB()
 
 class AnnotationDB():
     def __init__(self):
@@ -56,7 +56,7 @@ class AnnotationDB():
         self.filter(gcm)
         return len(self.filtered)
 
-ann_db = AnnotationDB()
+#ann_db = AnnotationDB()
 
 class DB:
     def __init__(self, fields, is_ann):
