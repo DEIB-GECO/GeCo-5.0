@@ -1,5 +1,4 @@
 class Delta:
-
     def insert_value(self, name):
         if hasattr(self, 'insertion'):
             self.insertion.append(name)
@@ -121,12 +120,6 @@ class Context:
         elif (len(self.history) >= 2) and (self.history[-2].bot_msgs!=None):
             return self.history[-2].bot_msgs
         return None
-        #else:
-         #   return self.history[-3].bot_msgs
-       # if len(self.history)>=2:
-        #    return self.history[-2].bot_msgs
-        #else:
-         #   return self.history[-1].bot_msgs
 
     def top_user_msg(self):
         return self.history[-1].user_msg

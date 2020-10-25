@@ -95,6 +95,36 @@
 - new 
 - new one
 
+## intent:project_metadat
+- project metadata
+- project meta
+- add new metadata
+- add metadatum
+- select some metadata
+- choose one metadatum
+- add metadata
+- modify metadata
+
+## intent:project_region
+- project region data
+- project region
+- add new region data
+- add regions
+- select some region data
+- choose one region
+- add region data
+- modify regions
+- add region
+- select only some regions
+
+## intent:cover
+- cover
+- take one sample
+- collapse samples
+- keep only one sample
+- put all samples together
+- all regions in one sample
+
 
 ## intent:retrieve_annotations
 - annotation
@@ -2583,6 +2613,13 @@
 - difference of the two datasets
 - remove from the first dataset the second one
 - remove from the second datsaset the first one
+
+## intent:map
+- map the first dataset into the second
+- map the two dataset
+- I want to do the map
+- I want to map the two datasets
+- perform a map
 
 ## intent:joke
 - tell me a joke

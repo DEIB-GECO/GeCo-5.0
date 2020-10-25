@@ -17,12 +17,13 @@ class GMQLUnaryAction(AbstractAction):
             next_node = ProjectMetaAction(self.context)
         elif intent == 'project_region':
             self.context.add_bot_msg(Utils.chat_message("Which region data do you want to modify?"))
-            next_node = ProjectRegion(self.context)
+            next_node = ProjectRegionAction(self.context)
         elif intent == 'cover':
-            self.context.add_bot_msg(Utils.chat_message("I need you to tell me the min, max and, optionally, the groupby."))
-            next_node = Cover(self.context)
+            self.context.add_bot_msg(Utils.chat_message("I need you to tell me the min, max and, optionally, the groupby.\nLet's begin with the min."))
+            next_node = CoverAction(self.context)
+            bool = False
         else:
             self.context.add_bot_msg(Utils.chat_message("Sorry, I did not understand. Can you repeat?"))
-            next_node = ProjectMetaAction(self.context)
+            next_node = None
             bool = False
         return next_node, bool
