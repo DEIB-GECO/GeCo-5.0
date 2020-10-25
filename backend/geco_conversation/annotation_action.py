@@ -21,7 +21,7 @@ class AnnotationAction(AbstractAction):
 
     def filter(self, gcm_filter):
         if len(gcm_filter) > 0:
-            self.context.payload.database.filter(gcm_filter)
+            self.context.payload.database.update(gcm_filter)
 
         samples = self.context.payload.database.check_existance(gcm_filter)
 
@@ -34,7 +34,7 @@ class AnnotationAction(AbstractAction):
         self.check_status()
         samples = self.filter(gcm_filter)
 
-        missing_fields = self.context.payload.database.fields_names()
+        missing_fields = self.context.payload.database.fields_names
         list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
 
         if samples > 0:

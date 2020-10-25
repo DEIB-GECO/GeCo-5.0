@@ -13,7 +13,7 @@ class ProjectMetaAction(AbstractAction):
     def logic(self, message, intent, entities):
         if 'change_meta' not in self.status:
             self.status['change_meta'] = message
-            self.context.add_bot_msgs([Utils.chat_message('Which operation do you want to do?'), Utils.choice({'sum':'+','difference':'-','product':'*','division':'/'})])
+            self.context.add_bot_msgs([Utils.chat_message('Which operation do you want to do?'), Utils.choice('Operators',{'sum':'+','difference':'-','product':'*','division':'/'})])
             return None, False
         elif 'operation' not in self.status:
             self.status['operation'] = message
@@ -53,7 +53,7 @@ class ProjectRegionAction(AbstractAction):
         if 'change_region' not in self.status:
             self.status['change_region'] = message
             self.context.add_bot_msgs([Utils.chat_message('Which operation do you want to do?'),
-                                       Utils.choice({'sum': '+', 'difference': '-', 'product': '*', 'division': '/'})])
+                                       Utils.choice('Operators',{'sum': '+', 'difference': '-', 'product': '*', 'division': '/'})])
             return None, False
         elif 'operation' not in self.status:
             self.status['operation'] = message

@@ -7,12 +7,13 @@ class GMQLUnaryAction(AbstractAction):
         return []
 
     def on_enter(self):
-        self.context.add_bot_msg(Utils.chat_message(messages.gmql_operations))
+        self.context.add_bot_msg(Utils.chat_message(messages.gmql_unary))
+        self.context.add_bot_msg(Utils.choice('Unary_operations',{'project_metadata':'project metadata', 'project_region':'project region', 'cover':'cover'}))
         return None, False
 
     def logic(self, message, intent, entities):
         bool = False
-        if intent == 'project_meta':
+        if intent == 'project_metadata':
             self.context.add_bot_msg(Utils.chat_message("Which metadata do you want to modify?"))
             next_node = ProjectMetaAction(self.context)
         elif intent == 'project_region':

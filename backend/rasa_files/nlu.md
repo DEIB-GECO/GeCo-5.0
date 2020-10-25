@@ -95,7 +95,7 @@
 - new 
 - new one
 
-## intent:project_metadat
+## intent:project_metadata
 - project metadata
 - project meta
 - add new metadata
@@ -2660,15 +2660,6 @@
 - how is the weather?
 - is it raining?
 
-## intent:reset_session
-- reset session
-- reset
-- quit
-- escape
-- esc
-- restart
-- go back to the beginning
-- clear
 
 ## synonym:breast
 - mammary part of chest
