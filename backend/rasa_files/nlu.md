@@ -1126,6 +1126,7 @@
 - i need cell [smooth muscle cell](cell)
 - can i have [cell line](biosample_type) data?
 - please give me [zbtb33](target) data
+- I would like to have [gene expression]{"entity":"data_type", "value":"gene expression quantification"} data for [hg19](assembly) from [tcga](source) for [healthy]{"entity":"is_healthy", "value":True} patients
 - I would like to have data regarding [corpus uteri](tissue) extracted with [exome, high coverage, low coverage](technique)
 - can i have [atf3](target) [methylation array](technique) for cell line [crl-1740](cell)?
 - I am looking for [methylation beta value](data_type) data extracted with [dna methylation 27](technique) from [tcga](source)
@@ -1133,7 +1134,7 @@
 - samples of [simple nucleotide variation](feature) of patients affected by [t-acute lymphoblastic leukemia (t-all; type iii cortical)](disease)
 - I would like to have [hg19](assembly) assembly data for [tumoral]{"entity":"is_healthy", "value":False} patients with [malignant glioblastoma](disease)
 - I would like to have [grch38](assembly) assembly data for [healthy]{"entity":"is_healthy", "value":True} patients with [hepatic rhabdoid tumor](disease)
-- we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [larynx tissue]{"entity": "tissue", "value": "larynx"}
+- we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": True} [larynx tissue]{"entity": "tissue", "value": "larynx"}
 - i want items from [grch38](assembly) from [tumoral]{"entity": "is_healthy", "value": "False"} [placenta tissue]{"entity": "tissue", "value": "placenta"}
 - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
 - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [gi stomach](tissue)?i'm looking for data from [1000 genomes](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients

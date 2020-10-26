@@ -19,61 +19,47 @@ db = create_engine(db_string)
 annotation_fields = ["content_type", "assembly", "source"]
 experiment_fields = ['source', 'data_type', 'assembly', 'file_format', 'biosample_type', 'tissue', 'cell', 'disease', 'is_healthy', 'technique', 'feature', 'target']
 
-class ExperimentDB():
-    def __init__(self):
-        is_ann_gcm = 'is_annotation=false'
-        #res = db.engine.execute("select * from dw.flatten_gecoagent".format(is_ann_gcm))
-        #self.original = pd.DataFrame(res.fetchall())
-        #self.original.columns = res.keys()
-        #self.filtered = self.original.copy()
 
-    def filter(self, gcm):
-        for x in gcm.keys():
-            self.filtered = self[self[x]==gcm[x]]
-
-#exp_db = ExperimentDB()
-
-class AnnotationDB():
-    def __init__(self):
-        is_ann_gcm = 'is_annotation=true'
-        res = db.engine.execute("select * from dw.flatten_gecoagent".format(is_ann_gcm))
-        self.original = pd.DataFrame(res.fetchall())
-        self.original.columns = res.keys()
-        self.filtered = self.original.copy()
-
-    def filter(self, gcm):
-        for x in gcm.keys():
-            self.filtered = self[self[x] == gcm[x]]
-
-    def fields_names(self):
-        col = []
-        for x in self.filtered.columns:
-            if len(set(self.filtered[x]))>1:
-                col.append(x)
-        return col
-
-    def check_existance(self, gcm):
-        self.filter(gcm)
-        return len(self.filtered)
 
 #ann_db = AnnotationDB()
+class database:
+    def __init__(self):
+        self.fields = ['source', 'data_type', 'assembly', 'file_format', 'biosample_type', 'tissue', 'cell', 'disease', 'is_healthy', 'technique', 'feature', 'target', 'content_type']
+        self.get_all_values()
 
-class DB:
-    def __init__(self, fields, is_ann):
-        self.is_ann = is_ann
-        self.is_ann_gcm = 'is_annotation=true' if is_ann else 'is_annotation=false'
-        self.fields = fields
-        self.get_values(self.is_ann)
-
-    def get_values(self, is_ann):
+    def get_all_values(self):
         self.fields_names = []
+        self.values = {}
         for f in self.fields:
-            res = db.engine.execute("select {} from dw.flatten_gecoagent where {} group by {}".format(f,self.is_ann_gcm,f)).fetchall()
+            res = db.engine.execute("select {} from dw.flatten_gecoagent group by {}".format(f,f)).fetchall()
             res = [i[0] for i in res]
             if res!=[]:
                 self.fields_names.append(f)
+                self.values[f]= res
                 setattr(self, (str(f) + '_db'), res)
 
+
+
+class DB:
+    def __init__(self, fields, is_ann, all_db):
+        self.is_ann = is_ann
+        self.is_ann_gcm = 'is_annotation=true' if is_ann else 'is_annotation=false'
+        self.fields = fields
+        self.db = all_db
+        self.values = {x:all_db.values[x] for x in fields if len(all_db.values[x])>1}
+        self.fields_names = list(self.values.keys())
+
+        #self.get_values()
+
+    def get_values(self):
+        self.fields_names = []
+        for f in self.fields:
+            res = getattr(self.db, (str(f) + '_db'))
+            #res = db.engine.execute("select {} from dw.flatten_gecoagent where {} group by {}".format(f,self.is_ann_gcm,f)).fetchall()
+            #res = [i[0] for i in res]
+            if res!=[]:
+                self.fields_names.append(f)
+                setattr(self, (str(f) + '_db'), res)
 
     def update(self, gcm):
         gcm_source = "source in ('tcga','encode','roadmap epigenomics','1000 genomes','refseq')"
@@ -102,7 +88,8 @@ class DB:
                 values = [val[0]]
 
             if values != []:
-                setattr(self, (str(f) + '_db'), values)
+                self.values[f]=values
+                #setattr(self, (str(f) + '_db'), values)
 
 
     def retrieve_values(self, gcm, f):
@@ -230,3 +217,35 @@ class DB:
 
         return region_schema
 
+class ExperimentDB(DB):
+    def __init__(self):
+        super().__init__
+
+    def filter(self, gcm):
+        for x in gcm.keys():
+            self.filtered = self[self[x]==gcm[x]]
+
+#exp_db = ExperimentDB()
+
+class AnnotationDB(DB):
+    def __init__(self):
+        is_ann_gcm = 'is_annotation=true'
+        res = db.engine.execute("select * from dw.flatten_gecoagent".format(is_ann_gcm))
+        self.original = pd.DataFrame(res.fetchall())
+        self.original.columns = res.keys()
+        self.filtered = self.original.copy()
+
+    def filter(self, gcm):
+        for x in gcm.keys():
+            self.filtered = self[self[x] == gcm[x]]
+
+    def fields_names(self):
+        col = []
+        for x in self.filtered.columns:
+            if len(set(self.filtered[x]))>1:
+                col.append(x)
+        return col
+
+    def check_existance(self, gcm):
+        self.filter(gcm)
+        return len(self.filtered)

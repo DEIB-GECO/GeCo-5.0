@@ -1,4 +1,4 @@
-from data_structure.data_structure import DataSet
+from data_structure.datastructures import DataSet
 from geco_conversation import *
 
 class Confirm(AbstractAction):

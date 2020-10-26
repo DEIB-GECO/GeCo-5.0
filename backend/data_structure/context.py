@@ -1,3 +1,5 @@
+from workflow import Workflow
+
 class Delta:
     def insert_value(self, name):
         if hasattr(self, 'insertion'):
@@ -25,9 +27,10 @@ class Step:
         self.delta = Delta()
 
 class Payload:
-    def __init__(self, context):
+    def __init__(self, context, db):
         self.context = context
         self.status = {}
+        self.all_database = db
 
     def insert(self, key, value):
         if isinstance(value, list) or isinstance(value, dict):
@@ -74,33 +77,12 @@ class Data_Extraction:
         self.unary = []
         self.table = {}
 
-class Operation:
-    def __init__(self, type, name, dict):
-        self.type = type
-        self.name = name
-        self.parameters = dict
 
-class Workflow(list):
-    def __init__(self):
-        self = []
-
-    def add_gmql(self, name, dict):
-        self.append((Operation('gmql', name, dict), False))
-
-    def add_pivot(self, name, dict):
-        self.append((Operation('pivot', name, dict), False))
-
-    def add_analysis(self, name, dict):
-        self.append((Operation('analysis', name, dict), False))
-
-    def run(self):
-        #run logic
-        pass
 
 class Context:
-    def __init__(self):
+    def __init__(self, db):
         self.history = []
-        self.payload = Payload(self)
+        self.payload = Payload(self, db)
         self.workflow = Workflow()
         self.data_extraction = Data_Extraction()
         '''

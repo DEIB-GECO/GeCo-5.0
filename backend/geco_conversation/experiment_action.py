@@ -8,7 +8,8 @@ class ExperimentAction(AbstractAction):
         return None, False
 
     def on_enter(self):
-        pass
+        node, bool=self.logic(None,None,None)
+        return node, bool
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm
@@ -25,7 +26,7 @@ class ExperimentAction(AbstractAction):
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in experiment_fields:
-                self.context.payload.replace(k, [x for x in v if x in getattr(self.context.payload.database, str(k) + '_db')])
+                self.context.payload.replace(k, [x for x in v if x in self.context.payload.database.values[k]])
                 if len(self.status[k]) == 0:
                     self.context.payload.delete(k)
 
@@ -62,6 +63,13 @@ class ExperimentAction(AbstractAction):
                 if x in self.status:
                     self.context.payload.delete(x)
             self.context.add_bot_msgs([Utils.param_list(fields), Utils.chat_message(messages.no_exp_found)])
-            return None, False
+            list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
+            self.context.add_bot_msgs([Utils.chat_message(messages.choice_field),
+                                       Utils.choice('Available fields', list_param, show_help=True,
+                                                    helpIconContent=helpMessages.fields_help),
+                                       Utils.param_list(
+                                           {k: v for (k, v) in self.status.items() if k in experiment_fields})] +
+                                      Utils.create_piecharts(self.context, gcm_filter))
+            return FieldAction(self.context), False
 
 

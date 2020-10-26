@@ -8,14 +8,15 @@ class AnnotationAction(AbstractAction):
         return None, False
 
     def on_enter(self):
-        pass
+        node, bool = self.logic(None, None, None)
+        return node, bool
 
     def check_status(self):
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in annotation_fields:
                 self.context.payload.replace(k, [x for x in v if
-                                                 x in getattr(self.context.payload.database, str(k) + '_db')])
+                                                 x in self.context.payload.database.values[k]])
                 if len(self.status[k]) == 0:
                     self.context.payload.delete(k)
 

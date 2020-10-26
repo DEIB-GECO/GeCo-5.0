@@ -13,18 +13,20 @@ class StartAction(AbstractAction):
         self.context.add_bot_msg(Utils.chat_message(messages.start_init))
         self.context.add_bot_msg(Utils.choice("Data available", list_param))
         self.context.add_bot_msg(Utils.workflow('Data selection'))
-        return
+        return None, False
 
     def logic(self, message, intent, entities):
+        bool = True
         if intent == 'retrieve_annotations':
             self.context.add_bot_msg(Utils.workflow('Data selection'))
+            self.context.payload.database = DB(annotation_fields, True, copy.deepcopy(self.context.payload.all_database))
             next_node = AnnotationAction(self.context)
-            self.context.payload.database = DB(annotation_fields, True)#copy.deepcopy(ann_db)
         elif intent == 'retrieve_experiments':
             self.context.add_bot_msg(Utils.workflow('Data selection'))
             next_node = ExperimentAction(self.context)
-            self.context.payload.database = DB(experiment_fields, False)#copy.deepcopy(exp_db)
+            self.context.payload.database = DB(experiment_fields, False, copy.deepcopy(self.context.payload.all_database))#copy.deepcopy(exp_db)
         else:
             self.context.add_bot_msg([Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?"),Utils.workflow('Data selection')])
             next_node = None
-        return  next_node, False
+            bool = False
+        return next_node, bool

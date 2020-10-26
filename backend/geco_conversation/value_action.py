@@ -16,14 +16,14 @@ class ValueAction(AbstractAction):
             available_fields = experiment_fields
 
         request_field = self.status['field'][-1]
-        db = getattr(self.context.payload.database, request_field + '_db')
+        db = self.context.payload.database.values[request_field]
         given_value = entities[request_field] if ((request_field in entities) and (any(elem in db for elem in entities[request_field]))) else [message.strip().lower()]
 
         temp = self.status.copy()
         for (k, v) in temp.items():
-            if k in available_fields:
+            if k in available_fields and k!='is_healthy':
                 self.context.payload.replace(k, [x for x in v if
-                                                 x in getattr(self.context.payload.database, str(k) + '_db')])
+                                                 x in self.context.payload.database.values[k]])
                 if len(self.status[k]) == 0:
                     self.context.payload.delete(k)
 
@@ -79,7 +79,7 @@ class ValueAction(AbstractAction):
                 return Confirm(self.context), True
 
         else:
-            list_param = {x: x for x in getattr(self.context.payload.database, str(request_field) + '_db')}
+            list_param = {x: x for x in self.context.payload.database.values[request_field]}
             choice = [True if len(list_param) > 10 else False]
             self.context.add_bot_msgs([Utils.chat_message("The {} {} not valid, insert a valid one".format(request_field, given_value)),
                     Utils.choice(request_field, list_param, show_search=choice)])
