@@ -8,7 +8,8 @@ class FilterMetadata(AbstractAction):
         return [Utils.chat_message(helpMessages.metadata_help)]
 
     def on_enter(self):
-        pass
+        node, bool = self.logic(None, None,None)
+        return node, bool
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm

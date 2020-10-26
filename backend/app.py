@@ -12,6 +12,9 @@ from data_structure.database import get_db_uri, db, database
 from geco_conversation import *
 from data_structure.context import Context
 
+from engineio.payload import Payload
+
+Payload.max_decode_packets = 500
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
@@ -43,6 +46,7 @@ Session(app)
 # TODO check if we need cors_allowed_origins, I think we don't need anymore.
 socketio = SocketIO(app, manage_session=False, async_mode=async_mode, cors_allowed_origins='*',
                     path=socketio_path, logger=False, engineio_logger=False, debug=False)
+
 
 simple_page = Blueprint('root_pages',
                         __name__,
@@ -202,6 +206,7 @@ def add_session_message(session, message):
 def test_ack_message(message):
     user_message = int(message['message_id'])
     if 'messages' in session:
+        print(session['messages'])
         if user_message == -1:
             for x in session['messages']:
                 emit('json_response',

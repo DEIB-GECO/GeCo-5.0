@@ -35,11 +35,12 @@ class ProjectMetaAction(AbstractAction):
                 self.status['new_name']=message
             else:
                 self.status['new_name']=self.status['change_meta']
-            self.context.workflow.add_gmql('project_metadata',{'Dataset':self.context.data_extraction.datasets[-1],'New':{self.status['new_name']:"{}{}{}".format(self.status['change_meta'],self.status['operation'],self.status['value'])}})
+            change_dict = {self.status['new_name']: self.status['change_meta']+self.status['operation']+str(self.status['value'])}
+            self.context.workflow.add(ProjectMetadata(self.context.workflow[-1],change_dict=change_dict))
             return None, False
 
         self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
-        return GMQLUnaryAction(self.context), False
+        return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 
 class ProjectRegionAction(AbstractAction):
 
@@ -78,10 +79,9 @@ class ProjectRegionAction(AbstractAction):
                 self.status['new_name'] = message
             else:
                 self.status['new_name'] = self.status['change_region']
-            self.context.workflow.add_gmql('project_regions', {'Dataset': self.context.data_extraction.datasets[-1],
-                                                                'New': {self.status['new_name']: "{}{}{}".format(
-                                                                    self.status['change_region'],
-                                                                    self.status['operation'], self.status['value'])}})
+            change_dict = {self.status['new_name']: self.status['change_region'] + self.status['operation'] + str(
+                self.status['value'])}
+            self.context.workflow.add(ProjectRegion(self.context.workflow[-1], change_dict=change_dict))
             self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
-            return GMQLUnaryAction(self.context), False
+            return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 

@@ -10,13 +10,13 @@ class DifferenceAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         names = {}
-        for i in range(len(self.status['dataset_list'])):
+        for i in range(len(self.context.data_extraction.datasets)):
             names["DS_" + str(i)] = self.status['dataset_list'][i].name
 
         if intent != "deny":
             name = message.strip()
         else:
-            name = "DS_" + str(len(self.status['dataset_list']) + 1)
+            name = "DS_" + str(len(self.context.data_extraction.datasets) + 1)
         names['Difference'] = name
 
         self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),

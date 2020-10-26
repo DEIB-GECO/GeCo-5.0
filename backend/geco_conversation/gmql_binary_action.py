@@ -24,7 +24,7 @@ class GMQLBinaryAction(AbstractAction):
             next_node = DifferenceAction(self.context)
         elif intent == 'map':
             self.context.add_bot_msg([Utils.chat_message("Which aggregate function do you want?")])
-            next_node = Map(self.context)
+            next_node = MapAction(self.context)
             bool = False
         else:
             self.context.add_bot_msg([Utils.chat_message("Sorry, I did not get. Which operation do you want to perform?")])

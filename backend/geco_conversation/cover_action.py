@@ -36,17 +36,10 @@ class CoverAction(AbstractAction):
         elif 'groupby' not in self.status:
             if intent!='deny':
                 self.status['groupby'] = message
-                self.context.workflow.add_gmql('cover',
-                                               {'Dataset':self.context.data_extraction.datasets[-1],
-                                                'min':self.status['min'],
-                                                'max':self.status['max'],
-                                                'groupby':self.status['groupby']})
+                self.context.workflow.add(Cover(self.context.workflow[-1],self.status['min'], self.status['max'],self.status['groupby']))
             else:
-                self.context.workflow.add_gmql('cover',
-                                               {'Dataset': self.context.data_extraction.datasets[-1],
-                                                'min': self.status['min'],
-                                                'max': self.status['max']})
+                self.context.workflow.add_gmql(Cover(self.context.workflow[-1],self.status['min'], self.status['max']))
             self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
-            return GMQLUnaryAction(self.context), False
+            return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 
 

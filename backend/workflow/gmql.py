@@ -1,5 +1,5 @@
 from workflow.workflow_class import UnaryOperation, BinaryOperation
-from aggregates import Aggregate
+from workflow.aggregates import Aggregate
 
 class Select(UnaryOperation):
     pass
@@ -17,8 +17,10 @@ class ProjectRegion(UnaryOperation):
         self.keep = keep_list
 
 class Cover(UnaryOperation):
-    def __init__(self, op, groupby=None, aggregate=Aggregate.COUNT, name_agg=None):
+    def __init__(self, op, min='ANY', max='ANY' ,groupby=None, aggregate=Aggregate.COUNT, name_agg=None):
         super().__init__(op)
+        self.min = min
+        self.max = max
         self.groupby = groupby
         self.aggregate = aggregate
         self.name_agg = name_agg

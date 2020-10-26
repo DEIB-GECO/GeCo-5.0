@@ -1,12 +1,6 @@
-from abc import ABC, abstractmethod
-
-class ExecutorLogic():
+class ExecutorLogic:
     def __init__(self, workflow):
         self.workflow = workflow
-
-    @abstractmethod
-    def logic(self):
-        pass
 
     def run(self):
         gmql_operation = ['Select', 'ProjectMetadata', 'ProjectRegion', 'Cover', 'Join', 'Union', 'Map', 'Difference']
@@ -25,6 +19,7 @@ class ExecutorLogic():
             GMQL_Logic(self.workflow, gmql_ops)
         if pivot_ops!=[]:
             Pivot_Logic(self.workflow, pivot_ops)
+
 
 #TOMMASO
 class GMQL_Logic:

@@ -10,10 +10,24 @@ class JoinAction(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
+        if intent != 'deny':
+            self.status['joinby'] = message
+            self.context.workflow.add(
+                                           {'Dataset': self.context.data_extraction.datasets[-1],
+                                            'min': self.status['min'],
+                                            'max': self.status['max'],
+                                            'groupby': self.status['groupby']})
+        else:
+            self.context.workflow.add_gmql('cover',
+                                           {'Dataset': self.context.data_extraction.datasets[-1],
+                                            'min': self.status['min'],
+                                            'max': self.status['max']})
+        self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
+        return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 
         names = {}
-        for i in range(len(self.status['dataset_list'])):
-            names["DS_" + str(i)] = self.status['dataset_list'][i].name
+        for i in range(len(self.context.data_extraction.datasets)):
+            names["DS_" + str(i)] = self.context.data_extraction.datasets[i].name
 
         if intent != "deny":
             msg =  [Utils.chat_message(messages.assign_name)]
