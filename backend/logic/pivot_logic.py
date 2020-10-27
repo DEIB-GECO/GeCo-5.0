@@ -1,7 +1,8 @@
 
 class PivotLogic:
-    def __init__(self, workflow):
-        self.workflow = workflow
+    def __init__(self, op):
+        self.op = op
+
 
     def run(self):
         pivot_operation = ['Pivot', 'JoinPivot', 'ConcatenatePivot']
@@ -12,5 +13,3 @@ class PivotLogic:
                 o.result = res
                 o.executed = True
 
-    def pivot(self):
-        pass

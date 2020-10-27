@@ -1,7 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from abc import ABC
-import matplotlib as mpl
+import importlib
+from logic.select_test_logic import SelectLogic
 
 class UnaryOperation(ABC):
     def __init__(self, op):
@@ -20,28 +21,129 @@ class Workflow(list):
 
     def add(self, operation):
         self.append(operation)
+        #self.draw_workflow()
+        #self.visualize()
+
+    def run(self, last_op):
+        if last_op.executed == True:
+            return
+        elif last_op.__class__.__name__ == 'Select':
+            SelectLogic(last_op)
+        else:
+            package = importlib.import_module('logic')
+            logic_class = getattr(package, last_op.__class__.__name__ + 'Logic')
+            if hasattr(last_op, 'depends_on_2'):
+                if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:
+                    self.run(last_op.depends_on_2)
+                elif last_op.depends_on.executed == False and last_op.depends_on_2.executed == True:
+                    self.run(last_op.depends_on)
+                else:
+                    self.run(last_op.depends_on)
+                    self.run(last_op.depends_on_2)
+            else:
+                if last_op.depends_on.executed == False:
+                    self.run(last_op.depends_on)
+            logic_class(last_op)
         self.draw_workflow()
         self.visualize()
 
-    def run(self):
-        gmql_operation = ['Select', 'ProjectMetadata', 'ProjectRegion', 'Cover', 'Join', 'Union', 'Map', 'Difference']
-        pivot_operation = ['Pivot', 'JoinPivot', 'ConcatenatePivot']
-        gmql_ops = []
-        pivot_ops = []
-        for i in range(len(self.workflow), 0):
-            elem = self.workflow[i]
-            if elem.executed == True:
-                break
-            elif elem.__class__.__name__ in gmql_operation:
-                gmql_ops.append(elem)
-            elif elem.__class__.__name__ in pivot_operation:
-                pivot_ops.append(elem)
-        if gmql_ops != []:
-            GMQL_Logic(self.workflow, gmql_ops)
-        if pivot_ops != []:
-            Pivot_Logic(self.workflow, pivot_ops)
-        #run logic
-        pass
+
+    # def run(self, last_op):
+    #     if last_op.executed == True:
+    #         return
+    #     elif last_op.__class__.__name__ == 'Select':
+    #         SelectLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'ProjectMetadata':
+    #         if last_op.depends_on.executed == False:
+    #             self.run(last_op.depends_on)
+    #         ProjectMetadataLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'ProjectRegion':
+    #         if last_op.depends_on.executed == False:
+    #             self.run(last_op.depends_on)
+    #         ProjectRegionLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'Cover':
+    #         if last_op.depends_on.executed == False:
+    #             self.run(last_op.depends_on)
+    #         CoverLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'Join':
+    #         if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:
+    #             self.run(last_op.depends_on_2)
+    #         elif last_op.depends_on.executed == False and last_op.depends_on_2.executed == True:
+    #             self.run(last_op.depends_on)
+    #         else:
+    #             self.run(last_op.depends_on)
+    #             self.run(last_op.depends_on_2)
+    #         JoinLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'Map':
+    #         if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:
+    #             self.run(last_op.depends_on_2)
+    #         elif last_op.depends_on.executed == False and last_op.depends_on_2.executed == True:
+    #             self.run(last_op.depends_on)
+    #         else:
+    #             self.run(last_op.depends_on)
+    #             self.run(last_op.depends_on_2)
+    #         MapLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'Union':
+    #         if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:
+    #             self.run(last_op.depends_on_2)
+    #         elif last_op.depends_on.executed == False and last_op.depends_on_2.executed == True:
+    #             self.run(last_op.depends_on)
+    #         else:
+    #             self.run(last_op.depends_on)
+    #             self.run(last_op.depends_on_2)
+    #         UnionLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'Difference':
+    #         if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:
+    #             self.run(last_op.depends_on_2)
+    #         elif last_op.depends_on.executed == False and last_op.depends_on_2.executed == True:
+    #             self.run(last_op.depends_on)
+    #         else:
+    #             self.run(last_op.depends_on)
+    #             self.run(last_op.depends_on_2)
+    #         DifferenceLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'Pivot':
+    #         if last_op.depends_on.executed == False:
+    #             self.run(last_op.depends_on)
+    #         PivotLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'JoinPivot':
+    #         if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:
+    #             self.run(last_op.depends_on_2)
+    #         elif last_op.depends_on.executed == False and last_op.depends_on_2.executed == True:
+    #             self.run(last_op.depends_on)
+    #         else:
+    #             self.run(last_op.depends_on)
+    #             self.run(last_op.depends_on_2)
+    #         JoinPivotLogic(last_op)
+    #     elif last_op.__class__.__name__ == 'ConcatenatePivot':
+    #         if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:
+    #             self.run(last_op.depends_on_2)
+    #         elif last_op.depends_on.executed == False and last_op.depends_on_2.executed == True:
+    #             self.run(last_op.depends_on)
+    #         else:
+    #             self.run(last_op.depends_on)
+    #             self.run(last_op.depends_on_2)
+    #         ConcatenatePivotLogic(last_op)
+
+
+    # def run(self):
+    #     gmql_operation = ['Select', 'ProjectMetadata', 'ProjectRegion', 'Cover', 'Join', 'Union', 'Map', 'Difference']
+    #     pivot_operation = ['Pivot', 'JoinPivot', 'ConcatenatePivot']
+    #     gmql_ops = []
+    #     pivot_ops = []
+    #     for i in range(len(self), 0):
+    #         elem = self[i]
+    #         if elem.executed == True:
+    #             break
+    #         elif elem.__class__.__name__ in gmql_operation:
+    #             gmql_ops.append(elem)
+    #         elif elem.__class__.__name__ in pivot_operation:
+    #             pivot_ops.append(elem)
+    #     if gmql_ops != []:
+    #         GMQL_Logic(self, gmql_ops)
+    #     if pivot_ops != []:
+    #         Pivot_Logic(self, pivot_ops)
+    #     #run logic
+    #     pass
 
     def draw_workflow(self):
         graph = nx.DiGraph()
@@ -65,7 +167,6 @@ class Workflow(list):
 
         plt.savefig('workflow.png')
         #plt.show()
-
 
 
     def visualize(self):
