@@ -11,6 +11,8 @@ class CoverAction(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
+        from .gmql_unary_action import GMQLUnaryAction
+        from .gmql_binary_action import GMQLBinaryAction
         if 'min' not in self.status:
             if message.lower()=='any':
                 self.status['min']='ANY'
@@ -38,8 +40,11 @@ class CoverAction(AbstractAction):
                 self.status['groupby'] = message
                 self.context.workflow.add(Cover(self.context.workflow[-1],self.status['min'], self.status['max'],self.status['groupby']))
             else:
-                self.context.workflow.add_gmql(Cover(self.context.workflow[-1],self.status['min'], self.status['max']))
+                self.context.workflow.add(Cover(self.context.workflow[-1],self.status['min'], self.status['max']))
             self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
-            return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
+            if len(self.context.data_extraction.datasets) % 2 == 0:
+                return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
+            else:
+                return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 
 

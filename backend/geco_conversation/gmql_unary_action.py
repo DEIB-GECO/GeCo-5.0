@@ -8,7 +8,7 @@ class GMQLUnaryAction(AbstractAction):
 
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message(messages.gmql_unary))
-        self.context.add_bot_msg(Utils.choice('Unary_operations',{'project_metadata':'project metadata', 'project_region':'project region', 'cover':'cover'}))
+        self.context.add_bot_msg(Utils.choice('Unary_operations',{'Project metadata':'project metadata', 'Project region':'project region', 'Cover':'cover'}))
         return None, False
 
     def logic(self, message, intent, entities):

@@ -31,8 +31,8 @@ class AnnotationAction(AbstractAction):
     def logic(self, message, intent, entities):
         from .confirm import Confirm
         self.context.payload.back = AnnotationAction
-        gcm_filter = {k: v for (k, v) in self.status.items() if k in annotation_fields}
         self.check_status()
+        gcm_filter = {k: v for (k, v) in self.status.items() if k in annotation_fields}
         samples = self.filter(gcm_filter)
 
         missing_fields = self.context.payload.database.fields_names

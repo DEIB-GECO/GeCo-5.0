@@ -11,36 +11,45 @@ class ExperimentAction(AbstractAction):
         node, bool=self.logic(None,None,None)
         return node, bool
 
-    def logic(self, message, intent, entities):
-        from .confirm import Confirm
-        #from .field_action import FieldAction
-
-        self.context.payload.back = ExperimentAction
-
+    def is_healthy(self):
         if 'is_healthy' in self.status:
             if self.status['is_healthy']== ['healthy']:
                 self.context.payload.insert('is_healthy', ['true'])
             if self.status['is_healthy'] == ['tumoral']:
                 self.context.payload.insert('is_healthy', ['false'])
 
+    def check_status(self):
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in experiment_fields:
-                self.context.payload.replace(k, [x for x in v if x in self.context.payload.database.values[k]])
+                self.context.payload.replace(k, [x for x in v if
+                                                 x in self.context.payload.database.values[k]])
                 if len(self.status[k]) == 0:
                     self.context.payload.delete(k)
 
-        gcm_filter = {k:v for (k,v) in self.status.items() if k in experiment_fields}
-
+    def filter(self, gcm_filter):
         if len(gcm_filter) > 0:
             self.context.payload.database.update(gcm_filter)
+
+        samples = self.context.payload.database.check_existance(gcm_filter)
+
+        return samples
+
+    def logic(self, message, intent, entities):
+        from .confirm import Confirm
+        #from .field_action import FieldAction
+
+        self.context.payload.back = ExperimentAction
+        self.is_healthy()
+        self.check_status()
+        gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
+        samples = self.filter(gcm_filter)
+
         #Find fields that are not already selected by the user
         #missing_fields = list(set(self.context.payload.database.fields_names).difference(set(self.status.keys())))
         missing_fields = self.context.payload.database.fields_names
-
         fields = {k: v for (k, v) in self.status.items() if k in experiment_fields}
 
-        samples = self.context.payload.database.check_existance(fields)
 
         if samples > 0:
             if message is None:

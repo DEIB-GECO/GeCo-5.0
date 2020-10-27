@@ -185,7 +185,7 @@ export default class GecoAgent extends Vue {
     }
     // this.updateLastMessageId(data.message_id);
     this.lastMessageId = data.message_id;
-    socket.emit('ack', { message_id: this.lastMessageId });
+    //socket.emit('ack', { message_id: this.lastMessageId });
     // @ts-ignore
     this.jsonResponseParsingFunctions[data.type](data.payload);
   }

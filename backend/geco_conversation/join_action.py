@@ -12,42 +12,40 @@ class JoinAction(AbstractAction):
     def logic(self, message, intent, entities):
         if intent != 'deny':
             self.status['joinby'] = message
-            self.context.workflow.add(
-                                           {'Dataset': self.context.data_extraction.datasets[-1],
-                                            'min': self.status['min'],
-                                            'max': self.status['max'],
-                                            'groupby': self.status['groupby']})
+            for i in range(len(self.context.workflow), 0):
+                if self.context.workflow[i].__class__.__name__ == 'Select':
+                    depends_on_2 = self.context.workflow[i - 1]
+                    break
+            self.context.workflow.add(Join(self.context.workflow[-1], depends_on_2, joinby=self.status['joinby']))
         else:
-            self.context.workflow.add_gmql('cover',
-                                           {'Dataset': self.context.data_extraction.datasets[-1],
-                                            'min': self.status['min'],
-                                            'max': self.status['max']})
+            for i in range(len(self.context.workflow), 0):
+                if self.context.workflow[i].__class__.__name__ == 'Select':
+                    depends_on_2 = self.context.workflow[i - 1]
+                    break
+            self.context.workflow.add(Join(self.context.workflow[-1], depends_on_2, joinby=self.status['joinby']))
+        # names = {}
+        # for i in range(len(self.context.data_extraction.datasets)):
+        #     names["DS_" + str(i)] = self.context.data_extraction.datasets[i].name
+        #
+        # if intent != "deny":
+        #     name = message.strip()
+        # else:
+        #     name = "DS_" + str(len(self.context.data_extraction.datasets) + 1)
+        # names['Join'] = name
+
         self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
         return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 
-        names = {}
-        for i in range(len(self.context.data_extraction.datasets)):
-            names["DS_" + str(i)] = self.context.data_extraction.datasets[i].name
-
-        if intent != "deny":
-            msg =  [Utils.chat_message(messages.assign_name)]
-        else:
-            msg = [Utils.chat_message('Ok, I will do the cartesian product of all the samples.'),
-                   Utils.chat_message(messages.assign_name),
-                   Utils.param_list(names)]
-
-
-        return msg, None, {}
 
     # def set_name_logic(self, message, intent, entities):
     #     names = {}
-    #     for i in range(len(self.status['dataset_list'])):
-    #         names["DS_"+str(i)] = self.status['dataset_list'][i].name
+    #     for i in range(len(self.context.data_extraction.datasets)):
+    #         names["DS_"+str(i)] = self.context.data_extraction.datasets[i].name
     #
     #     if intent != "deny":
     #         name = message.strip()
     #     else:
-    #         name = "DS_" + str(len(self.status['dataset_list']) +1 )
+    #         name = "DS_" + str(len(self.context.data_extraction.datasets) +1 )
     #
     #     names['Join'] = name
     #

@@ -11,6 +11,8 @@ class ProjectMetaAction(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
+        from .gmql_unary_action import GMQLUnaryAction
+        from .gmql_binary_action import GMQLBinaryAction
         if 'change_meta' not in self.status:
             self.status['change_meta'] = message
             self.context.add_bot_msgs([Utils.chat_message('Which operation do you want to do?'), Utils.choice('Operators',{'sum':'+','difference':'-','product':'*','division':'/'})])
@@ -37,10 +39,12 @@ class ProjectMetaAction(AbstractAction):
                 self.status['new_name']=self.status['change_meta']
             change_dict = {self.status['new_name']: self.status['change_meta']+self.status['operation']+str(self.status['value'])}
             self.context.workflow.add(ProjectMetadata(self.context.workflow[-1],change_dict=change_dict))
-            return None, False
 
-        self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
-        return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
+            self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
+            if len(self.context.data_extraction.datasets) % 2 == 0:
+                return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
+            else:
+                return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 
 class ProjectRegionAction(AbstractAction):
 
@@ -51,6 +55,8 @@ class ProjectRegionAction(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
+        from .gmql_unary_action import GMQLUnaryAction
+        from .gmql_binary_action import GMQLBinaryAction
         if 'change_region' not in self.status:
             self.status['change_region'] = message
             self.context.add_bot_msgs([Utils.chat_message('Which operation do you want to do?'),
@@ -83,5 +89,8 @@ class ProjectRegionAction(AbstractAction):
                 self.status['value'])}
             self.context.workflow.add(ProjectRegion(self.context.workflow[-1], change_dict=change_dict))
             self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
-            return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
+            if len(self.context.data_extraction.datasets) % 2 == 0:
+                return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
+            else:
+                return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 

@@ -42,16 +42,7 @@ class FieldAction(AbstractAction):
          available_fields = annotation_fields
         elif self.context.payload.back == ExperimentAction:
          available_fields = experiment_fields
-        #
-        # temp = self.status.copy()
-        # for (k, v) in temp.items():
-        #     if k in available_fields:
-        #         self.context.payload.replace(k, [x for x in v if
-        #                                          x in self.context.payload.database.values[k]])
-        #         if len(self.status[k]) == 0:
-        #             self.context.payload.delete(k)
-        #     else:
-        #         self.context.payload.delete(k)
+
         gcm_filter = {k: v for (k, v) in self.status.items() if k in annotation_fields}
         self.check_status()
         samples = self.filter(gcm_filter)

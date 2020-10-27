@@ -8,22 +8,26 @@ class GMQLBinaryAction(AbstractAction):
         return [Utils.chat_message(messages.binary_help)]
 
     def on_enter(self):
-        pass
+        self.context.add_bot_msgs(
+            [Utils.chat_message(messages.gmql_binary),
+             Utils.choice('Binary_operations',{'Join':'join', 'Union':'union', 'Difference':'difference', 'Map':'map'})])
+        return None, False
+
 
     def logic(self, message, intent, entities):
         bool = True
         if intent == 'join':
-            self.context.add_bot_msg([Utils.chat_message("Do you want to add a metadatum for the joinby?\n If so, which one?")])
+            self.context.add_bot_msgs([Utils.chat_message("Do you want to add a metadatum for the joinby?\n If so, which one?")])
             next_node = JoinAction(self.context)
             bool = False
         elif intent == 'union':
-            self.context.add_bot_msg([Utils.chat_message("Ok. I will do the union of the two datasets")])
+            self.context.add_bot_msgs([Utils.chat_message("Ok. I will do the union of the two datasets")])
             next_node = UnionAction(self.context)
         elif intent == 'difference':
-            self.context.add_bot_msg([Utils.chat_message("Ok. I will do the difference of the two datasets")])
+            self.context.add_bot_msgs([Utils.chat_message("Ok. I will do the difference of the two datasets")])
             next_node = DifferenceAction(self.context)
         elif intent == 'map':
-            self.context.add_bot_msg([Utils.chat_message("Which aggregate function do you want?")])
+            self.context.add_bot_msgs([Utils.chat_message("Which aggregate function do you want?")])
             next_node = MapAction(self.context)
             bool = False
         else:

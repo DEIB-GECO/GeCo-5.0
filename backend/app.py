@@ -14,7 +14,7 @@ from data_structure.context import Context
 
 from engineio.payload import Payload
 
-Payload.max_decode_packets = 500
+Payload.max_decode_packets = 10000
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
@@ -93,17 +93,12 @@ class ConversationDBExplore(object):
 
     def run(self, message, intent, entities):
         next_state, enter = self.context.top_action().run(message, intent, entities)
-        print('NEXT')
-        print(next_state)
-        print(self.context.top_action())
         if next_state is not None:
             self.context.add_step(action=next_state)
-            print(self.context.top_action())
             if enter:
                 self.enter()
         else:
             self.context.add_step(action=self.context.top_action())
-        print(self.context.top_action())
 
 
     def receive(self, message):
@@ -163,15 +158,6 @@ def test_message(message):
 
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload']['text'])
-    # else:
-    #     for msg in session['context'].history[-3].bot_msgs:
-    #         id = add_session_message(session, msg)
-    #         msg['message_id'] = id
-    #         emit('json_response', msg)
-    #
-    #         if msg['type'] == 'message':
-    #             data[request.sid].append(msg['payload']['text'])
-
    # with open("logger.json", "w") as file:
        # json.dump(data, file)
 
@@ -205,8 +191,8 @@ def add_session_message(session, message):
 @socketio.on('ack', namespace='/test')
 def test_ack_message(message):
     user_message = int(message['message_id'])
+    print(user_message)
     if 'messages' in session:
-        print(session['messages'])
         if user_message == -1:
             for x in session['messages']:
                 emit('json_response',

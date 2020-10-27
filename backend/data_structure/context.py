@@ -30,7 +30,7 @@ class Payload:
     def __init__(self, context, db):
         self.context = context
         self.status = {}
-        self.all_database = db
+        self.original_db = db
 
     def insert(self, key, value):
         if isinstance(value, list) or isinstance(value, dict):

@@ -24,13 +24,28 @@ class Workflow(list):
         self.visualize()
 
     def run(self):
+        gmql_operation = ['Select', 'ProjectMetadata', 'ProjectRegion', 'Cover', 'Join', 'Union', 'Map', 'Difference']
+        pivot_operation = ['Pivot', 'JoinPivot', 'ConcatenatePivot']
+        gmql_ops = []
+        pivot_ops = []
+        for i in range(len(self.workflow), 0):
+            elem = self.workflow[i]
+            if elem.executed == True:
+                break
+            elif elem.__class__.__name__ in gmql_operation:
+                gmql_ops.append(elem)
+            elif elem.__class__.__name__ in pivot_operation:
+                pivot_ops.append(elem)
+        if gmql_ops != []:
+            GMQL_Logic(self.workflow, gmql_ops)
+        if pivot_ops != []:
+            Pivot_Logic(self.workflow, pivot_ops)
         #run logic
         pass
 
     def draw_workflow(self):
         graph = nx.DiGraph()
 
-        list_op=[]
         for i in range(len(self)):
             if self[i].__class__.__name__=='Select':
                 graph.add_node(self[i].depends_on)
@@ -41,37 +56,33 @@ class Workflow(list):
 
         nodes= list(graph.nodes)
         mapping = {nodes[i]: nodes[i].__class__.__name__+str(i) for i in range(len(nodes))}
-        #graph = nx.relabel_nodes(graph, mapping)
-        pos = nx.layout.spring_layout(graph)
-        options = {"node_size": 500, "alpha": 0.8, "node_shape": 'd', 'label':graph.nodes}
-        node_sizes = [3 + 10 * i for i in range(len(graph))]
-        M = graph.number_of_edges()
+        graph = nx.relabel_nodes(graph, mapping)
 
-        nx.draw_networkx_nodes(graph, pos, node_color="none", **options)
-        edges = nx.draw_networkx_edges(graph, pos, node_size=node_sizes, arrowstyle="->", arrowsize=10, edge_color='skyblue',width=2)
-        nx.draw_networkx_labels(graph, pos, labels=mapping, font_size=16)
-        #nx.draw(graph, with_labels=True, node_shape="s", node_color="none",bbox=dict(facecolor="skyblue", edgecolor='black', boxstyle='round,pad=0.2'))
+        #nx.draw_networkx_nodes(graph, pos, node_color="none", **options)
+        #edges = nx.draw_networkx_edges(graph, pos, node_size=node_sizes, arrowstyle="->", arrowsize=10, edge_color='skyblue',width=2)
+        #nx.draw_networkx_labels(graph, pos, labels=mapping, font_size=16)
+        nx.draw(graph, with_labels=True, node_shape="s", node_color="none",bbox=dict(facecolor="skyblue", edgecolor='black', boxstyle='round,pad=0.2'))
 
-        ax = plt.gca()
-        ax.set_axis_off()
-        plt.show()
+        plt.savefig('workflow.png')
+        #plt.show()
 
 
 
     def visualize(self):
-        for i in range(len(self)):
-            name = self[i].__class__.__name__
-            print(i)
-            print(name)
-            print('--parameters--')
-            for x,v in self[i].__dict__.items():
-                if (x=='depends_on') or (x=='depends_on_2'):
-                    print(x+':'+str(v.__class__.__name__))
-                    if str(v.__class__.__name__)=='DataSet':
-                        for q,w in v.__dict__.items():
-                            print(q+':'+str(w))
-                else:
-                    print(x+':'+str(v))
-            print('-------')
+        with open('workflow.txt', 'w') as file:
+            for i in range(len(self)):
+                name = self[i].__class__.__name__
+                file.write(str(i)+'\n')
+                file.write(name+'\n')
+                file.write('--parameters--\n')
+                for x,v in self[i].__dict__.items():
+                    if (x=='depends_on') or (x=='depends_on_2'):
+                        file.write(x+':'+str(v.__class__.__name__)+'\n')
+                        if str(v.__class__.__name__)=='DataSet':
+                            for q,w in v.__dict__.items():
+                                file.write(q+':'+str(w)+'\n')
+                    else:
+                        file.write(x+':'+str(v)+'\n')
+                file.write('-------'+'\n')
 
 

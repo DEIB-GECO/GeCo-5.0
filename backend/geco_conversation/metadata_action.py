@@ -2,38 +2,25 @@ import re
 import statistics
 from geco_conversation import *
 
-class FilterMetadata(AbstractAction):
-
-    def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_help)]
-
-    def on_enter(self):
-        node, bool = self.logic(None, None,None)
-        return node, bool
-
-    def logic(self, message, intent, entities):
-        from .confirm import Confirm
-        self.context.payload.update('fields',{'metadata': {}})
-        gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
-
-        keys = self.context.payload.database.find_all_keys(gcm_filter)
-        self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
-        list_param = {k:self.status['fields'][k] for k in self.status['fields'] if k!='metadata'}
-        if len(self.status['available_keys']) >= 1:
-            self.context.add_bot_msgs([Utils.chat_message(messages.metadata_filter), Utils.param_list(list_param)])
-            return MetadataAction(self.context), False
-        else:
-            self.context.payload.back = MetadataAction
-            return Confirm(self.context), True
-
-
 class MetadataAction(AbstractAction):
 
     def help_message(self):
         return [Utils.chat_message(helpMessages.metadata_help)]
 
     def on_enter(self):
-        pass
+        from .confirm import Confirm
+        self.context.payload.update('fields', {'metadata': {}})
+        gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
+
+        keys = self.context.payload.database.find_all_keys(gcm_filter)
+        self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
+        list_param = {k: self.status['fields'][k] for k in self.status['fields'] if k != 'metadata'}
+        if len(self.status['available_keys']) >= 1:
+            self.context.add_bot_msgs([Utils.chat_message(messages.metadata_filter), Utils.param_list(list_param)])
+            return None, False
+        else:
+            self.context.payload.back = MetadataAction
+            return Confirm(self.context), True
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm
@@ -47,7 +34,7 @@ class MetadataAction(AbstractAction):
 
             if len(self.status['available_keys']) > 1:
                 self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_choice),
-                        Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
+                        Utils.choice('Available metadatum', self.status['available_keys'], show_search=True,show_help=True,
                                      helpIconContent=helpMessages.fields_help),
                         Utils.param_list(list_param)])
                 return KeyAction(self.context), False
@@ -56,7 +43,7 @@ class MetadataAction(AbstractAction):
                 if number == False:
                     list_values = {x['value']: x['value'] for x in values}
                     self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_value),
-                            Utils.choice('Available values', list_values, show_help=True,
+                            Utils.choice('Available values', list_values, show_search=True,show_help=True,
                                          helpIconContent=helpMessages.fields_help),
                             Utils.param_list(list_param)])
                     return StringValueAction(self.context), False
@@ -92,7 +79,7 @@ class MetadataAction(AbstractAction):
                     list_param = {x: x for x in self.status['available_values']}
 
                     self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_value),
-                                               Utils.choice('Available values', list_param, show_help=True,
+                                               Utils.choice('Available values', list_param, show_search=True,show_help=True,
                                                             helpIconContent=helpMessages.fields_help),
                                                Utils.param_list(list_param_chosen)])
                     return StringValueAction(self.context), False
@@ -141,7 +128,7 @@ class KeyAction(AbstractAction):
                 list_param = {x: x for x in self.status['available_values']}
 
                 self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_value),
-                        Utils.choice('Available values', list_param, show_help=True, helpIconContent=helpMessages.fields_help),
+                        Utils.choice('Available values', list_param, show_search=True,show_help=True, helpIconContent=helpMessages.fields_help),
                         Utils.param_list(list_param_chosen)])
                 return StringValueAction(self.context), False
             else:
@@ -151,7 +138,6 @@ class KeyAction(AbstractAction):
                     maximum = max(numeric_values)
                     average = statistics.mean(numeric_values)
                     list_param = {'min: {}'.format(minimum):minimum, 'max: {}'.format(maximum):maximum, 'mean: {}'.format(average):average}
-
                     self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_range), Utils.hist(numeric_values, self.status['key'][0]),
                                                Utils.choice('Ranges', list_param, show_help=True, helpIconContent=helpMessages.fields_help), Utils.param_list(self.status['fields'])])
                     return RangeValueAction(self.context), False
@@ -224,15 +210,21 @@ class RangeValueAction(AbstractAction):
         for l in high:
             if l in v:
                 res = re.search(r'{0}\s*(\d+)'.format(re.escape(l)), message)
+                print(res.groups())
+                print(res.group(0))
+                print(res.group(1))
                 value_high = int(res.group(1))
                 break
 
         for h in low:
             if h in v:
                 res = re.search(r'{0}\s*(\d+)'.format(re.escape(h)), message)
+                print(res)
+                print(res.groups())
+                print(res.group(0))
+                print(res.group(1))
                 value_low = int(res.group(1))
                 break
-
         numeric_values = [int(i) for i in self.status['available_values'] if i!=None]
         for v in numeric_values:
             if (v>value_low) and (v<value_high):
@@ -246,12 +238,12 @@ class RangeValueAction(AbstractAction):
 
         if len(self.status['fields']['metadata'][self.status['key'][0]])>0:
             self.context.add_bot_msgs([Utils.chat_message("Ok!"),Utils.chat_message(messages.other_metadata),
-                    Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
+                    Utils.choice('Available metadatum', self.status['available_keys'], show_search=True,show_help=True,
                                  helpIconContent=helpMessages.fields_help),
                     Utils.param_list(list_param), Utils.hist(numeric_values, self.status['key'][0])])
             return MetadataAction(self.context), False
         else:
             self.context.add_bot_msgs([Utils.chat_message(messages.no_metadata_range),
-                                       Utils.chat_message(messages.other_metadata), Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
+                                       Utils.chat_message(messages.other_metadata), Utils.choice('Available metadatum', self.status['available_keys'], show_search=True,show_help=True,
                                                                                                                     helpIconContent=helpMessages.fields_help)])
             return MetadataAction(self.context), False
