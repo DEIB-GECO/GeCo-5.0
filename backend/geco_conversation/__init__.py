@@ -9,6 +9,7 @@ from .start_action import StartAction
 from .value_action import ValueAction
 from .metadata_action import MetadataAction
 from .yes_no_action import YesNoAction
+from .pivot_action import PivotAction
 from .new_dataset import NewDataset
 from .join_action import JoinAction
 from .project import ProjectMetaAction, ProjectRegionAction

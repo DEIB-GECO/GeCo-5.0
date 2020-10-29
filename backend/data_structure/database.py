@@ -201,3 +201,33 @@ class DB:
 
         val = [i[0] for i in links]
         return val
+
+    def retrieve_metadata(self, gcm, filter2):
+        query = self.query_field(gcm)
+        if filter2 != {}:
+            query2 = self.query_key(filter2)
+            res = db.engine.execute(
+                "select * from dw.unified_pair_gecoagent where (item_id in (select item_id from dw.flatten_gecoagent where {})) and ({})".format(
+                    query, query2))
+        else:
+            res = db.engine.execute(
+                "select * from dw.unified_pair_gecoagent where (item_id in (select item_id from dw.flatten_gecoagent where {}))".format(
+                    query))
+        values = res.fetchall()
+        x = pd.DataFrame(values, columns=res.keys())
+        return x
+
+    def retrieve_meta(self,gcm,filter2):
+        query = self.query_field(gcm)
+        if filter2!={}:
+            query2 = self.query_key(filter2)
+            res = db.engine.execute(
+                "select * from dw.unified_pair_gecoagent where (item_id in ({})) and ({})".format(
+                    query, query2))
+        else:
+            res = db.engine.execute(
+                "select * from dw.unified_pair_gecoagent where (item_id in ({}))".format(
+                    query))
+        values = res.fetchall()
+        meta = pd.DataFrame(values, columns=res.keys())
+        return meta

@@ -1,4 +1,4 @@
-from data_structure.datastructures import DataSet
+from data_structure.dataset import DataSet
 from geco_conversation import *
 
 class Confirm(AbstractAction):
@@ -36,6 +36,11 @@ class Confirm(AbstractAction):
                 del(list_param_ds['name'])
                 ds = DataSet(list_param_ds, name)
                 self.context.data_extraction.datasets.append(ds)
+                #fields =  {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata' and x!='name'}
+                #print(fields)
+                #print(self.status['fields']['metadata'])
+                #meta = self.context.payload.database.retrieve_meta(fields,self.status['fields']['metadata'])
+                #ds.add_meta_table(meta)
                 self.context.workflow.add(Select(ds))
                 self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param),Utils.workflow('Data selection', True, urls)])
                 if len(self.context.data_extraction.datasets)%2==0:

@@ -30,7 +30,7 @@ class Workflow(list):
         elif last_op.__class__.__name__ == 'Select':
             SelectLogic(last_op)
         else:
-            package = importlib.import_module('logic')
+            package = importlib.import_module('logic.pivot_logic')
             logic_class = getattr(package, last_op.__class__.__name__ + 'Logic')
             if hasattr(last_op, 'depends_on_2'):
                 if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:

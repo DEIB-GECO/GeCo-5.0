@@ -3,9 +3,8 @@ class Aggregate(Enum):
     COUNT = 0
     BAG = 1
     BAGD = 2
-    SUM = 3
-    AVG = 4
-    MIN = 5
-    MAX = 6
-    MEDIAN = 7
-    STD = 8
+    AVG = 3
+    MIN = 4
+    MAX = 5
+    MEDIAN = 6
+    STD = 7
