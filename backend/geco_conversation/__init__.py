@@ -12,7 +12,7 @@ from .yes_no_action import YesNoAction
 from .pivot_action import PivotAction
 from .new_dataset import NewDataset
 from .join_action import JoinAction
-from .project import ProjectMetaAction, ProjectRegionAction
+from .project_action import ProjectMetaAction, ProjectRegionAction
 from .cover_action import CoverAction
 from .union_action import UnionAction
 from .pivot_action import PivotAction

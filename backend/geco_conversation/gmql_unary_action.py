@@ -14,8 +14,9 @@ class GMQLUnaryAction(AbstractAction):
     def logic(self, message, intent, entities):
         bool = False
         if intent == 'project_metadata':
-            self.context.add_bot_msg(Utils.chat_message("Which metadata do you want to modify?"))
+            self.context.add_bot_msg(Utils.chat_message("Do you want to modify? If so, tell me which one."))
             next_node = ProjectMetaAction(self.context)
+            bool = False
         elif intent == 'project_region':
             self.context.add_bot_msg(Utils.chat_message("Which region data do you want to modify?"))
             next_node = ProjectRegionAction(self.context)
