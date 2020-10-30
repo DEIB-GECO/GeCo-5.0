@@ -13,25 +13,25 @@ class PivotAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         if 'metadata_row' not in self.status and 'region_row' not in self.status:
-            meta_row = Field(message)
+            meta_row = message
             self.context.payload.insert('metadata_row', [meta_row])
             self.context.add_bot_msg(Utils.chat_message(messages.column_region_message))
             return None, False
         elif 'region_column' not in self.status:
-            reg_col = Field(message)
+            reg_col = message
             self.context.payload.insert('region_column', [reg_col])
             self.context.add_bot_msg(Utils.chat_message(messages.value_region_message))
             return None, False
         elif 'region_value' not in self.status:
-            value = Field(message)
+            value = message
             self.context.payload.insert('region_value', [value])
             self.context.add_bot_msg(Utils.chat_message(messages.value_region_message))
             self.context.workflow.add(
                 Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
             self.context.workflow.run(self.context.workflow[-1])
-            self.context.add_bot_msgs([Utils.chat_message('Sorry not implemented yet')])
+            #self.context.add_bot_msgs([Utils.chat_message('Sorry not implemented yet')])
             self.context.payload.clear()
-            return None, False
+            return NewDataset(self.context), True
        # self.context.workflow.add(Pivot(self.context.workflow[-1], meta_column=['gene_symbol'],
          #                               region_row=['biospecimen_aliquot__bcr_sample_barcode'], region_value='rpkm'))
         return None, False

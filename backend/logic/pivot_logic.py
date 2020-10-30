@@ -42,11 +42,11 @@ class PivotLogic:
             row = self.op.region_row
         else:
             row = self.op.meta_row
-
+        print(row)
+        print(col)
         pivot = temp_reg.pivot_table(index=row, columns=col,  values=self.op.value)
         self.op.result = pivot
         self.op.executed = True
         print(pivot)
-        item_id = list(self.ds.meta['item_id'].values).intersection(list(self.ds.region['item_id'].values))
 
 
