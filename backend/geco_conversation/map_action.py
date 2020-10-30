@@ -16,12 +16,15 @@ class MapAction(AbstractAction):
                     depends_on_2 = self.context.workflow[i - 1]
                     break
             self.context.workflow.add(Map(self.context.workflow[-1], depends_on_2, joinby=self.status['joinby']))
+            self.context.add_bot_msgs([Utils.chat_message(messages.rename)])
+            return RR
         else:
             for i in range(len(self.context.workflow), 0):
                 if self.context.workflow[i].__class__.__name__ == 'Select':
                     depends_on_2 = self.context.workflow[i - 1]
                     break
             self.context.workflow.add(Map(self.context.workflow[-1], depends_on_2, joinby=self.status['joinby']))
+            self.context.add_bot_msgs([Utils.chat_message(messages.rename)])
         # names = {}
         # for i in range(len(self.context.data_extraction.datasets)):
         #     names["DS_" + str(i)] = self.context.data_extraction.datasets[i].name
@@ -32,5 +35,5 @@ class MapAction(AbstractAction):
         #     name = "DS_" + str(len(self.context.data_extraction.datasets) + 1)
         # names['Map'] = name
 
-        self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
+        self.context.add_bot_msg(Utils.chat_message(messages.new_gmql_operation))
         return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False

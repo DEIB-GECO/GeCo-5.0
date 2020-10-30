@@ -26,6 +26,6 @@ class DifferenceAction(AbstractAction):
                 break
 
         self.context.workflow.add(Difference(self.context.workflow[-1], depends_on_2))
-        self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),
+        self.context.add_bot_msgs([Utils.chat_message(messages.named.format(name)),
                                    Utils.chat_message(messages.other_dataset), Utils.param_list(names)])
         return YesNoAction(self.context, StartAction(self.context), PivotAction(self.context)), False

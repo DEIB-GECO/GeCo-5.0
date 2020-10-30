@@ -17,7 +17,7 @@ class Confirm(AbstractAction):
         if self.context.payload.back!= MetadataAction:
             if intent == "affirm":
                 self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
-                return Rename(self.context), False
+                return RenameAction(self.context, MetadataAction(self.context)), False
             else:
                 self.context.add_bot_msgs([Utils.chat_message(messages.restart_selection)])
                 return ChangeSelection(self.context), False
@@ -48,26 +48,6 @@ class Confirm(AbstractAction):
                 else:
                     return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 
-class Rename(AbstractAction):
-    def help_message(self):
-        return [Utils.chat_message(helpMessages.rename_help)]
-
-    def on_enter(self):
-        pass
-
-    def logic(self, message, intent, entities):
-        if intent != "deny":
-            name = message.strip()
-        else:
-            name = "DS_" + str(len(self.context.data_extraction.datasets) +1 )
-
-        urls = self.context.payload.database.download(self.status['fields'])
-
-        self.context.payload.update('fields', {'name':name})
-        list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
-        self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),Utils.chat_message(messages.download),
-                Utils.param_list(list_param), Utils.workflow('Data selection', True, urls)])
-        return MetadataAction(self.context), True
 
 class ChangeSelection(AbstractAction):
     def help_message(self):

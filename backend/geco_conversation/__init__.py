@@ -11,6 +11,7 @@ from .metadata_action import MetadataAction
 from .yes_no_action import YesNoAction
 from .pivot_action import PivotAction
 from .new_dataset import NewDataset
+from .rename_action import RenameAction
 from .join_action import JoinAction
 from .project_action import ProjectMetaAction, ProjectRegionAction
 from .cover_action import CoverAction

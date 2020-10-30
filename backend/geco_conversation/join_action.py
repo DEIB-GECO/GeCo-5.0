@@ -33,7 +33,7 @@ class JoinAction(AbstractAction):
         #     name = "DS_" + str(len(self.context.data_extraction.datasets) + 1)
         # names['Join'] = name
 
-        self.context.add_bot_msg(Utils.chat_message('Do you want to do another operation on this dataset?'))
+        self.context.add_bot_msg(Utils.chat_message(messages.new_gmql_operation))
         self.context.payload.clear()
         return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 
