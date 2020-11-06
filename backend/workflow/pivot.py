@@ -1,5 +1,6 @@
 #from data_structure.context import Operation
 from workflow import *
+from data_structure.dataset import Field
 #from workflow.workflow_class import UnaryOperation, BinaryOperation, Workflow
 class Pivot(UnaryOperation):
     def __init__(self, op, region_row=None, region_column= None, metadata_row= None, metadata_column= None, region_value= None):

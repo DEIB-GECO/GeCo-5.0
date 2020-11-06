@@ -20,6 +20,14 @@ class GMQLUnaryAction(AbstractAction):
         elif intent == 'project_region':
             self.context.add_bot_msg(Utils.chat_message(messages.modify_region))
             next_node = ProjectRegionAction(self.context)
+        elif intent == 'keep_metadata':
+            self.payload.insert('back', ProjectMetaAction)
+            self.context.add_bot_msg(Utils.chat_message(messages.modify_region))
+            next_node = KeepAction(self.context)
+        elif intent == 'keep_region':
+            self.payload.insert('back', ProjectRegionAction)
+            self.context.add_bot_msg(Utils.chat_message(messages.modify_region))
+            next_node = KeepAction(self.context)
         elif intent == 'cover':
             self.context.add_bot_msg(Utils.chat_message(messages.cover_message))
             next_node = CoverAction(self.context)

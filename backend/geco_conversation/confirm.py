@@ -1,4 +1,4 @@
-from data_structure.dataset import DataSet
+from data_structure.dataset import Dataset
 from geco_conversation import *
 
 class Confirm(AbstractAction):
@@ -34,7 +34,7 @@ class Confirm(AbstractAction):
                 list_param_ds = list_param.copy()
                 name = list_param['name']
                 del(list_param_ds['name'])
-                ds = DataSet(list_param_ds, name)
+                ds = Dataset(list_param_ds, name)
                 self.context.data_extraction.datasets.append(ds)
                 #fields =  {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata' and x!='name'}
                 #print(fields)

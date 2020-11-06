@@ -1,5 +1,5 @@
 
-from data_structure.dataset import DataSet
+from data_structure.dataset import Dataset
 from .metadata_action import MetadataAction
 from geco_conversation import *
 

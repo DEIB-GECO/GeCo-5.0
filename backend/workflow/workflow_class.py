@@ -45,7 +45,7 @@ class Workflow(list):
                     self.run(last_op.depends_on)
             logic_class(last_op)
         self.draw_workflow()
-        self.visualize()
+        self.write_workflow()
 
 
     # def run(self, last_op):
@@ -125,25 +125,6 @@ class Workflow(list):
     #         ConcatenatePivotLogic(last_op)
 
 
-    # def run(self):
-    #     gmql_operation = ['Select', 'ProjectMetadata', 'ProjectRegion', 'Cover', 'Join', 'Union', 'Map', 'Difference']
-    #     pivot_operation = ['Pivot', 'JoinPivot', 'ConcatenatePivot']
-    #     gmql_ops = []
-    #     pivot_ops = []
-    #     for i in range(len(self), 0):
-    #         elem = self[i]
-    #         if elem.executed == True:
-    #             break
-    #         elif elem.__class__.__name__ in gmql_operation:
-    #             gmql_ops.append(elem)
-    #         elif elem.__class__.__name__ in pivot_operation:
-    #             pivot_ops.append(elem)
-    #     if gmql_ops != []:
-    #         GMQL_Logic(self, gmql_ops)
-    #     if pivot_ops != []:
-    #         Pivot_Logic(self, pivot_ops)
-    #     #run logic
-    #     pass
 
     def draw_workflow(self):
         graph = nx.DiGraph()
@@ -165,11 +146,11 @@ class Workflow(list):
         #nx.draw_networkx_labels(graph, pos, labels=mapping, font_size=16)
         nx.draw(graph, with_labels=True, node_shape="s", node_color="none",bbox=dict(facecolor="skyblue", edgecolor='black', boxstyle='round,pad=0.2'))
 
-        plt.savefig('workflow.png')
+        plt.savefig('workflow1.png')
         #plt.show()
 
 
-    def visualize(self):
+    def write_workflow(self):
         with open('workflow.txt', 'w') as file:
             for i in range(len(self)):
                 name = self[i].__class__.__name__

@@ -6,7 +6,7 @@ class PivotAction(AbstractAction):
         return [Utils.chat_message(messages.union_help)]
 
     def on_enter(self):
-        self.context.workflow.run(self.context.workflow[0])
+        #self.context.workflow.run(self.context.workflow[0])
         self.context.add_bot_msgs([Utils.chat_message(messages.pivot_message)])
         self.context.add_bot_msgs([Utils.chat_message(messages.row_meta_message)])
         return None, False
