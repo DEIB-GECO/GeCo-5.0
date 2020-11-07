@@ -19,3 +19,17 @@ class ArithmeticOperation(Enum):
         return self
 
 
+class LogicalOperation(Enum):
+    LESSTHAN = 0
+    MORETHAN = 1
+    LESSEQUAL = 2
+    MOREEQUAL = 3
+    EQUAL = 4
+
+    def parameter(self, op = None):
+        if isinstance(op,float) or (op==None):
+            self.op = op
+        else:
+            raise TypeError("Value has wrong type.")
+
+        return self

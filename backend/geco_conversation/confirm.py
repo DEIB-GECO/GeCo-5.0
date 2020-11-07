@@ -41,7 +41,10 @@ class Confirm(AbstractAction):
                 #print(self.status['fields']['metadata'])
                 #meta = self.context.payload.database.retrieve_meta(fields,self.status['fields']['metadata'])
                 #ds.add_meta_table(meta)
-                self.context.workflow.add(Select(ds))
+                if len(self.status['metadata'].keys())>0:
+                    self.context.workflow.add(Select(ds, metadata=self.status['metadata']))
+                else:
+                    self.context.workflow.add(Select(ds))
                 self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param),Utils.workflow('Data selection', True, urls)])
                 if len(self.context.data_extraction.datasets)%2==0:
                     return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False

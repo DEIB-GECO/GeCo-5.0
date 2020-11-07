@@ -3,21 +3,21 @@ import statistics
 from geco_conversation import *
 from data_structure.operations import LogicalOperation
 
-class MetadataAction(AbstractAction):
+class RegionAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_help)]
+        return [Utils.chat_message(helpMessages.region_help)]
 
     def on_enter(self):
         from .confirm import Confirm
-        self.context.payload.update('metadata', {})
+        self.context.payload.update('region', {})
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
 
         keys = self.context.payload.database.find_all_keys(gcm_filter)
         self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
         #list_param = {k: self.status['fields'][k] for k in self.status['fields'] if k != 'metadata'}
         if len(self.status['available_keys']) >= 1:
-            self.context.add_bot_msgs([Utils.chat_message(messages.metadata_filter)])#, Utils.param_list(list_param)])
+            self.context.add_bot_msgs([Utils.chat_message(messages.region_filter)])#, Utils.param_list(list_param)])
             return None, False
         else:
             self.context.payload.back = MetadataAction
@@ -35,7 +35,7 @@ class MetadataAction(AbstractAction):
 
             if len(self.status['available_keys']) > 1:
                 self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_choice),
-                        Utils.choice('Available metadatum', self.status['available_keys'], show_search=True,show_help=True,
+                        Utils.choice('Available regions', self.status['available_keys'], show_search=True,show_help=True,
                                      helpIconContent=helpMessages.fields_help),
                         Utils.param_list(list_param)])
                 return KeyAction(self.context), False
@@ -60,21 +60,21 @@ class MetadataAction(AbstractAction):
 
         else:
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k != 'name'}
-            meta_filter = {k: v for (k, v) in self.status['metadata'].items()}
+            meta_filter = {k: v for (k, v) in self.status['regions'].items()}
 
             k = message.lower().strip()
             if k.replace('_', ' ') in self.status['available_keys']:
                 self.context.payload.insert('key',k)
-                meta = self.status['metadata'].copy()
+                meta = self.status['regions'].copy()
                 meta.update({self.status['key'][0]: []})
-                self.context.payload.replace('metadata', meta)
+                self.context.payload.replace('fields', meta)
                 values, number = self.context.payload.database.find_key_values(str(k), gcm_filter, meta_filter)
                 self.context.payload.insert('available_values',[val['value'] for val in values])
 
-                list_param_chosen = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
-                list_param_chosen.update({'metadata': '{}: {}'.format(x, self.status['metadata'][x]) for x in
-                                          self.status['metadata'] if
-                                          self.status['metadata'][x] != []})
+                list_param_chosen = {x: self.status['fields'][x] for x in self.status['fields']}
+                list_param_chosen.update({'regions': '{}: {}'.format(x, self.status['regions'][x]) for x in
+                                          self.status['regions'] if
+                                          self.status['regions'][x] != []})
 
                 if number == False:
                     list_param = {x: x for x in self.status['available_values']}
@@ -103,27 +103,27 @@ class MetadataAction(AbstractAction):
 class KeyAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_key_help)]
+        return [Utils.chat_message(helpMessages.region_key_help)]
 
     def on_enter(self):
         pass
 
     def logic(self, message, intent, entities):
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k != 'name'}
-        meta_filter = {k: v for (k, v) in self.status['metadata'].items()}
+        meta_filter = {k: v for (k, v) in self.status['regions'].items()}
 
         k =  message.lower().strip()
         if k.replace('_', ' ') in self.status['available_keys']:
             self.context.payload.insert('key',k)
-            meta = self.status['metadata'].copy()
+            meta = self.status['regions'].copy()
             meta.update({self.status['key'][0]: []})
-            self.context.payload.replace('metadata',meta)
+            self.context.payload.replace('regions',meta)
             values, number = self.context.payload.database.find_key_values(str(k), gcm_filter, meta_filter)
             self.context.payload.insert('available_values',[val['value'] for val in values])
 
             list_param_chosen = {x: self.status['fields'][x] for x in self.status['fields']}
-            list_param_chosen.update({'metadata': '{}: {}'.format(x, self.status['metadata'][x]) for x in
-                               self.status['metadata'] if self.status['metadata'][x]!=[]})
+            list_param_chosen.update({'regions': '{}: {}'.format(x, self.status['regions'][x]) for x in
+                               self.status['regions'] if self.status['regions'][x]!=[]})
 
             if number==False:
                 list_param = {x: x for x in self.status['available_values']}
@@ -152,7 +152,7 @@ class KeyAction(AbstractAction):
 class StringValueAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_string_help)]
+        return [Utils.chat_message(helpMessages.region_string_help)]
 
     def on_enter(self):
         pass
@@ -163,24 +163,24 @@ class StringValueAction(AbstractAction):
         for v in values:
             v=v.strip()
             if v in self.status['available_values']:
-                val = self.status['metadata'].copy()
+                val = self.status['regions'].copy()
                 val[self.status['key'][0]].append(v)
-                self.context.payload.replace('metadata', val)
+                self.context.payload.replace('regions', val)
             else:
                 not_present.append(v)
-        if len(self.status['metadata'][self.status['key'][0]])==0:
-            self.context.payload.delete('metadata', self.status['metadata'][self.status['key'][0]])
+        if len(self.status['regions'][self.status['key'][0]])==0:
+            self.context.payload.delete('regions', self.status['regions'][self.status['key'][0]])
             #del(self.status['fields']['metadata'][self.status['key']])
         #self.status['fields']['metadata'].update({self.status['selected_key']: self.status[self.status['selected_key']]})
 
         list_param = {x: self.status['fields'][x] for x in self.status['fields']}
-        list_param.update({'metadata': '{}: {}'.format(x, self.status['metadata'][x]) for x in
-                       self.status['metadata']})
+        list_param.update({'regions': '{}: {}'.format(x, self.status['regions'][x]) for x in
+                       self.status['regions']})
 
         if not_present==[]:
             self.context.add_bot_msgs([Utils.chat_message(messages.chosen_values),
-                    Utils.chat_message(messages.other_metadata),
-                    Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
+                    Utils.chat_message(messages.other_region),
+                    Utils.choice('Available region', self.status['available_keys'], show_help=True,
                                  helpIconContent=helpMessages.fields_help),
                     Utils.param_list(list_param)])
             return MetadataAction(self.context), False
@@ -191,13 +191,13 @@ class StringValueAction(AbstractAction):
             self.context.add_bot_msgs([Utils.chat_message("You selected {}, not present in the choices.\nThe other choices are in the bottom right pane.".format(",".join(i for i in not_present))),
                     Utils.choice('Available metadatum', self.status['available_keys'], show_help=True,
                                  helpIconContent=helpMessages.fields_help),
-                    Utils.chat_message(messages.other_metadata)])
+                    Utils.chat_message(messages.other_region)])
             return MetadataAction(self.context), False
 
 class RangeValueAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_range_help)]
+        return [Utils.chat_message(helpMessages.region_range_help)]
 
     def on_enter(self):
         pass
@@ -231,22 +231,22 @@ class RangeValueAction(AbstractAction):
         numeric_values = [int(i) for i in self.status['available_values'] if i!=None]
         for v in numeric_values:
             if (v>value_low) and (v<value_high):
-                val = self.status['metadata'].copy()
+                val = self.status['regions'].copy()
                 val[self.status['key'][0]].append(v)
-                self.context.payload.replace('metadata', val)
+                self.context.payload.replace('regions', val)
                 #self.status['fields']['metadata'][self.status['key']].append(v)
 
         list_param = {x: self.status['fields'][x] for x in self.status['fields']}
-        list_param.update({'metadata': '{}: {}'.format(x, self.status['metadata'][x]) for x in self.status['metadata']})
+        list_param.update({'regions': '{}: {}'.format(x, self.status['regions'][x]) for x in self.status['regions']})
 
-        if len(self.status['metadata'][self.status['key'][0]])>0:
-            self.context.add_bot_msgs([Utils.chat_message("Ok!"),Utils.chat_message(messages.other_metadata),
+        if len(self.status['regions'][self.status['key'][0]])>0:
+            self.context.add_bot_msgs([Utils.chat_message("Ok!"),Utils.chat_message(messages.other_region),
                     Utils.choice('Available metadatum', self.status['available_keys'], show_search=True,show_help=True,
                                  helpIconContent=helpMessages.fields_help),
                     Utils.param_list(list_param), Utils.hist(numeric_values, self.status['key'][0])])
             return MetadataAction(self.context), False
         else:
-            self.context.add_bot_msgs([Utils.chat_message(messages.no_metadata_range),
-                                       Utils.chat_message(messages.other_metadata), Utils.choice('Available metadatum', self.status['available_keys'], show_search=True,show_help=True,
+            self.context.add_bot_msgs([Utils.chat_message(messages.no_region_range),
+                                       Utils.chat_message(messages.other_regin), Utils.choice('Available region', self.status['available_keys'], show_search=True,show_help=True,
                                                                                                                     helpIconContent=helpMessages.fields_help)])
             return MetadataAction(self.context), False
