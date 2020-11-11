@@ -1,10 +1,9 @@
 from enum import Enum
 class Aggregate(Enum):
-    COUNT = 0
-    BAG = 1
-    BAGD = 2
-    AVG = 3
-    MIN = 4
-    MAX = 5
-    MEDIAN = 6
-    STD = 7
+    COUNT = 21
+    BAG = 22
+    AVG = 23
+    MIN = 24
+    MAX = 25
+    MEDIAN = 26
+    STD = 27

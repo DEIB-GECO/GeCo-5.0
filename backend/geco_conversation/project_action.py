@@ -51,6 +51,7 @@ class ProjectMetaAction(AbstractAction):
             self.context.workflow.add(ProjectMetadata(self.context.workflow[-1],change_dict=change_dict))
             self.context.add_bot_msg(Utils.chat_message(messages.new_gmql_operation))
             self.context.payload.clear()
+
             if len(self.context.data_extraction.datasets) % 2 == 0:
                 return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
             else:

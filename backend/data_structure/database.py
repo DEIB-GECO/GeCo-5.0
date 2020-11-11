@@ -30,6 +30,10 @@ class database:
     def get_all_values(self):
         self.fields_names = []
         self.values = {}
+        res = db.engine.execute("select * from dw.flatten_gecoagent")
+        values = res.fetchall()
+        self.table = pd.DataFrame(values, columns=res.keys())
+
         for f in self.fields:
             res = db.engine.execute("select {} from dw.flatten_gecoagent group by {}".format(f,f)).fetchall()
             res = [i[0] for i in res]
@@ -38,14 +42,16 @@ class database:
                 self.values[f]= res
                 setattr(self, (str(f) + '_db'), res)
 
-
-
 class DB:
     def __init__(self, fields, is_ann, all_db):
         self.is_ann = is_ann
         self.is_ann_gcm = 'is_annotation=true' if is_ann else 'is_annotation=false'
         self.fields = fields
         self.db = all_db
+        self.table = self.db.table.copy()
+        print(self.table['is_annotation'])
+        self.table = self.table[self.table['is_annotation']==self.is_ann]
+        print(self.table['is_annotation'])
         self.values = {x:all_db.values[x] for x in fields if len(all_db.values[x])>1}
         self.fields_names = list(self.values.keys())
 
@@ -55,29 +61,21 @@ class DB:
         self.fields_names = []
         for f in self.fields:
             res = getattr(self.db, (str(f) + '_db'))
-            #res = db.engine.execute("select {} from dw.flatten_gecoagent where {} group by {}".format(f,self.is_ann_gcm,f)).fetchall()
-            #res = [i[0] for i in res]
             if res!=[]:
                 self.fields_names.append(f)
                 setattr(self, (str(f) + '_db'), res)
 
     def update(self, gcm):
-        gcm_source = "source in ('tcga','encode','roadmap epigenomics','1000 genomes','refseq')"
         if 'source' not in gcm:
-            filter = ' and '.join(
-                [self.is_ann_gcm] + [gcm_source] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v]))
-                                                    for (k, v) in gcm.items()])
-        else:
-            filter = ' and '.join(
-                [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
-                                     gcm.items()])
+            gcm_source = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
+            gcm['source'] = gcm_source
 
-        self.fields_names = []
         self.all_values = []
         for f in self.fields:
-            val = db.engine.execute("select {} from dw.flatten_gecoagent where {} group by {}".format(f, filter, f)).fetchall()
-            val = [i[0] for i in val]
             values = []
+            if f in gcm:
+                self.table = self.table[self.table[f].isin(gcm[f])]
+            val = list(self.table[f])
             if (val != []) and (len(val) > 1):
                 self.fields_names.append(f)
                 for i in range(len(val)):
@@ -89,41 +87,42 @@ class DB:
 
             if values != []:
                 self.values[f]=values
-                #setattr(self, (str(f) + '_db'), values)
-
 
     def retrieve_values(self, gcm, f):
-        filter = ' and '.join(
-            [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
-                                 gcm.items()])
-        val = db.engine.execute("select {}, count({}) from dw.flatten_gecoagent where {} group by {}".format(f, f, filter, f)).fetchall()
-
-        val = [{"value":i[0],"count":i[1]} for i in val]
-
+        values = list(self.table[f])
+        set_val = list(set(values))
+        val = [{"value": i, "count": values.count(i)} for i in set_val]
         return val
 
     def check_existance(self, gcm):
-        filter = ' and '.join(
-                [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
-                                     gcm.items()])
-        val = db.engine.execute(
-            "select count(*) from dw.flatten_gecoagent where {} ".format(filter)).fetchall()
-
-        if val[0][0]>0:
-            return val[0][0]
+        if 'source' not in gcm:
+            gcm_source = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
+            gcm['source'] = gcm_source
+        for f in gcm:
+            self.table = self.table[self.table[f].isin(gcm[f])]
+        if len(self.table)>0:
+            return len(self.table)
         else:
             print("error")
             return 0
 
     def download(self, gcm):
-        filter = ' and '.join(
-            [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
-                                 gcm.items()])
+        if 'source' not in gcm:
+            gcm_source = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
+            gcm['source'] = gcm_source
 
-        links = db.engine.execute(
-            "select local_url  from dw.flatten_gecoagent where {} group by local_url".format(filter)).fetchall()
-        val = [i[0] for i in links]
-        return val
+        links = list(set(self.table['local_url']))
+        return links
+
+    def go_back(self, gcm):
+        self.table = self.db.table.copy()
+        if 'source' not in gcm:
+            gcm_source = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
+            gcm['source'] = gcm_source
+        for f in gcm:
+            self.table = self.table[self.table[f].isin(gcm[f])]
+
+
 
     def query_field(self, gcm):
         filter = ' and '.join(
@@ -231,3 +230,71 @@ class DB:
         values = res.fetchall()
         meta = pd.DataFrame(values, columns=res.keys())
         return meta
+
+
+    '''
+     def update1(self, gcm):
+        gcm_source = "source in ('tcga','encode','roadmap epigenomics','1000 genomes','refseq')"
+        if 'source' not in gcm:
+            filter = ' and '.join(
+                [self.is_ann_gcm] + [gcm_source] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v]))
+                                                    for (k, v) in gcm.items()])
+        else:
+            filter = ' and '.join(
+                [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
+                                     gcm.items()])
+
+        self.fields_names = []
+        self.all_values = []
+        for f in self.fields:
+            val = db.engine.execute("select {} from dw.flatten_gecoagent where {} group by {}".format(f, filter, f)).fetchall()
+            val = [i[0] for i in val]
+            values = []
+            if (val != []) and (len(val) > 1):
+                self.fields_names.append(f)
+                for i in range(len(val)):
+                    if val[i] != None:
+                        values.append(val[i])
+                        self.all_values.append(val[i])
+            elif len(val) == 1:
+                values = [val[0]]
+
+            if values != []:
+                self.values[f]=values
+                #setattr(self, (str(f) + '_db'), values)
+
+    
+
+    def retrieve_values1(self, gcm, f):
+        filter = ' and '.join(
+            [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
+                                 gcm.items()])
+        val = db.engine.execute("select {}, count({}) from dw.flatten_gecoagent where {} group by {}".format(f, f, filter, f)).fetchall()
+
+        val = [{"value":i[0],"count":i[1]} for i in val]
+
+        return val
+
+    def check_existance1(self, gcm):
+        filter = ' and '.join(
+                [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
+                                     gcm.items()])
+
+        val = db.engine.execute(
+            "select count(*) from dw.flatten_gecoagent where {} ".format(filter)).fetchall()
+
+        if val[0][0]>0:
+            return val[0][0]
+        else:
+            print("error")
+            return 0
+
+    def download1(self, gcm):
+        filter = ' and '.join(
+            [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
+                                 gcm.items()])
+
+        links = db.engine.execute(
+            "select local_url  from dw.flatten_gecoagent where {} group by local_url".format(filter)).fetchall()
+        val = [i[0] for i in links]
+        return val'''
