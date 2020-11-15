@@ -1,6 +1,6 @@
 
 class Utils(object):
-    def chat_message(message):
+    def chat_message(message: str):
         payload = {"sender": "bot",
                    "text": message}
         return {"type" : "message", "payload" : payload}

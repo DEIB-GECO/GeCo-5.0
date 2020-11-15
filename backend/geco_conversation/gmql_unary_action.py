@@ -14,12 +14,13 @@ class GMQLUnaryAction(AbstractAction):
     def logic(self, message, intent, entities):
         bool = False
         if intent == 'project_metadata':
-            self.context.add_bot_msg(Utils.chat_message(messages.modify_metadata))
-            next_node = ProjectMetaAction(self.context)
-            bool = False
+            #self.context.add_bot_msg(Utils.chat_message(messages.modify_metadata))
+            next_node = ProjectKeepMetaAction(self.context)
+            bool = True
         elif intent == 'project_region':
-            self.context.add_bot_msg(Utils.chat_message(messages.modify_region))
-            next_node = ProjectRegionAction(self.context)
+            #self.context.add_bot_msg(Utils.chat_message(messages.modify_region))
+            next_node = ProjectKeepRegionAction(self.context)
+            bool = True
         elif intent == 'keep_metadata':
             self.payload.insert('back', ProjectMetaAction)
             self.context.add_bot_msg(Utils.chat_message(messages.keep_meta))

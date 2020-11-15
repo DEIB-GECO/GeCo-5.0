@@ -1,4 +1,5 @@
 from workflow import Workflow
+import copy
 
 class Delta:
     def insert_value(self, name):
@@ -44,6 +45,7 @@ class Payload:
         if isinstance(old, list):
             self.status[key].append(new_value)
         elif isinstance(old, dict):
+            print(self.status)
             self.status[key].update(new_value)
         self.context.top_delta().update_value(key, old, self.status[key])
 
@@ -61,8 +63,12 @@ class Payload:
             del(self.status[key])
             self.context.top_delta().delete_value(key, value)
         else:
-            old = self.status[key].copy()
-            self.status[key] = old.remove(value)
+            old = self.status[key]
+            if isinstance(old, list):
+                self.status[key] = old.remove(value)
+            elif isinstance(old, dict):
+                self.status[key].pop(value)
+            print(self.status[key])
             self.context.top_delta().update_value(key, old, self.status[key])
 
     def clear(self):

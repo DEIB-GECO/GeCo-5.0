@@ -24,13 +24,14 @@ class Confirm(AbstractAction):
         else:
             if intent == "affirm":
                 fields = self.status['fields'].copy()
-                del(fields['metadata'])
+                if 'metadata' in fields:
+                    del(fields['metadata'])
                 del(fields['name'])
                 #urls = self.context.payload.database.download_filter_meta(fields,self.status['fields']['metadata'])
                 urls = []
                 list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
-                list_param.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
-                                   self.status['fields']['metadata']})
+                list_param.update({'metadata': '{}: {}'.format(x, self.status['metadata'][x]) for x in
+                                   self.status['metadata']})
                 list_param_ds = list_param.copy()
                 name = list_param['name']
                 del(list_param_ds['name'])

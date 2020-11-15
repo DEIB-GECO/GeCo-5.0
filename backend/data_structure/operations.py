@@ -18,6 +18,17 @@ class ArithmeticOperation(Enum):
             raise TypeError("Operator 2 has wrong type.")
         return self
 
+    def get_op1(self):
+        if hasattr(self, 'op1'):
+            return self.op1
+        else:
+            return None
+
+    def get_op2(self):
+        if hasattr(self, 'op2'):
+            return self.op2
+        else:
+            return None
 
 class LogicalOperation(Enum):
     LESSTHAN = 11

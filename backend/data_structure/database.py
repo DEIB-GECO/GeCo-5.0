@@ -49,12 +49,9 @@ class DB:
         self.fields = fields
         self.db = all_db
         self.table = self.db.table.copy()
-        print(self.table['is_annotation'])
         self.table = self.table[self.table['is_annotation']==self.is_ann]
-        print(self.table['is_annotation'])
         self.values = {x:all_db.values[x] for x in fields if len(all_db.values[x])>1}
         self.fields_names = list(self.values.keys())
-
         #self.get_values()
 
     def get_values(self):
@@ -91,6 +88,7 @@ class DB:
     def retrieve_values(self, gcm, f):
         values = list(self.table[f])
         set_val = list(set(values))
+        print([{"value": i, "count": values.count(i)} for i in set_val])
         val = [{"value": i, "count": values.count(i)} for i in set_val]
         return val
 

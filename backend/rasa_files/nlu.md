@@ -105,6 +105,23 @@
 - add metadata
 - modify metadata
 
+## intent:keep_metadata
+- select some metadata
+- choose one metadatum
+- keep some metadata
+- keep a metadatum
+- choose some metadata
+- keep only this metadata
+
+## intent:keep_region
+- select some region
+- choose one region
+- keep some region
+- keep a region datum
+- choose some region data
+- keep a data from region
+- keep only two region data
+
 ## intent:project_region
 - project region data
 - project region
