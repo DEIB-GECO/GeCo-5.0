@@ -164,7 +164,6 @@ class DB:
     def find_all_keys(self, filter, filter2={}):
         item_id = list(self.table['item_id'].values)
         items = ','.join(str(i) for i in item_id)
-        print(items)
 
         #query = self.query_field(filter)
         if filter2!={}:
