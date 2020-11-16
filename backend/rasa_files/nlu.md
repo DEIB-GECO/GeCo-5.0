@@ -104,6 +104,10 @@
 - choose one metadatum
 - add metadata
 - modify metadata
+- modify a metadatum
+- modify meta
+- I want to change a metadatum
+- change meta
 
 ## intent:keep_metadata
 - select some metadata
@@ -2633,6 +2637,7 @@
 - remove from the second datsaset the first one
 
 ## intent:map
+- map
 - map the first dataset into the second
 - map the two dataset
 - I want to do the map

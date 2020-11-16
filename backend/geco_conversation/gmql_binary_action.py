@@ -15,23 +15,26 @@ class GMQLBinaryAction(AbstractAction):
 
 
     def logic(self, message, intent, entities):
+        print(intent)
         bool = True
         if intent == 'join':
+            self.context.add_bot_msg(Utils.workflow('Join'))
             self.context.add_bot_msgs([Utils.chat_message(messages.joinby)])
             next_node = JoinAction(self.context)
             bool = False
         elif intent == 'union':
+            self.context.add_bot_msg(Utils.workflow('Union'))
             self.context.add_bot_msgs([Utils.chat_message(messages.union)])
             next_node = UnionAction(self.context)
         elif intent == 'difference':
+            self.context.add_bot_msg(Utils.workflow('Difference'))
             self.context.add_bot_msgs([Utils.chat_message(messages.difference)])
             next_node = DifferenceAction(self.context)
         elif intent == 'map':
-            self.context.add_bot_msgs([Utils.chat_message(messages.aggregate_fun)])
+            self.context.add_bot_msg(Utils.workflow('Map'))
             next_node = MapAction(self.context)
-            bool = False
         else:
-            self.context.add_bot_msg([Utils.chat_message(messages.not_understood)])
+            self.context.add_bot_msg(Utils.chat_message(messages.not_understood))
             next_node = None
             bool = False
         return next_node, bool

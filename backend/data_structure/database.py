@@ -26,6 +26,7 @@ class database:
     def __init__(self):
         self.fields = ['source', 'data_type', 'assembly', 'file_format', 'biosample_type', 'tissue', 'cell', 'disease', 'is_healthy', 'technique', 'feature', 'target', 'content_type']
         self.get_all_values()
+        #self.find_all_keys()
 
     def get_all_values(self):
         self.fields_names = []
@@ -42,6 +43,12 @@ class database:
                 self.values[f]= res
                 setattr(self, (str(f) + '_db'), res)
 
+    def find_all_keys(self):
+        keys = db.engine.execute(
+                "select item_id, key, value from dw.unified_pair_gecoagent").fetchall()
+        self.metadata = pd.DataFrame(keys, columns=['item_id','key','value'])
+
+
 class DB:
     def __init__(self, fields, is_ann, all_db):
         self.is_ann = is_ann
@@ -49,6 +56,7 @@ class DB:
         self.fields = fields
         self.db = all_db
         self.table = self.db.table.copy()
+        #self.metadata = self.db.metadata.copy()
         self.table = self.table[self.table['is_annotation']==self.is_ann]
         self.values = {x:all_db.values[x] for x in fields if len(all_db.values[x])>1}
         self.fields_names = list(self.values.keys())
@@ -88,7 +96,6 @@ class DB:
     def retrieve_values(self, gcm, f):
         values = list(self.table[f])
         set_val = list(set(values))
-        print([{"value": i, "count": values.count(i)} for i in set_val])
         val = [{"value": i, "count": values.count(i)} for i in set_val]
         return val
 
@@ -142,16 +149,40 @@ class DB:
         return query
 
     # Retrieves all keys based on a user input string
+    def find_all_keys1(self, filter, filter2={}):
+        for f in filter:
+            self.table = self.table[self.table[f].isin(filter[f])]
+        for f in filter2:
+            self.metadata = self.metadata.loc[(self.metadata['key']!=f)|(self.metadata['key']==f & self.metadata['value'].isin(filter2[f]))]
+        item_id = self.table['item_id']
+        self.metadata = self.metadata[self.metadata['item_id'].isin(item_id)]
+        set_keys = list(set(self.metadata['key']))
+        keys = {i: len(self.metadata[self.metadata['key']==i]) for i in set_keys}
+      #  keys = {i[0]:i[1] for i in keys}
+        return keys
+
     def find_all_keys(self, filter, filter2={}):
-        query = self.query_field(filter)
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
+        print(items)
+
+        #query = self.query_field(filter)
         if filter2!={}:
             query2 = self.query_key(filter2)
+            #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(query, query2)).fetchall()
             keys = db.engine.execute(
-                "select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(
-                    query, query2)).fetchall()
+                "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({}) and {}".format(
+                    items, query2)).fetchall()
         else:
-            keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
-        keys = {i[0]:i[1] for i in keys}
+            keys = db.engine.execute(
+                "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(
+                    items)).fetchall()
+            #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
+        #keys = {i[0]:i[1] for i in keys}
+        self.metadata = pd.DataFrame(keys, columns=['item_id', 'key', 'value'])
+        self.metadata = self.metadata[self.metadata['item_id'].isin(item_id)]
+        set_keys = list(set(self.metadata['key']))
+        keys = {i: len(self.metadata[self.metadata['key'] == i]) for i in set_keys}
         return keys
 
     def find_keys(self, filter, string):

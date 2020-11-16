@@ -21,6 +21,7 @@ class Workflow(list):
 
     def add(self, operation):
         self.append(operation)
+
         #self.draw_workflow()
         #self.visualize()
 

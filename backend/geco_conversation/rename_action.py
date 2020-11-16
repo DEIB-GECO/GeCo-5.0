@@ -11,7 +11,8 @@ class RenameAction(AbstractAction):
         return [Utils.chat_message(helpMessages.rename_help)]
 
     def on_enter(self):
-        pass
+        self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
+        return None, False
 
     def logic(self, message, intent, entities):
         if intent != "deny":
@@ -22,6 +23,7 @@ class RenameAction(AbstractAction):
         urls = self.context.payload.database.download(self.status['fields'])
 
         self.context.payload.update('fields', {'name':name})
+        print(self.status['fields'])
         list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
         self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),Utils.chat_message(messages.download),
                 Utils.param_list(list_param), Utils.workflow('Data selection', True, urls)])

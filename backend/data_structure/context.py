@@ -45,8 +45,18 @@ class Payload:
         if isinstance(old, list):
             self.status[key].append(new_value)
         elif isinstance(old, dict):
-            print(self.status)
-            self.status[key].update(new_value)
+            if isinstance(new_value, dict):
+                for k in new_value.keys():
+                    if k in old:
+                        if isinstance(old[k], list):
+                            self.status[key][k].append(new_value[k])
+                        else:
+                            self.status[key][k] = [self.status[key][k]]
+                            self.status[key][k].append(new_value[k])
+                    else:
+                        self.status[key][k] = new_value[k]
+            else:
+                self.status[key].update(new_value)
         self.context.top_delta().update_value(key, old, self.status[key])
 
     def replace(self, key, new):
@@ -143,11 +153,14 @@ class Context:
         self.history[-1].delta = delta
 
     def pop(self):
+        print(self.history[-1])
         del (self.history[-1])
         self.revert()
+        print(self.history[-1])
         action = self.history[-1].action
         del (self.history[-1])
         self.add_step(action=action)
+        print(self.history[-1])
         #self.history[-2].bot_msgs = None
 
     def last_valid_user_msg(self):

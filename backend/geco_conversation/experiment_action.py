@@ -37,7 +37,6 @@ class ExperimentAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm
-        #from .field_action import FieldAction
 
         self.context.payload.back = ExperimentAction
         self.is_healthy()
@@ -66,7 +65,7 @@ class ExperimentAction(AbstractAction):
                     self.context.payload.clear()
                     self.context.payload.insert('fields', fields)
                     self.context.add_bot_msgs([Utils.param_list(fields)])
-                    return Confirm(self.context), True
+                    return RenameAction(self.context, MetadataAction(self.context)), True
         else:
             for x in experiment_fields:
                 if x in self.status:

@@ -47,6 +47,8 @@ class KeepAction(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
+        from .gmql_unary_action import GMQLUnaryAction
+        from .gmql_binary_action import GMQLBinaryAction
         if isinstance(self.status['back'],ProjectMetaAction):
             values = message.lower().strip().split(';')
             values = [Field(x) for x in values]

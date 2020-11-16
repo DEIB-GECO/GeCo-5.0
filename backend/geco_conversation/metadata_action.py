@@ -12,9 +12,10 @@ class MetadataAction(AbstractAction):
         from .confirm import Confirm
         self.context.payload.insert('metadata', {})
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
-        self.status['available_keys'] = [1,2,3]
-        #keys = self.context.payload.database.find_all_keys(gcm_filter)
-        #self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
+        keys = self.context.payload.database.find_all_keys(gcm_filter)
+        print('hola')
+        print(self.status['fields'])
+        self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
         #list_param = {k: self.status['fields'][k] for k in self.status['fields'] if k != 'metadata'}
         if len(self.status['available_keys']) >= 1:
             self.context.add_bot_msgs([Utils.chat_message(messages.metadata_filter)])#, Utils.param_list(list_param)])

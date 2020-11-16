@@ -12,8 +12,6 @@ class ProjectMetaAction(AbstractAction):
 		return None, False
 
 	def logic(self,message, intent, entities):
-		from .gmql_unary_action import GMQLUnaryAction
-		from .gmql_binary_action import GMQLBinaryAction
 		self.context.payload.insert('back', ProjectMetaAction)
 		self.context.payload.insert('project_meta', {'name': Field(message)})
 		if self.context.data_extraction.datasets[-1].meta_schema!=None and message in self.context.data_extraction.datasets[-1].meta_schema:

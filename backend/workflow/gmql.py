@@ -48,10 +48,11 @@ class Join(BinaryOperation):
         self.joinby = joinby
 
 class Map(BinaryOperation):
-    def __init__(self, op1, op2, joinby: Field=None, aggregate=Aggregate.COUNT, name_agg=None):
+    def __init__(self, op1, op2, joinby: list=None, aggregate=Aggregate.COUNT, name_agg=None, other_aggregates: list=None):
         super().__init__(op1, op2)
         # joinby is a list of names of metadata
         self.joinby = joinby
         self.aggregate = aggregate
         self.name_agg = name_agg
+        self.other_agg = other_aggregates
 

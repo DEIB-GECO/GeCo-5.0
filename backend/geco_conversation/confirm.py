@@ -15,12 +15,13 @@ class Confirm(AbstractAction):
 
     def logic(self, message, intent, entities):
         if self.context.payload.back!= MetadataAction:
-            if intent == "affirm":
-                self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
-                return RenameAction(self.context, MetadataAction(self.context)), False
-            else:
-                self.context.add_bot_msgs([Utils.chat_message(messages.restart_selection)])
-                return ChangeSelection(self.context), False
+            return RenameAction(self.context, MetadataAction(self.context)), False
+            #if intent == "affirm":
+            #    self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
+             #   return RenameAction(self.context, MetadataAction(self.context)), False
+            #else:
+             #   self.context.add_bot_msgs([Utils.chat_message(messages.restart_selection)])
+             #   return ChangeSelection(self.context), False
         else:
             if intent == "affirm":
                 fields = self.status['fields'].copy()

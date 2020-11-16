@@ -2,16 +2,17 @@ from geco_utilities.utils import Utils
 from geco_utilities import messages, helpMessages, jokes
 from workflow import *
 from .abstract_action import AbstractAction
+from .metadata_action import MetadataAction
+from .rename_action import RenameAction
 from .field_action import FieldAction
 from .annotation_action import AnnotationAction
 from .experiment_action import ExperimentAction
 from .start_action import StartAction
 from .value_action import ValueAction
-from .metadata_action import MetadataAction
+
 from .yes_no_action import YesNoAction
 from .pivot_action import PivotAction
 from .new_dataset import NewDataset
-from .rename_action import RenameAction
 from .join_action import JoinAction
 from .project_meta import ProjectMetaAction
 from .project_region import ProjectRegionAction
