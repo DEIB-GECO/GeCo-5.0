@@ -4,23 +4,12 @@
       <thead>
         <th>
           Id
-
-          <!-- <font-awesome-icon
-            :icon="isValueCaretDown ? 'caret-down' : 'caret-up'"
-            size="1x"
-            @click="orderByValue"
-          ></font-awesome-icon> -->
         </th>
         <th
           v-for="(item, column, index) in tableData[Object.keys(tableData)[0]]"
           :key="index + item"
         >
           {{ column }}
-          <!-- <font-awesome-icon
-            @click="orderByCount"
-            :icon="isCountCaretDown ? 'caret-down' : 'caret-up'"
-            size="1x"
-          ></font-awesome-icon> -->
         </th>
       </thead>
       <tbody>
@@ -36,14 +25,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { tableDataTest } from '@/test/table_data.ts';
+
+const tableStore = namespace('gecoAgent/TableViewer');
 
 @Component({})
 export default class TableViewer extends Vue {
-  @Prop({
-    default: () => tableDataTest
-  })
-  tableData!: any;
+  @tableStore.State tableData!: TableDictionary;
+  //TODO: implement options
+  @tableStore.State options!: TableOptions;
 
   created() {
     console.log('TABLE', this.tableData, typeof this.tableData);
