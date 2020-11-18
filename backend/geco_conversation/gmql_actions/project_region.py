@@ -11,8 +11,6 @@ class ProjectRegionAction(AbstractAction):
 													" or tell me a new name for the region  you want to create."))
 
 	def logic(self,message, intent, entities):
-		from .gmql_unary_action import GMQLUnaryAction
-		from .gmql_binary_action import GMQLBinaryAction
 		self.context.payload.insert('back', ProjectRegionAction)
 		self.context.payload.insert('project_region', {'name': Field(message)})
 		if self.context.data_extraction.datasets[-1].region_schema!=None and message in self.context.data_extraction.datasets[-1].region_schema:
@@ -119,8 +117,8 @@ class ProjectRegionS6Action(AbstractAction):
 		return None, False
 
 	def logic(self,message, intent, entities):
-		from .gmql_unary_action import GMQLUnaryAction
-		from .gmql_binary_action import GMQLBinaryAction
+		from geco_conversation.gmql_actions.gmql_unary_action import GMQLUnaryAction
+		from geco_conversation.gmql_actions.gmql_binary_action import GMQLBinaryAction
 		if intent!='deny':
 			return ProjectRegionAction(self.context), False
 		else:

@@ -1,4 +1,4 @@
-from .abstract_action import AbstractAction
+from geco_conversation.abstract_action import AbstractAction
 from geco_conversation import *
 
 class GMQLUnaryAction(AbstractAction):

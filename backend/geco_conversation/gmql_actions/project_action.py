@@ -1,7 +1,5 @@
-from .abstract_action import AbstractAction
-from .start_action import StartAction
 from geco_conversation import *
-from data_structure.operations import ArithmeticOperation
+
 
 class ProjectKeepMetaAction(AbstractAction):
 
@@ -47,8 +45,8 @@ class KeepAction(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
-        from .gmql_unary_action import GMQLUnaryAction
-        from .gmql_binary_action import GMQLBinaryAction
+        from geco_conversation.gmql_actions.gmql_unary_action import GMQLUnaryAction
+        from geco_conversation.gmql_actions.gmql_binary_action import GMQLBinaryAction
         if isinstance(self.status['back'],ProjectMetaAction):
             values = message.lower().strip().split(';')
             values = [Field(x) for x in values]

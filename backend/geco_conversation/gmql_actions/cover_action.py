@@ -1,5 +1,5 @@
-from .abstract_action import AbstractAction
-from .start_action import StartAction
+from geco_conversation.abstract_action import AbstractAction
+from geco_conversation.start_action import StartAction
 from geco_conversation import *
 
 class CoverAction(AbstractAction):

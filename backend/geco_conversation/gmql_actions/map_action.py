@@ -59,8 +59,7 @@ class MapS4Action(AbstractAction):
 
 
 	def logic(self,message, intent, entities):
-		from .gmql_unary_action import GMQLUnaryAction
-		from .gmql_binary_action import GMQLBinaryAction
+		from geco_conversation.gmql_actions.gmql_unary_action import GMQLUnaryAction
 		if intent!='deny':
 			if 'aggregate' not in self.status:
 				self.context.payload.insert('aggregate', message)

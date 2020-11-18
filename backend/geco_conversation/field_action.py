@@ -63,6 +63,7 @@ class FieldAction(AbstractAction):
                         #self.status['field'] = [field[0]]
 
                     list_param = {x: x for x in self.context.payload.database.values[field[0]]}
+                    print('hereeeee', list_param.keys())
                     choice = [True if len(list_param) > 10 else False]
                     self.context.add_bot_msgs([Utils.chat_message("Please provide a {}".format(field[0])),
                             Utils.choice(field[0], list_param, show_search=choice)])
@@ -100,9 +101,10 @@ class FieldAction(AbstractAction):
             self.context.add_bot_msgs([Utils.param_list(fields)])
             return RenameAction(self.context, MetadataAction(self.context)), True
         else:
-            for x in self.context.payload.fields:
-                if x in self.status:
-                    self.context.payload.delete(x)
+            #fields = {x: self.status[x] for x in available_fields if x in self.status}
+            fields = self.status.copy()
+            for x in fields:
+                self.context.payload.delete(x)
             self.context.add_bot_msgs([Utils.chat_message(messages.no_exp_found)])
             self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?")])
             return None, False

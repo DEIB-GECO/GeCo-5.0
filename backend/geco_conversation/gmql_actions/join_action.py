@@ -1,4 +1,3 @@
-from .pivot_action import PivotAction
 from geco_conversation import *
 
 class JoinAction(AbstractAction):
@@ -10,7 +9,7 @@ class JoinAction(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
-        from .gmql_unary_action import GMQLUnaryAction
+        from geco_conversation.gmql_actions.gmql_unary_action import GMQLUnaryAction
 
         if intent != 'deny':
             self.payload.insert('joinby',Field(message))
