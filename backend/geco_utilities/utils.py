@@ -67,6 +67,11 @@ class Utils(object):
             sorted(
                 [(x, context.payload.database.retrieve_values(gcm_filter, x)) for x in context.payload.database.fields_names if x not in context.payload.status and x!='is_healthy'],
                 key = lambda x : len(x[1])))[:6]}
+        copy_val = values.copy()
+        for k, v in copy_val.items():
+            if len(v)==1:
+                del(values[k])
+        del(copy_val)
         msgs.append(Utils.pie_chart(values))
         return msgs
 

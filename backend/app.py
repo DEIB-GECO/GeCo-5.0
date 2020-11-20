@@ -77,18 +77,12 @@ class ConversationDBExplore(object):
 
     def enter(self):
         node, on_enter = self.context.top_action().on_enter()
-        print('ENTER')
-        print(node)
         if node==None:
-            print('ENTER')
             self.context.add_step(action=self.context.top_action())
-            print(self.context.top_action())
         else:
             self.context.add_step(action=node)
-            print(self.context.top_action())
             if on_enter:
                 self.enter()
-        print(self.context.top_action())
 
 
     def run(self, message, intent, entities):

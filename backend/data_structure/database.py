@@ -34,14 +34,20 @@ class database:
         res = db.engine.execute("select * from dw.flatten_gecoagent")
         values = res.fetchall()
         self.table = pd.DataFrame(values, columns=res.keys())
-
+        self.table = self.table[self.table['source'].isin(['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq'])]
         for f in self.fields:
-            res = db.engine.execute("select {} from dw.flatten_gecoagent group by {}".format(f,f)).fetchall()
-            res = [i[0] for i in res]
-            if res!=[]:
-                self.fields_names.append(f)
-                self.values[f]= res
-                setattr(self, (str(f) + '_db'), res)
+            if f!='source':
+                res = db.engine.execute("select {} from dw.flatten_gecoagent group by {}".format(f,f)).fetchall()
+                res = [i[0] for i in res]
+                if res!=[]:
+                    self.fields_names.append(f)
+                    self.values[f]= res
+                    setattr(self, (str(f) + '_db'), res)
+            else:
+                self.fields_names.append('source')
+                self.values['source'] = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
+                setattr(self, 'source_db', ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq'])
+
 
     def find_all_keys(self):
         keys = db.engine.execute(
@@ -58,9 +64,7 @@ class DB:
         self.db = all_db
         self.table = self.db.table.copy()
         #self.metadata = self.db.metadata.copy()
-        #print(self.table['is_annotation'])
         self.table = self.table[self.table['is_annotation']==self.is_ann]
-        print(set(self.table['source'].values))
         self.values = {x:set(self.table[x].values) for x in fields if len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
         #self.get_values()
@@ -74,11 +78,6 @@ class DB:
                 setattr(self, (str(f) + '_db'), res)
 
     def update(self, gcm):
-        if 'source' not in gcm:
-            gcm_source = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
-            gcm['source'] = gcm_source
-        print(set(self.table['source'].values))
-        #gcm['is_annotation']=[self.is_ann_gcm]
         self.all_values = []
         for f in self.fields:
             values = []
@@ -104,9 +103,7 @@ class DB:
         return val
 
     def check_existance(self, gcm):
-        if 'source' not in gcm:
-            gcm_source = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
-            gcm['source'] = gcm_source
+
         for f in gcm:
             self.table = self.table[self.table[f].isin(gcm[f])]
         if len(self.table)>0:
@@ -116,18 +113,11 @@ class DB:
             return 0
 
     def download(self, gcm):
-        if 'source' not in gcm:
-            gcm_source = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
-            gcm['source'] = gcm_source
-
         links = list(set(self.table['local_url']))
         return links
 
     def go_back(self, gcm):
         self.table = self.db.table.copy()
-        if 'source' not in gcm:
-            gcm_source = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
-            gcm['source'] = gcm_source
         for f in gcm:
             self.table = self.table[self.table[f].isin(gcm[f])]
 
@@ -169,7 +159,7 @@ class DB:
         item_id = list(self.table['item_id'].values)
         items = ','.join(str(i) for i in item_id)
 
-        #query = self.query_field(filter)
+        query = self.query_field(filter)
         if filter2!={}:
             query2 = self.query_key(filter2)
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(query, query2)).fetchall()
@@ -177,10 +167,11 @@ class DB:
                 "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({}) and {}".format(
                     items, query2)).fetchall()
         else:
-            keys = db.engine.execute(
-                "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(
-                    items)).fetchall()
+            #keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
+
+            keys = db.engine.execute(
+                "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(query)).fetchall()
         #keys = {i[0]:i[1] for i in keys}
         self.metadata = pd.DataFrame(keys, columns=['item_id', 'key', 'value'])
         self.metadata = self.metadata[self.metadata['item_id'].isin(item_id)]
