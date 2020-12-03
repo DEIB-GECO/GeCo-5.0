@@ -21,7 +21,8 @@ class Delta:
             self.update = [{'variable': name, 'new': new_value, 'old': old_value}]
 
 class Step:
-    def __init__(self, bot_msgs, user_msg = None):
+    def __init__(self,  bot_msgs, action = None, user_msg = None):
+        self.action = action
         self.bot_msgs = bot_msgs
         self.user_msg = user_msg
         self.delta = Delta()
@@ -109,8 +110,8 @@ class Context:
         self.data_extraction = Data_Extraction()
         self.frame = Frame()
 
-    def add_step(self, bot_msgs = None, user_msg = None):
-        self.history.append(Step(bot_msgs, user_msg))
+    def add_step(self, bot_msgs = None, action=None, user_msg = None):
+        self.history.append(Step( bot_msgs, action, user_msg))
 
     def top_bot_msgs(self):
         if (self.history[-1].bot_msgs != None):
@@ -122,6 +123,8 @@ class Context:
     def top_user_msg(self):
         return self.history[-1].user_msg
 
+    def top_action(self):
+        return self.history[-1].action
 
     def top_delta(self):
         return self.history[-1].delta
