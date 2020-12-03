@@ -34,7 +34,8 @@ class DM:
             print('entities', entities)
 
             self.context.modify_status(entities)
-            self.frame.update_frame(intent, entities)
+            self.frame.define_frame(intent)
+            self.frame.update_frame(entities)
             self.run()
 
 
@@ -43,7 +44,7 @@ class DM:
         if filled!=True:
             for i in filled:
                 i(self.context).run()
-        #if filled==True:
+
         else:
             self.context.add_step()
             self.context.add_bot_msg(Utils.chat_message('You filled the frame'))
@@ -78,26 +79,32 @@ class CheckDataset():
             elif len(v)>1 and v not in self.context.payload.database.table[k].values:
                 val = [i for i in v if i in self.context.payload.database.table[k].values]
                 gcm_filter[k] = val
-        #gcm_filter = {k: v for (k, v) in self.status.items()
-        #              if (k in self.context.payload.database.fields) and (v in self.context.payload.database.table[k].values)}
-        print(gcm_filter)
-        print(set(self.context.payload.database.table['data_type']))
+
         self.context.payload.database.update(gcm_filter)
         if len(set(self.context.payload.database.table['dataset_name'])) == 1:
             ds_name = set(self.context.payload.database.table['dataset_name'].values)
-            print(set(self.context.payload.database.table['dataset_name']))
             self.context.frame.datasets.append(ds_name)
             self.context.add_step()
             self.context.add_bot_msg(
                 Utils.chat_message("Ok, you can download your dataset {}".format(ds_name)))
             return
         else:
-            print(set(self.context.payload.database.table['dataset_name']))
             self.context.add_step()
             self.context.add_bot_msgs(
                 [Utils.chat_message("Which dataset do you want?")])
             #self.run()
             return
 
-class AddRowCol:
+class AskRowCol:
+    def __init__(self, context):
+        self.context = context
+
+    def run(self):
+        self.context.add_step()
+        self.context.add_bot_msgs([Utils.chat_message("Do you want features or samples in the rows?")])
+
+class ConcatPivot:
+    pass
+
+class JoinPivot:
     pass

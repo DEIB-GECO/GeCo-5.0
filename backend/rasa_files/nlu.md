@@ -94,4 +94,4 @@
 
 ## intent:clustering_joinpivot_row_feature
 - cluster [genes]{"entity": "data_type", "value": "gene expression quantification"} extracted from data of [lung adenocarcinoma](disease) and [kidney renal clear cell carcinoma](disease)
-- cluster 
+- cluster all the features for [bladder urothelial carcinoma](disease)

@@ -10,6 +10,7 @@ class Frame:
         self.datasets = []
         self.row = None
         self.column = None
+        self.tuning = None
 
     def has_ds(self):
         if len(self.datasets)==0:
@@ -48,12 +49,29 @@ class Frame:
         return attributes
 
     def define_frame(self, intent):
+        from dialogue_manager import JoinPivot, ConcatPivot
         if intent == 'clustering_row_feature':
             self.row = PivotIndexes.FEATURES
             self.column = PivotIndexes.SAMPLES
         elif intent == 'clustering_row_sample':
             self.row = PivotIndexes.SAMPLES
             self.column = PivotIndexes.FEATURES
+        elif intent == 'clustering_row_feature_tuning':
+            self.row = PivotIndexes.FEATURES
+            self.column = PivotIndexes.SAMPLES
+            self.tuning = True
+        elif intent == 'clustering_row_sample_tuning':
+            self.row = PivotIndexes.SAMPLES
+            self.column = PivotIndexes.FEATURES
+            self.tuning = True
+        elif intent == 'clustering_concatpivot_row_feature':
+            self.row = PivotIndexes.FEATURES
+            self.column = PivotIndexes.SAMPLES
+            self.binary_operation = ConcatPivot
+        elif intent == 'clustering_joinpivot_row_feature':
+            self.row = PivotIndexes.FEATURES
+            self.column = PivotIndexes.SAMPLES
+            self.binary_operation = JoinPivot
 
     def update_frame(self, entities):
         for e in entities.keys():
@@ -62,17 +80,3 @@ class Frame:
             elif e=='dataset_name':
                 self.add_ds(entities[e])
                 print(self.datasets)
-            if e=='row' and getattr(self, e)==None:
-                if entities[e]=='features':
-                    self.row = PivotIndexes.FEATURES
-                    self.column = PivotIndexes.SAMPLES
-                else:
-                    self.row = PivotIndexes.SAMPLES
-                    self.column = PivotIndexes.FEATURES
-            if e=='column'and getattr(self, e)==None:
-                if entities[e]=='features':
-                    self.column = PivotIndexes.FEATURES
-                    self.row = PivotIndexes.SAMPLES
-                else:
-                    self.column = PivotIndexes.SAMPLES
-                    self.row = PivotIndexes.FEATURES
