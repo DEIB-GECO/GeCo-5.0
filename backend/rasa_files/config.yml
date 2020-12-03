@@ -8,6 +8,6 @@ pipeline:
 - name: "LexicalSyntacticFeaturizer"
 
 - name: "DIETClassifier"
-  epochs: 70
+  epochs: 150
 - name: "CRFEntityExtractor"
 - name: "EntitySynonymMapper"

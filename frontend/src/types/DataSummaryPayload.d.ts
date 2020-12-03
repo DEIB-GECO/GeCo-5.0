@@ -1,4 +1,4 @@
 interface DataSummaryPayload {
   firstLine: string;
-  viz: ChartData[];
+  viz: PieData[];
 }

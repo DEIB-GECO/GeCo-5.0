@@ -60,6 +60,16 @@ class Utils(object):
         return {"type" : "parameters_list",
                 "payload" : elements}
 
+    def create_piecharts(context, gcm_filter):
+        msgs = []
+        msgs.append(Utils.tools_setup('dataviz','dataset'))
+        values = {k:v for (k,v) in list(
+            sorted(
+                [(x, context.payload.database.retrieve_values(gcm_filter, x)) for x in context.payload.database.fields_names if x not in context.payload.status and x!='is_healthy'],
+                key = lambda x : len(x[1])))[:6]}
+        msgs.append(Utils.pie_chart(values))
+        return msgs
+
     def pie_chart(pie_dict):
         viz = []
         for (k,v) in pie_dict.items():
@@ -73,6 +83,16 @@ class Utils(object):
                     "viz":viz
                 }}
 
+    def hist(values, title):
+        viz = [{"vizType": "histDistChart",
+                "title" : title,
+            "data": values}]
+
+        return {"type": "data_summary",
+                "payload": {
+                    "viz": viz
+                }}
+
     def tools_setup(add, remove):
         return {"type" : "tools_setup",
                 "payload": {
@@ -83,11 +103,10 @@ class Utils(object):
         if download:
             return {"type": "workflow",
                     "payload": {"state": state,
-                                "url": link_list[0]}}
+                                "url": link_list}}
         else:
             return {"type": "workflow",
                     "payload": {"state": state}}
-
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))
