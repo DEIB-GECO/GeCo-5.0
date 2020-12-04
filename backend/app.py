@@ -38,7 +38,7 @@ interpreter = Interpreter.load("./model_dir/latest_model")
 
 Session(app)
 # TODO check if we need cors_allowed_origins, I think we don't need anymore.
-socketio = SocketIO(app, manage_session=True, async_mode=async_mode, cors_allowed_origins='*',
+socketio = SocketIO(app, manage_session=False, async_mode=async_mode, cors_allowed_origins='*',
                     path=socketio_path, logger=False, engineio_logger=False, debug=False)
 
 

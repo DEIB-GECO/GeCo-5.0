@@ -62,11 +62,12 @@
 
 ## intent:clustering_row_feature
 - Please perform the clustering of the [fpkm](region_value) data for patients affected by [sarcoma](disease)
-- Clusterize the [gene expression data]{"entity": "data_type", "value": "gene expression quantification"}
+- Clusterize the [gene expression data](data_type)
 - Clusterize the [gene expression data]{"entity": "data_type", "value": "gene expression quantification"}
 - cluster genes extracted from [tumoral patients]{"entity":"is_healthy", "value": False} using [grch38](assembly) 
 - cluster genes of [kidney renal clear cell carcinoma](disease)
 - i want the clustering of cell [imr90](cell)
+- cluster genes from [brca](disease) data
 
 ## intent:clustering_row_feature_tuning
 - Please perform the clustering of the [fpkm](region_value) data for patients affected by [sarcoma](disease) using parameter tuning
@@ -74,8 +75,10 @@
 - Clusterize the [gene expression data]{"entity": "data_type", "value": "gene expression quantification"} with parameter tuning
 - cluster genes extracted from [tumoral patients]{"entity":"is_healthy", "value": False} using [grch38](assembly) with tuning of the parameters
 - cluster genes of [kidney renal clear cell carcinoma](disease) by tuning the number of clusters
+- cluster genes from [brca](disease) data with automatic parameter tuning
 
 ## intent:clustering_row_sample
+- cluster samples from [luad](disease)
 - cluster the patients according to their [cnv](data_type)
 - cluster samples of [tcga](source) [kidney](tissue) data
 - cluster samples retrieved from [a549](cell)

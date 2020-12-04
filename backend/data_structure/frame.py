@@ -21,9 +21,11 @@ class Frame:
         self.tuning = None
 
     def has_ds(self):
-        from dialogue_manager import CheckDataset
+        from dialogue_manager import CheckDataset, AskBinary
         if len(self.datasets)==0:
             return [CheckDataset]
+        elif len(self.datasets)>1 and not hasattr(self, 'binary_operation'):
+            return [AskBinary]
         else:
             return True
 

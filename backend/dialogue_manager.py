@@ -160,6 +160,21 @@ class AskTuning:
         else:
             self.context.frame.tuning = False
 
+class AskBinary:
+    def __init__(self, context):
+        self.context = context
+
+    def run(self):
+        self.context.add_step(action=self)
+        self.context.add_bot_msgs([Utils.chat_message("I will put together the two datasets by doing the union, is it fine?")])
+        return True
+
+    def receive(self, message, intent):
+        if intent=='affirm':
+            self.context.frame.tuning = True
+        else:
+            self.context.frame.tuning = False
+
 class ConcatPivot:
     pass
 
