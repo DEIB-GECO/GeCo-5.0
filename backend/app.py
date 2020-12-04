@@ -70,11 +70,14 @@ def index():
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
     user_message = message['data'].strip()
-    add_session_message(session, {'type':'message', 'payload':{'text':user_message, 'sender':'user'}})
+    user_id = add_session_message(session, {'type':'message', 'payload':{'text':user_message, 'sender':'user'}})
     data = json.loads(open("logger.json").read())
 
     data[request.sid].append(user_message)
-    session['dm'].receive(user_message)
+    if user_id == 2:
+        session['dm'].receive_first_msg(user_message)
+    else:
+        session['dm'].receive(user_message)
     #if (session['dm'].context.top_bot_msgs()!=None):
     for msg in session['dm'].context.top_bot_msgs():
         id = add_session_message(session, msg)

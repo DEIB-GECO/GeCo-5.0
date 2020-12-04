@@ -16,7 +16,7 @@ class DM:
     def enter(self):
         self.context.add_bot_msg(Utils.chat_message(messages.start_init))
 
-    def receive(self, message):
+    def receive_first_msg(self, message):
         interpretation = self.interpreter.parse(message)
         intent = interpretation['intent']['name']
         print('intent', intent)
@@ -36,10 +36,31 @@ class DM:
             self.context.modify_status(entities)
             self.frame.define_frame(intent)
             self.frame.update_frame(entities)
-            self.run(message)
+            self.run(message, intent)
+
+    def receive(self, message):
+        interpretation = self.interpreter.parse(message)
+        intent = interpretation['intent']['name']
+        print('intent', intent)
+
+        if intent == 'back':
+            self.context.pop()
+        else:
+            self.context.add_user_msg(message)
+            entities = {}
+            for e in interpretation['entities']:
+                if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
+                    entities[e['entity']].append(e['value'].lower().strip())
+                else:
+                    entities[e['entity']] = [e['value'].lower().strip()]
+            print('entities', entities)
+
+            self.context.modify_status(entities)
+            self.frame.update_frame(entities)
+            self.run(message, intent)
 
 
-    def run(self, message):
+    def run(self, message, intent):
         filled = self.frame.is_filled()
         if filled!=True:
             for i in filled:
@@ -47,14 +68,14 @@ class DM:
                 if not bool:
                     break
                 if hasattr(i,'receive'):
-                    i(self.context).receive(message)
+                    i(self.context).receive(message, intent)
                     break
 
         else:
             self.context.add_step(action=self)
-            self.context.add_bot_msg(Utils.chat_message('You filled the frame'))
-            print(self.frame.attributes())
-            self.context.add_bot_msg(Utils.param_list(self.frame.attributes()))
+            attributes = self.frame.attributes()
+            print(attributes)
+            self.context.add_bot_msgs([Utils.chat_message('You filled the frame'), Utils.param_list(attributes)])
 
 
 
@@ -97,9 +118,14 @@ class CheckDataset():
             ds = set(self.context.payload.database.table['dataset_name'])
 
             self.context.add_step(action=self)
-            self.context.add_bot_msgs(
-                [Utils.chat_message("Which dataset do you want?"), Utils.choice('Available Datasets',{str(i.split('_')):i for i in ds})])
-            #self.run()
+            if len(set(self.context.payload.database.table['assembly']))==2:
+                self.context.add_bot_msgs(
+                    [Utils.chat_message("Which dataset do you want? You can choose only the ones with the same assembly, if you want more"),
+                     Utils.choice('Available Datasets', {str(i.split('_')): i for i in ds})])
+            else:
+                self.context.add_bot_msgs(
+                    [Utils.chat_message("Which dataset do you want?"), Utils.choice('Available Datasets',{str(i.split('_')):i for i in ds})])
+
             return True
 
 class AskRowCol:
@@ -111,13 +137,28 @@ class AskRowCol:
         self.context.add_bot_msgs([Utils.chat_message("Do you want features or samples in the rows?")])
         return True
 
-    def receive(self, message):
+    def receive(self, message, intent):
         if message in ['features','feature']:
             self.context.frame.row = PivotIndexes.FEATURES
             self.context.frame.column = PivotIndexes.SAMPLES
         else:
             self.context.frame.row = PivotIndexes.SAMPLES
             self.context.frame.column = PivotIndexes.FEATURES
+
+class AskTuning:
+    def __init__(self, context):
+        self.context = context
+
+    def run(self):
+        self.context.add_step(action=self)
+        self.context.add_bot_msgs([Utils.chat_message("It is advised to make me apply the parameter tuning. Do you want it?")])
+        return True
+
+    def receive(self, message, intent):
+        if intent=='affirm':
+            self.context.frame.tuning = True
+        else:
+            self.context.frame.tuning = False
 
 class ConcatPivot:
     pass

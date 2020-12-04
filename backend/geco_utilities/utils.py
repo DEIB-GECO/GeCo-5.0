@@ -57,6 +57,8 @@ class Utils(object):
         elements = []
         for i in param_dict:
             elements.append({'field': i, 'values': param_dict[i]})
+        print( {"type" : "parameters_list",
+            "payload" : elements})
         return {"type" : "parameters_list",
                 "payload" : elements}
 

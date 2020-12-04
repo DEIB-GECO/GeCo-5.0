@@ -1,9 +1,17 @@
 from enum import Enum
+import json
 
+def is_jsonable(x):
+    try:
+        json.dumps(x)
+        return True
+    except:
+        return False
 
 class PivotIndexes(Enum):
     FEATURES = 0
     SAMPLES = 1
+
 
 class Frame:
     def __init__(self):
@@ -13,14 +21,23 @@ class Frame:
         self.tuning = None
 
     def has_ds(self):
+        from dialogue_manager import CheckDataset
         if len(self.datasets)==0:
-            return False
+            return [CheckDataset]
         else:
             return True
 
     def has_rows_col(self):
+        from dialogue_manager import AskRowCol
         if self.row==None and self.column==None:
-            return False
+            return [AskRowCol]
+        else:
+            return True
+
+    def has_tuning(self):
+        from dialogue_manager import AskTuning
+        if self.tuning==None:
+            return [AskTuning]
         else:
             return True
 
@@ -29,23 +46,32 @@ class Frame:
 
     def is_filled(self):
         # To add checks on every attribute of the frame
-        if self.has_ds() and self.has_rows_col():
-            return True
-        elif not self.has_ds():
-            from dialogue_manager import CheckDataset
-            return [CheckDataset]
-        else:
-            from dialogue_manager import AskRowCol
-            return [AskRowCol]
+        print(dir(self))
+        methods = [a for a in dir(self) if (a.startswith('has_'))]
+        print('methods', methods)
+        next_call=True
+        for a in methods:
+            next_call = getattr(self, a)()
+            if not next_call ==True:
+                break
+        return next_call
 
     def attributes(self):
         attributes = {}
         for i in self.__dict__:
-            attributes[i] = getattr(self, i)
-            if i=='row':
-                attributes[i] = self.row.name
-            if i=='column':
-                attributes[i] = self.column.name
+            if is_jsonable(getattr(self, i)):
+                attributes[i] = getattr(self, i)
+            else:
+                print('i', i)
+                if i == 'row':
+                    attributes[i] = self.row.name
+                elif i == 'column':
+                    attributes[i] = self.column.name
+                else:
+                    attributes[i] = str(getattr(self, i).__name__)
+                print(attributes[i])
+
+        print('here', attributes)
         return attributes
 
     def define_frame(self, intent):
