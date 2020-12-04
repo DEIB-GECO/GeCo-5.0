@@ -1,0 +1,140 @@
+{
+    "language": "en",
+    "pipeline": [
+        {
+            "model": "en",
+            "case_sensitive": false,
+            "name": "SpacyNLP",
+            "class": "rasa.nlu.utils.spacy_utils.SpacyNLP"
+        },
+        {
+            "intent_tokenization_flag": false,
+            "intent_split_symbol": "_",
+            "name": "SpacyTokenizer",
+            "class": "rasa.nlu.tokenizers.spacy_tokenizer.SpacyTokenizer"
+        },
+        {
+            "pooling": "mean",
+            "name": "SpacyFeaturizer",
+            "class": "rasa.nlu.featurizers.dense_featurizer.spacy_featurizer.SpacyFeaturizer"
+        },
+        {
+            "features": [
+                [
+                    "low",
+                    "title",
+                    "upper"
+                ],
+                [
+                    "BOS",
+                    "EOS",
+                    "low",
+                    "upper",
+                    "title",
+                    "digit"
+                ],
+                [
+                    "low",
+                    "title",
+                    "upper"
+                ]
+            ],
+            "name": "LexicalSyntacticFeaturizer",
+            "file": "component_3_LexicalSyntacticFeaturizer",
+            "class": "rasa.nlu.featurizers.sparse_featurizer.lexical_syntactic_featurizer.LexicalSyntacticFeaturizer"
+        },
+        {
+            "hidden_layers_sizes": {
+                "text": [],
+                "label": []
+            },
+            "share_hidden_layers": false,
+            "transformer_size": 256,
+            "number_of_transformer_layers": 2,
+            "number_of_attention_heads": 4,
+            "use_key_relative_attention": false,
+            "use_value_relative_attention": false,
+            "max_relative_position": null,
+            "unidirectional_encoder": false,
+            "batch_size": [
+                64,
+                256
+            ],
+            "batch_strategy": "balanced",
+            "epochs": 70,
+            "random_seed": null,
+            "learning_rate": 0.001,
+            "embedding_dimension": 20,
+            "dense_dimension": {
+                "text": 512,
+                "label": 20
+            },
+            "number_of_negative_examples": 20,
+            "similarity_type": "inner",
+            "loss_type": "softmax",
+            "ranking_length": 10,
+            "maximum_positive_similarity": 0.8,
+            "maximum_negative_similarity": -0.4,
+            "use_maximum_negative_similarity": true,
+            "scale_loss": true,
+            "regularization_constant": 0.002,
+            "negative_margin_scale": 0.8,
+            "drop_rate": 0.2,
+            "drop_rate_attention": 0,
+            "weight_sparsity": 0.8,
+            "use_sparse_input_dropout": true,
+            "evaluate_every_number_of_epochs": 20,
+            "evaluate_on_number_of_examples": 0,
+            "intent_classification": true,
+            "entity_recognition": true,
+            "use_masked_language_model": false,
+            "BILOU_flag": true,
+            "tensorboard_log_directory": null,
+            "tensorboard_log_level": "epoch",
+            "name": "DIETClassifier",
+            "file": "component_4_DIETClassifier",
+            "class": "rasa.nlu.classifiers.diet_classifier.DIETClassifier"
+        },
+        {
+            "BILOU_flag": true,
+            "features": [
+                [
+                    "low",
+                    "title",
+                    "upper"
+                ],
+                [
+                    "low",
+                    "bias",
+                    "prefix5",
+                    "prefix2",
+                    "suffix5",
+                    "suffix3",
+                    "suffix2",
+                    "upper",
+                    "title",
+                    "digit",
+                    "pattern"
+                ],
+                [
+                    "low",
+                    "title",
+                    "upper"
+                ]
+            ],
+            "max_iterations": 50,
+            "L1_c": 0.1,
+            "L2_c": 0.1,
+            "name": "CRFEntityExtractor",
+            "file": "component_5_CRFEntityExtractor.pkl",
+            "class": "rasa.nlu.extractors.crf_entity_extractor.CRFEntityExtractor"
+        },
+        {
+            "name": "EntitySynonymMapper",
+            "file": "component_6_EntitySynonymMapper.json",
+            "class": "rasa.nlu.extractors.entity_synonyms.EntitySynonymMapper"
+        }
+    ],
+    "trained_at": "20201116-182451",
+    "rasa_version": "1.9.6"
+}

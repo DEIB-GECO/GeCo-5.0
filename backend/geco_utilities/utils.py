@@ -44,7 +44,6 @@ class Utils(object):
             for i in list_params:
                 elements.append({'name': i, 'value': list_params[i]})
 
-
         return {"type": "available_choices",
                 "payload": {
                     "showSearchBar": show_search,

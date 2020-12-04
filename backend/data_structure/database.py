@@ -58,8 +58,8 @@ class database:
 class DB:
     def __init__(self, fields, is_ann, all_db):
         self.is_ann = is_ann
-        self.is_ann_gcm = 'true' if is_ann else 'false'
-        #self.is_ann_gcm = 'is_annotation=true' if is_ann else 'is_annotation=false'
+        #self.is_ann_gcm = 'true' if is_ann else 'false'
+        self.is_ann_gcm = 'is_annotation=true' if is_ann else 'is_annotation=false'
         self.fields = fields
         self.db = all_db
         self.table = self.db.table.copy()

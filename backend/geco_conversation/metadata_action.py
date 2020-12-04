@@ -13,8 +13,7 @@ class MetadataAction(AbstractAction):
         self.context.payload.insert('metadata', {})
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
         keys = self.context.payload.database.find_all_keys(gcm_filter)
-        print('hola')
-        print(self.status['fields'])
+
         self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
         #list_param = {k: self.status['fields'][k] for k in self.status['fields'] if k != 'metadata'}
         if len(self.status['available_keys']) >= 1:
@@ -37,8 +36,7 @@ class MetadataAction(AbstractAction):
             if len(self.status['available_keys']) > 1:
                 self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_choice),
                         Utils.choice('Available metadatum', self.status['available_keys'], show_search=True,show_help=True,
-                                     helpIconContent=helpMessages.fields_help),
-                        Utils.param_list(list_param)])
+                                     helpIconContent=helpMessages.fields_help)])
                 return KeyAction(self.context), False
             elif len(self.status['available_keys']) == 1:
                 values, number = self.context.payload.database.find_key_values(gcm_filter, self.status['available_keys'].keys[0])
