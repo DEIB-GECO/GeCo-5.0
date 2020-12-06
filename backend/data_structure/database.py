@@ -36,7 +36,6 @@ class database:
         self.table = pd.DataFrame(values, columns=res.keys())
         self.table = self.table[self.table['source'].isin(['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq'])]
 
-
         for f in self.fields:
             if f!='source':
                 res = db.engine.execute("select {} from dw.flatten_gecoagent group by {}".format(f,f)).fetchall()
@@ -50,6 +49,8 @@ class database:
                 self.values['source'] = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
                 setattr(self, 'source_db', ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq'])
 
+        meta = db.engine.execute("select distinct(key) from dw.unified_pair_gecoagent group by key")
+        self.meta_schema = meta.fetchall()
 
     def find_all_keys(self):
         keys = db.engine.execute(
@@ -70,6 +71,7 @@ class DB:
             self.table = self.table[self.table['is_annotation']==self.is_ann]
         self.values = {x:list(set(self.table[x].values)) for x in fields if len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
+        self.meta_schema = all_db.meta_schema
         #self.get_values()
 
     def get_values(self):

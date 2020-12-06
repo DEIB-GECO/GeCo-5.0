@@ -4,11 +4,13 @@ from geco_utilities import messages
 from data_structure.database import DB, fields
 import copy
 from data_structure.frame import PivotIndexes
+from data_structure.dataset import DataSet
+
 
 class DM:
-    def __init__(self, interpreter, db):
-        self.interpreter = interpreter
-        self.context = Context(db)
+    def __init__(self):
+        from app import all_db
+        self.context = Context(all_db)
         self.frame = self.context.frame
         self.context.add_step(bot_msgs=Utils.chat_message(messages.initial_greeting))
         self.enter()
@@ -16,44 +18,23 @@ class DM:
     def enter(self):
         self.context.add_bot_msg(Utils.chat_message(messages.start_init))
 
-    def receive_first_msg(self, message):
-        interpretation = self.interpreter.parse(message)
-        intent = interpretation['intent']['name']
-        print('intent', intent)
+    def receive_first_msg(self, message, intent, entities):
 
         if intent == 'back':
             self.context.pop()
         else:
             self.context.add_user_msg(message)
-            entities = {}
-            for e in interpretation['entities']:
-                if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
-                    entities[e['entity']].append(e['value'].lower().strip())
-                else:
-                    entities[e['entity']] = [e['value'].lower().strip()]
-            print('entities', entities)
 
             self.context.modify_status(entities)
             self.frame.define_frame(intent)
             self.frame.update_frame(entities)
             self.run(message, intent)
 
-    def receive(self, message):
-        interpretation = self.interpreter.parse(message)
-        intent = interpretation['intent']['name']
-        print('intent', intent)
-
+    def receive(self, message, intent, entities):
         if intent == 'back':
             self.context.pop()
         else:
             self.context.add_user_msg(message)
-            entities = {}
-            for e in interpretation['entities']:
-                if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
-                    entities[e['entity']].append(e['value'].lower().strip())
-                else:
-                    entities[e['entity']] = [e['value'].lower().strip()]
-            print('entities', entities)
 
             self.context.modify_status(entities)
             self.frame.update_frame(entities)
@@ -95,7 +76,9 @@ class CheckDataset():
         self.context.payload.database.update(gcm_filter)
         if len(set(self.context.payload.database.table['dataset_name'])) == 1:
             ds_name = set(self.context.payload.database.table['dataset_name'].values)
-            self.context.frame.datasets.append(ds_name)
+            gcm_filter.update({'dataset_name': ds_name})
+            self.context.frame.datasets.append(DataSet(gcm_filter, gcm_filter['dataset_name']), meta_schema=self.context.payload.database.meta_schema)
+
 
     def run(self):
         gcm_filter={}
@@ -109,10 +92,13 @@ class CheckDataset():
         self.context.payload.database.update(gcm_filter)
         if len(set(self.context.payload.database.table['dataset_name'])) == 1:
             ds_name = set(self.context.payload.database.table['dataset_name'].values)
-            self.context.frame.datasets.append(ds_name)
+            gcm_filter.update({'dataset_name':ds_name})
+            self.context.frame.datasets.append(DataSet(gcm_filter, gcm_filter['dataset_name']),
+                                               meta_schema=self.context.payload.database.meta_schema)
+
             self.context.add_step(action=self)
             self.context.add_bot_msg(
-                Utils.chat_message("Ok, you can download your dataset {}".format(ds_name)))
+                Utils.chat_message("Ok, I select this dataset {}".format(ds_name)))
             return False
         else:
             ds = set(self.context.payload.database.table['dataset_name'])
@@ -166,17 +152,38 @@ class AskBinary:
 
     def run(self):
         self.context.add_step(action=self)
-        self.context.add_bot_msgs([Utils.chat_message("I will put together the two datasets by doing the union, is it fine?")])
+        operations = {'Union':'union', 'Join':'join', 'Map':'map', 'Join after the table creation': 'joinPivot', 'Concatenate the two tables': 'concatPivot'}
+        self.context.add_bot_msgs([Utils.chat_message("How do you want to put them together? You can decide among different options."),
+                                   Utils.choice("Available choices", operations)])
         return True
 
     def receive(self, message, intent):
-        if intent=='affirm':
-            self.context.frame.tuning = True
-        else:
-            self.context.frame.tuning = False
+        if message=='union':
+            self.context.frame.gmql_binary_operation = Union
+        elif message == 'join':
+            self.context.frame.gmql_binary_operation = Join
+        elif message == 'map':
+            self.context.frame.gmql_binary_operation = Map
+        elif message == 'joinPivot':
+            self.context.frame.pivot_binary_operation = JoinPivot
+        elif message == 'concatPivot':
+            self.context.frame.pivot_binary_operation = ConcatPivot
+        #else:
+         #   self.context.add_bot_msgs(
+         #       [Utils.chat_message("Sorry, I did not understand")])
+        return False
 
 class ConcatPivot:
     pass
 
 class JoinPivot:
+    pass
+
+class Union:
+    pass
+
+class Join:
+    pass
+
+class Map:
     pass

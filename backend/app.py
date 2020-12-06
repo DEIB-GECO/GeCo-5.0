@@ -70,14 +70,26 @@ def index():
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
     user_message = message['data'].strip()
+    interpretation = interpreter.parse(user_message)
+    intent = interpretation['intent']['name']
+
     user_id = add_session_message(session, {'type':'message', 'payload':{'text':user_message, 'sender':'user'}})
     data = json.loads(open("logger.json").read())
 
     data[request.sid].append(user_message)
+
+    entities = {}
+    for e in interpretation['entities']:
+        if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
+            entities[e['entity']].append(e['value'].lower().strip())
+        else:
+            entities[e['entity']] = [e['value'].lower().strip()]
+    print('entities', entities)
+
     if user_id == 2:
-        session['dm'].receive_first_msg(user_message)
+        session['dm'].receive_first_msg(user_message, intent, entities)
     else:
-        session['dm'].receive(user_message)
+        session['dm'].receive(user_message, intent, entities)
     #if (session['dm'].context.top_bot_msgs()!=None):
     for msg in session['dm'].context.top_bot_msgs():
         id = add_session_message(session, msg)
@@ -171,7 +183,7 @@ def reset(session):
             del session[k]
     session['messages'] = []
     session['last_json'] = {}
-    session['dm']= DM(interpreter, all_db)
+    session['dm']= DM()
 
     for msg in session['dm'].context.top_bot_msgs():
         id = add_session_message(session, msg)
