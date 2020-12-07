@@ -149,7 +149,7 @@ export default class GecoAgent extends Vue {
   }
 
   created() {
-    //socket.emit('ack', { message_id: this.lastMessageId });
+    socket.emit('ack', { message_id: this.lastMessageId });
     socket.on('json_response', (payload: any) => {
       if (payload.type) {
         console.log('server sent JSON_response', payload);
