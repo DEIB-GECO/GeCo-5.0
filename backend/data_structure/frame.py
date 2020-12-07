@@ -16,10 +16,12 @@ class PivotIndexes(Enum):
 
 
 class Frame:
-    def __init__(self):
+    def __init__(self, context):
+        self.context = context
         self.datasets = []
         self.row = None
         self.column = None
+        self.region_value = None
         self.tuning = None
 
     def has_ds(self):
@@ -38,28 +40,44 @@ class Frame:
         else:
             return True
 
+    def has_region_value(self):
+        from dialogue_manager import AskRegionValue
+        if self.region_value == None:
+            return [AskRegionValue]
+        else:
+            return True
+
     def has_tuning(self):
         from dialogue_manager import AskTuning
         if self.tuning==None:
             return [AskTuning]
         else:
-            return True
+            if self.tuning == True:
+                return True
+            elif self.tuning == False and self.parameters==None and self.data_analysis_operation == Clustering:
+                from dialogue_manager import AskParametersClustering
+                return [AskParametersClustering]
+            else:
+                return True
+
+    def has_par_binary_action(self):
+        if hasattr(self, 'gmql_binary_operation'):
+            from dialogue_manager import UnionAction, JoinAction, MapAction
+            if not isinstance(self.gmql_binary_operation, UnionAction):
+                return [self.gmql_binary_operation]
+        return True
 
     def add_ds(self,ds_list):
         self.datasets = ds_list
 
     def is_filled(self):
         # To add checks on every attribute of the frame
-        print(dir(self))
         methods = [a for a in dir(self) if (a.startswith('has_'))]
-        print('methods', methods)
         next_call=True
         for a in methods:
             next_call = getattr(self, a)()
             if not next_call ==True:
                 break
-        if next_call == True:
-            self.create_workflow()
         return next_call
 
     def attributes(self):
@@ -68,64 +86,82 @@ class Frame:
             if is_jsonable(getattr(self, i)):
                 attributes[i] = getattr(self, i)
             else:
-                print('i', i)
                 if i == 'row':
                     attributes[i] = self.row.name
                 elif i == 'column':
                     attributes[i] = self.column.name
-                else:
-                    attributes[i] = str(getattr(self, i).__name__)
-                print(attributes[i])
+                #else:
+               #     attributes[i] = str(getattr(self, i).__name__)
 
-        print('here', attributes)
         return attributes
 
     def define_frame(self, intent):
-        from dialogue_manager import JoinPivot, ConcatPivot
+        from dialogue_manager import JoinPivotAction, ConcatPivotAction
         if intent == 'clustering_row_feature':
             self.row = PivotIndexes.FEATURES
             self.column = PivotIndexes.SAMPLES
+            self.data_analysis_operation = Clustering
         elif intent == 'clustering_row_sample':
             self.row = PivotIndexes.SAMPLES
             self.column = PivotIndexes.FEATURES
+            self.data_analysis_operation = Clustering
         elif intent == 'clustering_row_feature_tuning':
             self.row = PivotIndexes.FEATURES
             self.column = PivotIndexes.SAMPLES
             self.tuning = True
+            self.data_analysis_operation = Clustering
         elif intent == 'clustering_row_sample_tuning':
             self.row = PivotIndexes.SAMPLES
             self.column = PivotIndexes.FEATURES
             self.tuning = True
+            self.data_analysis_operation = Clustering
         elif intent == 'clustering_concatpivot_row_feature':
             self.row = PivotIndexes.FEATURES
             self.column = PivotIndexes.SAMPLES
-            self.pivot_binary_operation = ConcatPivot
+            self.pivot_binary_operation = ConcatPivotAction
+            self.data_analysis_operation = Clustering
         elif intent == 'clustering_joinpivot_row_feature':
             self.row = PivotIndexes.FEATURES
             self.column = PivotIndexes.SAMPLES
-            self.pivot_binary_operation = JoinPivot
+            self.pivot_binary_operation = JoinPivotAction
+            self.data_analysis_operation = Clustering
 
-    def update_frame(self, entities):
+    def update_frame(self, entities, gcm_filter):
         for e in entities.keys():
             if hasattr(self, e) and getattr(self, e)==None:
                 setattr(self, e, entities[e])
             elif e=='dataset_name':
-                self.add_ds(entities[e])
-                print(self.datasets)
+                ds_name = entities[e][0]
+                regions = self.context.payload.database.retrieve_region(ds_name)
+                self.add_ds([DataSet(gcm_filter,ds_name, regions)])
 
     def create_workflow(self):
+        workflow = Workflow()
         list_select = []
         for i in self.datasets:
             list_select.append(Select(i))
+        workflow.extend(list_select)
         list_pivot = []
         if hasattr(self, 'gmql_binary_operation'):
-            binary = self.gmql_binary_operation(list_select[0], list_select[1])
+            from dialogue_manager import UnionAction, JoinAction, MapAction
+            if isinstance(self.gmql_binary_operation, UnionAction):
+                binary = Union(list_select[0], list_select[1])
+                workflow.append(binary)
+            elif isinstance(self.gmql_binary_operation, JoinAction):
+                binary = Join(list_select[0], list_select[1], self.gmql_binary_operation.joinby)
+                workflow.append(binary)
+            elif isinstance(self.gmql_binary_operation, MapAction):
+                binary = Map(list_select[0], list_select[1], self.gmql_binary_operation.joinby, self.gmql_binary_operation.aggregate,  self.gmql_binary_operation.name_agg)
+                workflow.append(binary)
             if self.row == PivotIndexes.SAMPLES:
                 list_pivot.append(Pivot(i, metadata_row='biospecimen__bio__bcr_sample_barcode', region_column='gene_symbol',
                           region_value=self.region_value))
+
             else:
                 list_pivot.append(Pivot(i, metadata_column='biospecimen__bio__bcr_sample_barcode', region_row='gene_symbol',
                           region_value=self.region_value))
+
+            workflow.extend(list_pivot)
 
         elif hasattr(self, 'pivot_binary_operation'):
             for i in list_select:
@@ -135,6 +171,9 @@ class Frame:
                     list_pivot.append(
                         Pivot(i,metadata_column='biospecimen__bio__bcr_sample_barcode', region_row='gene_symbol',
                               region_value=self.region_value))
+            binary = self.pivot_binary_operation(list_pivot[0], list_pivot[1])
+            workflow.extend(list_pivot)
+            workflow.append(binary)
         else:
             if self.row == PivotIndexes.SAMPLES:
                 list_pivot.append(Pivot(i, metadata_row='biospecimen__bio__bcr_sample_barcode', region_column='gene_symbol',
@@ -142,8 +181,13 @@ class Frame:
             else:
                 list_pivot.append(Pivot(i, metadata_column='biospecimen__bio__bcr_sample_barcode', region_row='gene_symbol',
                           region_value=self.region_value))
+            workflow.extend(list_pivot)
+        #if self.tuning:
+         #   workflow.append(Clustering(list_pivot[0],self.tuning))
 
-        if self.tuning:
-            Clustering(list_pivot[0],self.tuning)
-        else:
-            Clustering(list_pivot[0],self.clust_num)
+        #else:
+         #   workflow.append(
+          #      Clustering(list_pivot[0],self.clust_num))
+
+
+        return workflow

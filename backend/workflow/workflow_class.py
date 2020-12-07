@@ -171,19 +171,23 @@ class Workflow(list):
 
     def visualize(self):
         with open('workflow.txt', 'w') as file:
+            print(self)
             for i in range(len(self)):
                 name = self[i].__class__.__name__
+                print(self[i])
                 file.write(str(i)+'\n')
                 file.write(name+'\n')
                 file.write('--parameters--\n')
-                for x,v in self[i].__dict__.items():
-                    if (x=='depends_on') or (x=='depends_on_2'):
-                        file.write(x+':'+str(v.__class__.__name__)+'\n')
-                        if str(v.__class__.__name__)=='DataSet':
-                            for q,w in v.__dict__.items():
-                                file.write(q+':'+str(w)+'\n')
-                    else:
-                        file.write(x+':'+str(v)+'\n')
+                if self[i]!=None:
+                    for x,v in self[i].__dict__.items():
+                        if (x=='depends_on') or (x=='depends_on_2'):
+                            file.write(x+':'+str(v.__class__.__name__)+'\n')
+                            if str(v.__class__.__name__)=='DataSet':
+                                for q,w in v.__dict__.items():
+                                    file.write(q+':'+str(w)+'\n')
+                        else:
+                            file.write(x+':'+str(v)+'\n')
                 file.write('-------'+'\n')
-
+        with open('workflow.txt', 'r') as file:
+            return file.read()
 

@@ -108,7 +108,7 @@ class Context:
         self.payload = Payload(self, db)
         self.workflow = Workflow()
         self.data_extraction = Data_Extraction()
-        self.frame = Frame()
+        self.frame = Frame(self)
 
     def add_step(self, bot_msgs = None, action=None, user_msg = None):
         self.history.append(Step( bot_msgs, action, user_msg))

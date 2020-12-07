@@ -41,6 +41,9 @@
 
 ## intent:deny
  - no
+ - nope
+ - no thanks
+ - no I don't
  - never
  - no way
  - not really
@@ -57,8 +60,14 @@
 - clustering of [grch38 tcga gene expression]{"entity": "dataset_name", "value": "grch38_tcga_gene_expression_2019_10"}
 - evaluate the cluster analysis made on [breast](tissue) cancer data
 - I want to do clustering on data of [copy number segment](data_type)
+- Please, compute clusters of [grch38_annotation_refseq](dataset_name)
+- I want to do clustering on data of [hg19_annotation_refseq](dataset_name)
+- clustering of [hg19_annotation_gencode](dataset_name)
 - cluster
 - clustering
+- perform cluster analysis
+- find clusters 
+
 
 ## intent:clustering_row_feature
 - Please perform the clustering of the [fpkm](region_value) data for patients affected by [sarcoma](disease)
@@ -68,6 +77,7 @@
 - cluster genes of [kidney renal clear cell carcinoma](disease)
 - i want the clustering of cell [imr90](cell)
 - cluster genes from [brca](disease) data
+- Clusterize genes from [gene expression](data_type) data of [KIRC](disease)
 
 ## intent:clustering_row_feature_tuning
 - Please perform the clustering of the [fpkm](region_value) data for patients affected by [sarcoma](disease) using parameter tuning
@@ -89,11 +99,9 @@
 - cluster patients affected by [breast cancer]{"entity": "disease", "value": "breast cancer (adenocarcinoma)"} using the tuning of the parameters
 - using parameter tuning I want the clustering of [tumoral]{"entity": "is_healthy", "value": "False"} samples with [uveal melanoma](disease)
 
-
 ## intent:clustering_concatpivot_row_feature
 - cluster genes and mirnas extracted from data of [grch38_tcga_gene_expression_2019_10](dataset_name) and [grch38_tcga_mirna_expression_2019_10](dataset_name)
 - cluster [genes]{"entity": "data_type", "value": "gene expression quantification"} and [mirnas]{"entity": "data_type", "value": "mirna expression quantification"} extracted from [lung](tissue) tissue
-
 
 ## intent:clustering_joinpivot_row_feature
 - cluster [genes]{"entity": "data_type", "value": "gene expression quantification"} extracted from data of [lung adenocarcinoma](disease) and [kidney renal clear cell carcinoma](disease)
