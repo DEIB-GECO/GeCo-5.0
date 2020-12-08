@@ -17,9 +17,10 @@ db = create_engine(db_string)
 
 annotation_fields = ["content_type", "assembly", "source", 'dataset_name']
 experiment_fields = ['source', 'data_type', 'assembly', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
-fields = ["content_type", 'source', 'data_type', 'assembly', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
+fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
 sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
-
+datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10', 'grch38_tcga_mirna_expression_2019_10']
 
 
 class database:
@@ -31,23 +32,24 @@ class database:
     def get_all_values(self):
         self.fields_names = []
         self.values = {}
-        res = db.engine.execute("select * from dw.flatten_gecoagent")
+        res = db.engine.execute("select item_id, " + ', '.join(fields)
+ + " from dw.flatten_gecoagent where source in {} and dataset_name in {}".format(tuple(sources), tuple(datasets)))
         values = res.fetchall()
         self.table = pd.DataFrame(values, columns=res.keys())
-        self.table = self.table[self.table['source'].isin(sources)]
+        print(self.table.head())
 
         for f in self.fields:
-            if f!='source':
-                res = db.engine.execute("select {} from dw.flatten_gecoagent group by {}".format(f,f)).fetchall()
-                res = [i[0] for i in res]
-                if res!=[]:
-                    self.fields_names.append(f)
-                    self.values[f]= res
-                    setattr(self, (str(f) + '_db'), res)
+            res = list(set(self.table[f]))
+            if res!=[] and len(res)>1:
+                self.fields_names.append(f)
+                self.values[f]= res
+                setattr(self, (str(f) + '_db'), res)
+                with open('./rasa_files/'+f+'.txt', 'w') as f:
+                    for s in res:
+                        f.write(str(s) + '\n')
+                f.close()
             else:
-                self.fields_names.append('source')
-                self.values['source'] = sources
-                setattr(self, 'source_db', sources)
+                self.table = self.table.drop(f,axis=1)
 
         meta = db.engine.execute("select distinct(key) from dw.unified_pair_gecoagent group by key")
         self.meta_schema = meta.fetchall()
@@ -61,7 +63,7 @@ class DB:
             self.is_ann = is_ann
             self.is_ann_gcm = 'is_annotation=true' if is_ann else 'is_annotation=false'
             self.table = self.table[self.table['is_annotation']==self.is_ann]
-        self.values = {x:list(set(self.table[x].values)) for x in fields if len(set(self.table[x].values))>1}
+        self.values = {x:list(set(self.table[x].values)) for x in fields if (x in self.table.columns.values) and len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
         self.meta_schema = all_db.meta_schema
 

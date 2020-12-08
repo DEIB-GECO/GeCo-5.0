@@ -61,7 +61,7 @@
                 256
             ],
             "batch_strategy": "balanced",
-            "epochs": 150,
+            "epochs": 100,
             "random_seed": null,
             "learning_rate": 0.001,
             "embedding_dimension": 20,
@@ -131,10 +131,10 @@
         },
         {
             "name": "EntitySynonymMapper",
-            "file": null,
+            "file": "component_6_EntitySynonymMapper.json",
             "class": "rasa.nlu.extractors.entity_synonyms.EntitySynonymMapper"
         }
     ],
-    "trained_at": "20201203-154735",
+    "trained_at": "20201208-110037",
     "rasa_version": "1.9.6"
 }

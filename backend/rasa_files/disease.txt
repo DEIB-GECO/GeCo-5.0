@@ -1,91 +1,33 @@
-breast invasive carcinoma
-kidney renal clear cell carcinoma
-lung adenocarcinoma
-head and neck squamous cell carcinoma
-ovarian serous cystadenocarcinoma
-lung squamous cell carcinoma
-thyroid carcinoma
-uterine corpus endometrial carcinoma
-prostate adenocarcinoma
-brain lower grade glioma
-colon adenocarcinoma
-skin cutaneous melanoma
 bladder urothelial carcinoma
-liver hepatocellular carcinoma
-stomach adenocarcinoma
-glioblastoma multiforme
-kidney renal papillary cell carcinoma
-chronic myelogenous leukemia (cml)
-cervical squamous cell carcinoma and endocervical adenocarcinoma
-sarcoma
-acute myeloid leukemia
-esophageal carcinoma
-pancreatic adenocarcinoma
-pheochromocytoma and paraganglioma
-hepatocellular carcinoma
-testicular germ cell tumors
 rectum adenocarcinoma
-thymoma
+pheochromocytoma and paraganglioma
+liver hepatocellular carcinoma
+sarcoma
+thyroid carcinoma
+kidney renal papillary cell carcinoma
+brain lower grade glioma
+kidney renal clear cell carcinoma
+skin cutaneous melanoma
 adrenocortical carcinoma
-mesothelioma
-uveal melanoma
 kidney chromophobe
-breast cancer (adenocarcinoma)
+thymoma
+stomach adenocarcinoma
+head and neck squamous cell carcinoma
 uterine carcinosarcoma
+prostate adenocarcinoma
+mesothelioma
+breast invasive carcinoma
 lymphoid neoplasm diffuse large b-cell lymphoma
+glioblastoma multiforme
+ovarian serous cystadenocarcinoma
+uterine corpus endometrial carcinoma
 cholangiocarcinoma
-metastatic neuroblastoma from bone marrow
-cervical adenocarcinoma
-b cell lymphoma
-colorectal carcinoma
-immunoglobulin a lambda myeloma
-grade iv, adenocarcinoma
-apparently healthy
-endometrial adenocarcinoma
-refractory immunoblastic b cell lymphoma progressed from follicular centroblastic/centrocytic lymphoma
-t-cell acute lymphoblastic leukemia cell line atcc crl-2629
-pancreatic carcinoma
-human b cell non-hodgkin's lymphoma
-t-acute lymphoblastic leukemia (t-all; type iii cortical)
-fibrocystic disease
-large cell lymphoma; diffuse mixed histiocytic and lymphocytic lymphoma; follicular b cell lymphoma
-ewing's sarcoma
-malignant pluripotent embryonal carcinoma
-acute promyelocytic leukemia
-mammary ductal carcinoma
-igak myeloma
-colorectal adenocarcinoma
-carcinoma (prostate)
-malignant primitive neuroectodermal tumor
-parathyroid adenoma
-submaxillar tumor
-retinoblastoma
-primary hyperparathyroidism
-burkitt's lymphoma
-parkinson's disease
-medulloblastoma
-acute t cell leukemia
-cancer
-de lange phenotype; developmental delay; profound retardation; seizures; 3 cousins are also affected; 46,xy,-22,+der (22)t(3;22)(q25.3;p12)
-neuroblastoma
-cornelia de lange syndrome 1; cdls1; nipped-b-like; nipbl
-hepatocellular adenocarcinoma
-malignant glioblastoma
-melanoma
-fibrosarcoma
-down syndrome
-renal cell adenocarcinoma
-rhabdoid tumor (wilm's tumor)
-carcinoma; large cell lung cancer
-cystadenocarcinoma
-dukes' type c, grade iv, colorectal adenocarcinoma
-malignant melanoma
-metastatic melanoma
-neuroglioma
-osteosarcoma
-plasmacytoma; myeloma
-renal carcinoma 
-squamous cell carcinoma; mesothelioma
-pheochromocythoma and paraganglioma
-hepatic rhabdoid tumor
-rhabdomyosarcoma
+lung squamous cell carcinoma
+pancreatic adenocarcinoma
+esophageal carcinoma
+acute myeloid leukemia
+lung adenocarcinoma
+testicular germ cell tumors
+uveal melanoma
+colon adenocarcinoma
+cervical squamous cell carcinoma and endocervical adenocarcinoma

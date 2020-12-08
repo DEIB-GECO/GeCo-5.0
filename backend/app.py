@@ -72,7 +72,7 @@ def test_message(message):
     user_message = message['data'].strip()
     interpretation = interpreter.parse(user_message)
     intent = interpretation['intent']['name']
-
+    print('intent', intent)
     user_id = add_session_message(session, {'type':'message', 'payload':{'text':user_message, 'sender':'user'}})
     data = json.loads(open("logger.json").read())
 

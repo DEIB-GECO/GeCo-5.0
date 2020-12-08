@@ -1,17 +1,5 @@
-peaks
-cnv
-copy number segment
 masked copy number segment
-isoform quantification
-exon quantification
-gene quantification
-spljxn quantification
-dna methylation
-methylation beta value
-gene expression quantification
-isoform expression quantification
 mirna expression quantification
+methylation beta value
 masked somatic mutation
-mirna quantification
-dna seq
-variant calling
+gene expression quantification

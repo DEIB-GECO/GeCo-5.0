@@ -1,7 +1,0 @@
-tissue
-cell line
-primary cell
-primary tissue
-primary culture
-in vitro differentiated cells
-esc derived cell line

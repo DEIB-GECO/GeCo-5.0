@@ -28,9 +28,20 @@ class Frame:
         from dialogue_manager import CheckDataset, AskBinary
         if len(self.datasets)==0:
             return [CheckDataset]
-        elif len(self.datasets)>1 and not hasattr(self, 'pivot_binary_operation') and not hasattr(self, 'gmql_binary_operation'):
+        elif len(self.datasets)==2 and not hasattr(self, 'pivot_binary_operation') and not hasattr(self, 'gmql_binary_operation'):
             return [AskBinary]
         else:
+            return True
+
+    def has_binary(self):
+        from dialogue_manager import CheckDataset, AskBinary
+        if len(self.datasets) == 2 and hasattr(self, 'pivot_binary_operation'):
+            setattr(self.pivot_binary_operation, 'ds1', self.datasets[0])
+            setattr(self.pivot_binary_operation, 'ds2', self.datasets[1])
+        elif len(self.datasets)==2 and hasattr(self, 'gmql_binary_operation'):
+            setattr(self.gmql_binary_operation.ds1, 'ds1', self.datasets[0])
+            setattr(self.gmql_binary_operation.ds2, 'ds2', self.datasets[1])
+        elif len(self.datasets)<2:
             return True
 
     def has_rows_col(self):
@@ -54,9 +65,16 @@ class Frame:
         else:
             if self.tuning == True:
                 return True
-            elif self.tuning == False and self.parameters==None and self.data_analysis_operation == Clustering:
+            elif self.tuning == False:
                 from dialogue_manager import AskParametersClustering
-                return [AskParametersClustering]
+                if hasattr(self,'parameters') and self.data_analysis_operation == Clustering:
+                    if self.parameters==None:
+                        return [AskParametersClustering]
+                elif hasattr(self,'num_clusters') and self.data_analysis_operation == Clustering:
+                    if self.num_clusters!=None:
+                        return True
+                    else:
+                        return [AskParametersClustering]
             else:
                 return True
 
@@ -73,10 +91,10 @@ class Frame:
     def is_filled(self):
         # To add checks on every attribute of the frame
         methods = [a for a in dir(self) if (a.startswith('has_'))]
-        next_call=True
+        next_call= True
         for a in methods:
             next_call = getattr(self, a)()
-            if not next_call ==True:
+            if not next_call == True:
                 break
         return next_call
 
@@ -188,6 +206,5 @@ class Frame:
         #else:
          #   workflow.append(
           #      Clustering(list_pivot[0],self.clust_num))
-
 
         return workflow

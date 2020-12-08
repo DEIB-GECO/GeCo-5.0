@@ -1,3 +1,0 @@
-hg19_annotation_gencode
-grch38_annotation_refseq
-hg19_annotation_refseq

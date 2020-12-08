@@ -1,138 +1,53 @@
-breast
-bronchus and lung
-kidney
-brain
-ovary
-thyroid gland
-prostate gland
-corpus uteri
-skin
-colon
-liver and intrahepatic bile ducts
-bladder
-stomach
-cervix uteri
-adrenal gland
-esophagus
-pancreas
-testis
-other and unspecified parts of tongue
 larynx
-connective, subcutaneous and other soft tissues
-retroperitoneum and peritoneum
-heart, mediastinum, and pleura
-thymus
-uterus, nos
-other and ill-defined sites in lip, oral cavity and pharynx
-hematopoietic and reticuloendothelial systems
-eye and adnexa
-rectum
-blood
-rectosigmoid junction
-floor of mouth
-tonsil
-other and unspecified parts of mouth
-lymph nodes
-base of tongue
-liver
-spleen
-transverse colon
-lung
-gastrocnemius medialis
-gum
-muscle
-oropharynx
-upper lobe of left lung
-sigmoid colon
-hypopharynx
-esophagus muscularis mucosa
-body of pancreas
-tibial nerve
-peyer's patch
-heart
-esophagus squamous epithelium
-gastroesophageal sphincter
-tibial artery
-gi stomach
-palate
-breast epithelium
-gi intestine
-heart left ventricle
-uterus
-vagina
-thoracic aorta
-right atrium auricular region
-other and ill-defined sites
-gi colon
-vascular
-parathyroid adenoma
-suprapubic skin
-gi rectum
-placenta
-ascending aorta
-fat
-lip
-other and unspecified parts of biliary tract
-small intestine
-spinal cord, cranial nerves, and other parts of central nervous system
-lower leg skin
-stromal connective
-cervix
-bones, joints and articular cartilage of limbs
-right lobe of liver
-gi duodenum
-bones, joints and articular cartilage of other and unspecified sites
-coronary artery
-bone
-gi esophagus
-adrenal
-muscle leg
-retina
 gallbladder
-meninges
-omental fat pad
-other and unspecified male genital organs
-other endocrine glands and related structures
-peripheral nerves and autonomic nervous system
-frontal cortex
+other and ill-defined sites in lip, oral cavity and pharynx
+breast
+ovary
+base of tongue
+kidney
+uterus, nos
+connective, subcutaneous and other soft tissues
+other and unspecified parts of mouth
+other and unspecified parts of tongue
+palate
+heart, mediastinum, and pleura
+liver and intrahepatic bile ducts
+floor of mouth
 other and unspecified major salivary glands
+spinal cord, cranial nerves, and other parts of central nervous system
+other and ill-defined sites
+testis
+bones, joints and articular cartilage of other and unspecified sites
+colon
+oropharynx
+cervix uteri
+corpus uteri
+bladder
+gum
+meninges
+thymus
 unknown
-eye
-tongue
-cerebellum
-heart right ventricle
-limb
-psoas muscle
-cerebellar cortex
-chorion
-embryonic facial prominence
-femur
-germinal center
-globus pallidus
-left arm bone
-left cardiac atrium
-left kidney
-left leg bone
-medulla oblongata
-midbrain
-middle frontal gyrus
-occipital lobe
-right arm bone
-right kidney
-right leg bone
-spinal cord
-subcutaneous adipose tissue
-umbilical cord
-urinary bladder
-ammon's horn
-caudate nucleus
-endometrial
-inferior parietal cortex
-pons
-putamen
-superior temporal gyrus
-thyroid
-central nervous system
-cervical
-endometrium
-islet of langerhans
+lymph nodes
+lip
+other endocrine glands and related structures
+bronchus and lung
+brain
+thyroid gland
+skin
+stomach
+hypopharynx
+tonsil
+eye and adnexa
+pancreas
+other and unspecified parts of biliary tract
+esophagus
+rectosigmoid junction
+peripheral nerves and autonomic nervous system
+rectum
+hematopoietic and reticuloendothelial systems
+small intestine
+bones, joints and articular cartilage of limbs
+retroperitoneum and peritoneum
+prostate gland
+adrenal gland
+other and unspecified male genital organs

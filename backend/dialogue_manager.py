@@ -46,11 +46,12 @@ class DM:
             self.context.modify_status(entities)
             gcm_filter = {}
             for k, v in self.context.payload.status.items():
-                if k in self.context.payload.database.fields and v in self.context.payload.database.table[k].values:
-                    gcm_filter[k] = v
-                elif len(v) > 1 and v not in self.context.payload.database.table[k].values:
-                    val = [i for i in v if i in self.context.payload.database.table[k].values]
-                    gcm_filter[k] = val
+                if k in self.context.payload.database.fields:
+                    if v in self.context.payload.database.table[k].values:
+                        gcm_filter[k] = v
+                    elif (len(v) > 1) and (v not in self.context.payload.database.table[k].values):
+                        val = [i for i in v if i in self.context.payload.database.table[k].values]
+                        gcm_filter[k] = val
             self.frame.update_frame(entities, gcm_filter)
             self.run(message, intent)
 
@@ -172,6 +173,7 @@ class AskTuning:
         return True
 
     def receive(self, message, intent):
+        print('INTENT', intent)
         if intent=='affirm':
             self.context.frame.tuning = True
         else:
@@ -220,18 +222,29 @@ class AskBinary:
         return False
 
 class ConcatPivotAction:
-    pass
+    def __init__(self, context):
+        self.context = context
+        self.ds1 = None
+        self.ds2 = None
 
 class JoinPivotAction:
-    pass
+    def __init__(self, context):
+        self.context = context
+        self.ds1 = None
+        self.ds2 = None
 
 class UnionAction:
-    pass
+    def __init__(self, context):
+        self.context = context
+        self.ds1 = None
+        self.ds2 = None
 
 class JoinAction:
     def __init__(self, context):
         self.context = context
         self.joinby = None
+        self.ds1 = None
+        self.ds2 = None
 
     def run(self):
         self.context.add_step(action=self)
@@ -252,6 +265,8 @@ class MapAction:
         self.joinby = None
         self.aggregate = None
         self.name_agg = None
+        self.ds1 = None
+        self.ds2 = None
 
     def run(self):
         self.context.add_step(action=self)

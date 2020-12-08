@@ -1,14 +1,8 @@
 ## lookup:source
 ./source.txt
 
-## lookup:assembly
-./assembly.txt
-
 ## lookup:content_type
 ./content_type_ann.txt
-
-## lookup:project_name
-./project_name.txt
 
 ## lookup:data_type
 ./data_type.txt
@@ -56,36 +50,87 @@
 
 ## intent:clustering
 - I want you to clusterize the data of [thymoma](disease)
-- Can you do the clustering for [hg19_tcga_rnaseq_gene](dataset_name) data?
+- Can you do the clustering for [grch38_tcga_gene_expression_2019_10](dataset_name) data?
 - clustering of [grch38 tcga gene expression]{"entity": "dataset_name", "value": "grch38_tcga_gene_expression_2019_10"}
 - evaluate the cluster analysis made on [breast](tissue) cancer data
 - I want to do clustering on data of [copy number segment](data_type)
 - Please, compute clusters of [grch38_annotation_refseq](dataset_name)
-- I want to do clustering on data of [hg19_annotation_refseq](dataset_name)
-- clustering of [hg19_annotation_gencode](dataset_name)
+- I want to do clustering on data of [grch38_tcga_mirna_expression_2019_10](dataset_name)
+- clustering of [grch38_tcga_copy_number_masked_2019_10](dataset_name)
 - cluster
 - clustering
 - perform cluster analysis
 - find clusters 
+- clustering of [grch38_tcga_somatic_mutation_masked_2019_10](dataset_name)
+- I want you to clusterize the data of [colon adenocarcinoma](disease)
+- I want to do clustering on data of [grch38_tcga_copy_number_masked_2019_10](dataset_name)
+- I want to do clustering on data of [gene expression quantification](data_type)
+- I want you to clusterize the data of [ovarian serous cystadenocarcinoma](disease)
+- evaluate the cluster analysis made on [hypopharynx](tissue) cancer data
+- I want to do clustering on data of [methylation beta value](data_type)
+- I want to do clustering on data of [masked copy number segment](data_type)
+- I want to do clustering on data of [mirna expression quantification](data_type)
+- Can you do the clustering for [grch38_tcga_gene_expression_2019_10](dataset_name) data?
+- I want to do clustering on data of [masked somatic mutation](data_type)
+- evaluate the cluster analysis made on [liver and intrahepatic bile ducts](tissue) cancer data
+- evaluate the cluster analysis made on [heart, mediastinum, and pleura](tissue) cancer data
+- evaluate the cluster analysis made on [other and unspecified major salivary glands](tissue) cancer data
+- I want you to clusterize the data of [thymoma](disease)
+- I want you to clusterize the data of [brain lower grade glioma](disease)
+- clustering of [grch38_tcga_mirna_expression_2019_10](dataset_name)
+- I want you to clusterize the data of [head and neck squamous cell carcinoma](disease)
+- Please, compute clusters of [grch38_tcga_methylation_2019_10](dataset_name)
+- evaluate the cluster analysis made on [rectosigmoid junction](tissue) cancer data
 
 
 ## intent:clustering_row_feature
 - Please perform the clustering of the [fpkm](region_value) data for patients affected by [sarcoma](disease)
 - Clusterize the [gene expression data](data_type)
-- Clusterize the [gene expression data]{"entity": "data_type", "value": "gene expression quantification"}
-- cluster genes extracted from [tumoral patients]{"entity":"is_healthy", "value": False} using [grch38](assembly) 
+- Clusterize the [gene expression data]{"entity": "data_type", "value": "gene expression quantification"} 
 - cluster genes of [kidney renal clear cell carcinoma](disease)
 - i want the clustering of cell [imr90](cell)
 - cluster genes from [brca](disease) data
 - Clusterize genes from [gene expression](data_type) data of [KIRC](disease)
+- i want the clustering of cell [mid-neurogenesis radial glial cells](cell)
+- cluster expressions of [grch38_tcga_gene_expression_2019_10](dataset_name)
+- Clusterize genes from [mirna expression quantification](data_type) data of [mesothelioma](disease)
+- Clusterize the [masked somatic mutation](data_type)
+- cluster genes of [uterine corpus endometrial carcinoma](disease)
+- cluster genes from [liver hepatocellular carcinoma](disease) data
+- cluster expressions of [grch38_tcga_somatic_mutation_masked_2019_10](dataset_name)
+- Clusterize the [masked copy number segment](data_type)
+- Clusterize genes from [masked copy number segment](data_type) data of [mesothelioma](disease)
+- Clusterize genes from [methylation beta value](data_type) data of [mesothelioma](disease)
+- Clusterize the [gene expression quantification](data_type)
+- cluster expressions of [grch38_tcga_methylation_2019_10](dataset_name)
+- Please perform the clustering of the [fpkm](region_value) data for patients affected by [uveal melanoma](disease)
 
 ## intent:clustering_row_feature_tuning
 - Please perform the clustering of the [fpkm](region_value) data for patients affected by [sarcoma](disease) using parameter tuning
 - With parameter tuning clusterize the [gene expression data]{"entity": "data_type", "value": "gene expression quantification"}
 - Clusterize the [gene expression data]{"entity": "data_type", "value": "gene expression quantification"} with parameter tuning
-- cluster genes extracted from [tumoral patients]{"entity":"is_healthy", "value": False} using [grch38](assembly) with tuning of the parameters
+- cluster genes extracted from [tumoral patients]{"entity":"is_healthy", "value": False} with tuning of the parameters
 - cluster genes of [kidney renal clear cell carcinoma](disease) by tuning the number of clusters
 - cluster genes from [brca](disease) data with automatic parameter tuning
+- With parameter tuning clusterize the [masked copy number segment](data_type)
+- Please perform the clustering of the [fpkm](region_value) data for patients affected by [sarcoma](disease) using parameter tuning
+- Do the clustering of data retrieved from [SRC](source) applying parameter tuning
+- cluster genes of [thyroid carcinoma](disease) by tuning the number of clusters
+- with the tuning of the parameters, do the clustering of expressions of [grch38_tcga_methylation_2019_10](dataset_name)
+- cluster genes from [esophageal carcinoma](disease) data with automatic parameter tuning
+- Clusterize the [methylation beta value](data_type) with parameter tuning
+- Clusterize the [mirna expression quantification](data_type) with parameter tuning
+- with the tuning of the parameters, do the clustering of expressions of [grch38_tcga_somatic_mutation_masked_2019_10](dataset_name)
+- Clusterize the [masked copy number segment](data_type) with parameter tuning
+- cluster genes of [acute myeloid leukemia](disease) by tuning the number of clusters
+- with the tuning of the parameters, do the clustering of expressions of [grch38_tcga_gene_expression_2019_10](dataset_name)
+- cluster genes from [lung squamous cell carcinoma](disease) data with automatic parameter tuning
+- cluster genes from [sarcoma](disease) data with automatic parameter tuning
+- Please perform the clustering of the [fpkm](region_value) data for patients affected by [acute myeloid leukemia](disease) using parameter tuning
+- With parameter tuning clusterize the [gene expression quantification](data_type)
+- With parameter tuning clusterize the [masked somatic mutation](data_type)
+- cluster genes of [sarcoma](disease) by tuning the number of clusters
+- Please perform the clustering of the [fpkm](region_value) data for patients affected by [thyroid carcinoma](disease) using parameter tuning
 
 ## intent:clustering_row_sample
 - cluster samples from [luad](disease)
@@ -93,21 +138,117 @@
 - cluster samples of [tcga](source) [kidney](tissue) data
 - cluster samples retrieved from [a549](cell)
 - cluster patients affected by [breast cancer]{"entity": "disease", "value": "breast cancer (adenocarcinoma)"}
+- cluster patients affected by [kidney chromophobe](disease)
+- cluster samples from [lung adenocarcinoma](disease)
+- cluster patients affected by [prostate adenocarcinoma](disease)
+- cluster patients affected by [cholangiocarcinoma](disease)
+- perform the clustering the samples of [grch38_tcga_mirna_expression_2019_10](dataset_name)
+- cluster samples of [tcga](source) [retroperitoneum and peritoneum](tissue) data
+- find clusters of [healthy patients]{"entity":"is_healthy", "value": False} healed from [lung adenocarcinoma](disease)
+- cluster samples from [kidney chromophobe](disease)
+- cluster samples of [tcga](source) [other and unspecified parts of tongue](tissue) data
+- cluster patients affected by [lung adenocarcinoma](disease)
+- perform the clustering the samples of [grch38_tcga_somatic_mutation_masked_2019_10](dataset_name)
+- cluster the patients according to their [methylation beta value](data_type)
+- cluster samples from [cholangiocarcinoma](disease)
+- cluster the patients according to their [gene expression quantification](data_type)
+- perform the clustering the samples of [grch38_tcga_methylation_2019_10](dataset_name)
+- find clusters of [healthy patients]{"entity":"is_healthy", "value": False} healed from [cholangiocarcinoma](disease)
+- cluster the patients according to their [masked somatic mutation](data_type)
+- cluster samples of [tcga](source) [peripheral nerves and autonomic nervous system](tissue) data
+- cluster samples from [prostate adenocarcinoma](disease)
+- cluster samples of [tcga](source) [bones, joints and articular cartilage of limbs](tissue) data
+- find clusters of [healthy patients]{"entity":"is_healthy", "value": False} healed from [kidney chromophobe](disease)
+- find clusters of [healthy patients]{"entity":"is_healthy", "value": False} healed from [cervical squamous cell carcinoma and endocervical adenocarcinoma](disease)
+- perform the clustering the samples of [grch38_tcga_gene_expression_2019_10](dataset_name)
+- perform the clustering the samples of [grch38_tcga_copy_number_masked_2019_10](dataset_name)
+- cluster the patients according to their [masked copy number segment](data_type)
+- cluster the patients according to their [mirna expression quantification](data_type)
+- find clusters of [healthy patients]{"entity":"is_healthy", "value": False} healed from [prostate adenocarcinoma](disease)
+- cluster samples from [cervical squamous cell carcinoma and endocervical adenocarcinoma](disease)
+- cluster samples of [tcga](source) [other and unspecified male genital organs](tissue) data
+- cluster patients affected by [cervical squamous cell carcinoma and endocervical adenocarcinoma](disease)
 
 ## intent:clustering_row_sample_tuning
 - cluster the patients according to their [cnv](data_type) with parameter tuning
 - cluster patients affected by [breast cancer]{"entity": "disease", "value": "breast cancer (adenocarcinoma)"} using the tuning of the parameters
 - using parameter tuning I want the clustering of [tumoral]{"entity": "is_healthy", "value": "False"} samples with [uveal melanoma](disease)
+- Find clusters of the samples present in [znf311](target) data applying hyperparameter tuning
+- by applying parameter tuning do the clustering of the samples retrieved from [rpmi8226](cell)
+- using parameter tuning I want the clustering of [tumoral]{"entity": "is_healthy", "value": "False"} samples with [lymphoid neoplasm diffuse large b-cell lymphoma](disease)
+- cluster the patients according to their [mirna expression quantification](data_type) with parameter tuning
+- cluster patients affected by [skin cutaneous melanoma](disease) using the tuning of the parameters
+- find clusters of the samples of [grch38_tcga_gene_expression_2019_10](dataset_name) applying tuning of the parameters
+- cluster the patients according to their [methylation beta value](data_type) with parameter tuning
+- cluster patients affected by [lymphoid neoplasm diffuse large b-cell lymphoma](disease) using the tuning of the parameters
+- cluster the patients according to their [masked copy number segment](data_type) with parameter tuning
+- cluster the patients according to their [gene expression quantification](data_type) with parameter tuning
+- cluster the patients according to their [masked somatic mutation](data_type) with parameter tuning
+- using parameter tuning I want the clustering of [tumoral]{"entity": "is_healthy", "value": "False"} samples with [uterine carcinosarcoma](disease)
+- using parameter tuning I want the clustering of [tumoral]{"entity": "is_healthy", "value": "False"} samples with [rectum adenocarcinoma](disease)
+- Perform the clustering [healthy patients]{"entity":"is_healthy", "value": False} taken from [tcga](source) applying parameter tuning
+- using parameter tuning I want the clustering of [tumoral]{"entity": "is_healthy", "value": "False"} samples with [skin cutaneous melanoma](disease)
+- find clusters of the samples of [grch38_tcga_copy_number_masked_2019_10](dataset_name) applying tuning of the parameters
+- cluster patients affected by [breast invasive carcinoma](disease) using the tuning of the parameters
+- cluster patients affected by [rectum adenocarcinoma](disease) using the tuning of the parameters
+- find clusters of the samples of [grch38_tcga_somatic_mutation_masked_2019_10](dataset_name) applying tuning of the parameters
+- find clusters of the samples of [grch38_tcga_mirna_expression_2019_10](dataset_name) applying tuning of the parameters
+- cluster patients affected by [uterine carcinosarcoma](disease) using the tuning of the parameters
+- using parameter tuning I want the clustering of [tumoral]{"entity": "is_healthy", "value": "False"} samples with [breast invasive carcinoma](disease)
+- find clusters of the samples of [grch38_tcga_methylation_2019_10](dataset_name) applying tuning of the parameters
 
 ## intent:clustering_concatpivot_row_feature
 - cluster genes and mirnas extracted from data of [grch38_tcga_gene_expression_2019_10](dataset_name) and [grch38_tcga_mirna_expression_2019_10](dataset_name)
 - cluster [genes]{"entity": "data_type", "value": "gene expression quantification"} and [mirnas]{"entity": "data_type", "value": "mirna expression quantification"} extracted from [lung](tissue) tissue
+- cluster [dna seq](data_type) and [dna seq1](data_type) extracted from [putamen](tissue) tissue
+- cluster [mirna quantification](data_type) and [mirna quantification1](data_type) extracted from [endometrium](tissue) tissue
+- cluster genes and mirnas extracted from data of [grch38_tcga_gene_expression_2019_10](dataset_name) and [grch38_tcga_mirna_expression_2019_10](dataset_name)
+- cluster [methylation beta value](data_type) and [methylation beta value1](data_type) extracted from [eye and adnexa](tissue) tissue
+- cluster genes and mirnas extracted from data of [grch38_tcga_methylation_2019_10](dataset_name) and [grch38_tcga_mirna_expression_2019_10](dataset_name)
+- cluster genes and mirnas extracted from data of [grch38_tcga_copy_number_masked_2019_10](dataset_name) and [grch38_tcga_mirna_expression_2019_10](dataset_name)
+- cluster [masked somatic mutation](data_type) and [masked somatic mutation1](data_type) extracted from [skin](tissue) tissue
+- cluster [gene expression quantification](data_type) and [gene expression quantification1](data_type) extracted from [other and unspecified parts of biliary tract](tissue) tissue
+- cluster genes and mirnas extracted from data of [grch38_tcga_somatic_mutation_masked_2019_10](dataset_name) and [grch38_tcga_mirna_expression_2019_10](dataset_name)
+- cluster genes and mirnas extracted from data of [grch38_tcga_mirna_expression_2019_10](dataset_name) and [grch38_tcga_mirna_expression_2019_10](dataset_name)
+- cluster [masked copy number segment](data_type) and [masked copy number segment1](data_type) extracted from [connective, subcutaneous and other soft tissues](tissue) tissue
+- cluster [mirna expression quantification](data_type) and [mirna expression quantification1](data_type) extracted from [adrenal gland](tissue) tissue
+- cluster [masked copy number segment](data_type) and [masked copy number segment1](data_type) extracted from [floor of mouth](tissue) tissue
 
 ## intent:clustering_joinpivot_row_feature
 - cluster [genes]{"entity": "data_type", "value": "gene expression quantification"} extracted from data of [lung adenocarcinoma](disease) and [kidney renal clear cell carcinoma](disease)
 - cluster all the features for [bladder urothelial carcinoma](disease)
 
+## intent:entities
+- [fpkm](region_value)
+- [start](region_value)
+- [stop](region_value)
+- [chrom](region_value)
+- [beta_value](region_value)
+- [segment_mean](region_value)
+- [reads_per_million_mirna_mapped](region_value)
+- [rpm](region_value)
+- [variant_type](region_value)
+- [reference_allele](region_value)
+- [tumor_seq_allele1](region_value)
+- [tumor_seq_allele2](region_value)
+- [signal](region_value)
+- features
+- samples
+- [20](num)
+- [5](num)
 
+
+## regex:num
+- [0-9]{1}
+- [0-9]{2}
+- [0-9]{3}
+- [0-9]{4}
+
+
+
+## synonym:reads_per_million_mirna_mapped
+- rpm
+- reads per million
 
 ## synonym:breast
 - mammary part of chest
