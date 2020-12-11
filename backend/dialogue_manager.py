@@ -30,7 +30,8 @@ class DM:
             self.frame.define_frame(intent)
             gcm_filter = {}
             for k, v in self.context.payload.status.items():
-                if k in self.context.payload.database.fields and v in self.context.payload.database.table[k].values:
+                print(self.context.payload.database.fields)
+                if (k in self.context.payload.database.fields) and (v in self.context.payload.database.table[k].values):
                     gcm_filter[k] = v
                 elif len(v) > 1 and v not in self.context.payload.database.table[k].values:
                     val = [i for i in v if i in self.context.payload.database.table[k].values]

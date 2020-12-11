@@ -1,33 +1,33 @@
-bladder urothelial carcinoma
-rectum adenocarcinoma
-pheochromocytoma and paraganglioma
-liver hepatocellular carcinoma
-sarcoma
-thyroid carcinoma
-kidney renal papillary cell carcinoma
-brain lower grade glioma
-kidney renal clear cell carcinoma
-skin cutaneous melanoma
-adrenocortical carcinoma
-kidney chromophobe
+acute myeloid leukemia
 thymoma
-stomach adenocarcinoma
-head and neck squamous cell carcinoma
-uterine carcinosarcoma
+ovarian serous cystadenocarcinoma
+colon adenocarcinoma
+lung adenocarcinoma
 prostate adenocarcinoma
+stomach adenocarcinoma
+esophageal carcinoma
+kidney renal papillary cell carcinoma
+skin cutaneous melanoma
+bladder urothelial carcinoma
+cervical squamous cell carcinoma and endocervical adenocarcinoma
+rectum adenocarcinoma
+glioblastoma multiforme
+lymphoid neoplasm diffuse large b-cell lymphoma
 mesothelioma
 breast invasive carcinoma
-lymphoid neoplasm diffuse large b-cell lymphoma
-glioblastoma multiforme
-ovarian serous cystadenocarcinoma
-uterine corpus endometrial carcinoma
+thyroid carcinoma
+brain lower grade glioma
 cholangiocarcinoma
-lung squamous cell carcinoma
+head and neck squamous cell carcinoma
+uterine corpus endometrial carcinoma
 pancreatic adenocarcinoma
-esophageal carcinoma
-acute myeloid leukemia
-lung adenocarcinoma
-testicular germ cell tumors
+uterine carcinosarcoma
+sarcoma
+liver hepatocellular carcinoma
+lung squamous cell carcinoma
+kidney renal clear cell carcinoma
+kidney chromophobe
 uveal melanoma
-colon adenocarcinoma
-cervical squamous cell carcinoma and endocervical adenocarcinoma
+pheochromocytoma and paraganglioma
+adrenocortical carcinoma
+testicular germ cell tumors

@@ -56,13 +56,15 @@ class database:
 
 class DB:
     def __init__(self, fields, is_ann, all_db):
-        self.fields = fields
+        #self.fields = fields
         self.db = all_db
         self.table = self.db.table.copy()
         if is_ann!=None:
             self.is_ann = is_ann
             self.is_ann_gcm = 'is_annotation=true' if is_ann else 'is_annotation=false'
             self.table = self.table[self.table['is_annotation']==self.is_ann]
+        self.fields = [i for i in self.table.columns.values if i!='item_id' and len(list(set(self.table[i].values)))>1]
+        print('fields', self.fields)
         self.values = {x:list(set(self.table[x].values)) for x in fields if (x in self.table.columns.values) and len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
         self.meta_schema = all_db.meta_schema
@@ -73,7 +75,7 @@ class DB:
         self.all_values = []
         for f in self.fields:
             values = []
-            if f in gcm:
+            if f in gcm and f in self.table.columns.values:
                 self.table = self.table[self.table[f].isin(gcm[f])]
             val = list(self.table[f])
             if (val != []) and (len(val) > 1):

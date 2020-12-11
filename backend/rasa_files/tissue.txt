@@ -1,53 +1,53 @@
-larynx
-gallbladder
-other and ill-defined sites in lip, oral cavity and pharynx
-breast
-ovary
-base of tongue
-kidney
-uterus, nos
-connective, subcutaneous and other soft tissues
-other and unspecified parts of mouth
-other and unspecified parts of tongue
-palate
-heart, mediastinum, and pleura
-liver and intrahepatic bile ducts
-floor of mouth
-other and unspecified major salivary glands
-spinal cord, cranial nerves, and other parts of central nervous system
-other and ill-defined sites
-testis
-bones, joints and articular cartilage of other and unspecified sites
-colon
-oropharynx
-cervix uteri
-corpus uteri
-bladder
-gum
-meninges
-thymus
 unknown
-lymph nodes
-lip
-other endocrine glands and related structures
-bronchus and lung
-brain
-thyroid gland
+other and unspecified parts of tongue
+testis
+oropharynx
+other and unspecified male genital organs
+small intestine
+heart, mediastinum, and pleura
+palate
+larynx
+connective, subcutaneous and other soft tissues
 skin
-stomach
-hypopharynx
-tonsil
-eye and adnexa
-pancreas
+thymus
+meninges
 other and unspecified parts of biliary tract
-esophagus
-rectosigmoid junction
-peripheral nerves and autonomic nervous system
+retroperitoneum and peritoneum
+bronchus and lung
+other and unspecified parts of mouth
 rectum
 hematopoietic and reticuloendothelial systems
-small intestine
-bones, joints and articular cartilage of limbs
-retroperitoneum and peritoneum
+stomach
+base of tongue
+bladder
+lip
+hypopharynx
+floor of mouth
+cervix uteri
+uterus, nos
+colon
+other and ill-defined sites in lip, oral cavity and pharynx
+spinal cord, cranial nerves, and other parts of central nervous system
+gallbladder
+other and ill-defined sites
 prostate gland
+peripheral nerves and autonomic nervous system
+other and unspecified major salivary glands
+bones, joints and articular cartilage of limbs
+breast
+ovary
+corpus uteri
 adrenal gland
-other and unspecified male genital organs
+rectosigmoid junction
+esophagus
+tonsil
+liver and intrahepatic bile ducts
+bones, joints and articular cartilage of other and unspecified sites
+other endocrine glands and related structures
+eye and adnexa
+brain
+lymph nodes
+gum
+thyroid gland
+pancreas
+kidney

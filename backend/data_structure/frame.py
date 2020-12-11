@@ -38,11 +38,15 @@ class Frame:
         if len(self.datasets) == 2 and hasattr(self, 'pivot_binary_operation'):
             setattr(self.pivot_binary_operation, 'ds1', self.datasets[0])
             setattr(self.pivot_binary_operation, 'ds2', self.datasets[1])
+            return True
         elif len(self.datasets)==2 and hasattr(self, 'gmql_binary_operation'):
             setattr(self.gmql_binary_operation.ds1, 'ds1', self.datasets[0])
             setattr(self.gmql_binary_operation.ds2, 'ds2', self.datasets[1])
+            return True
         elif len(self.datasets)<2:
             return True
+        else:
+            return [AskBinary]
 
     def has_rows_col(self):
         from dialogue_manager import AskRowCol
@@ -96,6 +100,7 @@ class Frame:
             next_call = getattr(self, a)()
             if not next_call == True:
                 break
+        print('filled', next_call)
         return next_call
 
     def attributes(self):
