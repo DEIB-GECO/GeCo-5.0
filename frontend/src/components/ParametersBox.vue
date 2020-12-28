@@ -28,15 +28,15 @@ export default class Choice extends Vue {
   //     field: 'Marinara',
   //     values: ['a-value-like-13-a-value-like-13-a-value-like-13']
   //   }
-    // {
-    //   field: 'Marinara',
-    //   values: ['a-value-like-13-a-value-like-13-a-value-like-13']
-    // },
-    // {
-    //   field: 'Marinara',
-    //   values: ['a-value-like-13-a-value-like-13-a-value-like-13']
-    // }
-  ];
+  // {
+  //   field: 'Marinara',
+  //   values: ['a-value-like-13-a-value-like-13-a-value-like-13']
+  // },
+  // {
+  //   field: 'Marinara',
+  //   values: ['a-value-like-13-a-value-like-13-a-value-like-13']
+  // }
+  // ];
 
   created() {
     // this.setParametersList([
