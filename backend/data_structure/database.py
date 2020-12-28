@@ -36,7 +36,6 @@ class database:
  + " from dw.flatten_gecoagent where source in {} and dataset_name in {}".format(tuple(sources), tuple(datasets)))
         values = res.fetchall()
         self.table = pd.DataFrame(values, columns=res.keys())
-        print(self.table.head())
 
         for f in self.fields:
             res = list(set(self.table[f]))
