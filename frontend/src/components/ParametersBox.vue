@@ -64,5 +64,7 @@ export default class Choice extends Vue {
 
 .parameter_field {
   font-weight: bold;
+  overflow-wrap: anywhere;
+  max-width: 20vw;
 }
 </style>

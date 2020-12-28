@@ -122,6 +122,7 @@ export default class ChatInterface extends Vue {
   border-radius: 10px;
   margin-bottom: 10px;
   text-align: left;
+  overflow-wrap: anywhere;
 }
 
 .icon_container {

@@ -146,6 +146,21 @@
 - put all samples together
 - all regions in one sample
 
+## intent:clustering
+- k-means clustering
+- kmeans
+- k-means
+- cluster data
+- I want to perform clustering
+- cluster genes
+- do clustering
+- find clusters of data
+- find clusters
+- perform clustering
+- do clusters of the data
+- clusters
+- clustering
+
 
 ## intent:retrieve_annotations
 - annotation

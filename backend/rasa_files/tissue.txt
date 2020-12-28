@@ -1,53 +1,53 @@
-tonsil
-other and unspecified major salivary glands
-breast
-other and unspecified male genital organs
-other and unspecified parts of tongue
-connective, subcutaneous and other soft tissues
-other and unspecified parts of biliary tract
-hematopoietic and reticuloendothelial systems
-hypopharynx
-unknown
-gallbladder
-corpus uteri
-colon
-testis
-pancreas
-rectosigmoid junction
-small intestine
-other and unspecified parts of mouth
-cervix uteri
-oropharynx
-esophagus
-eye and adnexa
-retroperitoneum and peritoneum
-other endocrine glands and related structures
-lymph nodes
-bones, joints and articular cartilage of other and unspecified sites
-kidney
-other and ill-defined sites
-heart, mediastinum, and pleura
-bladder
 floor of mouth
-larynx
-prostate gland
-bronchus and lung
-palate
-thyroid gland
-stomach
-adrenal gland
-other and ill-defined sites in lip, oral cavity and pharynx
-skin
-liver and intrahepatic bile ducts
-meninges
-gum
-thymus
-rectum
-ovary
-peripheral nerves and autonomic nervous system
-bones, joints and articular cartilage of limbs
+eye and adnexa
+colon
+tonsil
 base of tongue
+adrenal gland
+corpus uteri
+thyroid gland
+small intestine
+bones, joints and articular cartilage of other and unspecified sites
+other and unspecified major salivary glands
+lymph nodes
+breast
+peripheral nerves and autonomic nervous system
+connective, subcutaneous and other soft tissues
+other endocrine glands and related structures
+hypopharynx
+stomach
+bladder
+other and ill-defined sites in lip, oral cavity and pharynx
+kidney
+bronchus and lung
+gum
+unknown
+other and ill-defined sites
+liver and intrahepatic bile ducts
+other and unspecified parts of mouth
+other and unspecified parts of biliary tract
+meninges
+pancreas
+heart, mediastinum, and pleura
+palate
+rectum
+hematopoietic and reticuloendothelial systems
 uterus, nos
-spinal cord, cranial nerves, and other parts of central nervous system
-brain
+skin
+retroperitoneum and peritoneum
+prostate gland
+cervix uteri
+larynx
+other and unspecified parts of tongue
+bones, joints and articular cartilage of limbs
+thymus
+ovary
+other and unspecified male genital organs
 lip
+esophagus
+spinal cord, cranial nerves, and other parts of central nervous system
+oropharynx
+testis
+rectosigmoid junction
+gallbladder
+brain
