@@ -16,58 +16,59 @@ def get_db_uri():
 db_string = get_db_uri()
 db = create_engine(db_string)
 
-annotation_fields = ["content_type", "assembly", "source"]
-experiment_fields = ['source', 'data_type', 'assembly', 'file_format', 'biosample_type', 'tissue', 'cell', 'disease', 'is_healthy', 'technique', 'feature', 'target']
+annotation_fields = ["content_type", "assembly", "source", 'dataset_name']
+experiment_fields = ['source', 'data_type', 'assembly', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
+fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
+sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
+datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10', 'grch38_tcga_mirna_expression_2019_10']
 
 
-
-#ann_db = AnnotationDB()
 class database:
     def __init__(self):
-        self.fields = ['source', 'data_type', 'assembly', 'file_format', 'biosample_type', 'tissue', 'cell', 'disease', 'is_healthy', 'technique', 'feature', 'target', 'content_type']
+        self.fields = fields
         self.get_all_values()
         #self.find_all_keys()
 
     def get_all_values(self):
         self.fields_names = []
         self.values = {}
-        res = db.engine.execute("select * from dw.flatten_gecoagent")
+        res = db.engine.execute("select item_id, " + ', '.join(fields)
+ + " from dw.flatten_gecoagent where source in {} and dataset_name in {}".format(tuple(sources), tuple(datasets)))
         values = res.fetchall()
         self.table = pd.DataFrame(values, columns=res.keys())
-        self.table = self.table[self.table['source'].isin(['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq'])]
+
         for f in self.fields:
-            if f!='source':
-                res = db.engine.execute("select {} from dw.flatten_gecoagent group by {}".format(f,f)).fetchall()
-                res = [i[0] for i in res]
-                if res!=[]:
-                    self.fields_names.append(f)
-                    self.values[f]= res
-                    setattr(self, (str(f) + '_db'), res)
+            res = list(set(self.table[f]))
+            if res!=[] and len(res)>1:
+                self.fields_names.append(f)
+                self.values[f]= res
+                setattr(self, (str(f) + '_db'), res)
+                with open('./rasa_files/'+f+'.txt', 'w') as f:
+                    for s in res:
+                        f.write(str(s) + '\n')
+                f.close()
             else:
-                self.fields_names.append('source')
-                self.values['source'] = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
-                setattr(self, 'source_db', ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq'])
+                self.table = self.table.drop(f,axis=1)
 
-
-    def find_all_keys(self):
-        keys = db.engine.execute(
-                "select item_id, key, value from dw.unified_pair_gecoagent").fetchall()
-        self.metadata = pd.DataFrame(keys, columns=['item_id','key','value'])
+        meta = db.engine.execute("select distinct(key) from dw.unified_pair_gecoagent group by key")
+        self.meta_schema = meta.fetchall()
 
 
 class DB:
     def __init__(self, fields, is_ann, all_db):
         self.is_ann = is_ann
-        #self.is_ann_gcm = 'true' if is_ann else 'false'
         self.is_ann_gcm = 'is_annotation=true' if is_ann else 'is_annotation=false'
-        self.fields = fields
+        #self.fields = fields
         self.db = all_db
         self.table = self.db.table.copy()
-        #self.metadata = self.db.metadata.copy()
-        self.table = self.table[self.table['is_annotation']==self.is_ann]
-        self.values = {x:set(self.table[x].values) for x in fields if len(set(self.table[x].values))>1}
+        #self.table = self.table[self.table['is_annotation']==self.is_ann]
+        self.fields = [i for i in self.table.columns.values if
+                       i != 'item_id' and len(list(set(self.table[i].values))) > 1]
+        self.values = {x:set(self.table[x].values) for x in fields if (x in self.table.columns.values) and len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
         #self.get_values()
+        self.meta_schema = self.db.meta_schema
 
     def get_values(self):
         self.fields_names = []
@@ -121,8 +122,6 @@ class DB:
         for f in gcm:
             self.table = self.table[self.table[f].isin(gcm[f])]
 
-
-
     def query_field(self, gcm):
         filter = ' and '.join(
             [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
@@ -157,22 +156,20 @@ class DB:
 
     def find_all_keys(self, filter, filter2={}):
         item_id = list(self.table['item_id'].values)
-        items = ','.join(str(i) for i in item_id)
-
+        #items = ','.join(str(i) for i in item_id)
         query = self.query_field(filter)
         if filter2!={}:
             query2 = self.query_key(filter2)
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(query, query2)).fetchall()
             keys = db.engine.execute(
                 "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({}) and {}".format(
-                    items, query2)).fetchall()
+                    query, query2)).fetchall()
         else:
             #keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
-
             keys = db.engine.execute(
                 "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(query)).fetchall()
-        #keys = {i[0]:i[1] for i in keys}
+
         self.metadata = pd.DataFrame(keys, columns=['item_id', 'key', 'value'])
         self.metadata = self.metadata[self.metadata['item_id'].isin(item_id)]
         set_keys = list(set(self.metadata['key']))
@@ -224,37 +221,20 @@ class DB:
         val = [i[0] for i in links]
         return val
 
-    def retrieve_metadata(self, gcm, filter2):
+    def find_regions(self,gcm,filter2):
+        ds_name = gcm['dataset_name'][0]
         query = self.query_field(gcm)
         if filter2 != {}:
             query2 = self.query_key(filter2)
             res = db.engine.execute(
-                "select * from dw.unified_pair_gecoagent where (item_id in (select item_id from dw.flatten_gecoagent where {})) and ({})".format(
+                "select * from rr.{} where (item_id in ({})) and ({}) limit 1".format(ds_name,
                     query, query2))
         else:
             res = db.engine.execute(
-                "select * from dw.unified_pair_gecoagent where (item_id in (select item_id from dw.flatten_gecoagent where {}))".format(
+                "select * from rr.{} where (item_id in ({})) limit 1".format(ds_name,
                     query))
-        values = res.fetchall()
-        x = pd.DataFrame(values, columns=res.keys())
-        return x
-
-    def retrieve_meta(self,gcm,filter2):
-        query = self.query_field(gcm)
-        if filter2!={}:
-            query2 = self.query_key(filter2)
-            res = db.engine.execute(
-                "select * from dw.unified_pair_gecoagent where (item_id in ({})) and ({})".format(
-                    query, query2))
-        else:
-            res = db.engine.execute(
-                "select * from dw.unified_pair_gecoagent where (item_id in ({}))".format(
-                    query))
-        values = res.fetchall()
-        meta = pd.DataFrame(values, columns=res.keys())
-        return meta
-
-
+        self.region_schema = res.keys()
+        return self.region_schema
     '''
      def update1(self, gcm):
         gcm_source = "source in ('tcga','encode','roadmap epigenomics','1000 genomes','refseq')"

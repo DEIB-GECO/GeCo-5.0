@@ -53,7 +53,7 @@ class ProjectRegionS3Action(AbstractAction):
 			new = {'operation': ArithmeticOperation.SUM.parameters(op1=self.status['project_region']['op1'])}
 			self.context.payload.update('project_region', new)
 			print(self.status['project_region'])
-			self.context.add_bot_msg(Utils.chat_message("Please, insert the value or the region  you want to add"))
+			self.context.add_bot_msg(Utils.chat_message("Please, insert the value or the region you want to add"))
 			return ProjectRegionS4Action(self.context), False
 		elif message=='-':
 			new = {'operation': ArithmeticOperation.SUBTRACT.parameters(op1=self.status['project_region']['op1'])}

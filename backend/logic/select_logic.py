@@ -45,8 +45,8 @@ class SelectLogic:
 
     def run(self):
         query = self.query_field()
-        print('here')
-        res = db.engine.execute("select * from rr.gene_expression_hg19 where item_id in ({})".format(query))
+        print("select * from rr.{} where item_id in ({})".format(self.ds.fields['dataset_name'][0],query))
+        res = db.engine.execute("select * from rr.{} where item_id in ({})".format(self.ds.fields['dataset_name'][0],query))
         values = res.fetchall()
         reg = pd.DataFrame(values, columns=res.keys())
         print(reg.head())

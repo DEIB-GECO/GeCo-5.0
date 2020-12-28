@@ -14,10 +14,13 @@ class NewDataset(AbstractAction):
         if intent=='affirm':
             return StartAction(self.context), True
         elif intent=='deny':
-            if len(self.context.data_extraction.datasets)%2==0:
-                return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
+            if self.context.payload.back != PivotAction:
+                if len(self.context.data_extraction.datasets)%2==0:
+                    return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
+                else:
+                    return PivotAction(self.context), True
             else:
-                return PivotAction(self.context), True
+                return DataAnalysis(self.context), True
         else:
             self.context.add_bot_msgs([Utils.chat_message(messages.not_understood)])
             return None, False

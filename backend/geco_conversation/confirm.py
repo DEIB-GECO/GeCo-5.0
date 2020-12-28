@@ -14,8 +14,8 @@ class Confirm(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
-        if self.context.payload.back!= MetadataAction:
-            return RenameAction(self.context, MetadataAction(self.context)), False
+        if self.context.payload.back!= RegionAction:
+            return DSNameAction(self.context), True
             #if intent == "affirm":
             #    self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
              #   return RenameAction(self.context, MetadataAction(self.context)), False
@@ -29,7 +29,7 @@ class Confirm(AbstractAction):
                     del(fields['metadata'])
                 del(fields['name'])
                 #urls = self.context.payload.database.download_filter_meta(fields,self.status['fields']['metadata'])
-                urls = []
+                #urls = []
                 list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
                 list_param.update({'metadata': '{}: {}'.format(x, self.status['metadata'][x]) for x in
                                    self.status['metadata']})
@@ -47,7 +47,7 @@ class Confirm(AbstractAction):
                     self.context.workflow.add(Select(ds, metadata=self.status['metadata']))
                 else:
                     self.context.workflow.add(Select(ds))
-                self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param),Utils.workflow('Data selection', True, urls)])
+                self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param)])
                 if len(self.context.data_extraction.datasets)%2==0:
                     return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
                 else:

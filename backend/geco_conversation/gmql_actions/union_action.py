@@ -1,4 +1,3 @@
-from geco_conversation.pivot_action import PivotAction
 from geco_conversation import *
 
 class UnionAction(AbstractAction):

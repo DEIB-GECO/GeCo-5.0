@@ -9,7 +9,7 @@ class MetadataAction(AbstractAction):
         return [Utils.chat_message(helpMessages.metadata_help)]
 
     def on_enter(self):
-        from .confirm import Confirm
+        from .region_action import RegionAction
         self.context.payload.insert('metadata', {})
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
         keys = self.context.payload.database.find_all_keys(gcm_filter)
@@ -21,16 +21,14 @@ class MetadataAction(AbstractAction):
             return None, False
         else:
             self.context.payload.back = MetadataAction
-            return Confirm(self.context), True
+            return RegionAction(self.context), True
 
     def logic(self, message, intent, entities):
-        from .confirm import Confirm
+        from .region_action import RegionAction
         self.context.payload.back = MetadataAction
 
         if intent == 'affirm':
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
-            keys = self.context.payload.database.find_all_keys(gcm_filter)
-            self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
             list_param = {k: self.status['fields'][k] for k in self.status['fields']}
 
             if len(self.status['available_keys']) > 1:
@@ -52,10 +50,10 @@ class MetadataAction(AbstractAction):
                                Utils.param_list(list_param)])
                     return RangeValueAction(self.context), False
             else:
-                return Confirm(self.context), True
+                return RegionAction(self.context), True
 
         elif intent == 'deny':
-            return Confirm(self.context), True
+            return RegionAction(self.context), True
 
         else:
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k != 'name'}

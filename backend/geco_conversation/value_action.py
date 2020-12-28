@@ -10,10 +10,6 @@ class ValueAction(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
-        if self.context.payload.back == AnnotationAction:
-            available_fields = annotation_fields
-        elif self.context.payload.back == ExperimentAction:
-            available_fields = experiment_fields
 
         request_field = self.status['field'][-1]
         db = self.context.payload.database.values[request_field]
@@ -21,7 +17,7 @@ class ValueAction(AbstractAction):
 
         temp = self.status.copy()
         for (k, v) in temp.items():
-            if k in available_fields and k!='is_healthy':
+            if k in self.context.payload.database.fields and k!='is_healthy':
                 self.context.payload.replace(k, [x for x in v if
                                                  x in self.context.payload.database.values[k]])
                 if len(self.status[k]) == 0:
@@ -36,15 +32,17 @@ class ValueAction(AbstractAction):
                 self.context.payload.insert('is_healthy', ['false'])
 
 
-            gcm_filter = {k: v for (k, v) in self.status.items() if (k in available_fields)}
-            list_param = {x: x for x in self.context.payload.database.fields_names}
-
+            gcm_filter = {k: v for (k, v) in self.status.items() if (k in self.context.payload.database.fields)}
+            choices = {x: x for x in self.context.payload.database.fields_names}
+            list_param = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
+            print(list_param)
+            print('###FIELDS####', self.context.payload.database.fields)
             if len(gcm_filter) > 0:
                 self.context.payload.database.update(gcm_filter)
-
+                list_param = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
             self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
-                    Utils.choice('Available fields', list_param),
-                    Utils.param_list({k: v for (k, v) in self.status.items() if k in available_fields})] + \
+                    Utils.choice('Available fields', choices),
+                    Utils.param_list({k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields})] + \
                    Utils.create_piecharts(self.context,gcm_filter))
             return FieldAction(self.context), False
 
@@ -60,27 +58,63 @@ class ValueAction(AbstractAction):
                     else:
                         self.context.payload.insert(request_field, [given_value[i]])
 
-            gcm_filter = {k: v for (k, v) in self.status.items() if k in available_fields}
+            gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
             if len(gcm_filter) > 0:
                 self.context.payload.database.update(gcm_filter)
             list_param = {x: x for x in self.context.payload.database.fields_names}
 
             if len(list_param) > 0:
+
                 self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
                         Utils.choice('Available fields', list_param), Utils.param_list(
-                        {k: v for (k, v) in self.status.items() if (k in available_fields) and (any(elem in db for elem in v))})] + Utils.create_piecharts(self.context,gcm_filter))
+                        {k: v for (k, v) in self.status.items() if (k in self.context.payload.database.fields)})] + Utils.create_piecharts(self.context,gcm_filter))
                 return FieldAction(self.context), False
             else:
+
                 from .confirm import Confirm
-                fields = {x: self.status[x] for x in available_fields if x in self.status}
+                fields = {x: self.status[x] for x in self.context.payload.database.fields if x in self.status}
                 self.context.payload.clear()
                 self.context.payload.insert('fields', fields)
                 self.context.add_bot_msgs([Utils.param_list(fields)])
-                return RenameAction(self.context, MetadataAction(self.context)), True
+                return DSNameAction(self.context), True
+                #return RenameAction(self.context, MetadataAction(self.context)), True
 
         else:
+
             list_param = {x: x for x in self.context.payload.database.values[request_field]}
             choice = [True if len(list_param) > 10 else False]
             self.context.add_bot_msgs([Utils.chat_message("The {} {} not valid, insert a valid one".format(request_field, given_value)),
                     Utils.choice(request_field, list_param, show_search=choice)])
+
+            return None, False
+
+class DSNameAction(AbstractAction):
+    def help_message(self):
+        return [Utils.chat_message(helpMessages.value_help)]
+
+    def on_enter(self):
+        if len(set(self.context.payload.database.table['dataset_name']))==1:
+            fields = self.status['fields']
+            fields.update({'dataset_name':list(set(self.context.payload.database.table['dataset_name']))})
+            self.context.payload.clear()
+            self.context.payload.insert('fields', fields)
+            self.context.add_bot_msgs([Utils.param_list(fields)])
+            return RenameAction(self.context, MetadataAction(self.context)), True
+        else:
+            self.context.add_bot_msgs([Utils.chat_message('Which dataset do you want among these?'),
+                                       Utils.choice('Datasets', {i:i for i in list(set(self.context.payload.database.table['dataset_name']))})])
+            return None, False
+
+    def logic(self, message, intent, entities):
+        if message in list(set(self.context.payload.database.table['dataset_name'])):
+            ds_name = message
+            fields = self.status['fields']
+            fields.update({'dataset_name': ds_name})
+            self.context.payload.clear()
+            self.context.payload.insert('fields', fields)
+            self.context.add_bot_msgs([Utils.param_list(fields)])
+            return RenameAction(self.context, MetadataAction(self.context)), True
+        else:
+            self.context.add_bot_msgs([Utils.chat_message('Sorry, I didn\'t understand.\nWhich dataset do you want among these?'),
+                                       Utils.choice('Datasets', {i:i for i in list(set(self.context.payload.database.table['dataset_name']))})])
             return None, False

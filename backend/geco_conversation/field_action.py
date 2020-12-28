@@ -34,20 +34,15 @@ class FieldAction(AbstractAction):
         from .confirm import Confirm
         from .annotation_action import AnnotationAction
         from .experiment_action import ExperimentAction
-        from .value_action import ValueAction
+        from .value_action import ValueAction, DSNameAction
         from .change_add_action import ChangeAddAction
 
-        if self.context.payload.back == AnnotationAction:
-            available_fields = annotation_fields
-        else:
-            available_fields = experiment_fields
 
-        gcm_filter = {k: v for (k, v) in self.status.items() if k in available_fields}
+        gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
         self.check_status()
         samples = self.filter(gcm_filter)
         if samples > 0:
             if intent != 'deny':
-                print('a')
                 missing_fields = list(set(self.context.payload.database.fields_names).difference(set(self.status.keys())))
                 field = entities['field'] if 'field' in entities else [message.strip().lower()]
 
@@ -90,18 +85,18 @@ class FieldAction(AbstractAction):
                     return ValueAction(self.context), False
 
                 else:
-                    print('we')
                     list_param = {x: x for x in missing_fields}
                     self.context.add_bot_msgs([Utils.chat_message(messages.wrong_choice),
                             Utils.choice('Available fields', list_param)])
                     return None, False
 
-            fields = {x: self.status[x] for x in available_fields if x in self.status}
+            fields = {x: self.status[x] for x in self.context.payload.database.fields if x in self.status}
 
             self.context.payload.clear()
             self.context.payload.insert('fields', fields)
             self.context.add_bot_msgs([Utils.param_list(fields)])
-            return RenameAction(self.context, MetadataAction(self.context)), True
+            return DSNameAction(self.context), True
+            #return RenameAction(self.context, MetadataAction(self.context)), True
         else:
             self.context.payload.clear()
             self.context.add_bot_msgs([Utils.chat_message(messages.no_exp_found)])

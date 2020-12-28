@@ -20,9 +20,9 @@ class RenameAction(AbstractAction):
         else:
             name = "DS_" + str(len(self.context.data_extraction.datasets) +1 )
 
-        urls = self.context.payload.database.download(self.status['fields'])
+        #urls = self.context.payload.database.download(self.status['fields'])
         self.context.payload.update('fields', {'name':name})
-        list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
+        list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x not in ['metadata','regions']}
         self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),Utils.chat_message(messages.download),
-                Utils.param_list(list_param), Utils.workflow('Data selection', True, urls)])
+                Utils.param_list(list_param)])
         return self.next, True

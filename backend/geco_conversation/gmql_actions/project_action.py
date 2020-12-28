@@ -1,5 +1,5 @@
 from geco_conversation import *
-
+from data_structure.dataset import Field
 
 class ProjectKeepMetaAction(AbstractAction):
 

@@ -21,7 +21,7 @@ class ExperimentAction(AbstractAction):
     def check_status(self):
         temp = self.status.copy()
         for (k, v) in temp.items():
-            if k in experiment_fields:
+            if k in self.context.payload.database.fields:
                 self.context.payload.replace(k, [x for x in v if
                                                  x in self.context.payload.database.values[k]])
                 if len(self.status[k]) == 0:
@@ -37,11 +37,12 @@ class ExperimentAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm
+        from .value_action import DSNameAction
 
         self.context.payload.back = ExperimentAction
         self.is_healthy()
         self.check_status()
-        gcm_filter = {k: v for (k, v) in self.status.items() if k in experiment_fields}
+        gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
         samples = self.filter(gcm_filter)
 
         #Find fields that are not already selected by the user
@@ -65,7 +66,8 @@ class ExperimentAction(AbstractAction):
                     self.context.payload.clear()
                     self.context.payload.insert('fields', fields)
                     self.context.add_bot_msgs([Utils.param_list(fields)])
-                    return RenameAction(self.context, MetadataAction(self.context)), True
+                    return DSNameAction(self.context), True
+                    #return RenameAction(self.context, MetadataAction(self.context)), True
         else:
             for x in experiment_fields:
                 if x in self.status:

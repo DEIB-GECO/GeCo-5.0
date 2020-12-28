@@ -15,7 +15,7 @@ class AnnotationAction(AbstractAction):
     def check_status(self):
         temp = self.status.copy()
         for (k, v) in temp.items():
-            if k in annotation_fields:
+            if k in self.context.payload.database.fields:
                 self.context.payload.replace(k, [x for x in v if
                                                  x in self.context.payload.database.values[k]])
                 if len(self.status[k]) == 0:
@@ -31,9 +31,10 @@ class AnnotationAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm
+        from .value_action import DSNameAction
         self.context.payload.back = AnnotationAction
         self.check_status()
-        gcm_filter = {k: v for (k, v) in self.status.items() if k in annotation_fields}
+        gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
         samples = self.filter(gcm_filter)
 
         missing_fields = self.context.payload.database.fields_names
@@ -43,14 +44,15 @@ class AnnotationAction(AbstractAction):
             if len(list_param)!=0:
                 self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?"),
                         Utils.choice('Available fields', list_param, show_help=True, helpIconContent=helpMessages.fields_help),
-                        Utils.param_list({k:v for (k,v) in self.status.items() if k in annotation_fields})] + Utils.create_piecharts(self.context,gcm_filter))
+                        Utils.param_list({k:v for (k,v) in self.status.items() if k in self.context.database.fields})] + Utils.create_piecharts(self.context,gcm_filter))
                 return FieldAction(self.context), False
             else:
-                fields = {x: self.status[x] for x in annotation_fields if x in self.status}
+                fields = {x: self.status[x] for x in self.context.payload.database.fields if x in self.status}
                 self.context.payload.clear()
                 self.context.payload.insert('fields', fields)
                 self.context.add_bot_msgs([Utils.param_list(fields)])
-                return RenameAction(self.context, MetadataAction(self.context)), True
+                return DSNameAction(self.context), True
+                #return RenameAction(self.context, MetadataAction(self.context)), True
 
         else:
             for x in annotation_fields:
