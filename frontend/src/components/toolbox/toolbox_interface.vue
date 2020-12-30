@@ -39,6 +39,7 @@ import MetadataExploration from './tools/metadata_exploration/metadata_explorati
 import FieldExplorer from './tools/field_explorer.vue';
 import QueryViewer from './tools/query_viewer.vue';
 import DataVisualization from './tools/data_visualization/data_visualization.vue';
+import TableViewer from './tools/table_viewer.vue';
 
 const toolsNamespace = namespace('tools');
 
@@ -48,7 +49,8 @@ const toolsNamespace = namespace('tools');
     metadata: MetadataExploration,
     field: FieldExplorer,
     query: QueryViewer,
-    dataviz: DataVisualization
+    dataviz: DataVisualization,
+    tableViewer: TableViewer
   }
 })
 export default class ToolboxInterface extends Vue {

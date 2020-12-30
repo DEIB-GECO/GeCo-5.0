@@ -60,6 +60,7 @@ const parametersStore = namespace('gecoAgent/parametersBox');
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
 const dataVizStore = namespace('gecoAgent/DataViz');
 const processStore = namespace('gecoAgent/process');
+const tableStore = namespace('gecoAgent/TableViewer');
 
 @Component({
   components: {
@@ -95,6 +96,7 @@ export default class GecoAgent extends Vue {
   @processStore.Mutation('parseJsonResponse') processParser!: (
     newProcess: ProcessPanePayload
   ) => void;
+  @tableStore.Mutation setTable!: (tablePayload: TablePayload) => void;
   // @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
 
   @processStore.Mutation resetProcess!: () => void;
@@ -133,7 +135,8 @@ export default class GecoAgent extends Vue {
     tools_setup: this.addRemoveTools,
     data_summary: this.setCharts,
     dataset_download: this.updateFileToDownload,
-    workflow: this.processParser
+    workflow: this.processParser,
+    table: this.setTable
   };
 
   updateFileToDownload(payload: any) {
