@@ -61,6 +61,12 @@ class PivotLogic:
         pivot = temp_reg.pivot_table(index=row, columns=col,  values=self.op.value)
         print('pivot')
         print(pivot)
+        print('index')
+        print(pivot.index)
+        print('col')
+        print(pivot.columns)
+        pivot.columns= pivot.columns.droplevel(0)
+        #pivot.index= pivot.index.droplevel(0)
         pivot.to_csv('pivot.csv')
         self.op.result = pivot
         self.op.executed = True
@@ -78,4 +84,9 @@ class PivotLogic:
                     'import pandas as pd\n'+
                     'table = pd.read_csv("pivot.csv")'+
                     ']},')
+        f.close()
+
+        with open('python_script.py', 'a') as f:
+            f.write('import pandas as pd\n'+
+                    'table = pd.read_csv("pivot.csv")')
         f.close()

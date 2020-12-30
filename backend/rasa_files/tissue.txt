@@ -1,53 +1,53 @@
-floor of mouth
-eye and adnexa
-colon
-tonsil
-base of tongue
-adrenal gland
 corpus uteri
-thyroid gland
-small intestine
-bones, joints and articular cartilage of other and unspecified sites
-other and unspecified major salivary glands
-lymph nodes
-breast
-peripheral nerves and autonomic nervous system
-connective, subcutaneous and other soft tissues
-other endocrine glands and related structures
-hypopharynx
-stomach
-bladder
-other and ill-defined sites in lip, oral cavity and pharynx
-kidney
-bronchus and lung
-gum
-unknown
-other and ill-defined sites
-liver and intrahepatic bile ducts
-other and unspecified parts of mouth
-other and unspecified parts of biliary tract
-meninges
-pancreas
-heart, mediastinum, and pleura
-palate
-rectum
-hematopoietic and reticuloendothelial systems
-uterus, nos
-skin
-retroperitoneum and peritoneum
-prostate gland
-cervix uteri
-larynx
-other and unspecified parts of tongue
-bones, joints and articular cartilage of limbs
-thymus
-ovary
-other and unspecified male genital organs
-lip
 esophagus
+small intestine
+peripheral nerves and autonomic nervous system
+kidney
+bladder
+base of tongue
+bronchus and lung
+other and unspecified parts of mouth
+other and unspecified male genital organs
+adrenal gland
+other and ill-defined sites in lip, oral cavity and pharynx
+gum
+hematopoietic and reticuloendothelial systems
+cervix uteri
+tonsil
+thymus
+stomach
+prostate gland
+rectum
+other and unspecified parts of tongue
+colon
+pancreas
+lip
+hypopharynx
+other and unspecified parts of biliary tract
+lymph nodes
+retroperitoneum and peritoneum
+liver and intrahepatic bile ducts
+bones, joints and articular cartilage of other and unspecified sites
+palate
+other and unspecified major salivary glands
+skin
+breast
+other and ill-defined sites
+eye and adnexa
+meninges
+heart, mediastinum, and pleura
+connective, subcutaneous and other soft tissues
+uterus, nos
+rectosigmoid junction
+other endocrine glands and related structures
+thyroid gland
 spinal cord, cranial nerves, and other parts of central nervous system
 oropharynx
-testis
-rectosigmoid junction
+ovary
+unknown
 gallbladder
+larynx
+bones, joints and articular cartilage of limbs
+floor of mouth
+testis
 brain

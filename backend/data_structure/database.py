@@ -126,8 +126,8 @@ class DB:
         filter = ' and '.join(
             [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
                                  gcm.items()])
-
-        query= "select item_id from dw.flatten_gecoagent where {} group by item_id".format(filter)
+        query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id where {}".format(filter)
+        #query= "select item_id from dw.flatten_gecoagent where {}".format(filter)
         return query
 
     def query_key(self, gcm):
@@ -135,9 +135,9 @@ class DB:
         i = 1
         for k in gcm:
             if i<len(gcm):
-                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id) and ".format(k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')
+                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {}) and ".format(k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')
             else:
-                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {} group by item_id)".format(k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')
+                query += "item_id in (select item_id from dw.unified_pair_gecoagent where key='{}' and value in {})".format(k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')
             i+=1
         return query
 
@@ -167,8 +167,10 @@ class DB:
         else:
             #keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
+            #keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(query)).fetchall()
             keys = db.engine.execute(
-                "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(query)).fetchall()
+                "select rr.item_id, rr.key, rr.value from dw.unified_pair_gecoagent as rr {}".format(
+                    query)).fetchall()
 
         self.metadata = pd.DataFrame(keys, columns=['item_id', 'key', 'value'])
         self.metadata = self.metadata[self.metadata['item_id'].isin(item_id)]
@@ -178,7 +180,11 @@ class DB:
 
     def find_keys(self, filter, string):
         query = self.query_field(filter)
-        keys = db.engine.execute("select key from dw.unified_pair_gecoagent where key like '%{}%' and item_id in ({}) group by key".format(string, query)).fetchall()
+        #keys = db.engine.execute("select key from dw.unified_pair_gecoagent where key like '%{}%' and item_id in ({}) group by key".format(string, query)).fetchall()
+        keys = db.engine.execute(
+            "select rr.key from dw.unified_pair_gecoagent as rr {} where key like '%{}%' group by key".format(
+                query, string)).fetchall()
+
         keys = [i[0] for i in keys]
         return keys
 
@@ -187,6 +193,7 @@ class DB:
         query = self.query_field(filter)
         values = db.engine.execute(
             "select distinct(key), value  from dw.unified_pair_gecoagent where item_id in ({}) and value like '%{}%'".format(query, string)).fetchall()
+
         val = [{"key":i[0],"value":i[1]} for i in values]
         return val
 
@@ -198,8 +205,11 @@ class DB:
                 "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and {} and key in ('{}') group by value".format(
                     query, query2, str(key))).fetchall()
         else:
+            #values = db.engine.execute("select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(query, str(key))).fetchall()
             values = db.engine.execute(
-                "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(query, str(key))).fetchall()
+                "select rr.value, count(distinct(rr.item_id)) from dw.unified_pair_gecoagent as rr {} where rr.key in ('{}') group by value".format(
+                    query, str(key))).fetchall()
+
         val = [{"value": i[0], "count": i[1]} for i in values]
         number = True
         for i in values:
@@ -230,9 +240,9 @@ class DB:
                 "select * from rr.{} where (item_id in ({})) and ({}) limit 1".format(ds_name,
                     query, query2))
         else:
-            res = db.engine.execute(
-                "select * from rr.{} where (item_id in ({})) limit 1".format(ds_name,
-                    query))
+            #res = db.engine.execute("select * from rr.{} where (item_id in ({})) limit 1".format(ds_name,query))
+            res = db.engine.execute("select rr.* from rr.{} as rr {} limit 1".format(ds_name, query))
+
         self.region_schema = res.keys()
         return self.region_schema
     '''

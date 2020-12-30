@@ -112,5 +112,22 @@ class Utils(object):
             return {"type": "workflow",
                     "payload": {"state": state}}
 
+    def table_viz(show, df, show_index=True, order_by=None):
+        print(df.columns)
+        print(df.index)
+        data = df.to_dict()
+        #print(data.items()[0:2])
+
+        return {"type": "table",
+                    "show": show,
+                    "payload": {
+                            "data":data,
+                        "options":{
+                                "show_index": show_index
+                                #"order_by": string
+                        }
+                }}
+
+
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))

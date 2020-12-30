@@ -26,8 +26,8 @@ class SelectLogic:
     def query_field(self):
         filter = ' and '.join(['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
                                  self.op.depends_on.fields.items()if k!='metadata'])
-
-        query = "select distinct(item_id) from dw.flatten_gecoagent where {} group by item_id".format(filter)
+        query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id where {}".format(filter)
+        #query = "select distinct(item_id) from dw.flatten_gecoagent where {} group by item_id".format(filter)
         return query
 
     def query_key(self):
@@ -45,8 +45,8 @@ class SelectLogic:
 
     def run(self):
         query = self.query_field()
-        print("select * from rr.{} where item_id in ({})".format(self.ds.fields['dataset_name'][0],query))
-        res = db.engine.execute("select * from rr.{} where item_id in ({})".format(self.ds.fields['dataset_name'][0],query))
+        print("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
+        res = db.engine.execute("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
         values = res.fetchall()
         reg = pd.DataFrame(values, columns=res.keys())
         print(reg.head())
@@ -55,11 +55,11 @@ class SelectLogic:
         if hasattr(self.op.depends_on.fields, 'metadata'):
              query2 = self.query_key()
              res = db.engine.execute(
-                 "select * from dw.unified_pair_gecoagent where (item_id in ({})) and ({})".format(
+                 "select rr.* from dw.unified_pair_gecoagent as rr {} where ({})".format(
                      query, query2))
         else:
              res = db.engine.execute(
-                 "select * from dw.unified_pair_gecoagent where (item_id in ({}))".format(
+                 "select rr.* from dw.unified_pair_gecoagent as rr {}".format(
                      query))
         values = res.fetchall()
         meta = pd.DataFrame(values, columns=res.keys())
