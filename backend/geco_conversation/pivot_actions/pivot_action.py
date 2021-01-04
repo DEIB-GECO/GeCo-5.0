@@ -31,7 +31,7 @@ class PivotAction(AbstractAction):
 
             value = message
             self.context.payload.insert('region_value', [value])
-            self.context.add_bot_msg(Utils.chat_message(messages.value_region_message))
+
             if 'region_row' in self.status:
                 self.context.workflow.add(Pivot(self.context.workflow[-1], region_row=self.status['region_row'],
                                             metadata_column=['item_id'], region_value=self.status['region_value']))
@@ -41,9 +41,11 @@ class PivotAction(AbstractAction):
             #self.context.workflow.add(
             #    Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
             self.context.workflow.run(self.context.workflow[-1])
-            #self.context.add_bot_msgs([Utils.chat_message('Sorry not implemented yet')])
+            print(self.context.workflow[-1].result.head())
+            self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset),Utils.table_viz('Pivot',self.context.workflow[-1].result)])
+            #print(Utils.table_viz('Pivot',self.context.workflow[-1].result))
             self.context.payload.clear()
-            return NewDataset(self.context), True
+            return NewDataset(self.context), False
 
         return None, False
 
