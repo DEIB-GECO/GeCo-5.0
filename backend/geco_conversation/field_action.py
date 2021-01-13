@@ -47,7 +47,6 @@ class FieldAction(AbstractAction):
                 field = entities['field'] if 'field' in entities else [message.strip().lower()]
 
                 if field[0] in missing_fields and (field[0] != 'is_healthy'):
-                    print('b')
                     if 'field' in self.status:
                         #old = self.status['field'].copy()
                         #self.status['field'].append(field[0])

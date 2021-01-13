@@ -4,6 +4,8 @@ from geco_utilities import messages, helpMessages
 from workflow.gmql import *
 from workflow.pivot import *
 from workflow.clustering import *
+from workflow.pca import *
+from workflow.scatter import *
 from .abstract_action import AbstractAction
 from .metadata_action import MetadataAction
 from .region_action import RegionAction

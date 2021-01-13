@@ -1,6 +1,14 @@
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV
 from sklearn import *
+
+class KMeansRes:
+    def __init__(self, values, kmeans_fit, labels):
+        self.values = values
+        self.kmeans_fit = kmeans_fit
+        self.labels = labels
+
 class KMeansLogic:
     def __init__(self, kmeans):
         self.op = kmeans
@@ -15,13 +23,15 @@ class KMeansLogic:
 
     def run(self):
         if not self.tuning:
-            kmeans = KMeans(n_clusters=self.n_clust).fit(self.ds.values)
-            self.op.result = kmeans
+            kmeans = KMeans(n_clusters=self.n_clust)
+            kmeans_fit = kmeans.fit(self.ds.values)
+            label =  kmeans.fit_predict(self.ds.values)
+            self.op.result = KMeansRes(self.ds.values, kmeans_fit, label)
         else:
 
             def silhouette_score(estimator, X):
                 clusters = estimator.fit_predict(self.ds.values)
-                # print(X)
+                #print(X)
                 score = metrics.silhouette_score(self.ds.values, clusters)
                 return score
 
@@ -31,7 +41,10 @@ class KMeansLogic:
                                   param_grid=param_grid,
                                   scoring=silhouette_score)
             grid = search.fit(self.ds.values)
-            self.op.result = grid.best_estimator_.fit(self.ds.values)
+            kmeans = grid.best_estimator_
+            kmeans_fit = kmeans.fit(self.ds.values)
+            label = kmeans.fit_predict(self.ds.values)
+            self.op.result = KMeansRes(self.ds.values, kmeans_fit, label)
         self.op.executed = True
         self.write()
 

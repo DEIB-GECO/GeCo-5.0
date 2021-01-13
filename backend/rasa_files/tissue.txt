@@ -1,53 +1,53 @@
-corpus uteri
-esophagus
-small intestine
-peripheral nerves and autonomic nervous system
-kidney
-bladder
-base of tongue
-bronchus and lung
-other and unspecified parts of mouth
-other and unspecified male genital organs
-adrenal gland
-other and ill-defined sites in lip, oral cavity and pharynx
-gum
-hematopoietic and reticuloendothelial systems
-cervix uteri
-tonsil
-thymus
-stomach
 prostate gland
-rectum
-other and unspecified parts of tongue
-colon
-pancreas
-lip
-hypopharynx
-other and unspecified parts of biliary tract
-lymph nodes
 retroperitoneum and peritoneum
-liver and intrahepatic bile ducts
-bones, joints and articular cartilage of other and unspecified sites
-palate
-other and unspecified major salivary glands
-skin
-breast
+uterus, nos
+bladder
+other endocrine glands and related structures
 other and ill-defined sites
-eye and adnexa
+breast
+unknown
+other and unspecified parts of mouth
+stomach
+lymph nodes
+base of tongue
+gum
+gallbladder
+other and unspecified parts of biliary tract
+bronchus and lung
+esophagus
+bones, joints and articular cartilage of other and unspecified sites
+thyroid gland
+oropharynx
+other and unspecified parts of tongue
+rectum
+floor of mouth
 meninges
+corpus uteri
+bones, joints and articular cartilage of limbs
+spinal cord, cranial nerves, and other parts of central nervous system
+tonsil
+other and unspecified male genital organs
+larynx
+lip
+ovary
+cervix uteri
 heart, mediastinum, and pleura
 connective, subcutaneous and other soft tissues
-uterus, nos
-rectosigmoid junction
-other endocrine glands and related structures
-thyroid gland
-spinal cord, cranial nerves, and other parts of central nervous system
-oropharynx
-ovary
-unknown
-gallbladder
-larynx
-bones, joints and articular cartilage of limbs
-floor of mouth
 testis
+liver and intrahepatic bile ducts
+other and ill-defined sites in lip, oral cavity and pharynx
+rectosigmoid junction
 brain
+hypopharynx
+skin
+pancreas
+eye and adnexa
+small intestine
+adrenal gland
+hematopoietic and reticuloendothelial systems
+palate
+other and unspecified major salivary glands
+peripheral nerves and autonomic nervous system
+thymus
+colon
+kidney

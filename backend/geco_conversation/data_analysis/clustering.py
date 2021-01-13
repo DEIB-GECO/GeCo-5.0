@@ -39,5 +39,7 @@ class NumClusters(AbstractAction):
             self.max = int(''.join(filter(str.isdigit, message)))
             self.context.add_bot_msg(Utils.chat_message("Ok, I will perform K-Means clustering using parameter tuning trying many cluster numbers between {} and {}.".format(self.min,self.max)))
             self.context.workflow.add(KMeans(self.context.workflow[-1], tuning=True, min=self.min, max=self.max))
+            self.context.workflow.add(PCA(self.context.workflow[-1], 2))
+            self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
             self.context.workflow.run(self.context.workflow[-1])
             return None, False
