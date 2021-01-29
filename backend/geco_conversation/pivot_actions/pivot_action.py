@@ -31,21 +31,8 @@ class PivotAction(AbstractAction):
 
             value = message
             self.context.payload.insert('region_value', [value])
+            return Labels(self.context), True
 
-            if 'region_row' in self.status:
-                self.context.workflow.add(Pivot(self.context.workflow[-1], region_row=self.status['region_row'],
-                                            metadata_column=['item_id'], region_value=self.status['region_value']))
-            elif 'metadata_row' in self.status:
-                self.context.workflow.add(Pivot(self.context.workflow[-1], metadata_row=['item_id'],
-                                                region_column=self.status['region_column'], region_value=self.status['region_value']))
-            #self.context.workflow.add(
-            #    Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
-            self.context.workflow.run(self.context.workflow[-1])
-            print(self.context.workflow[-1].result.head())
-            self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset),Utils.table_viz('Pivot',self.context.workflow[-1].result)])
-            #print(Utils.table_viz('Pivot',self.context.workflow[-1].result))
-            self.context.payload.clear()
-            return NewDataset(self.context), False
 
         return None, False
 
@@ -93,3 +80,87 @@ class MetaRow(AbstractAction):
                                                     {i: i for i in self.context.payload.database.region_schema})])
 
             return PivotAction(self.context), False
+
+class Labels(AbstractAction):
+    def help_message(self):
+        return [Utils.chat_message(messages.union_help)]
+
+    def on_enter(self):
+        self.context.add_bot_msg(Utils.chat_message('Do you want to add some labels from metadata or region data?'))
+        return None, False
+
+    def logic(self, message, intent, entities):
+        if intent!='deny' and 'other_meta' not in self.status:
+                self.context.payload.insert('other_meta',None)
+                self.context.add_bot_msg(Utils.chat_message('Do you want to add a label to the samples? Choose one in the right pane'))
+                return MetaLabels(self.context), False
+        if intent!='deny' and 'other_region' not in self.status:
+            others = message.split(';')
+            self.context.payload.insert('other_region', others)
+            print(others)
+        #elif 'other_region' not in self.status:
+         #   self.context.payload.insert('other_region', None)
+
+        if 'region_row' in self.status:
+            if 'other_region' in self.status and self.status['other_meta']!=[None]:
+                self.context.workflow.add(Pivot(self.context.workflow[-1], region_row=self.status['region_row'],
+                                                metadata_column=['item_id'], region_value=self.status['region_value'],other_meta=self.status['other_meta'],other_region=self.status['other_region']))
+            elif 'other_region' in self.status:
+                self.context.workflow.add(Pivot(self.context.workflow[-1], region_row=self.status['region_row'],
+                                                metadata_column=['item_id'], region_value=self.status['region_value'],other_region=self.status['other_region']))
+            elif self.status['other_meta'] != [None]:
+                self.context.workflow.add(Pivot(self.context.workflow[-1], region_row=self.status['region_row'],
+                                                metadata_column=['item_id'], region_value=self.status['region_value'],
+                                                other_meta=self.status['other_meta']))
+            else:
+                self.context.workflow.add(Pivot(self.context.workflow[-1], region_row=self.status['region_row'],
+                                                metadata_column=['item_id'], region_value=self.status['region_value']))
+
+        elif 'metadata_row' in self.status:
+            if 'other_region' in self.status and self.status['other_meta']!=[None]:
+                self.context.workflow.add(Pivot(self.context.workflow[-1], metadata_row=['item_id'],
+                                            region_column=self.status['region_column'],
+                                            region_value=self.status['region_value'],
+                                                other_meta=self.status['other_meta'],
+                                                other_region=self.status['other_region']))
+            elif 'other_region' in self.status:
+                self.context.workflow.add(Pivot(self.context.workflow[-1], metadata_row=['item_id'],
+                                                region_column=self.status['region_column'],
+                                                region_value=self.status['region_value'],
+                                                other_region=self.status['other_region']))
+            elif self.status['other_meta'] != [None]:
+                self.context.workflow.add(Pivot(self.context.workflow[-1], metadata_row=['item_id'],
+                                                region_column=self.status['region_column'],
+                                                region_value=self.status['region_value'],
+                                                other_meta=self.status['other_meta']))
+            else:
+                self.context.workflow.add(Pivot(self.context.workflow[-1], metadata_row=['item_id'],
+                                                region_column=self.status['region_column'],
+                                                region_value=self.status['region_value']))
+
+        # self.context.workflow.add(
+        #    Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
+        self.context.workflow.run(self.context.workflow[-1])
+        self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset),
+                                   Utils.table_viz('Pivot', self.context.workflow[-1].result)])
+        # print(Utils.table_viz('Pivot',self.context.workflow[-1].result))
+        self.context.payload.clear()
+        return NewDataset(self.context), False
+
+class MetaLabels(AbstractAction):
+    def help_message(self):
+        return [Utils.chat_message(messages.union_help)]
+
+    def on_enter(self):
+        pass
+
+    def logic(self, message, intent, entities):
+        if intent!='deny':
+            others = message.split(';')
+            self.context.payload.update('other_meta', others)
+            print(others)
+            self.context.add_bot_msg(
+                Utils.chat_message('Do you want to add a label to the features? Choose one in the right pane'))
+        return Labels(self.context), False
+
+

@@ -1,5 +1,10 @@
 import pandas as pd
 from tqdm import tqdm
+class PivotRes:
+    def __init__(self, pivot, labels):
+        self.ds = pivot
+        self.labels = labels
+
 class PivotLogic:
     def __init__(self, op):
         self.op = op
@@ -8,44 +13,34 @@ class PivotLogic:
 
 
     def run(self):
-        print('meta')
-        print(self.ds.meta)
-        print('region')
-        print(self.ds.region)
-        if (self.op.meta_col != None) and (self.op.meta_row != None):
-            temp_meta = pd.DataFrame(index=list(self.ds.meta['item_id']).sort(), columns=self.op.meta_col)
-            self.ds.meta.index = self.ds.meta['item_id']
-            self.ds.meta = self.ds.meta.drop('item_id', axis=1)
-            self.ds.meta = self.ds.meta.sort_index()
-            for i in self.op.meta_col:
-                temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-            for i in self.op.meta_row:
-                temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
+        # if (self.op.meta_col != None) and (self.op.meta_row != None):
+        #     temp_meta = pd.DataFrame(index=list(self.ds.meta['item_id']).sort(), columns=self.op.meta_col)
+        #     self.ds.meta.index = self.ds.meta['item_id']
+        #     self.ds.meta = self.ds.meta.drop('item_id', axis=1)
+        #     self.ds.meta = self.ds.meta.sort_index()
+        #     for i in self.op.meta_col:
+        #         temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
+        #     for i in self.op.meta_row:
+        #         temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
 
-        elif self.op.meta_col != None:
+        if self.op.meta_col != None:
             items = list(self.ds.meta['item_id'])
             items.sort()
             temp_meta = pd.DataFrame(index=items, columns=self.op.meta_col)
             for i in self.op.meta_col:
                 temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-            print('TEMP META 1')
-            print(temp_meta)
         else:
             items = list(self.ds.meta['item_id'])
             items.sort()
             temp_meta = pd.DataFrame(items, columns=self.op.meta_row)
             for i in self.op.meta_row:
                 temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-            print('TEMP META 2')
-            print(temp_meta)
 
         temp_reg = self.ds.region.merge(temp_meta, left_on='item_id', right_index=True)
-        print('TEMP REG')
-        print(temp_reg)
 
-        if (self.op.region_col!=None) and (self.op.meta_col!=None):
-            col = self.op.region_col.append(self.op.meta_col)
-        elif self.op.region_col!=None:
+        #if (self.op.region_col!=None) and (self.op.meta_col!=None):
+        #    col = self.op.region_col.append(self.op.meta_col)
+        if self.op.region_col!=None:
             col = self.op.region_col
         else:
             col = self.op.meta_col
@@ -56,21 +51,54 @@ class PivotLogic:
         else:
             row = self.op.meta_row
 
-        print('row',row)
-        print('col',col)
-        pivot = temp_reg.pivot_table(index=row, columns=col,  values=self.op.value)
-        print('pivot')
-        print(pivot)
-        print('index')
-        print(pivot.index)
-        print('col')
-        print(pivot.columns)
-        pivot.columns= pivot.columns.droplevel(0)
+        pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
+        pivot.columns = pivot.columns.droplevel(0)
+
+        if self.op.other_meta!=None:
+            items = list(set(self.ds.meta['item_id']))
+            #items = list(temp_reg['item_id'])
+            items.sort()
+            #print(items)
+            labels_meta = pd.DataFrame(items, columns=self.op.other_meta)
+            labels_meta.index= items
+
+            for i in self.op.other_meta:
+                labels_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
+
+            temp_labels_meta = pd.merge(labels_meta,temp_reg, right_on='item_id', left_index=True)
+
+        if self.op.other_region!=None:
+            labels_reg = temp_reg[self.op.other_region]
+
+
+
+
+        if (self.op.meta_col != None):
+            if self.op.other_meta!=None:
+                pivot = pivot.T
+                print('pivot', len(pivot))
+                print('temp_meta', list(temp_labels_meta[i]))
+                for i in self.op.other_meta:
+                    pivot[i]= list(temp_labels_meta[i])
+                pivot = pivot.T
+            elif self.op.other_region!=None:
+                for i in self.op.other_region:
+                    pivot[i] = list(labels_reg[i])
+        else:
+            if self.op.other_meta!=None:
+                for i in self.op.other_meta:
+                    pivot[i] = list(temp_labels_meta[i])
+            elif self.op.other_region!=None:
+                pivot = pivot.T
+                for i in self.op.other_region:
+                    pivot[i] = list(labels_reg[i])
+                pivot = pivot.T
         #pivot.index= pivot.index.droplevel(0)
+        print('pivot!')
+        print(pivot.head())
         pivot.to_csv('pivot.csv')
         self.op.result = pivot
         self.op.executed = True
-        print(pivot)
         self.write()
 
 

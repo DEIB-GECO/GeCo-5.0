@@ -43,7 +43,16 @@ class Payload:
     def update(self, key, new_value):
         old = self.status[key]
         if isinstance(old, list):
-            self.status[key].append(new_value)
+            if not isinstance(new_value, list):
+                if old!=[None]:
+                    self.status[key].append(new_value)
+                else:
+                    self.status[key] = [new_value]
+            else:
+                if old!=[None]:
+                    self.status[key]= old + new_value
+                else:
+                    self.status[key] = new_value
         elif isinstance(old, dict):
             if isinstance(new_value, dict):
                 for k in new_value.keys():
@@ -57,6 +66,11 @@ class Payload:
                         self.status[key][k] = new_value[k]
             else:
                 self.status[key].update(new_value)
+        elif old==None:
+            if not isinstance(new_value, list):
+                self.status[key]= [new_value]
+            else:
+                self.status[key] = new_value
         self.context.top_delta().update_value(key, old, self.status[key])
 
     def replace(self, key, new):

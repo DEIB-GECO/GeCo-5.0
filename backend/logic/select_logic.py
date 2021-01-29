@@ -63,6 +63,8 @@ class SelectLogic:
                      query))
         values = res.fetchall()
         meta = pd.DataFrame(values, columns=res.keys())
+        print('meta')
+        print(meta.head())
         self.ds.add_meta_table(meta)
         #res = db.engine.execute("select * from rr.gene_expression_hg19 where item_id in ({}) limit 100".format(query))
         #values = res.fetchall()

@@ -207,7 +207,7 @@ class DB:
         else:
             #values = db.engine.execute("select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(query, str(key))).fetchall()
             values = db.engine.execute(
-                "select rr.value, count(distinct(rr.item_id)) from dw.unified_pair_gecoagent as rr {} where rr.key in ('{}') group by value".format(
+                "select rr.value, count(distinct(rr.item_id)) from dw.unified_pair_gecoagent as rr {} and rr.key in ('{}') group by value".format(
                     query, str(key))).fetchall()
 
         val = [{"value": i[0], "count": i[1]} for i in values]

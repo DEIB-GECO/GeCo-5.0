@@ -60,12 +60,12 @@ class KMeansLogic:
                         '"execution_count": 0,' +
                         '"metadata": {},' +
                         '"outputs": [],' +
-                        '"source": [kmeans = KMeans(n_clusters={})'.format(self.n_clust)+'.fit(table.values)\n]},')
+                        '"source": [kmeans = KMeans(n_clusters={})\n'.format(self.n_clust)+'kmeans_fit=kmeans.fit(table.values)\nlabels=kmeans.fit_predict(table.values)]},')
             f.close()
 
             with open('python_script.py', 'a') as f:
                 f.write('from sklearn.cluster import KMeans\n'+
-                        'kmeans = KMeans(n_clusters={}).fit(table.values)\n'.format(self.n_clust))
+                        'kmeans = KMeans(n_clusters={})\nkmeans_fit=kmeans.fit(table.values)\nlabels=kmeans.fit_predict(table.values)'.format(self.n_clust))
             f.close()
         else:
             with open('jupyter_notebook.ipynb', 'a') as f:
@@ -96,7 +96,7 @@ class KMeansLogic:
                         'param_grid = {"n_clusters": range')
                 f.write('({}, {})'.format(self.min, self.max)+'}\n')
                 f.write('search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)\n'+
-                        'grid = search.fit(table.values)\n'+
+                        'grid = search.fit(table.values)\n'+'labels=search.fit_predict(table.values)\n'+
                         ']},')
             f.close()
 
@@ -110,7 +110,7 @@ class KMeansLogic:
                         '\treturn score\n\n'+
                         'param_grid = {"n_clusters":'+ 'range({}, {})'.format(self.min, self.max)+'}\n'+
                         'search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)\n'+
-                        'grid = search.fit(table.values)\n')
+                        'grid = search.fit(table.values)\n'+'labels=search.fit_predict(table.values)\n')
             f.close()
 
 
