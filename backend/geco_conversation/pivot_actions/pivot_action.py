@@ -13,7 +13,7 @@ class PivotAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         self.context.payload.back = PivotAction
-        from geco_conversation.new_dataset import NewDataset
+
         if ('metadata_row' not in self.status) and ('region_row' not in self.status):
             if message.lower() in  ['feature','features']:
                 self.context.add_bot_msgs([Utils.chat_message(messages.row_region_message),
@@ -90,6 +90,7 @@ class Labels(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
+        from geco_conversation.new_dataset import NewDataset
         if intent!='deny' and 'other_meta' not in self.status:
                 self.context.payload.insert('other_meta',None)
                 self.context.add_bot_msg(Utils.chat_message('Do you want to add a label to the samples? Choose one in the right pane'))
