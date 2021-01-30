@@ -44,10 +44,6 @@ class database:
                 self.fields_names.append(f)
                 self.values[f]= res
                 setattr(self, (str(f) + '_db'), res)
-                with open('./rasa_files/'+f+'.txt', 'w') as f:
-                    for s in res:
-                        f.write(str(s) + '\n')
-                f.close()
             else:
                 self.table = self.table.drop(f,axis=1)
 
