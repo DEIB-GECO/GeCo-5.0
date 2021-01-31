@@ -158,14 +158,17 @@ class Entities2Action(AbstractAction):
             if i in self.status:
                 self.context.payload.delete(i, self.status[i])
         self.context.add_bot_msg(Utils.param_list({k:self.status[k] for k in self.status}))
-        with open('./rasa_files/nlu.md', 'w+') as f:
-            msg = self.status['initial_msg']
-            for line in f:
-                if line.startswith('## intent: ' + self.status['intent']):
-                    break
-            f.write('- ' + self.status['initial_msg'][0])
-        f.close()
-        if self.status['intent'] == 'retrieve_annotation':
+        my_file = open("./rasa_files/nlu.md")
+        string_list = my_file.readlines()
+        msg = self.status['initial_msg']
+        for i in range(len(string_list)):
+            if string_list[i].startswith('## intent: ' + self.status['intent'][0]):
+                string_list.insert(i+1,msg)
+        my_file = open("./rasa_files/nlu.md", "w")
+        new_file_contents = "".join(string_list)
+        my_file.write(new_file_contents)
+        my_file.close()
+        if self.status['intent'] == ['retrieve_annotation']:
             return AnnotationAction(self.context), True
-        elif self.status['intent'] == 'retrieve_experiment':
+        elif self.status['intent'] == ['retrieve_experiment']:
             return ExperimentAction(self.context), True
