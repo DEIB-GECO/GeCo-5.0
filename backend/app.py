@@ -115,6 +115,7 @@ class ConversationDBExplore(object):
         else:
             self.context.add_user_msg(message)
             entities = {}
+            print(interpretation['entities'])
             for e in interpretation['entities']:
                 if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
                     entities[e['entity']].append(e['value'].lower().strip())

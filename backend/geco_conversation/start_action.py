@@ -36,9 +36,10 @@ class StartAction(AbstractAction):
         if intent == 'retrieve_annotations':
             self.context.add_bot_msg(Utils.chat_message('Am I understanding correct the intent and the entities?'))
             self.check_status()
+            Utils.create_piecharts(self.context,{})
             gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
             samples = self.filter(gcm_filter)
-            self.context.payload.insert('intent','retrieve_annotation')
+            self.context.payload.insert('intent','retrieve_annotations')
 
             self.context.add_bot_msg(
                 Utils.param_list({k: v for (k, v) in self.status.items()}))
@@ -46,8 +47,9 @@ class StartAction(AbstractAction):
             next_node = AnnotationAction(self.context)
         elif intent == 'retrieve_experiments':
             next_node = ExperimentAction(self.context)
+            Utils.create_piecharts(self.context, {})
             self.context.add_bot_msg(Utils.chat_message('Am I understanding correct the intent and the entities?'))
-            self.context.payload.insert('intent', 'retrieve_experiment')
+            self.context.payload.insert('intent', 'retrieve_experiments')
             self.check_status()
             gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
             samples = self.filter(gcm_filter)
@@ -107,6 +109,7 @@ class IntentAction(AbstractAction):
             self.context.add_bot_msg(Utils.chat_message('Please, tell me in this format the name of the entities(among the ones on the right): the value you want, the piece of message that corresponds to it.'
                                                         'If more are wrong, separate them with ;. E.g. disease: kidney renal clear cell carcinoma, kirc; data_type: gene expression quantification, gene expressions'
                                                         'Instead, if you want to remove some of them tell me "remove"'))
+
             return EntitiesAction(self.context),False
 
 
@@ -134,10 +137,11 @@ class EntitiesAction(AbstractAction):
                 else:
                     self.context.payload.insert('entities_in_msg', {entity[0]: {value[0]: value[-1]}})
             self.context.add_bot_msg(Utils.chat_message('Ok, do you want to remove some that are wrong?'))
-            self.context.add_bot_msg(Utils.param_list({k: v for (k, v) in self.status.items()}))
+            self.context.add_bot_msg(Utils.param_list({k: self.status[k] for k in self.status if k in fields or k=='intent'}))
             return None, False
         elif message.split()==['remove'] or intent=='affirm':
             self.context.add_bot_msg(Utils.chat_message('Tell me which one you want to remove, separated with ;'))
+            self.context.add_bot_msg(Utils.param_list({k: self.status[k] for k in self.status if k in fields or k=='intent'}))
             return Entities2Action(self.context), False
         elif intent!='deny':
             return Entities2Action(self.context), True
@@ -147,9 +151,9 @@ class Entities2Action(AbstractAction):
         return [Utils.chat_message(messages.start_help)]
 
     def on_enter(self):
-        if self.status['intent'] == 'retrieve_annotation':
+        if self.status['intent'] == ['retrieve_annotations']:
             return AnnotationAction(self.context), True
-        elif self.status['intent'] == 'retrieve_experiment':
+        elif self.status['intent'] == ['retrieve_experiments']:
             return ExperimentAction(self.context), True
 
     def logic(self, message, intent, entities):
@@ -157,18 +161,31 @@ class Entities2Action(AbstractAction):
         for i in list_remove:
             if i in self.status:
                 self.context.payload.delete(i, self.status[i])
-        self.context.add_bot_msg(Utils.param_list({k:self.status[k] for k in self.status}))
+            self.context.add_bot_msg(Utils.param_list({k: self.status[k] for k in self.status if k in fields or k=='intent'}))
+        self.write_nlu()
+        if self.status['intent'] == ['retrieve_annotations']:
+            return AnnotationAction(self.context), True
+        elif self.status['intent'] == ['retrieve_experiments']:
+            return ExperimentAction(self.context), True
+
+
+    def write_nlu(self):
         my_file = open("./rasa_files/nlu.md")
         string_list = my_file.readlines()
-        msg = self.status['initial_msg']
+        msg = '- ' + self.status['initial_msg'][0]
+        for i in self.status:
+            if i=='entities_in_msg':
+                for k in self.status[i].keys():
+                    ent = list(self.status[i][k])
+                    val = list(self.status[i][ent].keys())[0].split()[0]
+                    word = self.status[i][ent][val].split()[0]
+                    if msg.find(word):
+                        msg = msg.replace(word, '[' + word + ']{'+'"entity":"'+ent+'","value":"'+val+'"}')
+                        print(msg)
         for i in range(len(string_list)):
-            if string_list[i].startswith('## intent: ' + self.status['intent'][0]):
-                string_list.insert(i+1,msg)
+            if string_list[i].startswith('## intent:' + self.status['intent'][0]):
+                string_list.insert(i + 1, msg + '\n')
         my_file = open("./rasa_files/nlu.md", "w")
         new_file_contents = "".join(string_list)
         my_file.write(new_file_contents)
         my_file.close()
-        if self.status['intent'] == ['retrieve_annotation']:
-            return AnnotationAction(self.context), True
-        elif self.status['intent'] == ['retrieve_experiment']:
-            return ExperimentAction(self.context), True
