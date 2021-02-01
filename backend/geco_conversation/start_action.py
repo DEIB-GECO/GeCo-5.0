@@ -29,6 +29,7 @@ class StartAction(AbstractAction):
         self.context.add_bot_msg(Utils.chat_message(messages.start_init))
         self.context.add_bot_msg(Utils.choice("Data available", list_param))
         self.context.add_bot_msg(Utils.workflow('Data selection'))
+        Utils.create_piecharts(self.context, {})
         return None, False
 
     def logic(self, message, intent, entities):
@@ -47,7 +48,6 @@ class StartAction(AbstractAction):
             next_node = AnnotationAction(self.context)
         elif intent == 'retrieve_experiments':
             next_node = ExperimentAction(self.context)
-            Utils.create_piecharts(self.context, {})
             self.context.add_bot_msg(Utils.chat_message('Am I understanding correct the intent and the entities?'))
             self.context.payload.insert('intent', 'retrieve_experiments')
             self.check_status()
@@ -71,8 +71,10 @@ class UnderstandAction(AbstractAction):
 
     def logic(self, message, intent, entities):
         if intent=='affirm':
-            self.context.add_bot_msg([Utils.chat_message('Ok thank you! Bye')])
-            return None, False
+            if self.status['intent'] == ['retrieve_annotations']:
+                return AnnotationAction(self.context), True
+            elif self.status['intent'] == ['retrieve_experiments']:
+                return ExperimentAction(self.context), True
         else:
             self.context.add_bot_msg(Utils.chat_message('Please tell me is the intent correct?'))
             return IntentAction(self.context), False
