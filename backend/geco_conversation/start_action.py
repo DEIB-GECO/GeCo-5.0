@@ -124,6 +124,8 @@ class EntitiesAction(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
+        print('msg',message)
+        print(message.split())
         if message.split()!=['remove'] and intent!='affirm':
             msg = message.split(';')
             for i in msg:
