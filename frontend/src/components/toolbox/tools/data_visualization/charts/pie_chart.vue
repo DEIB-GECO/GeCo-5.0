@@ -11,7 +11,7 @@ import { select, event } from 'd3-selection';
 import { scaleOrdinal } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import { pie, arc, PieArcDatum } from 'd3-shape';
-// import { entries } from 'd3-collection';
+import { entries } from 'd3-collection';
 import { sum } from 'd3-array';
 import makeid from '@/utils/makeid';
 
@@ -26,8 +26,8 @@ const d3 = Object.assign(
     select,
     scaleOrdinal,
     pie,
-    arc
-    // entries
+    arc,
+    entries
   }
 );
 
@@ -152,18 +152,16 @@ export default class PieChart extends Vue {
       .attr('d', path)
       .attr('fill', function(d) {
         return color(d.data.label);
-      });
-
-    //PETER
-    // mouse event handlers are attached to path so they need to come after its definition
-    arc.on('mouseover', function(d) {
+      }).on('mouseover', function(d) {
       // when mouse enters div
+
       const total = sum(
-        data.map(function(d) {
+        data.map(function(e) {
           // calculate the total number of tickets in the dataset
-          return d.value; // checking to see if the entry is enabled. if it isn't, we return 0 and cause other percentages to increase
+          return e.value; // checking to see if the entry is enabled. if it isn't, we return 0 and cause other percentages to increase
         })
       );
+      console.log("ERRORE ERRORE", d);
       const percent = Math.round((1000 * d.data.value) / total) / 10; // calculate percent
       tooltip.select('.label').html(d.data.label); // set current label
       tooltip.select('.count').html(d.data.value + ' '); // set current count
