@@ -1,5 +1,7 @@
 import pandas as pd
 from tqdm import tqdm
+import numpy as np
+
 class PivotRes:
     def __init__(self, pivot, labels):
         self.ds = pivot
@@ -55,22 +57,6 @@ class PivotLogic:
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)
 
-        if self.op.other_meta!=None:
-            items = list(set(self.ds.meta['item_id']))
-            #items = list(temp_reg['item_id'])
-
-            items.sort()
-            #print(items)
-            labels_meta = pd.DataFrame(items, columns=self.op.other_meta)
-
-            labels_meta.index= items
-
-            for i in self.op.other_meta:
-                labels_meta[i] = self.ds.meta.loc[self.ds.meta['key'] == i]['value']
-
-            #print('temp_reg',list(temp_reg['item_id']))
-
-            temp_labels_meta = pd.merge(labels_meta,items_reg, right_index=True, left_index=True)
 
 
         if self.op.other_region!=None:
@@ -80,9 +66,11 @@ class PivotLogic:
             if self.op.other_meta!=None:
                 pivot = pivot.T
                 for i in self.op.other_meta:
-                    pivot[i]= list(temp_labels_meta[i])
-
+                    pivot[i]= np.nan
+                    for x in pivot.index:
+                        pivot.at[x,i]=self.ds.meta[self.ds.meta['key'] == i][self.ds.meta['item_id']==x]['value'].values[0]
                 pivot = pivot.T
+
 
             elif self.op.other_region!=None:
                 for i in self.op.other_region:
@@ -90,7 +78,9 @@ class PivotLogic:
         else:
             if self.op.other_meta!=None:
                 for i in self.op.other_meta:
-                    pivot[i] = list(temp_labels_meta[i])
+                    for x in pivot.index:
+                        pivot.at[x, i] = self.ds.meta[self.ds.meta['key'] == i][self.ds.meta['item_id'] == x][
+                            'value'].values[0]
             elif self.op.other_region!=None:
                 pivot = pivot.T
                 for i in self.op.other_region:
