@@ -15,19 +15,21 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import PieChart from './charts/pie_chart.vue';
 import HistDistChart from './charts/HistDistChart.vue';
+import Histogram from './charts/Histogram.vue'
 
 const datavizStore = namespace('gecoAgent/DataViz');
 
 @Component({
   components: {
     PieChart,
-    HistDistChart
+    HistDistChart,
+    Histogram
   }
 })
 export default class DataVisualization extends Vue {
   availableCharts = {
     pieChart: 'PieChart',
-    histDistChart: 'HistDistChart'
+    histogram: 'Histogram'
   };
 
   @datavizStore.State charts!: ChartData[];
