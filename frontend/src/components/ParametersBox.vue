@@ -19,12 +19,24 @@ const parametersBoxStore = namespace('gecoAgent/parametersBox');
 export default class Choice extends Vue {
   @parametersBoxStore.State
   parametersList!: Parameter[];
-
-  //   parametersList: Parameter[] = [
-  //     { field: 'Marinara', values: ['a value like 13'] },
-  //     { field: 'Margherita', values: ['a value like 1 '] },
-  //     { field: 'Napoli', values: ['a value like 12'] }
-  //   ];
+  // parametersList: Parameter[] = [
+  //   {
+  //     field: 'Marinara',
+  //     values: ['a-value-like-13-a-value-like-13-a-value-like-13']
+  //   },
+  //   {
+  //     field: 'Marinara',
+  //     values: ['a-value-like-13-a-value-like-13-a-value-like-13']
+  //   }
+  // {
+  //   field: 'Marinara',
+  //   values: ['a-value-like-13-a-value-like-13-a-value-like-13']
+  // },
+  // {
+  //   field: 'Marinara',
+  //   values: ['a-value-like-13-a-value-like-13-a-value-like-13']
+  // }
+  // ];
 
   created() {
     // this.setParametersList([
@@ -56,7 +68,7 @@ export default class Choice extends Vue {
   // column-width: auto;
   text-align: left;
   display: grid;
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   grid-auto-flow: column;
   grid-template-columns: repeat(12, 350px);
   margin: 20px;
@@ -64,5 +76,7 @@ export default class Choice extends Vue {
 
 .parameter_field {
   font-weight: bold;
+  overflow-wrap: anywhere;
+  max-width: 300px;
 }
 </style>

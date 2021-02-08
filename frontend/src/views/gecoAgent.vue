@@ -51,8 +51,8 @@ import Toolbox from './../components/toolbox/toolbox_interface.vue';
 import ParametersBox from '@/components/ParametersBox.vue';
 import { conversation } from './../test/conversation';
 
-const socket = io('/test', { path: '/geco_agent/socket.io' });
-// const socket = io('http://localhost:5980/test');
+// const socket = io('/test', { path: '/geco_agent/socket.io' });
+const socket = io('http://localhost:5980');
 const tools = namespace('tools');
 const gecoAgentStore = namespace('gecoAgent');
 const conversationStore = namespace('gecoAgent/conversation');
@@ -60,6 +60,7 @@ const parametersStore = namespace('gecoAgent/parametersBox');
 const functionsAreaStore = namespace('gecoAgent/functionsArea');
 const dataVizStore = namespace('gecoAgent/DataViz');
 const processStore = namespace('gecoAgent/process');
+const tableStore = namespace('gecoAgent/TableViewer');
 
 @Component({
   components: {
@@ -95,6 +96,7 @@ export default class GecoAgent extends Vue {
   @processStore.Mutation('parseJsonResponse') processParser!: (
     newProcess: ProcessPanePayload
   ) => void;
+  @tableStore.Mutation setTable!: (tablePayload: TablePayload) => void;
   // @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
 
   @processStore.Mutation resetProcess!: () => void;
@@ -133,7 +135,8 @@ export default class GecoAgent extends Vue {
     tools_setup: this.addRemoveTools,
     data_summary: this.setCharts,
     dataset_download: this.updateFileToDownload,
-    workflow: this.processParser
+    workflow: this.processParser,
+    table: this.setTable
   };
 
   updateFileToDownload(payload: any) {
@@ -149,6 +152,9 @@ export default class GecoAgent extends Vue {
   }
 
   created() {
+    console.log('sono qua')
+    console.log('in created')
+    socket.emit('json_response', {'type':'message', 'payload':'Ciao'})
     socket.emit('ack', { message_id: this.lastMessageId });
     socket.on('json_response', (payload: any) => {
       if (payload.type) {
@@ -165,11 +171,17 @@ export default class GecoAgent extends Vue {
   }
 
   sendMessage() {
+    socket.emit('my_event',{ message_id: this.lastMessageId });
+    socket.emit('user_message_evt',{ message: this.message });
+    console.log('sono in send messagge')
     if (this.message != '') {
       this.setSendButtonStatus(false);
       this.addUserMessage(this.message);
       socket.emit('my_event', { data: this.message });
       this.editMessage('');
+    }
+    else {
+     socket.emit('errore')
     }
   }
 
@@ -184,6 +196,7 @@ export default class GecoAgent extends Vue {
       this.updateToolToShow(data.show);
     }
     // this.updateLastMessageId(data.message_id);
+    console.log('sono a this.json');
     this.lastMessageId = data.message_id;
     socket.emit('ack', { message_id: this.lastMessageId });
     // @ts-ignore
@@ -192,7 +205,7 @@ export default class GecoAgent extends Vue {
 
   pushBotMessage(msg: string) {
     if (msg != '') {
-      conversation.push({ sender: 'bot', text: msg });
+      conversation.push({ sender: 'bot', text: msg }); //msg
     }
   }
 

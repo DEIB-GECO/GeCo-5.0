@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-import MetadataDetail from "./metadata_detail.vue";
+import MetadataDetail from './metadata_detail.vue';
 
 library.add(faChevronRight);
 
@@ -38,29 +38,29 @@ export default {
   data() {
     return {
       isDetailVisible: false,
-      expandedMetadata: "",
+      expandedMetadata: ''
     };
   },
   props: {
     copyName: {
-      type: Function,
-    },
+      type: Function
+    }
   },
   components: {
     FontAwesomeIcon,
-    MetadataDetail,
+    MetadataDetail
   },
   methods: {
     openMetadataDetail(metadataKey) {
       this.expandedMetadata = metadataKey;
-      console.log("expandedMetadata set to " + this.expandedMetadata);
+      console.log('expandedMetadata set to ' + this.expandedMetadata);
       this.isDetailVisible = true;
     },
     receiveNameAndPassAbove(name) {
-      console.log("metadata_exploration receive and pass invoked");
+      console.log('metadata_exploration receive and pass invoked');
       this.copyName(name);
-    },
-  },
+    }
+  }
 };
 </script>
 

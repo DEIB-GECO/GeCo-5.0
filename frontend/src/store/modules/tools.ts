@@ -14,7 +14,8 @@ class Tools extends VuexModule {
     { name: 'Metadata', component: 'metadata' },
     { name: 'Field Explorer', component: 'field' },
     { name: 'Query', component: 'query' },
-    { name: 'Data', component: 'dataviz' }
+    { name: 'Data', component: 'dataviz' },
+    { name: 'Table', component: 'tableViewer' }
   ];
 
   fieldList: string[] = [];
@@ -23,6 +24,7 @@ class Tools extends VuexModule {
   activeTools: ToolTuple[] = [
     // { name: 'Dataset List', component: 'dataset' },
     // { name: 'Metadata', component: 'metadata' },
+    { name: 'Table', component: 'tableViewer' }
     // { name: 'Field Explorer', component: 'field' },
     // { name: 'Query', component: 'query' }
     // { name: 'Data', component: 'dataviz' }

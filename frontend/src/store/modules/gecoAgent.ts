@@ -9,6 +9,7 @@ import functionsArea from './geco_agent_modules/functionsArea';
 import parametersBox from './geco_agent_modules/parametersBox';
 import DataViz from './geco_agent_modules/dataviz';
 import process from './geco_agent_modules/process';
+import TableViewer from './geco_agent_modules/tableViewer';
 
 export default {
   namespaced: true,
@@ -22,11 +23,7 @@ export default {
     functionsArea,
     parametersBox,
     DataViz,
-    process
+    process,
+    TableViewer
   }
-  // mutations: {
-  //   updateLastMessageId(state: any, newValue: number): void {
-  //     state.lastMessageId = newValue;
-  //   }
-  // }
 };

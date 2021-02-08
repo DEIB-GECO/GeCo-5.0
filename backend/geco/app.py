@@ -1,6 +1,6 @@
 import os,sys
 
-os.system('cd ../../../../../Downloads/GeCo-5.0-version_context/frontend && nohup npm run serve &')
+os.system('cd ../../frontend && nohup npm run serve &')
 #os.system('nohup poetry run rasa run actions &')
 #os.system('open -a Terminal ~/Documents/polimi/tesi/"rasa-master 2"/geco')
 os.system('poetry run rasa run -m models --enable-api --cors "*" --debug')
