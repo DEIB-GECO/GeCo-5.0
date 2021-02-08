@@ -40,7 +40,7 @@ const routes: Array<RouteConfig> = [
     name: 'GeCo 5.0',
     component: () =>
       import(
-        /* webpackChunkName: "about" */ '../components/toolbox/tools/data_visualization/charts/Histogram.vue'
+        /* webpackChunkName: "about" */ '../components/toolbox/tools/data_visualization/charts/Scatter.vue'
       )
   },
   {
