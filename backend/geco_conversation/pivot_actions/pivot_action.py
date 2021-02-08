@@ -98,9 +98,6 @@ class Labels(AbstractAction):
         if intent!='deny' and 'other_region' not in self.status:
             others = message.split(';')
             self.context.payload.insert('other_region', others)
-            print(others)
-        #elif 'other_region' not in self.status:
-         #   self.context.payload.insert('other_region', None)
 
         if 'region_row' in self.status:
             if 'other_region' in self.status and self.status['other_meta']!=[None]:
@@ -109,7 +106,7 @@ class Labels(AbstractAction):
             elif 'other_region' in self.status:
                 self.context.workflow.add(Pivot(self.context.workflow[-1], region_row=self.status['region_row'],
                                                 metadata_column=['item_id'], region_value=self.status['region_value'],other_region=self.status['other_region']))
-            elif self.status['other_meta'] != [None]:
+            elif 'other_meta' in self.status and self.status['other_meta'] != [None]:
                 self.context.workflow.add(Pivot(self.context.workflow[-1], region_row=self.status['region_row'],
                                                 metadata_column=['item_id'], region_value=self.status['region_value'],
                                                 other_meta=self.status['other_meta']))

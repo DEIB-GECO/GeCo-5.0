@@ -24,7 +24,6 @@ class PivotLogic:
         #         temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
         #     for i in self.op.meta_row:
         #         temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-
         if self.op.meta_col != None:
             items = list(self.ds.meta['item_id'])
             items.sort()
@@ -57,8 +56,6 @@ class PivotLogic:
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)
 
-
-
         if self.op.other_region!=None:
             labels_reg = temp_reg[self.op.other_region]
 
@@ -66,20 +63,20 @@ class PivotLogic:
             if self.op.other_meta!=None:
                 pivot = pivot.T
                 for i in self.op.other_meta:
-                    pivot[i]= np.nan
+                    pivot[i]= ""
+                    temp = self.ds.meta[self.ds.meta['key'] == i]
                     for x in pivot.index:
-                        pivot.at[x,i]=self.ds.meta[self.ds.meta['key'] == i][self.ds.meta['item_id']==x]['value'].values[0]
+                        pivot.at[x,i]=temp[self.ds.meta['item_id']==x]['value'].values[0]
                 pivot = pivot.T
-
-
             elif self.op.other_region!=None:
                 for i in self.op.other_region:
                     pivot[i] = list(labels_reg[i])
         else:
             if self.op.other_meta!=None:
                 for i in self.op.other_meta:
+                    temp = self.ds.meta[self.ds.meta['key'] == i]
                     for x in pivot.index:
-                        pivot.at[x, i] = self.ds.meta[self.ds.meta['key'] == i][self.ds.meta['item_id'] == x][
+                        pivot.at[x, i] = temp[self.ds.meta['item_id'] == x][
                             'value'].values[0]
             elif self.op.other_region!=None:
                 pivot = pivot.T
