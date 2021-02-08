@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Rasa Core Visualisation</title>
+    <script src="https://dagrejs.github.io/project/dagre-d3/latest/dagre-d3.min.js"></script>
+    <script src="https://dagrejs.github.io/project/dagre/latest/dagre.min.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://dagrejs.github.io/project/graphlib-dot/v0.6.3/graphlib-dot.js"></script>
+</head>
+<body>
+<div id="errormsg" style="color: #b00"></div>
+<svg>
+    <style>
+        .node.invisible > rect {
+            display: none;
+        }
+
+        .node.start > rect {
+            fill: #7f7;
+            rx: 30;
+            ry: 18;
+        }
+
+        .node.end > rect {
+            fill: #f77;
+            rx: 30;
+            ry: 18;
+        }
+
+        .node:not(.active) > rect, .node:not(.active) > .label {
+            opacity: 0.4;
+        }
+
+        .edgePath:not(.active) path {
+            opacity: 0.4;
+        }
+
+        .node.ellipsis > rect {
+            fill: #CCC;
+        }
+
+        .node.intent > rect {
+            fill: #7ff;
+        }
+
+        .node.dashed > rect {
+            stroke-dasharray: 5;
+        }
+
+        text {
+            font-weight: 300;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serf, serif;
+            font-size: 14px;
+            color: #1f1d1d;
+        }
+
+        .node rect {
+            stroke: #444;
+            fill: #fff;
+            stroke-width: 1.5px;
+        }
+
+        .edgePath path {
+            stroke: #333;
+            stroke-width: 1.5px;
+        }
+
+        svg {
+            position: fixed;
+            top: 10px;
+            left: 0;
+            height: 100%;
+            width: 100%
+        }
+    </style>
+    <g></g>
+</svg>
+<script>
+
+  function serveGraph() {
+    let oldInputGraphValue;
+
+    const url = 'visualization.dot';
+    const refreshInterval = 500;
+
+    // trigger a refresh by fetching an updated graph
+    setInterval(function () {
+      fetch(url).then(r => r.text()).then(dot => {
+        document.getElementById('errormsg').innerHTML = '';
+        if (oldInputGraphValue === dot) return;
+
+        oldInputGraphValue = dot;
+        drawGraph(dot);
+      }).catch(err => {
+        document.getElementById('errormsg').innerHTML =
+          'Failed to update plot. (' + err.message + ')';
+      });
+    }, refreshInterval);
+  }
+
+  function drawGraph(graph) {
+    let g = graphlibDot.read(graph);
+    // Set margins, if not present
+    if (!g.graph().hasOwnProperty("marginx") &&
+      !g.graph().hasOwnProperty("marginy")) {
+      g.graph().marginx = 20;
+      g.graph().marginy = 20;
+    }
+    g.graph().transition = function (selection) {
+      return selection.transition().duration(300);
+    };
+    // Render the graph into svg g
+    d3.select("svg g").call(render, g);
+  }
+  // Set up zoom support
+  const svg = d3.select("svg"),
+    inner = d3.select("svg g"),
+    zoom = d3.zoom().on("zoom", function () {
+      inner.attr("transform", d3.event.transform);
+    });
+  svg.call(zoom);
+
+  // Create and configure the renderer
+  const render = dagreD3.render();
+
+  let isClient = false;
+  isClient = true;
+
+  if (isClient) {
+    // Mark all nodes and their edges as active
+    cssRules = document.styleSheets[0].cssRules;
+    cssRules[3].style.opacity = 1;
+    cssRules[4].style.opacity = 1;
+
+    let graph;
+    graph = `digraph  {
+0 [class="start active", fillcolor=green, fontsize=12, label=START, style=filled];
+"-1" [class=end, fillcolor=red, fontsize=12, label=END, style=filled];
+1 [class="", fontsize=12, label=utter_what_data];
+2 [class="", fontsize=12, label=action_give_exact_experiment];
+3 [class="", fontsize=12, label=utter_filter_more];
+4 [class="", fontsize=12, label=action_show_field];
+5 [class="", fontsize=12, label=action_checkSlots];
+6 [class="", fontsize=12, label=utter_confirm_your_choices];
+7 [class="", fontsize=12, label=utter_rename_datase];
+8 [class="", fontsize=12, label=action_download_database];
+9 [class="", fontsize=12, label=utter_dataset_created];
+10 [class="", fontsize=12, label=action_reset];
+11 [class="", fontsize=12, label=utter_another_dataset];
+13 [class="", fontsize=12, label=action_data];
+14 [class="", fontsize=12, label=utter_field_name];
+15 [class="", fontsize=12, label=action_show_field];
+16 [class="", fontsize=12, label=utter_provide_value];
+17 [class="", fontsize=12, label=action_show_value];
+18 [class="", fontsize=12, label=action_check_value];
+19 [class="", fontsize=12, label=utter_filter_more];
+66 [class="", fontsize=12, label=utter_health];
+67 [class="", fontsize=12, label=action_is_healthy_yes];
+68 [class="", fontsize=12, label=action_checkSlots];
+83 [class="", fontsize=12, label=action_is_healthy_no];
+94 [class="", fontsize=12, label=action_show_field];
+95 [class="", fontsize=12, label=action_show_value];
+96 [class="", fontsize=12, label=action_modify];
+102 [class="", fontsize=12, label=action_insert];
+106 [class="", fontsize=12, label=action_reset];
+107 [class="", fontsize=12, label=action_checkSlots];
+122 [class="", fontsize=12, label=utter_health];
+149 [class="", fontsize=12, label=utter_confirm_your_choices];
+150 [class="", fontsize=12, label=utter_reset];
+157 [class="", fontsize=12, label=utter_what_data];
+158 [class="", fontsize=12, label=utter_rename_datase];
+159 [class="", fontsize=12, label=action_rename_database];
+171 [class="", fontsize=12, label=utter_goodbye];
+188 [class="", fontsize=12, label=utter_what_data];
+191 [class="", fontsize=12, label=utter_slot];
+193 [class="", fontsize=12, label=action_show_value];
+199 [class="", fontsize=12, label=utter_dataset_created];
+375 [class="", fontsize=12, label=action_give_more_fields];
+470 [class="", fontsize=12, label=utter_annotations];
+537 [class="", fontsize=12, label="..."];
+540 [class="", fontsize=12, label=utter_please_rephrase];
+541 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+542 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+543 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+544 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+545 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+546 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+547 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+548 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+549 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+550 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+551 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+552 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+553 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+554 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+555 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+556 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+557 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+558 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+559 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+560 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+561 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+562 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+563 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+564 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+565 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+566 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+567 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+568 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+569 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+570 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+571 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+572 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+573 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+574 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+575 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+576 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+577 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+578 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+579 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+580 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+581 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+582 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+583 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+584 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+585 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+586 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+587 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+588 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+589 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+590 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+591 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+592 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+593 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+594 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+595 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+596 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+597 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+598 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+599 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+600 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+601 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+602 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+603 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+604 [class=intent, fillcolor=lightblue, label=None, shape=rect, style=filled];
+0 -> 1  [class="", key=NONE, label=""];
+0 -> 94  [class="", key=NONE, label=""];
+0 -> 149  [class="", key=NONE, label=""];
+0 -> 158  [class="", key=NONE, label=""];
+0 -> 537  [class="", key=NONE, label=""];
+0 -> 3  [class="", key=NONE, label=""];
+0 -> 9  [class="", key=NONE, label=""];
+0 -> 17  [class="", key=NONE, label=""];
+0 -> 541  [class="", key=0];
+0 -> 542  [class="", key=0];
+1 -> 543  [class="", key=0];
+1 -> 544  [class="", key=0];
+1 -> 545  [class="", key=0];
+1 -> 546  [class="", key=0];
+1 -> 547  [class="", key=0];
+2 -> 3  [class="", key=NONE, label=""];
+3 -> 4  [class="", key=NONE, label=""];
+4 -> "-1"  [class="", key=NONE, label=""];
+4 -> 548  [class="", key=0];
+4 -> 549  [class="", key=0];
+4 -> 550  [class="", key=0];
+4 -> 551  [class="", key=0];
+5 -> 6  [class="", key=NONE, label=""];
+6 -> 552  [class="", key=0];
+7 -> 553  [class="", key=0];
+7 -> 554  [class="", key=0];
+7 -> 555  [class="", key=0];
+7 -> 556  [class="", key=0];
+8 -> 9  [class="", key=NONE, label=""];
+9 -> 10  [class="", key=NONE, label=""];
+10 -> 11  [class="", key=NONE, label=""];
+11 -> "-1"  [class="", key=NONE, label=""];
+11 -> 557  [class="", key=0];
+11 -> 558  [class="", key=0];
+13 -> 14  [class="", key=NONE, label=""];
+14 -> 15  [class="", key=NONE, label=""];
+15 -> 559  [class="", key=0];
+15 -> 560  [class="", key=0];
+15 -> 561  [class="", key=0];
+16 -> 17  [class="", key=NONE, label=""];
+16 -> 193  [class="", key=NONE, label=""];
+17 -> 562  [class="", key=0];
+17 -> 563  [class="", key=0];
+17 -> 564  [class="", key=0];
+17 -> 565  [class="", key=0];
+17 -> 566  [class="", key=0];
+17 -> 567  [class="", key=0];
+18 -> 3  [class="", key=NONE, label=""];
+18 -> 568  [class="", key=0];
+18 -> 569  [class="", key=0];
+19 -> 570  [class="", key=0];
+66 -> 571  [class="", key=0];
+66 -> 572  [class="", key=0];
+67 -> 68  [class="", key=NONE, label=""];
+68 -> 573  [class="", key=0];
+83 -> 68  [class="", key=NONE, label=""];
+94 -> 574  [class="", key=0];
+95 -> 575  [class="", key=0];
+95 -> 576  [class="", key=0];
+96 -> 577  [class="", key=0];
+102 -> 578  [class="", key=0];
+106 -> 107  [class="", key=NONE, label=""];
+107 -> "-1"  [class="", key=NONE, label=""];
+107 -> 157  [class="", key=NONE, label=""];
+122 -> 579  [class="", key=0];
+122 -> 580  [class="", key=0];
+122 -> 581  [class="", key=0];
+122 -> 582  [class="", key=0];
+149 -> 583  [class="", key=0];
+150 -> 584  [class="", key=0];
+150 -> 585  [class="", key=0];
+157 -> "-1"  [class="", key=NONE, label=""];
+158 -> 586  [class="", key=0];
+159 -> 587  [class="", key=0];
+171 -> "-1"  [class="", key=NONE, label=""];
+188 -> 588  [class="", key=0];
+188 -> 589  [class="", key=0];
+191 -> 590  [class="", key=0];
+193 -> 591  [class="", key=0];
+193 -> 592  [class="", key=0];
+193 -> 593  [class="", key=0];
+193 -> 594  [class="", key=0];
+193 -> 595  [class="", key=0];
+193 -> 596  [class="", key=0];
+193 -> 597  [class="", key=0];
+193 -> 598  [class="", key=0];
+193 -> 599  [class="", key=0];
+193 -> 600  [class="", key=0];
+193 -> 601  [class="", key=0];
+193 -> 602  [class="", key=0];
+199 -> "-1"  [class="", key=NONE, label=""];
+375 -> 3  [class="", key=NONE, label=""];
+470 -> "-1"  [class="", key=NONE, label=""];
+537 -> 603  [class="", key=0];
+537 -> 604  [class="", key=0];
+540 -> "-1"  [class="", key=NONE, label=""];
+541 -> 106  [class="", key=0];
+542 -> 188  [class="", key=0];
+543 -> 2  [class="", key=0];
+544 -> 13  [class="", key=0];
+545 -> 13  [class="", key=0];
+546 -> 375  [class="", key=0];
+547 -> 375  [class="", key=0];
+548 -> 5  [class="", key=0];
+549 -> 122  [class="", key=0];
+550 -> 16  [class="", key=0];
+551 -> 191  [class="", key=0];
+552 -> 7  [class="", key=0];
+553 -> 8  [class="", key=0];
+554 -> 199  [class="", key=0];
+555 -> 16  [class="", key=0];
+556 -> 191  [class="", key=0];
+557 -> 171  [class="", key=0];
+558 -> 157  [class="", key=0];
+559 -> 16  [class="", key=0];
+560 -> 66  [class="", key=0];
+561 -> 191  [class="", key=0];
+562 -> 18  [class="", key=0];
+563 -> 18  [class="", key=0];
+564 -> 18  [class="", key=0];
+565 -> 18  [class="", key=0];
+566 -> 18  [class="", key=0];
+567 -> 18  [class="", key=0];
+568 -> 19  [class="", key=0];
+569 -> 3  [class="", key=0];
+570 -> 2  [class="", key=0];
+571 -> 67  [class="", key=0];
+572 -> 83  [class="", key=0];
+573 -> 3  [class="", key=0];
+574 -> 95  [class="", key=0];
+575 -> 96  [class="", key=0];
+576 -> 102  [class="", key=0];
+577 -> 18  [class="", key=0];
+578 -> 18  [class="", key=0];
+579 -> 16  [class="", key=0];
+580 -> 67  [class="", key=0];
+581 -> 83  [class="", key=0];
+582 -> 191  [class="", key=0];
+583 -> 150  [class="", key=0];
+584 -> 3  [class="", key=0];
+585 -> 106  [class="", key=0];
+586 -> 159  [class="", key=0];
+587 -> 8  [class="", key=0];
+588 -> 14  [class="", key=0];
+589 -> 470  [class="", key=0];
+590 -> 16  [class="", key=0];
+591 -> 3  [class="", key=0];
+592 -> 3  [class="", key=0];
+593 -> 3  [class="", key=0];
+594 -> 3  [class="", key=0];
+595 -> 3  [class="", key=0];
+596 -> 3  [class="", key=0];
+597 -> 3  [class="", key=0];
+598 -> 3  [class="", key=0];
+599 -> 3  [class="", key=0];
+600 -> 3  [class="", key=0];
+601 -> 3  [class="", key=0];
+602 -> 3  [class="", key=0];
+603 -> 157  [class="", key=0];
+604 -> 540  [class="", key=0];
+}
+`;
+    drawGraph(graph);
+  } else {
+    serveGraph();
+  }
+
+
+</script>
+</body>
+</html>

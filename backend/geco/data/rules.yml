@@ -1,0 +1,19 @@
+version: "2.0"
+
+rules:
+
+- rule: start story
+  steps:
+  - intent: start
+  - action: utter_what_data
+  - action: action_what_data
+
+- rule: Ask the user to rephrase whenever they send a message with low NLU confidence
+  steps:
+  - intent: nlu_fallback
+  - action: utter_please_rephrase
+
+- rule: back
+  steps:
+  - intent: back
+  - action: action_back

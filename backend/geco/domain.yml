@@ -1,0 +1,2203 @@
+version: '2.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- deny
+- rename_database
+- retrieve_experiments
+- choice_value_dataset_name
+- start
+- choice_value_healthy
+- affirm
+- choice_value_tissue
+- search_field
+- review
+- region
+- keep
+- choice_value_disease
+- choice_exact_experiment
+- operation
+- choice_value_assembly
+- choice_value_cell
+- value
+- metadatum
+- modify
+- tuning
+- modify_extracted
+- project_metadata
+- choice_value_source
+- reset
+- join
+- choice_value_target
+- retrieve_annotations
+- greet
+- goodbye
+- mood_great
+- choice_value_file_format
+- choice_value_feature
+- choice_value_data_type
+- choice_value_content_type
+- choice_value_technique
+- choice_value_biosample_type
+- insert
+- project_region
+- cover
+- union
+- map
+- difference
+- stop
+- modify_selection
+- any
+- all
+- strings
+- change_field
+- back
+- feature
+- sample
+- cluster
+entities:
+- affirm
+- annotations
+- assembly
+- biosample_type
+- cell
+- content_type
+- data
+- data_type
+- dataset_name
+- dataset_rename
+- disease
+- experiments
+- feature
+- field
+- file_format
+- is_healthy
+- source
+- target
+- technique
+- tissue
+slots:
+  DS:
+    type: bool
+    influence_conversation: true
+  GMQL:
+    type: bool
+    influence_conversation: true
+  annotations:
+    type: text
+    influence_conversation: true
+  assembly:
+    type: categorical
+    influence_conversation: true
+    values:
+    - hg19
+    - grch38
+    - __other__
+  biosample_type:
+    type: categorical
+    influence_conversation: true
+    values:
+    - cell line
+    - primary cell
+    - primary tissue
+    - primary culture
+    - in vitro differentiated cells
+    - esc derived cell line
+    - tissue
+    - __other__
+  cell:
+    type: categorical
+    influence_conversation: true
+    values:
+    - k562
+    - hepg2
+    - hek293
+    - gm12878
+    - mcf-7
+    - lymphoblastoid cell line
+    - h1
+    - a549
+    - sk-n-sh
+    - hela-s3
+    - hct116
+    - hek293t
+    - imr90
+    - gm23338
+    - bipolar neuron
+    - fibroblast of lung
+    - neural cell
+    - endothelial cell of umbilical vein
+    - h9
+    - pc-9
+    - mammary epithelial cell
+    - neural progenitor cell
+    - hepatocyte
+    - oci-ly1
+    - mm.1s
+    - pc-3
+    - gm23248
+    - imr-90
+    - dnd-41
+    - cardiac muscle cell
+    - ishikawa
+    - skeletal muscle myoblast
+    - cd14-positive monocyte
+    - dohh2
+    - b cell
+    - loucy
+    - oci-ly3
+    - hela
+    - karpas-422
+    - myotube
+    - smooth muscle cell
+    - panc1
+    - fibroblast of dermis
+    - sk-n-mc
+    - keratinocyte
+    - mcf 10a
+    - oci-ly7
+    - h1 cells
+    - osteoblast
+    - su-dhl-6
+    - gm12891
+    - h9 cells
+    - imr90 fetal lung fibroblasts cell line
+    - kms-11
+    - nt2/d1
+    - t47d
+    - lncap
+    - h1 bmp4 derived trophoblast cultured cells
+    - a673
+    - h1 derived mesenchymal stem cells
+    - h1 derived neuronal progenitor cultured cells
+    - nci-h929
+    - hematopoietic multipotent progenitor cell
+    - hl-60
+    - gm12892
+    - h1 bmp4 derived mesendoderm cultured cells
+    - neutrophil
+    - h7
+    - astrocyte
+    - hct-116
+    - hues64
+    - bronchial epithelial cell
+    - bj
+    - caco-2
+    - ramos
+    - ag04450
+    - gm06990
+    - 22rv1
+    - foreskin fibroblast
+    - jurkat
+    - pfeiffer
+    - wi38
+    - pfsk-1
+    - acc112
+    - huvec umbilical vein endothelial primary cells
+    - k562 leukemia cells
+    - kidney epithelial cell
+    - nhek-epidermal keratinocyte primary cells
+    - kopt-k1
+    - a549 etoh 0.02pct lung carcinoma cell line
+    - gm12878 lymphoblastoid cells
+    - hela-s3 cervical carcinoma cell line
+    - hepg2 hepatocellular carcinoma cell line
+    - hmec mammary epithelial primary cells
+    - hsmm skeletal muscle myoblasts cells
+    - nhlf lung fibroblast primary cells
+    - cardiac fibroblast
+    - dermis blood vessel endothelial cell
+    - lncap clone fgc
+    - primary hematopoietic stem cells g-csf-mobilized female
+    - sh-sy5y
+    - cardiovascular progenitor cell
+    - hsmm cell derived skeletal muscle myotubes cells
+    - monocytes-cd14+ ro01746 primary cells
+    - nh-a astrocytes primary cells
+    - nhdf-ad adult dermal fibroblast primary cells
+    - dnd41 tcell leukemia cell line
+    - vcap
+    - c4-2b
+    - mid-neurogenesis radial glial cells
+    - mononuclear cell
+    - neuroepithelial stem cell
+    - radial glial cell
+    - nhek
+    - cardiac myoblast
+    - foreskin fibroblast primary cells skin01
+    - foreskin fibroblast primary cells skin02
+    - foreskin melanocyte primary cells skin01
+    - hesc derived cd184+ endoderm cultured cells
+    - mesodermal cell
+    - osteoblast primary cells
+    - ag09309
+    - ag09319
+    - gm12865
+    - hues64 cells
+    - nb4
+    - astrocyte of the cerebellum
+    - astrocyte of the spinal cord
+    - be2c
+    - brain microvascular endothelial cell
+    - epithelial cell of esophagus
+    - epithelial cell of prostate
+    - fibroblast of pulmonary artery
+    - fibroblast of the aortic adventitia
+    - fibroblast of villous mesenchyme
+    - hff-myc
+    - primary mononuclear cells from peripheral blood
+    - primary t cd8+ naive cells from peripheral blood
+    - primary t helper naive cells from peripheral blood
+    - weri-rb-1
+    - ag04449
+    - ag10803
+    - breast variant human mammary epithelial cells (vhmec)
+    - epithelial cell of proximal tubule
+    - foreskin keratinocyte primary cells skin02
+    - gm19239
+    - nhlf
+    - breast myoepithelial primary cells
+    - choroid plexus epithelial cell
+    - fibroblast of mammary gland
+    - foreskin keratinocyte primary cells skin03
+    - hesc derived cd56+ ectoderm cultured cells
+    - hesc derived cd56+ mesoderm cultured cells
+    - retinal pigment epithelial cell
+    - toledo
+    - foreskin melanocyte primary cells skin03
+    - primary t helper memory cells from peripheral blood 2
+    - t-helper 1 cell
+    - cyt49
+    - es-ucsf4  cells
+    - gm12864
+    - ips df 19.11 cells
+    - ips df 6.9 cells
+    - cortex derived primary cultured neurospheres
+    - ganglion eminence derived primary cultured neurospheres
+    - gm19238
+    - primary b cells from peripheral blood
+    - primary monocytes from peripheral blood
+    - primary natural killer cells from peripheral blood
+    - primary t cells from peripheral blood
+    - ips-18 cells
+    - ips-20b cells
+    - nccit
+    - rwpe1
+    - bone marrow derived cultured mesenchymal stem cells
+    - gm19240
+    - hues48 cells
+    - hues6 cells
+    - mda-mb-231
+    - mesenchymal stem cell derived chondrocyte cultured cells
+    - muscle satellite cultured cells
+    - primary hematopoietic stem cells g-csf-mobilized male
+    - primary t cells from cord blood
+    - dermis microvascular lymphatic vessel endothelial cell
+    - erythroblast
+    - lung microvascular endothelial cell
+    - trophoblast cell
+    - es-i3 cells
+    - es-wa7 cells
+    - wi-38
+    - adipose derived mesenchymal stem cell cultured cells
+    - gm08714
+    - h9 derived neuronal progenitor cultured cells
+    - h9 derived neuron cultured cells
+    - ips-15b cells
+    - jurkat clone e61
+    - mesenchymal stem cell derived adipocyte cultured cells
+    - primary t cd8+ memory cells from peripheral blood
+    - primary t cells effector/memory enriched from peripheral blood
+    - primary t helper 17 cells pma-i stimulated
+    - primary t helper cells from peripheral blood
+    - primary t helper cells pma-i stimulated
+    - primary t helper memory cells from peripheral blood 1
+    - primary t helper naive cells from peripheral blood
+    - primary t regulatory cells from peripheral blood
+    - rwpe2
+    - gm18505
+    - raji
+    - t47d-mtvl
+    - primary b cells from cord blood
+    - primary hematopoietic stem cells
+    - t-helper 2 cell
+    - u2os
+    - wibr3
+    - d721med
+    - gm18507
+    - gm19193
+    - h54
+    - namalwa
+    - primary hematopoietic stem cells short term culture
+    - primary neutrophils from peripheral blood
+    - gm19099
+    - ms1
+    - skeletal muscle cell
+    - dko1
+    - gm10248
+    - gm10266
+    - hues48
+    - hues6
+    - ips df 19.11
+    - cutll1
+    - hes i3
+    - ips c1
+    - lncap-abl
+    - naive thymus-derived cd4-positive, alpha-beta t cell
+    - sk-n-dz
+    - gm12890
+    - gm18486
+    - gm20000
+    - ips df 6.9
+    - tc-797
+    - amniotic epithelial cell
+    - astrocyte of the hippocampus
+    - fibroblast of gingiva
+    - fibroblast of peridontal ligament
+    - fibroblast of the conjunctiva
+    - glomerular endothelial cell
+    - gm10847
+    - gm12873
+    - gm12874
+    - gm12875
+    - gm13976
+    - gm13977
+    - gm18526
+    - gm18951
+    - gm2255
+    - gm2588
+    - gm2610
+    - gm2630
+    - ht1080
+    - iris pigment epithelial cell
+    - lis2
+    - nhdf-ad
+    - non-pigmented ciliary epithelial cell
+    - renal cortical epithelial cell
+    - rs4
+    - smooth muscle cell of the brain vasculature
+    - wibr2
+    - wis2
+    - dl23
+    - h3396
+    - lovo
+    - mv4-11
+    - p493-6
+    - sum159pt
+    - ags
+    - beas-2b
+    - caki-1
+    - cd1c-positive myeloid dendritic cell
+    - daoy
+    - dedifferentiated amniotic fluid mesenchymal stem cell
+    - el
+    - elr
+    - endodermal cell
+    - gm03348
+    - gm04503
+    - gm04504
+    - gm18508
+    - gm18516
+    - gm18522
+    - hap-1
+    - hek293a
+    - hffc6
+    - ht-29
+    - kbm-7
+    - l1-s8r
+    - m059j
+    - nt2-d1
+    - sf8628
+    - sk-mel-5
+    - stromal cell of bone marrow
+    - bg01
+    - gm18498
+    - gm18499
+    - gm18502
+    - gm19141
+    - gm19147
+    - gm19204
+    - jjn-3
+    - r1
+    - 293t-rex
+    - cmk
+    - dld-1
+    - du145
+    - gcb
+    - gm18501
+    - hkc8
+    - hmads-3
+    - ips-18c
+    - ips-20b
+    - kidney tubule cell
+    - lcl
+    - mcf-10a
+    - molm-14
+    - ntko
+    - prec
+    - regulatory t cell
+    - rko
+    - sw480
+    - te-7
+    - tko
+    - u937
+    - uke-1
+    - urothelium cell line
+    - wibr1
+    - brain pericyte
+    - gm19114
+    - h2009
+    - htr-8/svneo
+    - hucct1
+    - ips-15b
+    - ipsc derived
+    - kyse-150
+    - mda-mb-468
+    - nalm6
+    - pulmonary artery endothelial cell
+    - rcc 7860
+    - tive-ltc
+    - ucsf-4*
+    - zr-75-1
+    - 786-o
+    - 8988t
+    - a172
+    - achn
+    - adipocyte
+    - ag08395
+    - ag08396
+    - ag20443
+    - be2-c
+    - bg03
+    - c4-2
+    - c803
+    - caki2
+    - cal51-mcf7
+    - colo829
+    - cwru1
+    - d341med
+    - eec16
+    - eh
+    - elf1
+    - elf-1
+    - epidermal melanocyte
+    - ews502
+    - ft246
+    - ft33
+    - g401
+    - glomerular visceral epithelial cell
+    - gm12801
+    - gm18504
+    - gm18511
+    - gm18517
+    - gm18519
+    - gm18520
+    - gm18852
+    - gm18853
+    - gm18855
+    - gm18856
+    - gm18861
+    - gm18862
+    - gm18870
+    - gm18909
+    - gm18912
+    - gm18913
+    - gm18916
+    - gm19093
+    - gm19098
+    - gm19101
+    - gm19116
+    - gm19119
+    - gm19127
+    - gm19130
+    - gm19131
+    - gm19137
+    - gm19138
+    - gm19140
+    - gm19143
+    - gm19144
+    - gm19152
+    - gm19153
+    - gm19159
+    - gm19160
+    - gm19200
+    - gm19201
+    - gm19209
+    - gm19210
+    - gm19222
+    - h4
+    - hcec 1ct
+    - hepatic stellate cell
+    - hk-2
+    - hpde6-e6e7
+    - hs-27a
+    - hs-5
+    - huh-7
+    - huh-7.5
+    - ioe11
+    - ioe4
+    - ips-nihi11
+    - ips-nihi7
+    - islet precursor cell
+    - islk-219
+    - kasumi-1
+    - kidney glomerular epithelial cell
+    - l1-s8
+    - lhcn-m2
+    - mg63
+    - mm1.s
+    - myocyte
+    - naive b cell
+    - nci-h226
+    - nci-h460
+    - panc-1
+    - rcc
+    - rpmi7951
+    - rpmi8226
+    - sjcrh30
+    - sjsa1
+    - skbr3
+    - tex
+    - t-helper 17 cell
+    - wa-7
+    - bcbl1
+    - bicr
+    - gm18510
+    - gm18858
+    - gm18859
+    - gm18907
+    - gm19092
+    - gm19171
+    - gm19190
+    - gm19203
+    - gm19206
+    - gm19207
+    - gm19223
+    - gm19225
+    - gm19257
+    - hcc1954
+    - hesc line h1
+    - hre
+    - imr90 fetal lung fibroblast cell line
+    - jurkat e6-1
+    - loximvi
+    - ls174t
+    - lted
+    - mel
+    - meljuso
+    - mutui
+    - saec
+    - sk-n-sh_ra
+    - 1015c
+    - 21nt
+    - 90-8tl
+    - a3.01
+    - ach2
+    - amniotic stem cell
+    - atconv
+    - calu-3
+    - ecto neural progenitor cell
+    - ej
+    - gist48
+    - gm01660
+    - gm2555
+    - gp5d
+    - h128
+    - h2171
+    - h358
+    - hcc2157
+    - hgadfn167
+    - hgfdfn168
+    - hs68
+    - ips 4
+    - ips a1
+    - ips a6
+    - kbm7
+    - kelly
+    - kidney capillary endothelial cell
+    - kms11
+    - lx2
+    - m23f
+    - mcf7-lted
+    - mdamb436
+    - mnc491
+    - mr4
+    - ncha1
+    - ncha2
+    - nci-h526
+    - nhu
+    - pdb1lox-17/puro-5
+    - pdb1lox-21/puro-26
+    - pdb2lox-17
+    - pdb2lox-21
+    - rj2.2.5
+    - rt112
+    - sf268
+    - sf7761
+    - sgbs
+    - skmel5
+    - tcam-2
+    - tko2
+    - u87
+    - upr9
+    - wibr7
+    - wm115
+    - wm266-4
+    - 501-mel
+    - a204.1
+    - ag08470
+    - all-sil
+    - bt-549
+    - c6
+    - caski
+    - colo-741
+    - g401.6
+    - glc-16
+    - gm12866
+    - granta-519
+    - ha-sp
+    - hbl1
+    - hcc95
+    - hmec
+    - ht29
+    - huref
+    - huvec
+    - ims13q
+    - ips-11a
+    - mda-231
+    - mda-mb-453
+    - me-1
+    - mgg4
+    - mnc492
+    - molm-13
+    - ms4221
+    - nci-h69
+    - nci-h82
+    - ngp
+    - nhdf-neo
+    - oci-ly4
+    - oci-ly8
+    - rpmi-8402
+    - rptec
+    - sem
+    - set2
+    - shef 4
+    - skmc
+    - skno-1
+    - su-dhl6
+    - sum159-mda453
+    - ttc549
+    - um-scc-4
+    - um-scc-47
+    - um-scc-74a
+    - wm262
+    - wm451-lu
+    - wsu-dlcl2
+    - __other__
+  content_type:
+    type: categorical
+    influence_conversation: true
+    values:
+    - exon
+    - gene
+    - transcript
+    - cds
+    - selenocysteine
+    - start codon
+    - stop codon
+    - utr
+    - antisense rna
+    - c gene segment
+    - d gene segment
+    - d loop
+    - enhancer
+    - j gene segment
+    - lnc rna
+    - mirna
+    - mrna
+    - ncrna
+    - primary transcript
+    - promoter
+    - region
+    - repeat region
+    - rnase mrp rna
+    - rnase p rna
+    - rrna
+    - sequence feature
+    - snorna
+    - snrna
+    - srp rna
+    - telomerase rna
+    - trna
+    - vault rna
+    - v gene segment
+    - y rna
+    - centromere
+    - intron
+    - __other__
+  data_type:
+    type: categorical
+    influence_conversation: true
+    values:
+    - peaks
+    - cnv
+    - copy number segment
+    - masked copy number segment
+    - isoform quantification
+    - exon quantification
+    - gene quantification
+    - spljxn quantification
+    - dna methylation
+    - methylation beta value
+    - gene expression quantification
+    - isoform expression quantification
+    - mirna expression quantification
+    - masked somatic mutation
+    - mirna quantification
+    - dna seq
+    - variant calling
+    - __other__
+  dataset_name:
+    type: categorical
+    influence_conversation: true
+    values:
+    - grch38_encode_narrow_2020_01
+    - hg19_tcga_rnaseq_spljxn
+    - hg19_roadmap_epigenomics_broad
+    - hg19_tcga_rnaseqv2_exon
+    - grch38_tcga_gene_expression_2019_10
+    - hg19_tcga_mirnaseq_isoform
+    - grch38_tcga_methylation_2019_10
+    - grch38_tcga_somatic_mutation_masked_2019_10
+    - hg19_tcga_mirnaseq_mirna
+    - hg19_tcga_rnaseqv2_isoform
+    - grch38_encode_broad_2020_01
+    - grch38_tcga_mirna_expression_2019_10
+    - grch38_tcga_copy_number_2019_10
+    - grch38_1000genomes_2020_01
+    - hg19_roadmap_epigenomics_bed
+    - hg19_tcga_rnaseqv2_spljxn
+    - hg19_roadmap_epigenomics_rna_expression
+    - hg19_encode_broad_2020_01
+    - hg19_roadmap_epigenomics_gapped
+    - hg19_tcga_rnaseqv2_gene
+    - hg19_tcga_rnaseq_gene
+    - hg19_tcga_dnaseq
+    - hg19_encode_narrow_2020_01
+    - hg19_tcga_rnaseq_exon
+    - grch38_tcga_mirna_isoform_expression_2019_10
+    - hg19_1000genomes_2020_01
+    - grch38_tcga_copy_number_masked_2019_10
+    - hg19_roadmap_epigenomics_dmr
+    - hg19_tcga_dnamethylation
+    - hg19_roadmap_epigenomics_narrow
+    - hg19_tcga_cnv
+    - __other__
+  dataset_rename:
+    type: text
+    influence_conversation: true
+  disease:
+    type: categorical
+    influence_conversation: true
+    values:
+    - breast invasive carcinoma
+    - kidney renal clear cell carcinoma
+    - lung adenocarcinoma
+    - head and neck squamous cell carcinoma
+    - ovarian serous cystadenocarcinoma
+    - lung squamous cell carcinoma
+    - thyroid carcinoma
+    - uterine corpus endometrial carcinoma
+    - prostate adenocarcinoma
+    - brain lower grade glioma
+    - colon adenocarcinoma
+    - skin cutaneous melanoma
+    - bladder urothelial carcinoma
+    - liver hepatocellular carcinoma
+    - stomach adenocarcinoma
+    - glioblastoma multiforme
+    - kidney renal papillary cell carcinoma
+    - chronic myelogenous leukemia (cml)
+    - cervical squamous cell carcinoma and endocervical adenocarcinoma
+    - sarcoma
+    - acute myeloid leukemia
+    - esophageal carcinoma
+    - pancreatic adenocarcinoma
+    - pheochromocytoma and paraganglioma
+    - hepatocellular carcinoma
+    - testicular germ cell tumors
+    - rectum adenocarcinoma
+    - thymoma
+    - adrenocortical carcinoma
+    - mesothelioma
+    - uveal melanoma
+    - kidney chromophobe
+    - breast cancer (adenocarcinoma)
+    - uterine carcinosarcoma
+    - lymphoid neoplasm diffuse large b-cell lymphoma
+    - cholangiocarcinoma
+    - metastatic neuroblastoma from bone marrow
+    - cervical adenocarcinoma
+    - b cell lymphoma
+    - colorectal carcinoma
+    - immunoglobulin a lambda myeloma
+    - grade iv, adenocarcinoma
+    - apparently healthy
+    - endometrial adenocarcinoma
+    - refractory immunoblastic b cell lymphoma progressed from follicular centroblastic/centrocytic lymphoma
+    - t-cell acute lymphoblastic leukemia cell line atcc crl-2629
+    - pancreatic carcinoma
+    - human b cell non-hodgkin's lymphoma
+    - t-acute lymphoblastic leukemia (t-all; type iii cortical)
+    - fibrocystic disease
+    - large cell lymphoma; diffuse mixed histiocytic and lymphocytic lymphoma; follicular b cell lymphoma
+    - ewing's sarcoma
+    - malignant pluripotent embryonal carcinoma
+    - acute promyelocytic leukemia
+    - mammary ductal carcinoma
+    - igak myeloma
+    - colorectal adenocarcinoma
+    - carcinoma (prostate)
+    - malignant primitive neuroectodermal tumor
+    - parathyroid adenoma
+    - submaxillar tumor
+    - retinoblastoma
+    - primary hyperparathyroidism
+    - burkitt's lymphoma
+    - parkinson's disease
+    - medulloblastoma
+    - acute t cell leukemia
+    - cancer
+    - de lange phenotype; developmental delay; profound retardation; seizures; 3 cousins are also affected; 46,xy,-22,+der (22)t(3;22)(q25.3;p12)
+    - neuroblastoma
+    - cornelia de lange syndrome 1; cdls1; nipped-b-like; nipbl
+    - hepatocellular adenocarcinoma
+    - malignant glioblastoma
+    - melanoma
+    - fibrosarcoma
+    - down syndrome
+    - renal cell adenocarcinoma
+    - rhabdoid tumor (wilm's tumor)
+    - carcinoma; large cell lung cancer
+    - cystadenocarcinoma
+    - dukes' type c, grade iv, colorectal adenocarcinoma
+    - malignant melanoma
+    - metastatic melanoma
+    - neuroglioma
+    - osteosarcoma
+    - plasmacytoma; myeloma
+    - renal carcinoma
+    - squamous cell carcinoma; mesothelioma
+    - pheochromocythoma and paraganglioma
+    - hepatic rhabdoid tumor
+    - rhabdomyosarcoma
+    - __other__
+  experiments:
+    type: text
+    influence_conversation: true
+  feature:
+    type: categorical
+    influence_conversation: true
+    values:
+    - gene expression
+    - copy number variation
+    - dna methylation
+    - transcription factor
+    - simple nucleotide variation
+    - mutations
+    - variants
+    - broad histone mark, histone
+    - histone, narrow histone mark
+    - histone modification
+    - rna binding protein
+    - chromatin remodeler
+    - rna polymerase complex
+    - cofactor
+    - dna repair
+    - open chromatin
+    - cohesin
+    - dna replicationt
+    - chromatin remodeler, transcription factor
+    - chromatin remodeler, cofactor
+    - cofactor, transcription factor
+    - other context
+    - rna binding protein, chromatin remodeler
+    - dna repair, cofactor
+    - dna repair, rna binding protein, chromatin remodeler
+    - rna binding protein, cofactor
+    - dna repair, chromatin remodeler
+    - dna repair, rna binding protein
+    - chromatin remodeler, cofactor, transcription factor
+    - dna repair, dna replication
+    - dna replication, rna binding protein
+    - rna binding protein, transcription factor
+    - tag
+    - __other__
+  field:
+    type: categorical
+    influence_conversation: true
+    values:
+    - assembly
+    - source
+    - data_type
+    - disease
+    - target
+    - tissue
+    - content_type
+    - cell
+    - is_healthy
+    - feature
+    - biosample_type
+    - file_format
+    - technique
+    - dataset_name
+    - __other__
+  file_format:
+    type: categorical
+    influence_conversation: true
+    values:
+    - bed
+    - narrowpeak
+    - broadpeak
+    - gappedpeak
+    - __other__
+  is_healthy:
+    type: categorical
+    influence_conversation: true
+    values:
+    - yes
+    - no
+    - __other__
+  modify_keep:
+    type: text
+    influence_conversation: true
+  source:
+    type: categorical
+    influence_conversation: true
+    values:
+    - tcga
+    - encode
+    - 1000 genomes
+    - roadmap epigenomics
+    - tads
+    - refseq
+    - gencode
+    - cistrome
+    - __other__
+  target:
+    type: categorical
+    influence_conversation: true
+    values:
+    - h3k4me3
+    - ctcf
+    - h3k36me3
+    - h3k27me3
+    - h3k27ac
+    - h3k4me1
+    - h3k9me3
+    - h3k9ac
+    - polr2a
+    - h3k4me2
+    - h4k20me1
+    - h3k79me2
+    - h2afz
+    - polr2aphosphos5
+    - rest
+    - ep300
+    - ezh2
+    - yy1
+    - rad21
+    - jund
+    - ezh2phosphot487
+    - h3k9me2
+    - h3f3a
+    - taf1
+    - gabpa
+    - myc
+    - foxa1
+    - hdac2
+    - sin3a
+    - nr3c1
+    - znf24
+    - sp1
+    - jun
+    - mafk
+    - gtf2f1
+    - zbtb33
+    - elf1
+    - tardbp
+    - tcf12
+    - max
+    - cebpb
+    - atf3
+    - suz12
+    - nrf1
+    - kdm1a
+    - rfx5
+    - rnf2
+    - h2a.z
+    - bhlhe40
+    - egr1
+    - mnt
+    - usf2
+    - fos
+    - rcor1
+    - bclaf1
+    - arnt
+    - esr1
+    - foxk2
+    - zfx
+    - znf274
+    - maz
+    - creb1
+    - ikzf1
+    - smc3
+    - nono
+    - usf1
+    - rxra
+    - atf2
+    - chd1
+    - elk1
+    - esrra
+    - hdac1
+    - hdgf
+    - nfrkb
+    - rfx1
+    - zbtb40
+    - zfp36
+    - chd2
+    - irf1
+    - ets1
+    - srf
+    - stat1
+    - tbp
+    - trim28
+    - znf639
+    - larp7
+    - six5
+    - nbn
+    - arid3a
+    - atf7
+    - bach1
+    - brca1
+    - cux1
+    - dpf2
+    - etv6
+    - foxa2
+    - gata1
+    - gata2
+    - gatad2b
+    - hcfc1
+    - mllt1
+    - ncor1
+    - pknox1
+    - rad51
+    - smarca4
+    - spi1
+    - tbl1xr1
+    - trim22
+    - ubtf
+    - ybx1
+    - znf143
+    - znf384
+    - znf592
+    - mta2
+    - mxi1
+    - nfe2l2
+    - polr2aphosphos2
+    - phf8
+    - zbtb11
+    - cebpg
+    - gata3
+    - pax5
+    - stat3
+    - fosl2
+    - nr2f2
+    - hnrnpk
+    - hnrnpl
+    - hnrnpul1
+    - pcbp1
+    - ptbp1
+    - rbfox2
+    - srsf1
+    - u2af1
+    - u2af2
+    - zbtb7a
+    - zc3h11a
+    - atf1
+    - bmi1
+    - cebpz
+    - chd4
+    - crem
+    - csde1
+    - ctbp1
+    - ddx20
+    - e2f8
+    - e4f1
+    - ehmt2
+    - fosl1
+    - fus
+    - kdm5a
+    - klf16
+    - lef1
+    - maff
+    - mcm7
+    - mta3
+    - ncoa1
+    - nfatc3
+    - nfxl1
+    - nr2c1
+    - nr2c2
+    - nr2f1
+    - nr2f6
+    - rbbp5
+    - rbm22
+    - smarca5
+    - smarce1
+    - srebf1
+    - taf15
+    - taf7
+    - tcf7
+    - toe1
+    - zeb2
+    - zkscan1
+    - znf184
+    - znf207
+    - znf217
+    - znf830
+    - zscan29
+    - hnf4a
+    - pbx2
+    - bcl11a
+    - hdac6
+    - irf3
+    - klf9
+    - cbx3
+    - foxm1
+    - nkrf
+    - pcbp2
+    - polr2g
+    - zeb1
+    - cbx8
+    - e2f4
+    - prpf4
+    - srsf9
+    - tcf7l2
+    - zc3h8
+    - ash2l
+    - cbx5
+    - nfic
+    - hltf
+    - ilf3
+    - khsrp
+    - mef2a
+    - mta1
+    - safb
+    - srsf7
+    - tead4
+    - ybx3
+    - h2ak5ac
+    - h2bk120ac
+    - h2bk5ac
+    - h3k18ac
+    - h3k23ac
+    - h3k4ac
+    - h3k79me1
+    - h4k8ac
+    - rbm15
+    - sfpq
+    - aff1
+    - ago1
+    - bcl3
+    - brd4
+    - cbx2
+    - ccar2
+    - champ1
+    - clock
+    - cops2
+    - e2f1
+    - ebf1
+    - elf4
+    - fip1l1
+    - foxp1
+    - foxp2
+    - gabpb1
+    - gatad2a
+    - hdac8
+    - hes1
+    - hnf4g
+    - hnrnph1
+    - hnrnpll
+    - hsf1
+    - ikzf2
+    - irf2
+    - junb
+    - kat8
+    - kdm4b
+    - klf1
+    - klf13
+    - l3mbtl2
+    - mbd2
+    - mcm2
+    - mcm5
+    - mitf
+    - mynn
+    - nanog
+    - ncoa2
+    - ncoa3
+    - neurod1
+    - nfe2
+    - nfib
+    - nfyb
+    - nr4a1
+    - pax8
+    - phb2
+    - prdm10
+    - pygo2
+    - rb1
+    - runx1
+    - sap30
+    - sin3b
+    - skil
+    - smad1
+    - smad5
+    - smarcc2
+    - snip1
+    - snrnp70
+    - sox13
+    - sox6
+    - srebf2
+    - stat5a
+    - tal1
+    - tbx3
+    - tfdp1
+    - trim24
+    - trim25
+    - xrcc5
+    - zbed1
+    - zbtb1
+    - zbtb5
+    - zfp64
+    - zhx1
+    - zhx2
+    - zkscan8
+    - zmym3
+    - znf148
+    - znf282
+    - znf316
+    - znf318
+    - znf407
+    - znf48
+    - znf507
+    - znf512b
+    - znf580
+    - znf687
+    - znf740
+    - znf792
+    - zzz3
+    - e2f6
+    - pou5f1
+    - zbtb26
+    - zbtb8a
+    - znf175
+    - znf644
+    - dgcr8
+    - h2bk12ac
+    - h3k14ac
+    - h4k91ac
+    - hnrnpu
+    - nfya
+    - rbm39
+    - stat2
+    - ewsr1
+    - h3k9me1
+    - mbd1
+    - safb2
+    - znf622
+    - h2bk15ac
+    - supt20h
+    - igf2bp1
+    - kat2b
+    - pbx3
+    - setdb1
+    - znf146
+    - znf263
+    - znf3
+    - aggf1
+    - akap1
+    - aqr
+    - bud13
+    - cstf2t
+    - ddx3x
+    - ddx52
+    - ddx55
+    - ddx6
+    - dhx30
+    - drosha
+    - eftud2
+    - exosc5
+    - fam120a
+    - fastkd2
+    - fto
+    - fxr2
+    - grwd1
+    - hnrnpa1
+    - hnrnpc
+    - hnrnpm
+    - larp4
+    - lin28b
+    - lsm11
+    - matr3
+    - ncbp2
+    - nolc1
+    - pml
+    - prpf8
+    - qki
+    - rps3
+    - sdad1
+    - sf3b4
+    - sltm
+    - smndc1
+    - snd1
+    - ssb
+    - supv3l1
+    - tbrg4
+    - tia1
+    - tra2a
+    - trove2
+    - uchl5
+    - upf1
+    - utp18
+    - wdr43
+    - xrcc6
+    - xrn2
+    - znf800
+    - prdm4
+    - repin1
+    - znf697
+    - adnp
+    - aebp2
+    - ago2
+    - ahr
+    - arhgap35
+    - arid1b
+    - arid2
+    - arid4b
+    - ash1l
+    - atf4
+    - atm
+    - batf
+    - bcl11b
+    - bcl6
+    - bcl6b
+    - bcor
+    - brd9
+    - c11orf30
+    - cbfa2t2
+    - cbfa2t3
+    - cbfb
+    - cbx1
+    - cc2d1a
+    - cdc5l
+    - cebpa
+    - chd7
+    - creb3
+    - creb3l1
+    - ctbp2
+    - ctcfl
+    - dach1
+    - deaf1
+    - dek
+    - dido1
+    - dmap1
+    - dnmt1
+    - dnmt3b
+    - drap1
+    - e2f7
+    - eed
+    - egr2
+    - elavl1
+    - elf3
+    - erf
+    - ets2
+    - etv4
+    - etv5
+    - fezf1
+    - foxa3
+    - gata4
+    - gatad1
+    - gfi1b
+    - gli2
+    - gli4
+    - glis1
+    - glis2
+    - gmeb1
+    - gmeb2
+    - gtf2a2
+    - gtf2e2
+    - hdac3
+    - hic1
+    - hinfp
+    - hlf
+    - hmbox1
+    - hmg20a
+    - hnf1a
+    - homez
+    - id3
+    - ikzf3
+    - ikzf5
+    - ilk
+    - insm2
+    - irf4
+    - irf5
+    - irf9
+    - kat7
+    - kdm3a
+    - kdm5b
+    - kdm6a
+    - klf10
+    - klf11
+    - klf14
+    - klf17
+    - klf4
+    - klf5
+    - klf7
+    - klf8
+    - kmt2b
+    - lcorl
+    - mafg
+    - mcm3
+    - mef2b
+    - mef2c
+    - mef2d
+    - meis2
+    - mga
+    - mier1
+    - mier2
+    - mier3
+    - mixl1
+    - mlx
+    - mxd3
+    - mxd4
+    - myb
+    - mybl2
+    - myrf
+    - mzf1
+    - ncoa4
+    - ncoa6
+    - nfatc1
+    - nfe2l1
+    - nfia
+    - nfil3
+    - nfkbiz
+    - nfyc
+    - nr0b1
+    - nufip1
+    - osr2
+    - ovol3
+    - paf1
+    - patz1
+    - phf20
+    - phf21a
+    - plrg1
+    - polr2b
+    - polr2h
+    - pou2f2
+    - ppp1r10
+    - prdm1
+    - prdm12
+    - prdm2
+    - prdm6
+    - ptrf
+    - pttg1
+    - rbak
+    - rbm14
+    - rbm17
+    - rbm25
+    - rbm34
+    - rbpj
+    - rcor2
+    - rela
+    - relb
+    - rere
+    - rfx3
+    - rfxank
+    - rlf
+    - runx3
+    - rxrb
+    - sall1
+    - sall2
+    - sap130
+    - scrt1
+    - scrt2
+    - six4
+    - ski
+    - smad2
+    - smad4
+    - smarcb1
+    - sox5
+    - sp3
+    - sp5
+    - sp7
+    - srsf3
+    - srsf4
+    - ssrp1
+    - syncrip
+    - tbx21
+    - tead1
+    - tead2
+    - tead3
+    - tfap4
+    - tfe3
+    - tgif2
+    - thap1
+    - thap11
+    - thra
+    - thrap3
+    - thrb
+    - trip13
+    - tsc22d4
+    - tshz1
+    - vezf1
+    - wrnip1
+    - wt1
+    - xrcc3
+    - yy2
+    - zbtb10
+    - zbtb12
+    - zbtb2
+    - zbtb20
+    - zbtb21
+    - zbtb25
+    - zbtb44
+    - zbtb48
+    - zbtb49
+    - zbtb6
+    - zbtb7b
+    - zfhx2
+    - zfp3
+    - zfp37
+    - zfp41
+    - zfp69b
+    - zfp91
+    - zgpat
+    - zic2
+    - zik1
+    - zmiz1
+    - znf10
+    - znf101
+    - znf112
+    - znf114
+    - znf121
+    - znf132
+    - znf133
+    - znf138
+    - znf140
+    - znf155
+    - znf157
+    - znf16
+    - znf169
+    - znf174
+    - znf18
+    - znf189
+    - znf19
+    - znf195
+    - znf2
+    - znf202
+    - znf211
+    - znf213
+    - znf214
+    - znf221
+    - znf223
+    - znf23
+    - znf239
+    - znf248
+    - znf26
+    - znf266
+    - znf280a
+    - znf280c
+    - znf280d
+    - znf292
+    - znf300
+    - znf302
+    - znf311
+    - znf324
+    - znf331
+    - znf34
+    - znf341
+    - znf350
+    - znf354b
+    - znf354c
+    - znf366
+    - znf37a
+    - znf391
+    - znf394
+    - znf395
+    - znf398
+    - znf404
+    - znf416
+    - znf423
+    - znf433
+    - znf444
+    - znf449
+    - znf473
+    - znf488
+    - znf491
+    - znf493
+    - znf501
+    - znf510
+    - znf512
+    - znf513
+    - znf514
+    - znf518a
+    - znf521
+    - znf524
+    - znf529
+    - znf530
+    - znf544
+    - znf547
+    - znf548
+    - znf549
+    - znf555
+    - znf558
+    - znf560
+    - znf561
+    - znf571
+    - znf574
+    - znf577
+    - znf579
+    - znf584
+    - znf585b
+    - znf589
+    - znf596
+    - znf600
+    - znf610
+    - znf614
+    - znf621
+    - znf623
+    - znf624
+    - znf626
+    - znf629
+    - znf645
+    - znf652
+    - znf654
+    - znf658
+    - znf660
+    - znf662
+    - znf664
+    - znf670
+    - znf677
+    - znf680
+    - znf692
+    - znf7
+    - znf701
+    - znf704
+    - znf707
+    - znf747
+    - znf768
+    - znf770
+    - znf776
+    - znf777
+    - znf781
+    - znf785
+    - znf791
+    - znf8
+    - znf83
+    - znf837
+    - znf843
+    - zscan16
+    - zscan18
+    - zscan21
+    - zscan23
+    - zscan26
+    - zscan30
+    - zscan4
+    - zscan5a
+    - zscan5c
+    - zscan9
+    - zxdb
+    - etv1
+    - foxj2
+    - h2bk20ac
+    - h3k56ac
+    - h4k5ac
+    - hbp1
+    - hhex
+    - klf6
+    - rara
+    - sp2
+    - taf9b
+    - znf205
+    - znf362
+    - znf426
+    - znf511
+    - znf76
+    - e2f5
+    - ep400
+    - hmg20b
+    - igf2bp3
+    - pabpc1
+    - pparg
+    - sirt6
+    - slbp
+    - supt5h
+    - zbtb17
+    - znf197
+    - znf335
+    - znf766
+    - t7
+    - aars
+    - aatf
+    - abcf1
+    - akap8l
+    - apobec3c
+    - bccip
+    - cdc40
+    - cpeb4
+    - cpsf6
+    - cstf2
+    - ddx21
+    - ddx24
+    - ddx42
+    - ddx51
+    - ddx59
+    - dkc1
+    - eif3d
+    - eif3g
+    - eif3h
+    - eif4g2
+    - fkbp4
+    - fmr1
+    - fubp3
+    - fxr1
+    - g3bp1
+    - gemin5
+    - gnl3
+    - gpkow
+    - grsf1
+    - h3k23me2
+    - igf2bp2
+    - khdrbs1
+    - metap2
+    - mtpap
+    - nip7
+    - nipbl
+    - nol12
+    - npm1
+    - nsun2
+    - pabpc4
+    - pabpn1
+    - phf6
+    - ppig
+    - ppil4
+    - pum1
+    - pum2
+    - pus1
+    - rbm5
+    - rps11
+    - sbds
+    - serbp1
+    - sf3a3
+    - sf3b1
+    - stau2
+    - sub1
+    - sugp2
+    - tial1
+    - utp3
+    - wdr3
+    - wrn
+    - xpo5
+    - ywhag
+    - zranb2
+    - hmgxb4
+    - kat2a
+    - zbed5
+    - zfp1
+    - crebbp
+    - gtf2b
+    - kdm4a
+    - phf5a
+    - whsc1
+    - h2ak9ac
+    - h3t11ph
+    - h4k12ac
+    - celf1
+    - eif4g1
+    - fubp1
+    - __other__
+  technique:
+    type: categorical
+    influence_conversation: true
+    values:
+    - rna-seq
+    - genotyping array
+    - mirna-seq
+    - chip-seq
+    - snp array
+    - methylation array
+    - dna methylation 450
+    - wxs
+    - dna-seq
+    - exome, low coverage
+    - dna methylation 27
+    - dnase-seq
+    - eclip
+    - exome, exon targetted, low coverage
+    - transcription profiling by array assay
+    - genetic modification followed by dnase-seq
+    - wgbs
+    - faire-seq
+    - rip-chip
+    - rrbs
+    - exome, high coverage, low coverage
+    - iclip
+    - rip-seq
+    - exome, exon targetted, high coverage, low coverage
+    - switchgear
+    - __other__
+  tissue:
+    type: categorical
+    influence_conversation: true
+    values:
+    - breast
+    - bronchus and lung
+    - kidney
+    - brain
+    - ovary
+    - thyroid gland
+    - prostate gland
+    - corpus uteri
+    - skin
+    - colon
+    - liver and intrahepatic bile ducts
+    - bladder
+    - stomach
+    - cervix uteri
+    - adrenal gland
+    - esophagus
+    - pancreas
+    - testis
+    - other and unspecified parts of tongue
+    - larynx
+    - connective, subcutaneous and other soft tissues
+    - retroperitoneum and peritoneum
+    - heart, mediastinum, and pleura
+    - thymus
+    - uterus, nos
+    - other and ill-defined sites in lip, oral cavity and pharynx
+    - hematopoietic and reticuloendothelial systems
+    - eye and adnexa
+    - rectum
+    - blood
+    - rectosigmoid junction
+    - floor of mouth
+    - tonsil
+    - other and unspecified parts of mouth
+    - lymph nodes
+    - base of tongue
+    - liver
+    - spleen
+    - transverse colon
+    - lung
+    - gastrocnemius medialis
+    - gum
+    - muscle
+    - oropharynx
+    - upper lobe of left lung
+    - sigmoid colon
+    - hypopharynx
+    - esophagus muscularis mucosa
+    - body of pancreas
+    - tibial nerve
+    - peyer's patch
+    - heart
+    - esophagus squamous epithelium
+    - gastroesophageal sphincter
+    - tibial artery
+    - gi stomach
+    - palate
+    - breast epithelium
+    - gi intestine
+    - heart left ventricle
+    - uterus
+    - vagina
+    - thoracic aorta
+    - right atrium auricular region
+    - other and ill-defined sites
+    - gi colon
+    - vascular
+    - parathyroid adenoma
+    - suprapubic skin
+    - gi rectum
+    - placenta
+    - ascending aorta
+    - fat
+    - lip
+    - other and unspecified parts of biliary tract
+    - small intestine
+    - spinal cord, cranial nerves, and other parts of central nervous system
+    - lower leg skin
+    - stromal connective
+    - cervix
+    - bones, joints and articular cartilage of limbs
+    - right lobe of liver
+    - gi duodenum
+    - bones, joints and articular cartilage of other and unspecified sites
+    - coronary artery
+    - bone
+    - gi esophagus
+    - adrenal
+    - muscle leg
+    - retina
+    - gallbladder
+    - meninges
+    - omental fat pad
+    - other and unspecified male genital organs
+    - other endocrine glands and related structures
+    - peripheral nerves and autonomic nervous system
+    - frontal cortex
+    - other and unspecified major salivary glands
+    - unknown
+    - eye
+    - tongue
+    - cerebellum
+    - heart right ventricle
+    - limb
+    - psoas muscle
+    - cerebellar cortex
+    - chorion
+    - embryonic facial prominence
+    - femur
+    - germinal center
+    - globus pallidus
+    - left arm bone
+    - left cardiac atrium
+    - left kidney
+    - left leg bone
+    - medulla oblongata
+    - midbrain
+    - middle frontal gyrus
+    - occipital lobe
+    - right arm bone
+    - right kidney
+    - right leg bone
+    - spinal cord
+    - subcutaneous adipose tissue
+    - umbilical cord
+    - urinary bladder
+    - ammon's horn
+    - caudate nucleus
+    - endometrial
+    - inferior parietal cortex
+    - pons
+    - putamen
+    - superior temporal gyrus
+    - thyroid
+    - central nervous system
+    - cervical
+    - endometrium
+    - islet of langerhans
+    - uteros
+    - uterus, nos
+    - umbilical vein
+    - adipose
+    - alveoli
+    - __other__
+responses:
+  utter_goodbye:
+  - text: Goodbye so!
+  utter_what_data:
+  - text: what data are you looking for?
+  utter_field_name:
+  - text: Which field do you want to select?
+  utter_provide_value:
+  - text: provide a {field}
+  utter_annotations:
+  - text: You chose annotations
+  utter_slot:
+  - text: 'in our slot we have: {field}'
+  utter_health:
+  - text: Do you want healthy patients?
+  utter_please_rephrase:
+  - text: I'm sorry, I didn't quite understand that. Could you rephrase?
+  utter_default:
+  - text: Sorry I didn't get that. Can you rephrase?
+  utter_filter_more:
+  - text: Do you want filter more? If so, which one do you want select now?
+  utter_confirm_your_choices:
+  - text: Confirm your choices?
+  utter_rename_datase:
+  - text: Rename dataset? if so provide a name
+  utter_reset:
+  - text: Do you want to reset the chosen data?
+  utter_please_select_db:
+  - text: Please select a single dataset
+  utter_metadata_exploration_1:
+  - text: You can also select samples with specific conditions. Do you want to filter on metadata?
+  utter_metadata_exploration_2:
+  - text: "Which metadatum do you want to filter on?\n You can see your choices in the right pane."
+  utter_metadata_exploration_3:
+  - text: Do you want to filter on other metadata?
+  utter_confirm_1:
+  - text: "You can see your choices in the bottom right panel.\nDo you want to keep your selection?"
+  utter_confirm_2a:
+  - text: Do you want to modify the extracted data?
+  utter_confirm_2b:
+  - text: Do you want to restart the selection from scratch?
+  utter_confirm_3:
+  - text: Which fild do you want change?
+  utter_GMQL_unary:
+  - text: Which operation do you want to do?
+  utter_new_dataset:
+  - text: Do you want to select another dataset?
+  utter_GMQL_binary:
+  - text: How do you want to put together the two selected datasets?
+  utter_project_metadata_1:
+  - text: Do you want to modify one or many metadata or do you want to tell me the ones you want to keep?
+  utter_project_metadata_2a:
+  - text: "We are beginning a Project operation, to create a new metadatum or modifying an existing one.'\n' Write the name of an existing metadatum, if you want to modify its values, or tell me a new name for the metadatum you want to create."
+  utter_project_metadata_2b:
+  - text: "Ok.\nPlease, tell me which ones you want.\nIf you want more, please separate them using ';'."
+  utter_project_metadata_3:
+  - text: "Do you want to add/modify other metadata?\nIf so, tell me which one or the name of the new one."
+  utter_project_region_1:
+  - text: Do you want to modify one or many region or do you want to tell me the ones you want to keep?
+  utter_project_region_2a:
+  - text: "We are beginning a Region operation, to create a new metadatum or modifying an existing one.'\n' Write the name of an existing metadatum, if you want to modify its values, or tell me a new name for the metadatum you want to create."
+  utter_project_region_2b:
+  - text: "Ok.\nPlease, tell me which ones you want.\nIf you want more, please separate them using ';'."
+  utter_project_region_3:
+  - text: "Do you want to add/modify other region?\nIf so, tell me which one or the name of the new one."
+  utter_data_table:
+  - text: 'now i will pull the data in a table, so as you can analyze them easily. You have to define what to put in the rows. Which metadatum do you want? '
+  utter_filter:
+  - text: Now if you want you can filter giving a metadatum or recap your choices.
+  utter_what_metadata:
+  - text: What metadatum do you want to filter now? say stop if you don't want other metadatum
+  utter_keep_modify:
+  - text: Do you want to keep your selection, modify it or modify the extracted data?
+  utter_start_over:
+  - text: Do you want to start over or change a field?
+  utter_cover_1:
+  - text: "To do the cover, I will ask you the minimum and the maximum accumulation values, then if you want you can insert a metadatum on which group the output dataset.\nLet's start from the minimum accumulation value. "
+  utter_cover_2:
+  - text: Now please choose the maximum threshold for the overlapping regions.
+  utter_cover_3:
+  - text: Do you want to group by one or more metadata? If so, insert the metadata, if more than one separate them using ';'. If not, the entire dataset will be collapsed in a single sample.
+  utter_join_1:
+  - text: "Do you want to add a metadatum for the joinby?\nIf so, which one?"
+  utter_join_2:
+  - text: Do you want to assign a name to your dataset? If so provide a name.
+  utter_union_1:
+  - text: Ok. I will do the union of the two datasets. Do you want to assign a name to your dataset? If so provide a name.
+  utter_map_0:
+  - text: I will use {} as a reference to operate on {}. Do you confirm or you want to switch the two datasets?
+  utter_map_1:
+  - text: Do you want to put any equality constraint on one or more metadata? If so, tell me which ones (separate them by ';').
+  utter_map_2:
+  - text: By default I will count the overlapping regions between the reference and the experiments datasets. I will name the count value "count_map".\nDo you want to rename it? In case, please digit the new name.
+  utter_map_3:
+  - text: Do you want to add other aggregation functions? If so, tell me which one.
+  utter_map_4a:
+  - text: Do you want to add other aggregation functions? If so, tell me which one
+  utter_map_4b:
+  - text: Do you want to assign a name to your dataset? If so provide a name
+  utter_pivot_0:
+  - text: Now i will put the data in a table, so as you can analyze them easily. Do you want feature or sample data?
+  utter_pivot_1:
+  - text: You have to define what to put in the rows. Which region do you want?
+  utter_pivot_1b:
+  - text: You have to define what to put in the columuns. Which region do you want?
+  utter_pivot_2:
+  - text: I will put in the columuns 'item_id' ok ?
+  utter_pivot_2b:
+  - text: I will put in the rows 'item_id' ok ?
+  utter_pivot_3:
+  - text: which region data do you want to use to fill your table?
+  utter_pivot_4:
+  - text: which operation do you want to do?
+  utter_please_k-means_0:
+  - text: Give me the number of clusters you need. In case you don't know, you can try some tuning
+  utter_please_k-means_1:
+  - text: Here is your clustering!
+  utter_please_k-means_2:
+  - text: Which is the minimum and maximum number of clusters you want to try?
+  utter_please_k-means_3:
+  - text: Here is your analysis! Choose the final number of clusters you want to keep. Otherwise you can modify the parameters and re-run the analysis
+actions:
+- action_GMQL_binary
+- action_GMQL_unary
+- action_back
+- action_checkSlots
+- action_check_metadatum
+- action_check_metadatum_existence
+- action_check_value
+- action_control
+- action_cover_1
+- action_cover_2
+- action_cover_3
+- action_data
+- action_difference
+- action_download_database
+- action_give_exact_experiment
+- action_give_more_fields
+- action_insert
+- action_insert_op
+- action_is_healthy_no
+- action_is_healthy_yes
+- action_join
+- action_keep_modify
+- action_map
+- action_metadata_exploration
+- action_metadatum_type
+- action_metadatum_value
+- action_modify
+- action_modify_keep
+- action_n_clusters
+- action_rename_database
+- action_reset
+- action_reset_total
+- action_save_dataset
+- action_set_gmql
+- action_show_all_metadatum
+- action_show_all_region
+- action_show_feature_sample
+- action_show_field
+- action_show_metadatum
+- action_show_operations
+- action_show_value
+- action_take_min_max
+- action_take_value
+- action_union
+- action_what_data
+- action_workflow
+- action_yes_no
+- utter_GMQL_binary
+- utter_GMQL_unary
+- utter_confirm_2a
+- utter_confirm_your_choices
+- utter_field_name
+- utter_filter
+- utter_filter_more
+- utter_health
+- utter_join_1
+- utter_join_2
+- utter_keep_modify
+- utter_new_dataset
+- utter_pivot_0
+- utter_pivot_1
+- utter_pivot_1b
+- utter_pivot_2
+- utter_pivot_2b
+- utter_pivot_3
+- utter_please_k-means_0
+- utter_please_k-means_2
+- utter_please_k-means_3
+- utter_project_metadata_1
+- utter_project_metadata_2a
+- utter_project_metadata_3
+- utter_project_region_3
+- utter_provide_value
+- utter_rename_datase
+- utter_what_data

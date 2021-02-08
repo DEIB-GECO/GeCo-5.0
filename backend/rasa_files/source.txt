@@ -1,5 +1,0 @@
-tcga
-encode
-1000 genomes
-roadmap epigenomics
-tads

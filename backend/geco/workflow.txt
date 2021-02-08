@@ -1,0 +1,30 @@
+0
+Select
+--parameters--
+executed:True
+result:<dataset.DataSet object at 0x7fa5a37da810>
+depends_on:DataSet
+fields:{'tissue': ['skin'], 'data_type': ['methylation beta value'], 'disease': ['skin cutaneous melanoma'], 'dataset_name': ['grch38_tcga_methylation_2019_10']}
+name:DS_0
+region_schema:['item_id', 'chrom', 'start', 'stop', 'strand', 'composite_element_ref', 'beta_value', 'gene_symbol', 'entrez_gene_id', 'gene_type', 'ensembl_transcript_id', 'position_to_tss', 'all_gene_symbols', 'all_entrez_gene_ids', 'all_gene_types', 'all_ensembl_transcript_ids', 'all_positions_to_tss', 'cgi_coordinate', 'feature_type']
+meta_schema:None
+region:Empty DataFrame
+Columns: [item_id, chrom, start, stop, strand, composite_element_ref, beta_value, gene_symbol, entrez_gene_id, gene_type, ensembl_transcript_id, position_to_tss, all_gene_symbols, all_entrez_gene_ids, all_gene_types, all_ensembl_transcript_ids, all_positions_to_tss, cgi_coordinate, feature_type]
+Index: []
+meta:       item_id                                    key                             value  is_gcm
+0       420207                                    age                             25069    True
+1       420207             biological_replicate_count                                 1    True
+2       420207       biospecimen__admin__batch_number                          388.48.0   False
+3       420207                biospecimen__admin__bcr    nationwide children's hospital   False
+4       420207  biospecimen__admin__day_of_dcc_upload                                14   False
+...        ...                                    ...                               ...     ...
+97526   417275           manually_curated__origin_md5  02f15239f44190cca4a71772a9c06da0   False
+97527   417275        manually_curated__tissue_status                           tumoral   False
+97528   417275                       region_file_size                         136856670   False
+97529   417275                                species                      homo sapiens    True
+97530   417275              technical_replicate_count                                 1    True
+
+[97531 rows x 4 columns]
+metadata:None
+region:None
+-------
