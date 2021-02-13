@@ -1,0 +1,20 @@
+import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")import pandas as pd
+table = pd.read_csv("pivot.csv")
