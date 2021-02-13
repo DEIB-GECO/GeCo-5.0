@@ -1,10 +1,19 @@
-#model_dir/
-#latest_model/
+model_dir/
+latest_model/
 .idea/
 flask_session/
 .DS_Store
 .vscode
 logger.json
+pivot.csv
+rasa_files/disease.txt
+rasa_files/data_type.txt
+rasa_files/dataset_name.txt
+rasa_files/tissue.txt
+python_script.py
+jupyter_notebook.ipynb
+workflow.txt
+workflow1.png
 
 ########### PYTHON ###########
 # Byte-compiled / optimized / DLL files
