@@ -48,6 +48,7 @@ class database:
 
         meta = db.engine.execute("select distinct(key) from dw.unified_pair_gecoagent group by key")
         self.meta_schema = meta.fetchall()
+        self.meta_schema = [i[0] for i in self.meta_schema]
 
 
 class DB:
@@ -127,7 +128,9 @@ class DB:
 
     def query_key2(self, gcm, items):
         for k in gcm:
+            print("select distinct(item_id),  from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')'))
             items = db.engine.execute("select distinct(item_id) from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')).fetchall()
+            items=[i[0] for i in items]
         return items
 
     # Retrieves all keys
@@ -155,6 +158,13 @@ class DB:
         set_keys = list(set(self.metadata['key']))
         keys = {i: len(self.metadata[self.metadata['key'] == i]) for i in set_keys}
         return keys
+
+    def update_meta(self, filter2):
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
+        items = self.query_key2(filter2, items)
+        self.table = self.table[self.table['item_id'].isin(items)]
+        print(self.table.head())
 
     def find_keys(self, filter, string):
         item_id = list(self.table['item_id'].values)
