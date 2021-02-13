@@ -15,15 +15,6 @@ class PivotLogic:
 
 
     def run(self):
-        # if (self.op.meta_col != None) and (self.op.meta_row != None):
-        #     temp_meta = pd.DataFrame(index=list(self.ds.meta['item_id']).sort(), columns=self.op.meta_col)
-        #     self.ds.meta.index = self.ds.meta['item_id']
-        #     self.ds.meta = self.ds.meta.drop('item_id', axis=1)
-        #     self.ds.meta = self.ds.meta.sort_index()
-        #     for i in self.op.meta_col:
-        #         temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-        #     for i in self.op.meta_row:
-        #         temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
         if self.op.meta_col != None:
             items = list(self.ds.meta['item_id'])
             items.sort()
@@ -33,13 +24,15 @@ class PivotLogic:
         else:
             items = list(self.ds.meta['item_id'])
             items.sort()
-            temp_meta = pd.DataFrame(items, columns=self.op.meta_row)
+            temp_meta = pd.DataFrame(index=items, columns=self.op.meta_row)
             for i in self.op.meta_row:
                 temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-
+        print('TEMP META')
+        print(temp_meta.head())
         temp_reg = self.ds.region.merge(temp_meta, left_on='item_id', right_index=True)
         items_reg = pd.DataFrame(index=list(set(temp_reg['item_id'])))
-
+        print('TEMP REG')
+        print(temp_reg.head())
         #if (self.op.region_col!=None) and (self.op.meta_col!=None):
         #    col = self.op.region_col.append(self.op.meta_col)
         if self.op.region_col!=None:
@@ -52,7 +45,8 @@ class PivotLogic:
             row = self.op.region_row
         else:
             row = self.op.meta_row
-
+        print('col', col)
+        print('row', row)
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)
 

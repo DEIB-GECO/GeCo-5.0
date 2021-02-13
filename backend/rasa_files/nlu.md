@@ -81,6 +81,10 @@
  - undo
  - redo
 
+## intent:remove
+- remove
+- remove some of them
+
 ## intent:change_option
  - I want to change it
  - can i change it?
@@ -163,6 +167,8 @@
 
 
 ## intent:retrieve_annotations
+i want gene expressions from brca data
+i want gene expressions from brca data
 - annotation
 - annotations
 - i want annotation
@@ -601,6 +607,7 @@
 
 
 ## intent:retrieve_experiments
+- retrieve [expression data of genes]{"entity":"data_type","value":"gene expression quantification"} from [kirc]{"entity":"disease","value":"kidney renal clear cell carcinoma"}
 - We would like to retrieve items of [hg19](assembly) assembly from [healthy]{"entity": "is_healthy", "value": "true"} [brain tissue]{"entity": "tissue", "value": "brain"} (and possibly its subparts) of male gender, up to 30 years old.
 - experiment
 - experiments

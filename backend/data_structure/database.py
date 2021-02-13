@@ -12,7 +12,6 @@ def get_db_uri():
                                                                  url=postgres_url,
                                                                  db=postgres_db)
 
-#db = SQLAlchemy()
 db_string = get_db_uri()
 db = create_engine(db_string)
 
@@ -21,14 +20,14 @@ experiment_fields = ['source', 'data_type', 'assembly', 'tissue', 'cell', 'disea
 fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
 sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
 datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
-            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10', 'grch38_tcga_mirna_expression_2019_10']
+            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
+            'grch38_tcga_mirna_expression_2019_10']
 
 
 class database:
     def __init__(self):
         self.fields = fields
         self.get_all_values()
-        #self.find_all_keys()
 
     def get_all_values(self):
         self.fields_names = []
@@ -63,16 +62,7 @@ class DB:
                        i != 'item_id' and len(list(set(self.table[i].values))) > 1]
         self.values = {x:set(self.table[x].values) for x in fields if (x in self.table.columns.values) and len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
-        #self.get_values()
         self.meta_schema = self.db.meta_schema
-
-    def get_values(self):
-        self.fields_names = []
-        for f in self.fields:
-            res = getattr(self.db, (str(f) + '_db'))
-            if res!=[]:
-                self.fields_names.append(f)
-                setattr(self, (str(f) + '_db'), res)
 
     def update(self, gcm):
         self.all_values = []
@@ -100,7 +90,6 @@ class DB:
         return val
 
     def check_existance(self, gcm):
-
         for f in gcm:
             self.table = self.table[self.table[f].isin(gcm[f])]
         if len(self.table)>0:
@@ -123,7 +112,6 @@ class DB:
             [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
                                  gcm.items()])
         query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id where {}".format(filter)
-        #query= "select item_id from dw.flatten_gecoagent where {}".format(filter)
         return query
 
     def query_key(self, gcm):
@@ -137,36 +125,29 @@ class DB:
             i+=1
         return query
 
-    # Retrieves all keys based on a user input string
-    def find_all_keys1(self, filter, filter2={}):
-        for f in filter:
-            self.table = self.table[self.table[f].isin(filter[f])]
-        for f in filter2:
-            self.metadata = self.metadata.loc[(self.metadata['key']!=f)|(self.metadata['key']==f & self.metadata['value'].isin(filter2[f]))]
-        item_id = self.table['item_id']
-        self.metadata = self.metadata[self.metadata['item_id'].isin(item_id)]
-        set_keys = list(set(self.metadata['key']))
-        keys = {i: len(self.metadata[self.metadata['key']==i]) for i in set_keys}
-      #  keys = {i[0]:i[1] for i in keys}
-        return keys
+    def query_key2(self, gcm, items):
+        for k in gcm:
+            items = db.engine.execute("select distinct(item_id) from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')).fetchall()
+        return items
 
+    # Retrieves all keys
     def find_all_keys(self, filter, filter2={}):
         item_id = list(self.table['item_id'].values)
-        #items = ','.join(str(i) for i in item_id)
-        query = self.query_field(filter)
+        items = ','.join(str(i) for i in item_id)
+
         if filter2!={}:
-            query2 = self.query_key(filter2)
+            items = self.query_key2(filter2, items)
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(query, query2)).fetchall()
-            keys = db.engine.execute(
-                "select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({}) and {}".format(
-                    query, query2)).fetchall()
+            keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
         else:
-            #keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
+            keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) group by key".format(query)).fetchall()
             #keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(query)).fetchall()
-            keys = db.engine.execute(
-                "select rr.item_id, rr.key, rr.value from dw.unified_pair_gecoagent as rr {}".format(
-                    query)).fetchall()
+           # print("select rr.item_id, rr.key, rr.value from dw.unified_pair_gecoagent as rr {}".format(
+            #        query))
+            #keys = db.engine.execute(
+               # "select rr.item_id, rr.key, rr.value from dw.unified_pair_gecoagent as rr {}".format(
+                  #  query)).fetchall()
 
         self.metadata = pd.DataFrame(keys, columns=['item_id', 'key', 'value'])
         self.metadata = self.metadata[self.metadata['item_id'].isin(item_id)]
@@ -175,36 +156,38 @@ class DB:
         return keys
 
     def find_keys(self, filter, string):
-        query = self.query_field(filter)
-        #keys = db.engine.execute("select key from dw.unified_pair_gecoagent where key like '%{}%' and item_id in ({}) group by key".format(string, query)).fetchall()
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
         keys = db.engine.execute(
-            "select rr.key from dw.unified_pair_gecoagent as rr {} where key like '%{}%' group by key".format(
-                query, string)).fetchall()
+            "select rr.key from dw.unified_pair_gecoagent as rr where item_id in ({}) and key like '%{}%' group by key".format(
+                items, string)).fetchall()
 
         keys = [i[0] for i in keys]
         return keys
 
     # Retrieves all values based on a user input string
     def find_values(self, filter, string):
-        query = self.query_field(filter)
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
         values = db.engine.execute(
-            "select distinct(key), value  from dw.unified_pair_gecoagent where item_id in ({}) and value like '%{}%'".format(query, string)).fetchall()
+            "select distinct(key), value  from dw.unified_pair_gecoagent where item_id in ({}) and value like '%{}%'".format(items, string)).fetchall()
 
         val = [{"key":i[0],"value":i[1]} for i in values]
         return val
 
     def find_key_values(self, key, filter, filter2={}):
-        query = self.query_field(filter)
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
         if filter2!={}:
-            query2 = self.query_key(filter2)
+            items = self.query_key2(filter2, items)
             values = db.engine.execute(
-                "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and {} and key in ('{}') group by value".format(
-                    query, query2, str(key))).fetchall()
+                "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(
+                    items, str(key))).fetchall()
         else:
             #values = db.engine.execute("select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(query, str(key))).fetchall()
             values = db.engine.execute(
-                "select rr.value, count(distinct(rr.item_id)) from dw.unified_pair_gecoagent as rr {} and rr.key in ('{}') group by value".format(
-                    query, str(key))).fetchall()
+                "select rr.value, count(distinct(rr.item_id)) from dw.unified_pair_gecoagent as rr where item_id in ({}) and rr.key in ('{}') group by value".format(
+                    items, str(key))).fetchall()
 
         val = [{"value": i[0], "count": i[1]} for i in values]
         number = True
@@ -214,33 +197,29 @@ class DB:
         return val, number
 
     def download_filter_meta(self, gcm, filter2):
-        filter = ' and '.join(
-            [self.is_ann_gcm] + ['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
-                                 gcm.items()])
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
         if filter2!={}:
-            query = self.query_key(filter2)
-            links = db.engine.execute("select local_url from dw.flatten_gecoagent where {} and {} group by local_url".format(filter, query)).fetchall()
-        else:
-            links = db.engine.execute(
-                "select local_url  from dw.flatten_gecoagent where {} group by local_url".format(filter)).fetchall()
-
+            items = self.query_key2(filter2, items)
+        links = db.engine.execute("select local_url from dw.flatten_gecoagent where item_id in ({}) group by local_url".format(items)).fetchall()
         val = [i[0] for i in links]
         return val
 
     def find_regions(self,gcm,filter2):
         ds_name = gcm['dataset_name'][0]
-        query = self.query_field(gcm)
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
         if filter2 != {}:
-            query2 = self.query_key(filter2)
-            res = db.engine.execute(
-                "select * from rr.{} where (item_id in ({})) and ({}) limit 1".format(ds_name,
-                    query, query2))
-        else:
-            #res = db.engine.execute("select * from rr.{} where (item_id in ({})) limit 1".format(ds_name,query))
-            res = db.engine.execute("select rr.* from rr.{} as rr {} limit 1".format(ds_name, query))
-
+            items = self.query_key2(filter2, items)
+        res = db.engine.execute(
+                "select * from rr.{} where (item_id in ({}))limit 1".format(ds_name,
+                    items))
         self.region_schema = res.keys()
         return self.region_schema
+
+
+
+
     '''
      def update1(self, gcm):
         gcm_source = "source in ('tcga','encode','roadmap epigenomics','1000 genomes','refseq')"
