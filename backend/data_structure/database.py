@@ -137,6 +137,7 @@ class DB:
 
         if filter2!={}:
             items = self.query_key2(filter2, items)
+            items = ','.join(str(i) for i in items)
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(query, query2)).fetchall()
             keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
         else:
@@ -180,6 +181,7 @@ class DB:
         items = ','.join(str(i) for i in item_id)
         if filter2!={}:
             items = self.query_key2(filter2, items)
+            items = ','.join(str(i) for i in items)
             values = db.engine.execute(
                 "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(
                     items, str(key))).fetchall()
@@ -201,6 +203,7 @@ class DB:
         items = ','.join(str(i) for i in item_id)
         if filter2!={}:
             items = self.query_key2(filter2, items)
+            items = ','.join(str(i) for i in items)
         links = db.engine.execute("select local_url from dw.flatten_gecoagent where item_id in ({}) group by local_url".format(items)).fetchall()
         val = [i[0] for i in links]
         return val
@@ -211,6 +214,7 @@ class DB:
         items = ','.join(str(i) for i in item_id)
         if filter2 != {}:
             items = self.query_key2(filter2, items)
+            items = ','.join(str(i) for i in items)
         res = db.engine.execute(
                 "select * from rr.{} where (item_id in ({}))limit 1".format(ds_name,
                     items))
