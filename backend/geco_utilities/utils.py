@@ -64,7 +64,7 @@ class Utils(object):
         msgs.append(Utils.tools_setup('dataviz','dataset'))
         values = {k:v for (k,v) in list(
             sorted(
-                [(x, context.payload.database.retrieve_values(gcm_filter, x)) for x in context.payload.database.fields_names if x not in context.payload.status and x!='is_healthy'],
+                [(x, context.payload.database.retrieve_values(gcm_filter, x)) for x in context.payload.database.fields_names if x not in context.payload.status],
                 key = lambda x : len(x[1])))[:6]}
         copy_val = values.copy()
         for k, v in copy_val.items():

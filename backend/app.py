@@ -152,8 +152,8 @@ def test_message(message):
 
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload']['text'])
-   # with open("logger.json", "w") as file:
-       # json.dump(data, file)
+        with open("logger.json", "w") as file:
+            json.dump(data, file)
 
     #session['status'].clear_msgs()
     #session['previous_intent']= intent
@@ -242,6 +242,7 @@ def reset(session):
     for msg in session['dm'].context.top_bot_msgs():
         id = add_session_message(session, msg)
         msg['message_id'] = id
+        #emit('json_response', msg)
 
 
 

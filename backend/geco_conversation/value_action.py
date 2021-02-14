@@ -26,23 +26,24 @@ class ValueAction(AbstractAction):
         if request_field == 'is_healthy':
             if intent == 'affirm':
                 #self.status[request_field] = ['true']
-                self.context.payload.insert('is_healthy', ['true'])
+                self.context.payload.insert('is_healthy', [True])
             else:
                 #self.status[request_field] = ['false']
-                self.context.payload.insert('is_healthy', ['false'])
+                self.context.payload.insert('is_healthy', [False])
 
 
             gcm_filter = {k: v for (k, v) in self.status.items() if (k in self.context.payload.database.fields)}
-            choices = {x: x for x in self.context.payload.database.fields_names}
-            list_param = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
-            print(list_param)
+
             print('###FIELDS####', self.context.payload.database.fields)
             if len(gcm_filter) > 0:
                 self.context.payload.database.update(gcm_filter)
-                list_param = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
+                print('table')
+                print(self.context.payload.database.table.head())
+                list_param = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields_names}
+                choices = {x: x for x in self.context.payload.database.fields_names}
             self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
                     Utils.choice('Available fields', choices),
-                    Utils.param_list({k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields})] + \
+                    Utils.param_list(list_param)] + \
                    Utils.create_piecharts(self.context,gcm_filter))
             return FieldAction(self.context), False
 

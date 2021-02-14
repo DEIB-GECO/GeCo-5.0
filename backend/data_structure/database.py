@@ -69,7 +69,7 @@ class DB:
         self.all_values = []
         for f in self.fields:
             values = []
-            if f in gcm:
+            if f in gcm and f!='is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
             val = list(self.table[f])
             if (val != []) and (len(val) > 1):
@@ -87,6 +87,7 @@ class DB:
     def retrieve_values(self, gcm, f):
         values = list(self.table[f])
         set_val = list(set(values))
+        print(f, set_val)
         val = [{"value": i, "count": values.count(i)} for i in set_val]
         return val
 
@@ -156,7 +157,7 @@ class DB:
         self.metadata = pd.DataFrame(keys, columns=['item_id', 'key', 'value'])
         self.metadata = self.metadata[self.metadata['item_id'].isin(item_id)]
         set_keys = list(set(self.metadata['key']))
-        keys = {i: len(self.metadata[self.metadata['key'] == i]) for i in set_keys}
+        keys = {i: len(set(self.metadata[self.metadata['key'] == i]['value'].values)) for i in set_keys if len(set(self.metadata[self.metadata['key'] == i]['value'].values))>1}
         return keys
 
     def update_meta(self, filter2):

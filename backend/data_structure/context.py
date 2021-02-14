@@ -191,7 +191,7 @@ class Context:
 
         if hasattr(self.history[-1].delta, 'update'):
             for elem in self.history[-1].delta.update:
-                self.payload.status[elem['variable']]=elem['new_value']
+                self.payload.status[elem['variable']]=elem['old']
 
         # if hasattr(self.history[-2].delta, 'insertion'):
         #     for i in self.history[-2].delta.insertion:
