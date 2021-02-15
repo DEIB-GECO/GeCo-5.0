@@ -71,6 +71,9 @@ class DB:
         self.fields_names=[]
         for f in self.fields:
             values = []
+            if f=='is_healthy':
+                print('all',list(set(self.table[f])))
+                print('filter', list(filter(None, list(set(self.table[f])))))
             if f in gcm and f!='is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
             val = list(set(self.table[f]))

@@ -64,7 +64,6 @@ if not os.path.exists('logger.json'):
 all_db = database()
 
 class ConversationDBExplore(object):
-
     def __init__(self):
         #all_db = database()
         self.context = Context(all_db)
