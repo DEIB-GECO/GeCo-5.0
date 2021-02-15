@@ -66,12 +66,15 @@ class DB:
         self.meta_schema = self.db.meta_schema
 
     def update(self, gcm):
+        print('fields_pre_update', self.fields_names)
         self.all_values = []
+        self.fields_names=[]
         for f in self.fields:
             values = []
             if f in gcm and f!='is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
-            val = list(self.table[f])
+            val = list(set(self.table[f]))
+            val = list(filter(None, val))
             if (val != []) and (len(val) > 1):
                 self.fields_names.append(f)
                 for i in range(len(val)):
@@ -83,6 +86,7 @@ class DB:
 
             if values != []:
                 self.values[f]=values
+        print('fields_post_update', self.fields_names)
 
     def retrieve_values(self, gcm, f):
         values = list(self.table[f])

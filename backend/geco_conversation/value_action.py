@@ -62,12 +62,12 @@ class ValueAction(AbstractAction):
             gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
             if len(gcm_filter) > 0:
                 self.context.payload.database.update(gcm_filter)
-            list_param = {x: x for x in self.context.payload.database.fields_names}
+            choice = {x: x for x in self.context.payload.database.fields_names}
 
-            if len(list_param) > 0:
+            if len(choice) > 0:
 
                 self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
-                        Utils.choice('Available fields', list_param), Utils.param_list(
+                        Utils.choice('Available fields', choice), Utils.param_list(
                         {k: v for (k, v) in self.status.items() if (k in self.context.payload.database.fields)})] + Utils.create_piecharts(self.context,gcm_filter))
                 return FieldAction(self.context), False
             else:

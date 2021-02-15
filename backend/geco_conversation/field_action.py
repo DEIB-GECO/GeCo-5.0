@@ -48,16 +48,11 @@ class FieldAction(AbstractAction):
 
                 if field[0] in missing_fields and (field[0] != 'is_healthy'):
                     if 'field' in self.status:
-                        #old = self.status['field'].copy()
-                        #self.status['field'].append(field[0])
                         self.context.payload.update('field', field[0])
                     else:
                         self.context.payload.insert('field', field[0])
-                        #self.context.top_delta().insert_value('field')
-                        #self.status['field'] = [field[0]]
 
                     list_param = {x: x for x in self.context.payload.database.values[field[0]]}
-                    #sprint('hereeeee', list_param.keys())
                     choice = [True if len(list_param) > 10 else False]
                     self.context.add_bot_msgs([Utils.chat_message("Please provide a {}".format(field[0])),
                             Utils.choice(field[0], list_param, show_search=choice)])
@@ -80,7 +75,8 @@ class FieldAction(AbstractAction):
                         self.context.payload.update('field', field[0])
                     else:
                         self.context.payload.insert('field', field[0])
-                    self.context.add_bot_msgs([Utils.chat_message(messages.healthy_patients)])
+                    self.context.add_bot_msgs([Utils.chat_message(messages.healthy_patients),Utils.choice(field[0],
+                                                                                                          {'Yes':'yes','No':'no'})])
                     return ValueAction(self.context), False
 
                 else:
@@ -95,7 +91,6 @@ class FieldAction(AbstractAction):
             self.context.payload.insert('fields', fields)
             self.context.add_bot_msgs([Utils.param_list(fields)])
             return DSNameAction(self.context), True
-            #return RenameAction(self.context, MetadataAction(self.context)), True
         else:
             self.context.payload.clear()
             self.context.add_bot_msgs([Utils.chat_message(messages.no_exp_found)])

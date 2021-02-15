@@ -66,8 +66,10 @@ class PivotLogic:
                 for i in self.op.other_region:
                     pivot[i] = list(labels_reg[i])
         else:
+            labels=[]
             if self.op.other_meta!=None:
                 for i in self.op.other_meta:
+                    labels.append(i)
                     temp = self.ds.meta[self.ds.meta['key'] == i]
                     for x in pivot.index:
                         pivot.at[x, i] = temp[self.ds.meta['item_id'] == x][
@@ -75,13 +77,14 @@ class PivotLogic:
             elif self.op.other_region!=None:
                 pivot = pivot.T
                 for i in self.op.other_region:
+                    labels.append(i)
                     pivot[i] = list(labels_reg[i])
                 pivot = pivot.T
         #pivot.index= pivot.index.droplevel(0)
         print('pivot!')
         print(pivot.head())
         pivot.to_csv('pivot.csv')
-        self.op.result = pivot
+        self.op.result = PivotRes(pivot, labels)
         self.op.executed = True
         self.write()
 
@@ -94,11 +97,11 @@ class PivotLogic:
                     '"outputs": [],'+
                     '"source": ['+
                     'import pandas as pd\n'+
-                    'table = pd.read_csv("pivot.csv")'+
+                    '{} = pd.read_csv("pivot.csv")'.format(self.ds.name)+
                     ']},')
         f.close()
 
         with open('python_script.py', 'a') as f:
             f.write('import pandas as pd\n'+
-                    'table = pd.read_csv("pivot.csv")')
+                    '{} = pd.read_csv("pivot.csv")'.format(self.ds.name))
         f.close()

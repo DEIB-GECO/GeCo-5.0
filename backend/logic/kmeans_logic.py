@@ -2,6 +2,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV
 from sklearn import *
+from logic.pivot_logic import PivotRes
 
 class KMeansRes:
     def __init__(self, values, kmeans_fit, labels):
@@ -13,6 +14,9 @@ class KMeansLogic:
     def __init__(self, kmeans):
         self.op = kmeans
         self.ds = self.op.depends_on.result
+        if  isinstance(self.ds, PivotRes):
+            self.ds = self.ds.ds
+            self.labels = self.ds.labels
         self.tuning = kmeans.tuning
         if self.tuning:
             self.min = kmeans.min_clusters
@@ -22,6 +26,13 @@ class KMeansLogic:
         self.run()
 
     def run(self):
+        if hasattr(self, 'labels'):
+            for i in self.labels:
+                if i in self.ds.columns:
+                    self.ds = self.ds.drop(i, axis=1)
+                elif i in self.ds.index:
+                    self.ds = self.ds.drop(i, axis=0)
+
         if not self.tuning:
             kmeans = KMeans(n_clusters=self.n_clust)
             kmeans_fit = kmeans.fit(self.ds.values)
