@@ -44,6 +44,7 @@ class SelectLogic:
         return query
 
     def run(self):
+
         query = self.query_field()
         print("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
         res = db.engine.execute("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))

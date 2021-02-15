@@ -1,0 +1,28 @@
+{
+    "names": [
+        {
+            "sender": "bot",
+            "message": "X"
+        },
+        {
+            "sender": "bf68de1a9c0e458f85a65aef6acfdf7b",
+            "message": " Experiments"
+        },
+        {
+            "sender": "bot",
+            "message": "Which field do you want to select?"
+        },
+        {
+            "sender": "bf68de1a9c0e458f85a65aef6acfdf7b",
+            "message": " tissue"
+        },
+        {
+            "sender": "bot",
+            "message": "provide a tissue"
+        },
+        {
+            "sender": "bot",
+            "message": "Insert field or modify field?"
+        }
+    ]
+}

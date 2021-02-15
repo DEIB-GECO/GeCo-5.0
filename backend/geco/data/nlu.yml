@@ -1825,6 +1825,7 @@ nlu:
     - [alveoli](tissue) [tissue](field)
     - [brain](disease) with [rna-seq](tissue) and [ctcf](target) and [encode](source) and [bed](file_format)
     - [hg19](assembly) and [cell line](biosample_type) and [h1](cell) and [dna seq](data_type) and [cancer](disease) and [mutations](feature) and [broadpeak](file_format) and [tads](source) and [zfx](target) and [wxs](technique) and [brain](tissue)
+    - i need [pancreas](tissue) and [mirna expression]{"entity": "data_type", "value": "mirna expression quantification"}
 - intent: retrieve_annotations
   examples: |
     - [annotation](annotations)
@@ -1851,7 +1852,6 @@ nlu:
     - [experimental data](experiments)
     - [experim](experiments)
     - [esperiments](experiments)
-    - [experiments](experiments)
 - intent: search_field
   examples: |
     - [file_format](field)
@@ -2209,7 +2209,7 @@ nlu:
     - [grch38_encode_narrow_2020_01](dataset_name)
     - [hg19_encode_broad_2020_01](dataset_name)
     - [grch38_tcga_copy_number_masked_2019_10](dataset_name)
-    - [grch38_tcga_somatic_mutation_masked_2019_10](dataset_name)
+    - [grch38_tcga_mirna_expression_2019_10](dataset_name)
 - intent: choice_value_tissue
   examples: |
     - [breast](tissue)
@@ -5615,6 +5615,7 @@ nlu:
     - start
     - stop
     - strand
+    - type
     - reads_per_million_mirna_mapped
     - gene_symbol
     - composite_element_ref
@@ -5642,11 +5643,18 @@ nlu:
     - match_norm_seq_allele2
     - tumor_sample_uuid
     - matched_norm_sample_uuid
+    - fpkm
+    - segment_mean
 - intent: cluster
   examples: |
     - i want cluster genes
     - cluster
     - i want clusters
+    - kmeans
+    - i want to do clustering
+    - i want to find cluster
+    - find cluster
+    - perform kmeans cluster
 - synonym: mirna expression quantification
   examples: |
     - mirna expressione data
@@ -5655,7 +5663,12 @@ nlu:
     - mirna expression quantifications
     - mirna expression
     - mirna expression data
-
+    - expression of micro rna
+    - expression of microrna
+    - expressions of mirna
+- synonym: thymoma
+  examples: |
+    - thynoma
 - synonym: data_type
   examples: |
     - data type
@@ -5673,3 +5686,7 @@ nlu:
     - gene expression quantifications
     - rna expression
     - gene quantifications
+    - expression of genes
+    - expression of gene
+    - expressions of gene
+    - expression of long rna

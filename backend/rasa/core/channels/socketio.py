@@ -9,7 +9,15 @@ from sanic.request import Request
 from sanic.response import HTTPResponse
 from socketio import AsyncServer
 
+import json
+
+tracker= False
+
 logger = logging.getLogger(__name__)
+
+def write_json(data2,filename):
+    with open(filename,"w") as f:
+        json.dump(data2,f, indent=4)
 
 class SocketBlueprint(Blueprint):
     def __init__(self, sio: AsyncServer, socketio_path, *args, **kwargs):
@@ -38,6 +46,14 @@ class SocketIOOutput(OutputChannel):
         X = response['text']
         await self.sio.emit('json_response', {"type" : "message", "payload" : {"sender": "bot","text": X}})
 
+        if(tracker==True):
+            with open("sessions/"+socket_id+".json") as json_file:
+                data2=json.load(json_file)
+                temp=data2['names']
+                y={"sender":"bot", 'message':X}
+                temp.append(y)
+
+            write_json(data2,"sessions/"+socket_id+".json")
 
 
     async def _send_message2(self, socket_id: Text, response: Any) -> None:
@@ -49,11 +65,11 @@ class SocketIOOutput(OutputChannel):
         self, recipient_id: Text, text: Text, **kwargs: Any
     ) -> None:
         """Send a message through this channel."""
-        print(text)
+        print("il text eeeeee:",text)
         if(isinstance(text,dict) == False and isinstance(text,list)==False):
             for message_part in text.strip().split("\n\n"):
                 await self._send_message(recipient_id, {"text": message_part})
-        
+
         else:
             print('il testo é', text)
             await self.sio.emit('json_response',text)
@@ -184,10 +200,10 @@ class SocketIOInput(InputChannel):
         # make sio object static to use in get_output_channel
         self.sio = sio
 
-        """fatta da me da rimuovere"""
+        """fatta da me"""
         @sio.on('my_event',namespace=self.namespace)
         async def ciallo(sid: Text, _) -> None:
-            logger.debug("ho trovato un messaggio")
+            logger.debug("ho trovato un messaggio ciallo")
 
         @socketio_webhook.route("/", methods=["GET"])
         async def health(_: Request) -> HTTPResponse:
@@ -197,6 +213,18 @@ class SocketIOInput(InputChannel):
         async def connect(sid: Text, _) -> None:
             logger.debug(f"User {sid} connected to socketIO endpoint.")
             logger.debug("mi sono connesso")
+
+            if (tracker == True):
+                data = {}
+                data['names'] = []
+                data['names'].append({
+                    'sender': 'bot',
+                    'message': 'What data are you looking for?',
+                })
+
+                with open("sessions/" +sid+".json", "w") as f:
+                    json.dump(data, f)
+
             await self.sio.emit('json_response', {"type": "message", "payload": {"sender": "bot", "text": "What data are you looking for?"}})
             await self.sio.emit('json_response', {"type": "available_choices","payload": {"showSearchBar": False,"showDetails": False,"caption":'Data available',"showHelpIcon": False, "elements": [{'name': 'Annotations', 'value':'Annotations'},{'name': 'Experiments', 'value':'Experiments'}]}})
             await self.sio.emit('json_response', {"type": "workflow","payload": {"state": "Data Selection"}})
@@ -221,7 +249,6 @@ class SocketIOInput(InputChannel):
         @sio.on(self.user_message_evt, namespace=self.namespace)
         async def handle_message(sid: Text, data: Dict) -> Any:
             output_channel = SocketIOOutput(sio, self.bot_message_evt)
-            logger.debug("ho preso un messaggio")
             if self.session_persistence:
                 if not data.get("session_id"):
                     rasa.shared.utils.io.raise_warning(
@@ -241,35 +268,32 @@ class SocketIOInput(InputChannel):
             )
             await on_new_message(message)
 
-        """fatta da me da rimuovere"""
+        """fatta da me da é questo che funziona veramente"""
         @sio.on('user_message_evt', namespace=self.namespace)    
         async def handle_messagio(sid: Text, data: Dict) -> Any:
             output_channel = SocketIOOutput(sio, self.bot_message_evt)
-            logger.debug("ho preso un messaggio")
-            logger.debug(data)
-         
+            logger.debug("ho preso un messaggio fatto da me rimuovere 1")
+
             sender_id = sid
 
             message = UserMessage(
                 data["message"], output_channel, sender_id, input_channel=self.name()
             )
+            print('self.bot_message_evt data',data["message"])
+            with open('data.txt', 'a') as outfile:
+                json.dump( data["message"]+'\n',outfile)
+
+            if (tracker == True):
+                with open("sessions/"+sid+".json") as json_file:
+                    data2 = json.load(json_file)
+                    temp = data2['names']
+                    y = {"sender": sender_id, 'message': data["message"]}
+                    temp.append(y)
+
+                write_json(data2,"sessions/"+sid+".json")
+
             await on_new_message(message)
 
         return socketio_webhook
 
 
-        """fatta da me da rimuovere"""
-        @sio.on('user_message_evt', namespace=self.namespace)    
-        async def handle_messagio(sid: Text, data: Dict) -> Any:
-            output_channel = SocketIOOutput(sio, self.bot_message_evt)
-            logger.debug("ho preso un messaggio")
-            logger.debug(data)
-         
-            sender_id = sid
-
-            message = UserMessage(
-                data["message"], output_channel, sender_id, input_channel=self.name()
-            )
-            await on_new_message(message)
-
-        return socketio_webhook

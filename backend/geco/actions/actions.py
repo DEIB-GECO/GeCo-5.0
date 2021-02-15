@@ -6,16 +6,14 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.events import (
     UserUtteranceReverted,
     ActionReverted,
-
 )
-
-from database_rasa import *
-from dataset import DataSet
+from data_structure.database import *
 from workflow.workflow_class import Workflow
-from workflow.clustering import KMeans
+from workflow import clustering,pca,scatter,pivot
 from workflow.gmql import Select
-from utils import *
+from geco_utilities.utils import *
 import pandas as pd
+
 
 #import rasa.core.channels.socketio as file
 
@@ -24,7 +22,7 @@ old_value = ""
 data = experiment_fields
 ann = False
 #database1 = DB(experiment_fields,False,[1,2])
-predefNameDb= "DS_" 
+predefNameDb= "DS_"
 number = 0
 workflow = Workflow()
 show=[]
@@ -68,15 +66,22 @@ meta_list={}
 saved_metadatum_msg  = []
 saved_metadatum_value = []
 
+###############################
+###   Variabili pivot   ###
+###############################
+
+feature_sample =""
+region =[]
+region_1 = []
+
+label_meta = []
+label_region = []
 
 ###############################
 ###   Variabili k-kluster   ###
 ###############################
 
-Min_Max_cluster = int
 N_cluster = int
-Min_cluster = int
-Max_cluster = int
 
 ###############################
 ### Per testare sulla shell ###
@@ -89,7 +94,7 @@ shell = False
 class WhatData(Action):
 
     def name(self) -> Text:
-        return "action_what_data"  
+        return "action_what_data"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -107,7 +112,7 @@ class WhatData(Action):
             for m in msg:
                 dispatcher.utter_message(m)
 
-            dispatcher.utter_message(Utils.create_piecharts(db,list_param,param_list))
+            #dispatcher.utter_message(Utils.create_piecharts(db,list_param,param_list))
 
         else:
             print("Data available {}".format(d))
@@ -199,10 +204,10 @@ class MoreFields(Action):
 
                     for num, name in enumerate(Selection_list):
                         if (name[1] == False):
-                            dict_selection.update({name[0]: ['false']})
+                            dict_selection.update({name[0]: [False]})
 
                         elif (name[1] == True):
-                            dict_selection.update({name[0]: ['true']})
+                            dict_selection.update({name[0]: [True]})
 
                         else:
                             dict_selection.update({name[0]: [name[1]]})
@@ -234,10 +239,10 @@ class MoreFields(Action):
 
         for num, name in  enumerate(Selection_list):
             if(name[1] == False):
-                dict_selection.update({name[0] : ['false']})
+                dict_selection.update({name[0] : [False]})
 
             elif(name[1] == True):
-                dict_selection.update({name[0] : ['true']})
+                dict_selection.update({name[0] : [True]})
 
             else:
                 dict_selection.update({name[0] : [name[1]]})
@@ -269,7 +274,7 @@ class GiveExactExperiment(Action):
         print ('sono in exact experiments')
         request_field = tracker.get_slot("field")
         print('request_field:',request_field)
-        request_field_db = request_field + '_db' 
+        request_field_db = request_field + '_db'
         request_value = tracker.get_slot(request_field)
 
        # field_db = getattr(database, request_field_db)
@@ -301,10 +306,10 @@ class GiveExactExperiment(Action):
 
                 for num, name in  enumerate(Selection_list):
                     if(name[1] == False):
-                        dict_selection.update({name[0] : ['false']})
+                        dict_selection.update({name[0] : [False]})
 
                     elif(name[1] == True):
-                        dict_selection.update({name[0] : ['true']})
+                        dict_selection.update({name[0] : [True]})
 
                     else:
                         dict_selection.update({name[0] : [name[1]]})
@@ -337,14 +342,14 @@ class SelectData(Action):
         data1 = tracker.get_slot("experiments")
         data2 = tracker.get_slot("annotations")
 
-        if(data1 != None and ann != False):           
+        if(data1 != None and ann != False):
             data = experiment_fields
             ann = False
             db = DB(data, ann, all_db)
 
         elif(data2 != None):
             print("annotation")
-            data= annotation_fields 
+            data= annotation_fields
             ann= True
             db = DB(data, ann, all_db)
 
@@ -357,7 +362,7 @@ class SelectData(Action):
 class ShowField(Action):
 
     def name(self) -> Text:
-        return "action_show_field"  
+        return "action_show_field"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -373,12 +378,14 @@ class ShowField(Action):
                 param_list = {"Data":"Annotations"}
 
         if(shell == False):
-            msg = Utils.create_piecharts(db, {}, [])
+            print('prima di message')
+            msg = Utils.create_piecharts(db, {}, param_list)
             for m in msg:
                 dispatcher.utter_message(m)
             dispatcher.utter_message(Utils.choice("Available Fields", list_param,show_help=True))
             dispatcher.utter_message(Utils.param_list(param_list))
-            dispatcher.utter_message(Utils.create_piecharts(db,list_param,param_list))
+            print("show filed:", param_list)
+            #dispatcher.utter_message(Utils.create_piecharts(db,list_param,param_list))
 
         else:
             print ("Available Fields", list_param)
@@ -388,14 +395,14 @@ class ShowField(Action):
 class ShowValue(Action):
 
     def name(self) -> Text:
-        return "action_show_value"  
+        return "action_show_value"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         request_field = tracker.get_slot("field")
-        request_field_db = request_field + '_db'        
+        request_field_db = request_field + '_db'
 
         for num, name in  enumerate(Selection_list):
             if(request_field == name[0]):
@@ -408,10 +415,7 @@ class ShowValue(Action):
 
                 return []
         print('req_field',request_field)
-       # for x in domain['slots']['field']['values']:
-       #     print('x',x)
-       # for y in   db.fields_names:
-       #     print('y',y)
+
         if (request_field not in domain['slots']['field']['values']) or (request_field not in db.fields_names):
             dispatcher.utter_message("The chosen value (tracker get out) is not correct. Choose between:")
             if(shell == False):
@@ -427,13 +431,7 @@ class ShowValue(Action):
 
            # dispatcher.utter_message("The possible values for {} are:".format(request_field))
             if(shell == False):
-               # values = {k: v for (k, v) in list(
-                #    sorted(
-                 #       [(x, db.retrieve_values({}, x)) for x in db.fields_names if x in list_param ],
-                  #      key=lambda x: len(x[1])))[:6]}
-                #print(values)
-
-                msg = Utils.create_piecharts(db, list_param, [])
+                msg = Utils.create_piecharts(db, list_param, param_list)
                 for m in msg:
                     dispatcher.utter_message(m)
                 dispatcher.utter_message(Utils.choice("Fields", list_param, show_help=True,))
@@ -461,27 +459,15 @@ class CheckValue(Action):
         else:
             request_field_db = request_field + '_db'
             request_value = tracker.get_slot(request_field)
-        
-            if( (request_field != "is_healthy")): #(request_value != old_value) and
-                #print('req_field',request_field)
-                #for x in db.fields_names:
-                #    print('x', x)
-                #for y in db.values[request_field]:
-                #    print('y', y)
-                #print('req_value',request_value)
-                #if(request_field not in db.fields_names):
-                #    print('aloa')
-                #if(request_value not in db.values[request_field]):
-                #    print('cracatoa')
+
+            if( (request_field != "is_healthy")):
                 if ((request_field not in db.fields_names) or (request_value not in db.values[request_field])):
                 #if ((request_value not in domain['slots'][request_field]['values']) or (
                             #request_field not in db.fields_names) or (request_value not in db.values[request_field])):
 
                     dispatcher.utter_message("The chosen value (!= 435 !) was not correct.")
-                    #dispatcher.utter_message("The possible values for {} are: {}".format(request_field,field_db))
 
-                else: 
-                    #dispatcher.utter_message("Succesful choice")
+                else:
                     Selection_list.append([request_field,request_value])
                     print(Selection_list)
                     old_value=request_value
@@ -489,10 +475,10 @@ class CheckValue(Action):
 
                     for num, name in  enumerate(Selection_list):
                         if(name[1] == False):
-                            dict_selection.update({name[0] : ['False']})
+                            dict_selection.update({name[0] : [False]})
 
                         elif(name[1] == True):
-                            dict_selection.update({name[0] : ['True']})
+                            dict_selection.update({name[0] : [True]})
 
                         else:
                             dict_selection.update({name[0] : [name[1]]})
@@ -528,7 +514,29 @@ class YesNo(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        list_param = {'Yes': 'Yes', 'No': 'No'}
+        last_intent=tracker.latest_message['intent'].get('name')
+
+        if(last_intent !="choice_value_healthy"):
+            list_param = {'Yes': 'Yes', 'No': 'No'}
+
+        else:
+            val=db.retrieve_values("","is_healthy")
+            list_param = {}
+
+            if(val[1]!= None and val[0]!= None):
+                print(val[0]["value"])
+                list_param = {'Yes': 'Yes', 'No': 'No'}
+
+            else:
+                if(val[0]!= True):
+                    list_param = {'Yes': 'Yes'}
+                else:
+                    list_param = {'No': 'No'}
+
+            #for x in val:
+             #   list_param[x]= {x}
+
+            print("in retrieve")
 
         if (shell == False):
             dispatcher.utter_message(Utils.choice("Data Types", list_param))
@@ -540,12 +548,12 @@ class YesNo(Action):
 class HealthYes(Action):
 
     def name(self) -> Text:
-        return "action_is_healthy_yes"  
+        return "action_is_healthy_yes"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-                   
+
         if(ann == True):
             dispatcher.utter_message("The chosen value (healthyes) is not correct. Choose between:")
             dispatcher.utter_message("{}".format(db.fields_names))
@@ -560,21 +568,24 @@ class HealthYes(Action):
                     del Selection_list[num]
 
                 else:
-                    pass      
-        
+                    pass
+
             Selection_list.append(["is_healthy",True])
             dict_selection= {}
             for num, name in  enumerate(Selection_list):
                 if(name[1] == False):
-                    dict_selection.update({name[0] : ['False']})
+                    dict_selection.update({name[0] : [False]})
 
                 elif(name[1] == True):
-                    dict_selection.update({name[0] : ['True']})
+                    dict_selection.update({name[0] : [True]})
 
                 else:
                     dict_selection.update({name[0] : [name[1]]})
 
+            print("primmaaaaa:",db.fields_names)
             db.update(dict_selection)
+            print("dopoooo:",db.fields_names)
+
             if (dict_selection != {}):
                 param_list.update(dict_selection)
 
@@ -589,7 +600,7 @@ class HealthYes(Action):
 class HealthNo(Action):
 
     def name(self) -> Text:
-        return "action_is_healthy_no"  
+        return "action_is_healthy_no"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -618,15 +629,15 @@ class HealthNo(Action):
 
                 else:
                     pass
-                
+
             Selection_list.append(["is_healthy",False])
             dict_selection= {}
             for num, name in  enumerate(Selection_list):
                 if(name[1] == False):
-                    dict_selection.update({name[0] : ['False']})
+                    dict_selection.update({name[0] : [False]})
 
                 elif(name[1] == True):
-                    dict_selection.update({name[0] : ['True']})
+                    dict_selection.update({name[0] : [True]})
 
                 else:
                     dict_selection.update({name[0] : [name[1]]})
@@ -646,14 +657,14 @@ class HealthNo(Action):
 class Insert(Action):
 
     def name(self) -> Text:
-        return "action_insert"  
+        return "action_insert"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         request_field = tracker.get_slot("field")
-        request_field_db = request_field + '_db'        
+        request_field_db = request_field + '_db'
         #field_db = getattr(db, request_field_db)
 
         list_param = {x: x for x in db.values[request_field]}
@@ -672,7 +683,7 @@ class Insert(Action):
 class Modify(Action):
 
     def name(self) -> Text:
-        return "action_modify"  
+        return "action_modify"
 
     def delete(self, request_field):
         for num,name in enumerate(Selection_list):
@@ -685,22 +696,22 @@ class Modify(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         global db, data, ann
 
         request_field = tracker.get_slot("field")
-        request_field_db = request_field + '_db'  
+        request_field_db = request_field + '_db'
 
-        db = DB(data, ann, all_db)
+        #db = DB(data, ann, all_db)
         self.delete(request_field)
         dict_selection= {}
 
         for num, name in enumerate(Selection_list):
             if(name[1] == False):
-                dict_selection.update({name[0] : ['false']})
+                dict_selection.update({name[0] : [False]})
 
             elif(name[1] == True):
-                dict_selection.update({name[0] : ['true']})
+                dict_selection.update({name[0] : [True]})
 
             else:
                 dict_selection.update({name[0] : [name[1]]})
@@ -722,7 +733,7 @@ class Modify(Action):
 class CheckSlots(Action):
 
     def name(self) -> Text:
-        return "action_checkSlots"  
+        return "action_checkSlots"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -746,8 +757,40 @@ class CheckSlots(Action):
         global Selection_list
 
         if(dataset_name == None and ann==False):
-            dispatcher.utter_message("Please select a dataset value")
-            return[SlotSet("DS", False), SlotSet("field", "dataset_name")]
+
+            val = db.retrieve_values("", "dataset_name")
+            list_param = {}
+
+            y=-1
+            for x in val:
+                y=y+1
+            if (y == 0):
+                print(val[0]["value"])
+
+                Selection_list.append(["dataset_name", val[0]["value"]])
+                print(Selection_list)
+                dict_selection = {}
+
+                for num, name in enumerate(Selection_list):
+                    if (name[1] == False):
+                        dict_selection.update({name[0]: [False]})
+
+                    elif (name[1] == True):
+                        dict_selection.update({name[0]: [True]})
+
+                    else:
+                        dict_selection.update({name[0]: [name[1]]})
+
+                db.update(dict_selection)
+                if (dict_selection != {}):
+                    param_list.update(dict_selection)
+                if (shell == False):
+                    dispatcher.utter_message(Utils.param_list(param_list))
+                return [SlotSet("DS", True)]
+
+            else:
+                dispatcher.utter_message("Please select a dataset value")
+                return[SlotSet("DS", False), SlotSet("field", "dataset_name")]
 
 
         return [SlotSet("DS", True)]
@@ -755,7 +798,7 @@ class CheckSlots(Action):
 class Reset(Action):
 
     def name(self) -> Text:
-        return "action_reset"          
+        return "action_reset"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -782,7 +825,7 @@ class Reset(Action):
 class ResetTotal(Action):
 
     def name(self) -> Text:
-        return "action_reset_total"          
+        return "action_reset_total"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -792,7 +835,7 @@ class ResetTotal(Action):
         print("ho resettato tutto")
 
         Selection_list = []
-        
+
         data = experiment_fields
         ann = False
         db = DB(data, ann, all_db)
@@ -802,13 +845,13 @@ class ResetTotal(Action):
         R = 0
 
         del workflow[-1]
-                
+
         return [SlotSet("is_healthy", None), SlotSet("cell", None),SlotSet("source", None),SlotSet("tissue", None),SlotSet("file_format", None),SlotSet("assembly", None),SlotSet("feature", None),SlotSet("disease", None),SlotSet("data_type", None),SlotSet("content_type", None),SlotSet("technique", None),SlotSet("target", None),SlotSet("experiments", None),SlotSet("annotations", None)]
 
 class RenameDatabase(Action):
 
     def name(self) -> Text:
-        return "action_rename_database"  
+        return "action_rename_database"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -825,7 +868,7 @@ class RenameDatabase(Action):
 class DownloadDatabase(Action):
 
     def name(self) -> Text:
-        return "action_download_database"  
+        return "action_download_database"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -842,22 +885,34 @@ class DownloadDatabase(Action):
         dict_selection = {}
         for num, name in  enumerate(Selection_list):
             if(name[1] == False):
-                dict_selection.update({name[0] : ['false']})
+                dict_selection.update({name[0] : [False]})
 
             elif(name[1] == True):
-                dict_selection.update({name[0] : ['true']})
+                dict_selection.update({name[0] : [True]})
 
             else:
                 dict_selection.update({name[0] : [name[1]]})
 
-        #ds=DataSet(dict_selection, db_name) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
+        param_list.update({"Name": db_name})
 
-        #workflow.add(Select(ds))
+
+
+    #    ds=DataSet(dict_selection, db_name) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
+    #    workflow.add(Select(DataSet(dict_selection, db_name)))
+
+    #    KM = clustering.KMeans(workflow[-1], clusters=None, tuning=True, min=1, max=3)
+    #    print(workflow)
+    #    workflow.add(KM)
+    #    workflow.add(pca.PCA(workflow[-1], 2))
+    #    workflow.add(scatter.Scatter(workflow[-1], workflow[-2]))
+    #    print(workflow)
+    #    workflow.run(workflow[-1])
+
+
 
         #for num, name in  enumerate(workflow):
         #    c = num % 2
 
-        param_list.update({"Name": db_name})
 
         #dispatcher.utter_message("OK, dataset saved with name: {}".format(db_name))
 
@@ -865,7 +920,7 @@ class DownloadDatabase(Action):
             dispatcher.utter_message(Utils.param_list(param_list))
 
         #c=database.download(dict_selection)
-        
+
         #with open(db_name + '.txt', 'w') as f:
         #    print('Filename:', c, file=f)
 
@@ -885,10 +940,10 @@ class ShowMetadatum(Action):
         dict_selection = {}
         for num, name in enumerate(Selection_list):
             if (name[1] == False):
-                dict_selection.update({name[0]: ['False']})
+                dict_selection.update({name[0]: [False]})
 
             elif (name[1] == True):
-                dict_selection.update({name[0]: ['True']})
+                dict_selection.update({name[0]: [True]})
 
             else:
                 dict_selection.update({name[0]: [name[1]]})
@@ -899,15 +954,15 @@ class ShowMetadatum(Action):
             c.update({y:y})
             print(y)
 
-        msg = Utils.create_piecharts(db, {}, [])
-        for m in msg:
-            m = ({'type': 'data_summary',
-                  'payload': {'viz': [{'vizType': 'pie-chart', 'title': '', 'data': [{'value': '', 'count': 0}]}]}})
-            dispatcher.utter_message(m)
-
 
         if(c != {} ):
             if(shell== False):
+                msg = Utils.create_piecharts(db, {}, [])
+                for m in msg:
+                    m = ({'type': 'data_summary',
+                          'payload': {
+                              'viz': [{'vizType': 'pie-chart', 'title': '', 'data': [{'value': '', 'count': 0}]}]}})
+                    dispatcher.utter_message(m)
 
                 dispatcher.utter_message(Utils.choice("First 50 metadatum:", c,show_search=True))
             else:
@@ -915,6 +970,13 @@ class ShowMetadatum(Action):
                 print(c)
         else:
             if (shell == False):
+                msg = Utils.create_piecharts(db, {}, [])
+                for m in msg:
+                    m = ({'type': 'data_summary',
+                          'payload': {
+                              'viz': [{'vizType': 'pie-chart', 'title': '', 'data': [{'value': '', 'count': 0}]}]}})
+                    dispatcher.utter_message(m)
+
                 dispatcher.utter_message(Utils.choice("Options:", {'Recap': 'Recap'}, show_search=True))
             else:
                 dispatcher.utter_message("You can only recap no metadatum avaialble to filter")
@@ -940,10 +1002,10 @@ class MetadatumType(Action):
         dict_selection = {}
         for num, name in enumerate(Selection_list):
             if (name[1] == False):
-                dict_selection.update({name[0]: ['False']})
+                dict_selection.update({name[0]: [False]})
 
             elif (name[1] == True):
-                dict_selection.update({name[0]: ['True']})
+                dict_selection.update({name[0]: [True]})
 
             else:
                 dict_selection.update({name[0]: [name[1]]})
@@ -1054,6 +1116,8 @@ class SaveDb(Action):
         ds=DataSet(dict_selection, param_list["Name"]) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
 
         workflow.add(Select(ds))
+        #workflow.run(workflow[-1])
+
         #for num, name in  enumerate(workflow):
         #   c = num % 2
 
@@ -1099,7 +1163,7 @@ class GMQLBinaty(Action):
 class Metadata(Action):
 
     def name(self) -> Text:
-        return "action_metadata_exploration"  
+        return "action_metadata_exploration"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -1116,7 +1180,7 @@ class Metadata(Action):
 class SetGMQL(Action):
 
     def name(self) -> Text:
-        return "action_set_gmql"  
+        return "action_set_gmql"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -1137,7 +1201,7 @@ class SetGMQL(Action):
 class Join(Action):
 
     def name(self) -> Text:
-        return "action_join"  
+        return "action_join"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -1150,7 +1214,7 @@ class Join(Action):
 class Union(Action):
 
     def name(self) -> Text:
-        return "action_union"  
+        return "action_union"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -1163,7 +1227,7 @@ class Union(Action):
 class Map(Action):
 
     def name(self) -> Text:
-        return "action_map"  
+        return "action_map"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -1177,7 +1241,7 @@ class Map(Action):
 class Difference(Action):
 
     def name(self) -> Text:
-        return "action_difference"  
+        return "action_difference"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -1231,38 +1295,6 @@ class GmqlUnary(Action):
 
         if(shell== False):
             dispatcher.utter_message(Utils.choice('Unary_operations',{'Project metadata':'project metadata', 'Project region':'project region', 'Cover':'cover'}))
-
-        return []
-
-class Workflow(Action):
-
-    def name(self) -> Text:
-        return "action_workflow"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        last_intent=tracker.latest_message['intent'].get('name')
-
-        if (shell == False):
-
-            if(last_intent == 'cluster'):
-                dispatcher.utter_message(Utils.workflow("KMeans"))
-                return []
-
-            dispatcher.utter_message(Utils.choice('Options', {'Keep': 'keep',
-                                                                       'Modify': 'modify'}))
-
-            if(last_intent == 'project_metadata'):
-                dispatcher.utter_message(Utils.workflow("Project Metadata"))
-
-
-            elif(last_intent == 'project_region'):
-                dispatcher.utter_message(Utils.workflow("Project Region"))
-
-
-
 
         return []
 
@@ -1334,18 +1366,12 @@ class ShowAllMetadatum(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-
-
         global meta_list
 
         metadatum_exist=False
 
         message = tracker.latest_message.get('text')
         print("messagio",message)
-
-
-
 
         dict_selection = {}
         for num, name in enumerate(Selection_list):
@@ -1384,45 +1410,6 @@ class ShowAllMetadatum(Action):
 
         return []
 
-
-class ShowAllRegion(Action):
-
-    def name(self) -> Text:
-        return "action_show_all_region"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        dict_selection = {}
-        for num, name in enumerate(Selection_list):
-            if (name[1] == False):
-                dict_selection.update({name[0]: ['False']})
-
-            elif (name[1] == True):
-                dict_selection.update({name[0]: ['True']})
-
-            else:
-                dict_selection.update({name[0]: [name[1]]})
-
-        z = db.find_regions(dict_selection,{})
-        print(z)
-        c = {}
-        for y in z:
-            c.update({y: y})
-            print(y)
-
-        if (c != {}):
-            if (shell == False):
-                dispatcher.utter_message(Utils.choice("First 50 region:", c, show_search=True))
-            else:
-                dispatcher.utter_message("First 50 region:")
-                print(c)
-
-        return []
-
-
-
 class CheckMetaExistence(Action):
 
     def name(self) -> Text:
@@ -1448,7 +1435,6 @@ class CheckMetaExistence(Action):
                 metadatum_exist= True
 
         #find all keys senza filtro aggiunto (if...)
-
 
         if(metadatum_exist == True):
             c="You are going to modify [" + message + "]. If you want to assign the same value for all the samples just digit it (e.g., 3, true, 'my label'). If you want to compute its value starting from an existing metadata, please tell me the metadatum name."
@@ -1527,9 +1513,8 @@ class InsertOperator(Action):
             print("Error in action insert operator")
             return[]
 
-
 #################################################################################################
-######################################  K - means  ##############################################
+########################################  Pivot  ################################################
 #################################################################################################
 class ShowFeatureSample(Action):
 
@@ -1549,6 +1534,222 @@ class ShowFeatureSample(Action):
 
         return []
 
+class ShowAllRegion(Action):
+
+    def name(self) -> Text:
+        return "action_show_all_region"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        global feature_sample
+
+        dict_selection = {}
+        for num, name in enumerate(Selection_list):
+            if (name[1] == False):
+                dict_selection.update({name[0]: ['False']})
+
+            elif (name[1] == True):
+                dict_selection.update({name[0]: ['True']})
+
+            else:
+                dict_selection.update({name[0]: [name[1]]})
+
+        z = db.find_regions(dict_selection,{})
+        print(z)
+        c = {}
+        for y in z:
+            c.update({y: y})
+            print(y)
+
+        if (c != {}):
+            if (shell == False):
+                dispatcher.utter_message(Utils.choice("First 50 region:", c, show_search=True))
+            else:
+                dispatcher.utter_message("First 50 region:")
+                print(c)
+
+        ## per salvare scelta seample feature
+        last_intent=tracker.latest_message['intent'].get('name')
+        if(last_intent=="sample" or last_intent =="feature"):
+            feature_sample=last_intent
+
+        return []
+
+class SaveRegion(Action):
+
+    def name(self) -> Text:
+        return "action_save_region"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        global feature_sample, region, region_1
+
+        ## per salvare scelta seample feature
+        message = tracker.latest_message.get('text')
+        if (region==[]):
+            region.append(message)
+        else:
+            region_1.append(message)
+
+        return []
+
+class ActionShowSample(Action):
+
+    def name(self) -> Text:
+        return "action_show_sample"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        global ann, param_list, database, Selection_list
+
+        dict_selection = {}
+        for num, name in enumerate(Selection_list):
+            if (name[1] == False):
+                dict_selection.update({name[0]: [False]})
+
+            elif (name[1] == True):
+                dict_selection.update({name[0]: [True]})
+
+            else:
+                dict_selection.update({name[0]: [name[1]]})
+
+        z = db.find_all_keys(dict_selection)
+        c = {}
+        for y in z:
+            c.update({y: y})
+            print(y)
+
+        if (c != {}):
+            if (shell == False):
+                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c, show_search=True))
+            else:
+                dispatcher.utter_message("First 50 metadatum:")
+                print(c)
+        else:
+            if (shell == False):
+                dispatcher.utter_message(Utils.choice("Options:", {'Recap': 'Recap'}, show_search=True))
+            else:
+                dispatcher.utter_message("You can only recap no metadatum avaialble to filter")
+
+        return []
+
+class ActionSaveSample(Action):
+
+    def name(self) -> Text:
+        return "action_save_sample"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        global label_meta
+
+        label_meta.append(tracker.latest_message.get('text'))
+        print("messagio", label_meta)
+
+
+        return []
+
+class ActionShowFeature(Action):
+
+    def name(self) -> Text:
+        return "action_show_feature"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+
+        global feature_sample
+
+        dict_selection = {}
+        for num, name in enumerate(Selection_list):
+            if (name[1] == False):
+                dict_selection.update({name[0]: ['False']})
+
+            elif (name[1] == True):
+                dict_selection.update({name[0]: ['True']})
+
+            else:
+                dict_selection.update({name[0]: [name[1]]})
+
+        z = db.find_regions(dict_selection,{})
+        print(z)
+        c = {}
+        for y in z:
+            c.update({y: y})
+            print(y)
+
+        if (c != {}):
+            if (shell == False):
+                dispatcher.utter_message(Utils.choice("First 50 region:", z, show_search=True))
+            else:
+                dispatcher.utter_message("First 50 region:")
+                print(z)
+
+        ## per salvare scelta seample feature
+        last_intent=tracker.latest_message['intent'].get('name')
+        if(last_intent=="sample" or last_intent =="feature"):
+            feature_sample=last_intent
+
+
+        return []
+
+class ActionSaveFeature(Action):
+
+    def name(self) -> Text:
+        return "action_save_feature"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        global label_region
+
+        label_region.append(tracker.latest_message.get('text'))
+        print("messagio", label_region)
+
+
+        return []
+
+class RunWorkflow(Action):
+
+    def name(self) -> Text:
+        return "action_run_workflow"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        global feature_sample, region, region_1, label_meta,label_region
+
+        if(label_meta == []):
+            label_meta=None
+        if(label_region == []):
+            label_region=None
+
+        print("L_meta:",label_meta)
+        print("L_region:",label_region)
+
+        print(feature_sample)
+        print(region)
+        print(region_1)
+        print("ci sono")
+        if(feature_sample == "sample" ):
+            workflow.add(pivot.Pivot(workflow[-1],region_column= region, metadata_row=['item_id'], region_value=region_1,other_meta=label_region, other_region=label_meta ) )
+        else:
+            workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],  region_value=region_1, other_meta=label_region, other_region=label_meta  ))
+
+
+
+       # workflow.run(workflow[-1])
+        return []
+
 
 class ShowOperations(Action):
 
@@ -1559,15 +1760,18 @@ class ShowOperations(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        list_param = {'Cluster': 'Cluster', 'Other': 'Other'}
+        list_param = {'Clustering': 'Clustering', 'Other': 'Other'}
 
         if (shell == False):
-            dispatcher.utter_message(Utils.choice("Data Types", list_param))
+            dispatcher.utter_message(Utils.choice("Data Analysis", list_param))
         else:
             dispatcher.utter_message("Options {}".format(list_param))
 
         return []
 
+#################################################################################################
+######################################  K - means  ##############################################
+#################################################################################################
 
 class ActionTakeMinMax(Action):
 
@@ -1587,13 +1791,20 @@ class ActionTakeMinMax(Action):
 
             if (';' in Min_Max_values):
                 c = Min_Max_values.split(';')
-                min =c[0]
-                print(c[0])
-                max =c[1]
-                print(c[1])
-                KM=KMeans(3, clusters=None, tuning=True, min= min, max=max)
+                if(int(c[0]) < int(c[1])):
+                    min =int(c[0])
+                    max =int(c[1])
+                else:
+                    min=int(c[1])
+                    max=int(c[0])
+
+                print(max,c[1])
+
+                KM=clustering.KMeans(workflow[-1], clusters=None, tuning=True, min= min, max=max)
                 print(workflow)
                 workflow.add(KM)
+                workflow.add(pca.PCA(workflow[-1],2))
+                workflow.add(scatter.Scatter(workflow[-1],workflow[-2]))
                 print(workflow)
                 workflow.run(workflow[-1])
 
@@ -1601,7 +1812,6 @@ class ActionTakeMinMax(Action):
                 #    print(c[i])
 
         return []
-
 
 class ActionNClusters(Action):
 
@@ -1611,16 +1821,30 @@ class ActionNClusters(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        global Min_Max_cluster,N_cluster,Min_cluster,Max_cluster
+        global N_cluster
 
         last_intent=tracker.latest_message['intent'].get('name')
 
         if(last_intent == 'value'):
             N_cluster = tracker.latest_message.get('text')
-            KM=KMeans(3, clusters=N_cluster, tuning=True, min=min, max=max)
+            print(type(int(N_cluster)))
+            #if(type(N_cluster)== int ):
+            KM=clustering.KMeans(workflow[-1], clusters=int(N_cluster), tuning=False)
             workflow.add(KM)
+            workflow.add(pca.PCA(workflow[-1], 2))
+            workflow.add(scatter.Scatter(workflow[-1], workflow[-2]))
+            print(workflow)
+            workflow.run(workflow[-1])
+            #aggiungere risultati di scatterplot
 
             return []
+
+
+
+
+#################################################################################################
+######################################  General    ##############################################
+#################################################################################################
 
 
 class ActionGoBack(Action):
@@ -1631,23 +1855,41 @@ class ActionGoBack(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        global Min_Max_cluster, N_cluster, Min_cluster, Max_cluster
 
         dispatcher.utter_message("ok! let's go back")
 
         return [UserUtteranceReverted(),UserUtteranceReverted(), ActionReverted(), ActionReverted()] #, ActionReverted()
 
-
-class ActionAddCluster(Action):
+class Workflow(Action):
 
     def name(self) -> Text:
-        return "action_add_cluster"
+        return "action_workflow"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        global workflow
 
-        workflow.add(Select(ds))
+        last_intent=tracker.latest_message['intent'].get('name')
+
+        if (shell == False):
+
+            if(last_intent == 'deny'):
+                dispatcher.utter_message(Utils.workflow("Pivot"))
+                return []
+
+
+            if(last_intent == 'cluster'):
+                dispatcher.utter_message(Utils.workflow("KMeans"))
+                return []
+
+            dispatcher.utter_message(Utils.choice('Options', {'Keep': 'keep',
+                                                                       'Modify': 'modify'}))
+
+            if(last_intent == 'project_metadata'):
+                dispatcher.utter_message(Utils.workflow("Project Metadata"))
+
+
+            elif(last_intent == 'project_region'):
+                dispatcher.utter_message(Utils.workflow("Project Region"))
 
         return []

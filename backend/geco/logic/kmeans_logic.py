@@ -13,6 +13,7 @@ class KMeansLogic:
     def __init__(self, kmeans):
         self.op = kmeans
         self.ds = self.op.depends_on.result
+        print(self.ds)
         self.tuning = kmeans.tuning
         if self.tuning:
             self.min = kmeans.min_clusters
@@ -32,14 +33,27 @@ class KMeansLogic:
             def silhouette_score(estimator, X):
                 clusters = estimator.fit_predict(self.ds.values)
                 #print(X)
+                print("self.ds.values e clusters")
+                print(self.ds.values)
+                print(clusters)
                 score = metrics.silhouette_score(self.ds.values, clusters)
                 return score
+
+            print(self.min)
+            print(self.max)
+
+            if(self.min <=1):
+                self.min ==2
 
             param_grid = {"n_clusters": range(self.min, self.max)}
             # run randomized search
             search = GridSearchCV(KMeans(),
                                   param_grid=param_grid,
                                   scoring=silhouette_score)
+
+            print("printo self")
+            print(self.ds.values)
+
             grid = search.fit(self.ds.values)
             kmeans = grid.best_estimator_
             kmeans_fit = kmeans.fit(self.ds.values)

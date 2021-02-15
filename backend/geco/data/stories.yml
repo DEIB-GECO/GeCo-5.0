@@ -679,6 +679,7 @@ stories:
   - action: utter_new_dataset
   - action: action_yes_no
   - intent: deny
+  - action: action_workflow
   - action: utter_pivot_0
   - action: action_show_feature_sample
   - intent: feature
@@ -686,11 +687,16 @@ stories:
   - action: action_show_all_region
   - intent: region
   - action: utter_pivot_2
+  - action: action_save_region
   - intent: affirm
   - action: utter_pivot_3
   - intent: region
-  - action: action_show_operations
+  - action: action_save_region
   - action: utter_pivot_4
+  - intent: deny
+  - action: action_run_workflow
+  - action: action_show_operations
+  - action: utter_pivot_7
   - intent: cluster
   - action: action_workflow
   - action: utter_please_k-means_0
@@ -703,6 +709,7 @@ stories:
   - action: utter_new_dataset
   - action: action_yes_no
   - intent: deny
+  - action: action_workflow
   - action: utter_pivot_0
   - action: action_show_feature_sample
   - intent: sample
@@ -710,6 +717,7 @@ stories:
   - action: action_show_all_region
   - intent: region
   - action: utter_pivot_2b
+  - action: action_save_region
   - intent: affirm
   - action: utter_pivot_3
 
@@ -1235,7 +1243,6 @@ stories:
   - action: utter_filter_more
   - action: action_show_field
 
-
 - story: interactive_story_1
   steps:
   - intent: start
@@ -1300,6 +1307,7 @@ stories:
   - action: utter_new_dataset
   - action: action_yes_no
   - intent: deny
+  - action: action_workflow
   - action: utter_pivot_0
   - action: action_show_feature_sample
   - intent: feature
@@ -1307,11 +1315,28 @@ stories:
   - action: action_show_all_region
   - intent: region
   - action: utter_pivot_2
+  - action: action_save_region
   - intent: affirm
   - action: utter_pivot_3
   - intent: region
-  - action: action_show_operations
+  - action: action_save_region
   - action: utter_pivot_4
+  - intent: affirm
+  - action: action_show_sample
+  - action: utter_pivot_5
+  - or:
+    - intent: deny
+    - intent: metadatum
+  - action: action_save_sample
+  - action: action_show_feature
+  - action: utter_pivot_6
+  - or:
+    - intent: deny
+    - intent: region
+  - action: action_save_feature
+  - action: action_run_workflow
+  - action: action_show_operations
+  - action: utter_pivot_7
   - intent: cluster
   - action: action_workflow
   - action: utter_please_k-means_0
@@ -1326,8 +1351,6 @@ stories:
   - action: action_take_min_max
   - action: utter_please_k-means_3
 
-
-
 - story: interactive_story_1
   steps:
   - action: action_show_feature_sample
@@ -1335,12 +1358,17 @@ stories:
   - action: utter_pivot_1b
   - action: action_show_all_region
   - intent: region
+  - action: action_save_region
   - action: utter_pivot_2b
   - intent: affirm
   - action: utter_pivot_3
   - intent: region
-  - action: action_show_operations
+  - action: action_save_region
   - action: utter_pivot_4
+  - intent: deny
+  - action: action_run_workflow
+  - action: action_show_operations
+  - action: utter_pivot_7
   - intent: cluster
   - action: action_workflow
   - action: utter_please_k-means_0
@@ -1804,3 +1832,77 @@ stories:
   - action: action_download_database
   - action: utter_filter
   - action: action_show_metadatum
+
+- story: interactive_story_1
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - tissue: pancreas
+    - data_type: mirna expression quantification
+  - slot_was_set:
+    - data_type: mirna expression quantification
+  - slot_was_set:
+    - tissue: pancreas
+  - action: action_give_exact_experiment
+  - action: utter_filter_more
+  - action: action_show_field
+  - intent: deny
+  - action: action_checkSlots
+  - slot_was_set:
+    - DS: false
+  - slot_was_set:
+    - field: dataset_name
+  - action: action_show_value
+  - intent: choice_value_dataset_name
+    entities:
+    - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - slot_was_set:
+    - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: utter_rename_datase
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+    - dataset_rename: null
+  - action: action_download_database
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: deny
+  - action: action_save_dataset
+  - action: utter_keep_modify
+  - action: action_keep_modify
+  - intent: keep
+  - action: action_set_gmql
+  - slot_was_set:
+    - GMQL: true
+  - action: utter_new_dataset
+  - action: action_yes_no
+  - intent: deny
+  - action: action_workflow
+  - action: utter_pivot_0
+  - action: action_show_feature_sample
+  - intent: sample
+  - action: utter_pivot_1b
+  - action: action_show_all_region
+  - intent: region
+  - action: utter_pivot_2b
+  - action: action_save_region
+  - intent: affirm
+  - action: utter_pivot_3
+  - intent: region
+  - action: action_save_region
+  - action: utter_pivot_4
+  - intent: affirm
+  - action: action_show_sample
+  - action: utter_pivot_5
+  - intent: deny
+  - action: action_save_sample
+  - action: action_show_feature
+  - action: utter_pivot_6
+  - intent: deny
+  - action: action_save_feature
+  - action: action_run_workflow
+  - action: action_show_operations
+  - action: utter_pivot_7

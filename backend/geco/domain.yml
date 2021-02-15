@@ -3,20 +3,21 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
+- affirm
+- keep
+- sample
 - deny
+- choice_exact_experiment
+- region
+- choice_value_dataset_name
 - rename_database
 - retrieve_experiments
-- choice_value_dataset_name
 - start
 - choice_value_healthy
-- affirm
 - choice_value_tissue
 - search_field
 - review
-- region
-- keep
 - choice_value_disease
-- choice_exact_experiment
 - operation
 - choice_value_assembly
 - choice_value_cell
@@ -54,7 +55,6 @@ intents:
 - change_field
 - back
 - feature
-- sample
 - cluster
 entities:
 - affirm
@@ -2116,6 +2116,12 @@ responses:
   utter_pivot_3:
   - text: which region data do you want to use to fill your table?
   utter_pivot_4:
+  - text: Do you want to add some labels from metadata or region data?
+  utter_pivot_5:
+  - text: Do you want to add a label to the samples? Choose one in the right panel
+  utter_pivot_6:
+  - text: Do you want to add a label to the feature? Choose one in the right panel
+  utter_pivot_7:
   - text: which operation do you want to do?
   utter_please_k-means_0:
   - text: Give me the number of clusters you need. In case you don't know, you can try some tuning
@@ -2158,14 +2164,20 @@ actions:
 - action_rename_database
 - action_reset
 - action_reset_total
+- action_run_workflow
 - action_save_dataset
+- action_save_feature
+- action_save_region
+- action_save_sample
 - action_set_gmql
 - action_show_all_metadatum
 - action_show_all_region
+- action_show_feature
 - action_show_feature_sample
 - action_show_field
 - action_show_metadatum
 - action_show_operations
+- action_show_sample
 - action_show_value
 - action_take_min_max
 - action_take_value
@@ -2191,6 +2203,10 @@ actions:
 - utter_pivot_2
 - utter_pivot_2b
 - utter_pivot_3
+- utter_pivot_4
+- utter_pivot_5
+- utter_pivot_6
+- utter_pivot_7
 - utter_please_k-means_0
 - utter_please_k-means_2
 - utter_please_k-means_3

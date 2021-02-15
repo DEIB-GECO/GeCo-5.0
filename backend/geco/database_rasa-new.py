@@ -15,6 +15,8 @@ def get_db_uri():
 db_string = get_db_uri()
 db = create_engine(db_string)
 
+print("vecchio")
+
 annotation_fields = ["content_type", "assembly", "source", 'dataset_name']
 experiment_fields = ['source', 'data_type', 'assembly', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
 fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
