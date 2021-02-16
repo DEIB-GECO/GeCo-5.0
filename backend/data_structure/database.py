@@ -28,12 +28,12 @@ class database:
     def __init__(self):
         self.fields = fields
         self.get_all_values()
-
+#and dataset_name in {}
     def get_all_values(self):
         self.fields_names = []
         self.values = {}
         res = db.engine.execute("select item_id, " + ', '.join(fields)
- + " from dw.flatten_gecoagent where source in {} and dataset_name in {}".format(tuple(sources), tuple(datasets)))
+ + " from dw.flatten_gecoagent where dataset_name in ('grch38_cistrome_broadpeak')".format(tuple(sources), tuple(datasets)))
         values = res.fetchall()
         self.table = pd.DataFrame(values, columns=res.keys())
 
@@ -63,6 +63,7 @@ class DB:
                        i != 'item_id' and len(list(set(self.table[i].values))) > 1]
         self.values = {x:set(self.table[x].values) for x in fields if (x in self.table.columns.values) and len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
+        print('is_healthy', set(self.table['is_healthy']))
         self.meta_schema = self.db.meta_schema
 
     def update(self, gcm):
@@ -73,11 +74,12 @@ class DB:
             values = []
             if f=='is_healthy':
                 print('all',list(set(self.table[f])))
-                print('filter', list(filter(None, list(set(self.table[f])))))
+                print('filter', list(filter(lambda x: x is not None, list(set(self.table[f])))))
             if f in gcm and f!='is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
             val = list(set(self.table[f]))
-            val = list(filter(None, val))
+
+            #val = list(filter(None, val))
             if (val != []) and (len(val) > 1):
                 self.fields_names.append(f)
                 for i in range(len(val)):

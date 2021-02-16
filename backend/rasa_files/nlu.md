@@ -167,8 +167,7 @@
 
 
 ## intent:retrieve_annotations
-i want gene expressions from brca data
-i want gene expressions from brca data
+- i want gene expressions from brca data
 - annotation
 - annotations
 - i want annotation

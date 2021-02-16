@@ -135,10 +135,6 @@
             "class": "rasa.nlu.extractors.entity_synonyms.EntitySynonymMapper"
         }
     ],
-<<<<<<< Updated upstream
-    "trained_at": "20210203-101353",
-=======
-    "trained_at": "20210201-155947",
->>>>>>> Stashed changes
+    "trained_at": "20210215-163204",
     "rasa_version": "1.9.6"
 }
