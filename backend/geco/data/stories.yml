@@ -3,8 +3,8 @@ stories:
 
 - story: more field (source-tissue) 
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: choice_exact_experiment
     entities:
     - source: 'tcga'
@@ -18,8 +18,8 @@ stories:
 
 - story: more field (data_type-disease) 
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: choice_exact_experiment
     entities:
     - data_type: 'dna methylation'
@@ -34,8 +34,8 @@ stories:
 
 - story: more field (data_type-disease) 
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: choice_exact_experiment
     entities:
     - assembly: 'hg19'
@@ -52,8 +52,8 @@ stories:
 
 - story: more field (data_type-disease) 
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: choice_exact_experiment
     entities:
     - assembly: 'grch38'
@@ -127,8 +127,8 @@ stories:
 
 - story: Experiment tissue + exact experimet disease
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: "experiments"
@@ -162,8 +162,8 @@ stories:
 
 - story: Experiment dataset
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: "experiments"
@@ -184,8 +184,8 @@ stories:
 
 - story: Experiment cell
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: "experiments"
@@ -237,8 +237,8 @@ stories:
 
 - story: Experiment tissue
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: "experiments"
@@ -260,8 +260,8 @@ stories:
 
 - story: Experiment Health yes
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: "Experiment"
@@ -281,8 +281,8 @@ stories:
 
 - story: Experiment Health no
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: "Experiment"
@@ -363,13 +363,14 @@ stories:
     - technique : Null
     - experiments: Null
     - annotations: Null
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
+
 
 - story: Experiment all
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: "Experiment"
@@ -598,8 +599,8 @@ stories:
   #  - technique : Null
   #  - annotations: Null
   #  - experiments: Null
-  #- action: utter_what_data
   #- action: action_what_data
+  #- action: utter_what_data
 
 
 - story: filter giving a metadatum
@@ -668,8 +669,9 @@ stories:
   - action: utter_new_dataset
   - action: action_yes_no
   - intent: affirm
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
+
 
 - story: pivot
   steps:
@@ -999,8 +1001,9 @@ stories:
       - experiments: Null
       - annotations: Null
   - action: action_reset_total
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
+
 
 
 - story: modify_selection
@@ -1012,8 +1015,8 @@ stories:
 
 - story: Annotation
   steps:
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_annotations
     entities:
     - annotations: "Annotations"
@@ -1246,8 +1249,8 @@ stories:
 - story: interactive_story_1
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: experiments
@@ -1396,8 +1399,8 @@ stories:
 - story: interactive_story_1
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: experiments
@@ -1457,8 +1460,8 @@ stories:
 - story: interactive_story_2
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: choice_exact_experiment
     entities:
     - data_type: mirna expression quantification
@@ -1493,8 +1496,8 @@ stories:
 - story: interactive_story_1
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: experiments
@@ -1563,8 +1566,8 @@ stories:
 - story: interactive_story_1
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: experiments
@@ -1623,8 +1626,8 @@ stories:
 - story: interactive_story_1
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: esperiments
@@ -1679,8 +1682,8 @@ stories:
 - story: interactive_story_1
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: experiments
@@ -1725,8 +1728,8 @@ stories:
 - story: interactive_story_2
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: experiments
@@ -1790,8 +1793,8 @@ stories:
 - story: interactive_story_1
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
   - intent: retrieve_experiments
     entities:
     - experiments: experiments

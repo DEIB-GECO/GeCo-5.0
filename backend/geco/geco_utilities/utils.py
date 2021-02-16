@@ -38,7 +38,6 @@ class Utils(object):
             #print(i)
             elements.append({'field': i, 'values': param_dict[i]})
 
-        print("element list",elements)
         return {"type" : "parameters_list",
                 "payload" : elements}
 
@@ -55,7 +54,7 @@ class Utils(object):
                 key = lambda x : len(x[1])))[:6]}
 
 
-        #print("i valori sono:", values)
+        print("---------------------------------------------")
         #[(x, context.payload.database.retrieve_values(gcm_filter, x)) for x in context.payload.database.fields_names if x not in context.payload.status and x!='is_healthy'],
         #print(values)
         copy_val = values.copy()

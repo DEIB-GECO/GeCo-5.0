@@ -167,11 +167,7 @@ class MoreFields(Action):
                 'technique':technique,'feature':feature,'target':target}
 
         if (field != None):
-            print(field, "sono un chatbot scemo")
-
-            print('sono in exact experiments')
             request_field = tracker.get_slot("field")
-            print('request_field:', request_field)
             request_field_db = request_field + '_db'
             request_value = tracker.get_slot(request_field)
 
@@ -191,10 +187,8 @@ class MoreFields(Action):
                 else:
                     for x in db.values[request_field]:
                         if (x != None):
-                            print(x)
                             if (request_value in x):
                                 c = x
-                                print('eureka', c)
 
                     #dispatcher.utter_message("Succesful choice")
                     Selection_list.append([request_field, request_value])
@@ -230,7 +224,6 @@ class MoreFields(Action):
        #     if (name1!= None):
        #         print('name1',name1)
         for num, name  in enumerate(Slots):
-            print('name',Slots[name])
             if (Slots[name] != None):
                     #if(name1 == name):
                 #dispatcher.utter_message("Succesful choice")
@@ -254,79 +247,6 @@ class MoreFields(Action):
         db.update(dict_selection)
         return []
 
-class GiveExactExperiment(Action):
-
-    def name(self) -> Text:
-        return "action_give_exact_experiment_old"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        global db, data, ann, old_value, param_list
-
-        data2 = tracker.get_slot("annotations")
-        if (data2 != None):
-            data= annotation_fields
-            ann= True
-            db = DB(data, ann, all_db )
-
-        print ('sono in exact experiments')
-        request_field = tracker.get_slot("field")
-        print('request_field:',request_field)
-        request_field_db = request_field + '_db'
-        request_value = tracker.get_slot(request_field)
-
-       # field_db = getattr(database, request_field_db)
-        list_param = {x: x for x in db.fields_names}
-
-        if(request_field == None):
-            dispatcher.utter_message("nessun campo selezionato")
-
-        elif((request_field != "is_healthy")): #(request_value != old_value) and
-            #if (request_field not in domain['slots']['field']['values']) or (request_field not in db.fields_names):
-            if ((request_value not in domain['slots'][request_field]['values']) or (
-                    request_field not in db.fields_names) or (request_value not in db.values[request_field])):
-                dispatcher.utter_message("The chosen value (exact experiment) is not correct. Choose between:")
-                #dispatcher.utter_message("The possible values for {} are: {}".format(request_field,field_db))
-
-            else:
-                for x in db.values[request_field]:
-                    if(x!= None):
-                        print(x)
-                        if(request_value in x):
-                            c=x
-                            print('eureka',c)
-
-                #dispatcher.utter_message("Succesful choice")
-                Selection_list.append([request_field,request_value])
-                print(Selection_list)
-                old_value=request_value
-                dict_selection= {}
-
-                for num, name in  enumerate(Selection_list):
-                    if(name[1] == False):
-                        dict_selection.update({name[0] : [False]})
-
-                    elif(name[1] == True):
-                        dict_selection.update({name[0] : [True]})
-
-                    else:
-                        dict_selection.update({name[0] : [name[1]]})
-
-                if(dict_selection != {}):
-                    param_list.update(dict_selection)
-
-                db.update(dict_selection)
-                if(shell == False):
-                    dispatcher.utter_message(Utils.param_list(param_list))
-
-
-        else:
-            dispatcher.utter_message("The chosen value (else) is not correct. Choose between:")
-            dispatcher.utter_message("{}".format(db.fields_names))
-
-        return []
 
 class SelectData(Action):
 
@@ -348,13 +268,11 @@ class SelectData(Action):
             db = DB(data, ann, all_db)
 
         elif(data2 != None):
-            print("annotation")
             data= annotation_fields
             ann= True
             db = DB(data, ann, all_db)
 
         else:
-            print("experiments")
             return []
 
         return [SlotSet("field", None),SlotSet("is_healthy", None), SlotSet("cell", None),SlotSet("source", None),SlotSet("tissue", None),SlotSet("file_format", None),SlotSet("assembly", None),SlotSet("feature", None),SlotSet("disease", None),SlotSet("data_type", None),SlotSet("content_type", None),SlotSet("technique", None),SlotSet("target", None),SlotSet("experiments", None),SlotSet("annotations", None)]
@@ -378,13 +296,11 @@ class ShowField(Action):
                 param_list = {"Data":"Annotations"}
 
         if(shell == False):
-            print('prima di message')
             msg = Utils.create_piecharts(db, {}, param_list)
             for m in msg:
                 dispatcher.utter_message(m)
             dispatcher.utter_message(Utils.choice("Available Fields", list_param,show_help=True))
             dispatcher.utter_message(Utils.param_list(param_list))
-            print("show filed:", param_list)
             #dispatcher.utter_message(Utils.create_piecharts(db,list_param,param_list))
 
         else:
@@ -414,7 +330,6 @@ class ShowValue(Action):
                     print("Options {}".format(d))
 
                 return []
-        print('req_field',request_field)
 
         if (request_field not in domain['slots']['field']['values']) or (request_field not in db.fields_names):
             dispatcher.utter_message("The chosen value (tracker get out) is not correct. Choose between:")
@@ -426,10 +341,18 @@ class ShowValue(Action):
             return[]
 
         else:
-            list_param = {x: x for x in db.values[request_field]}
-           # print("lista", db.values[request_field])
+          #  questa sbaglia se la prima scelta é disease e poi tissue non ho capito il perché
+          #  list_param = {x: x for x in db.values[request_field]}
+           
+            list_param={}
+            val=db.retrieve_values('',request_field)
 
-           # dispatcher.utter_message("The possible values for {} are:".format(request_field))
+            for x in val:
+                for k, v in x.items():
+                    if(k== "value"):
+                        print("v vale:",v)
+                        list_param[v]=v
+
             if(shell == False):
                 msg = Utils.create_piecharts(db, list_param, param_list)
                 for m in msg:
@@ -449,7 +372,6 @@ class CheckValue(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        print ('sono in checkValue')
         global old_value, param_list
         request_field = tracker.get_slot("field")
 
@@ -469,7 +391,6 @@ class CheckValue(Action):
 
                 else:
                     Selection_list.append([request_field,request_value])
-                    print(Selection_list)
                     old_value=request_value
                     dict_selection= {}
 
@@ -523,7 +444,11 @@ class YesNo(Action):
             val=db.retrieve_values("","is_healthy")
             list_param = {}
 
-            if(val[1]!= None and val[0]!= None):
+            y=-1
+            for x in val:
+                y=x+1
+
+            if(y>1):
                 print(val[0]["value"])
                 list_param = {'Yes': 'Yes', 'No': 'No'}
 
@@ -535,8 +460,6 @@ class YesNo(Action):
 
             #for x in val:
              #   list_param[x]= {x}
-
-            print("in retrieve")
 
         if (shell == False):
             dispatcher.utter_message(Utils.choice("Data Types", list_param))
@@ -582,9 +505,7 @@ class HealthYes(Action):
                 else:
                     dict_selection.update({name[0] : [name[1]]})
 
-            print("primmaaaaa:",db.fields_names)
             db.update(dict_selection)
-            print("dopoooo:",db.fields_names)
 
             if (dict_selection != {}):
                 param_list.update(dict_selection)
@@ -690,7 +611,8 @@ class Modify(Action):
                 if(name[0] == request_field):
                     del Selection_list[num]
                     print("campo cancellato")
-                    self.delete( request_field)
+                    self.delete(request_field)
+
         return []
 
     def run(self, dispatcher: CollectingDispatcher,
@@ -702,8 +624,9 @@ class Modify(Action):
         request_field = tracker.get_slot("field")
         request_field_db = request_field + '_db'
 
-        #db = DB(data, ann, all_db)
+        db = DB(data, ann, all_db)
         self.delete(request_field)
+
         dict_selection= {}
 
         for num, name in enumerate(Selection_list):
@@ -715,8 +638,6 @@ class Modify(Action):
 
             else:
                 dict_selection.update({name[0] : [name[1]]})
-
-        print(dict_selection)
 
         db.update(dict_selection)
 
@@ -765,10 +686,8 @@ class CheckSlots(Action):
             for x in val:
                 y=y+1
             if (y == 0):
-                print(val[0]["value"])
 
                 Selection_list.append(["dataset_name", val[0]["value"]])
-                print(Selection_list)
                 dict_selection = {}
 
                 for num, name in enumerate(Selection_list):
@@ -952,7 +871,6 @@ class ShowMetadatum(Action):
         c={}
         for y in z:
             c.update({y:y})
-            print(y)
 
 
         if(c != {} ):
@@ -1014,11 +932,9 @@ class MetadatumType(Action):
             dispatcher.utter_message(Utils.param_list(param_list))
 
         z = db.find_key_values(message, dict_selection)
-        print("z", z)
         c = {}
         # if(z[1] == False):
         for y in z[0]:
-            print(y)
             #print(y['value'])
             c.update({y['value']: y['value']})
         # y[count] sono i valori che mi serviranno per l istogramma
@@ -1066,10 +982,7 @@ class TakeValue(Action):
 
         message = tracker.latest_message.get('text')
 
-        print("ciao")
-
         if (';' not in message):
-            print("ciao")
             saved_metadatum_value=message
            # print(saved_metadatum_msg)
             Meta = saved_metadatum_msg + ': ' + saved_metadatum_value
@@ -1113,7 +1026,7 @@ class SaveDb(Action):
         print(param_list)
         print("name db:", param_list["Name"])
 
-        ds=DataSet(dict_selection, param_list["Name"]) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
+        ds=database.Dataset(dict_selection, param_list["Name"]) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
 
         workflow.add(Select(ds))
         #workflow.run(workflow[-1])
@@ -1307,38 +1220,14 @@ class ModifyKeep(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
+        global meta_list
+
         last_intent=tracker.latest_message['intent'].get('name')
-        print(last_intent)
 
         if(last_intent == 'modify' ):
-
-            dict_selection = {}
-            for num, name in enumerate(Selection_list):
-                if (name[1] == False):
-                    dict_selection.update({name[0]: ['False']})
-
-                elif (name[1] == True):
-                    dict_selection.update({name[0]: ['True']})
-
-                else:
-                    dict_selection.update({name[0]: [name[1]]})
-
-            z = db.find_all_keys(dict_selection)
             c = {}
-            for y in z:
-                c.update({y: y})
-                print(y)
-
-            ##---------------------------------------
-            c = {}
-            print(meta_list)
             for k, v in meta_list.items():
-                print(k, v)
-                print("messagio nella lista")
-                print(meta_list)
-                metadatum_exist = True
                 c.update({k: k})
-            ##--------------------------------------
 
 
             if (meta_list != {}):
@@ -1368,38 +1257,10 @@ class ShowAllMetadatum(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         global meta_list
 
-        metadatum_exist=False
-
-        message = tracker.latest_message.get('text')
-        print("messagio",message)
-
-        dict_selection = {}
-        for num, name in enumerate(Selection_list):
-            if (name[1] == False):
-                dict_selection.update({name[0]: ['False']})
-
-            elif (name[1] == True):
-                dict_selection.update({name[0]: ['True']})
-
-            else:
-                dict_selection.update({name[0]: [name[1]]})
-
-        z = db.find_all_keys(dict_selection)
-        c = {}
-        for y in z:
-            c.update({y: y})
-            print(y)
-
-##---------------------------------------
         c={}
         print(meta_list)
         for k, v in meta_list.items():
-            print(k, v)
-            print("messagio nella lista")
-            print(meta_list)
-            metadatum_exist= True
             c.update({v,v})
-##--------------------------------------
 
         if (c != {}):
             if (shell == False):
@@ -1557,7 +1418,6 @@ class ShowAllRegion(Action):
                 dict_selection.update({name[0]: [name[1]]})
 
         z = db.find_regions(dict_selection,{})
-        print(z)
         c = {}
         for y in z:
             c.update({y: y})
@@ -1565,9 +1425,9 @@ class ShowAllRegion(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("First 50 region:", c, show_search=True))
+                dispatcher.utter_message(Utils.choice("Region:", c, show_search=True))
             else:
-                dispatcher.utter_message("First 50 region:")
+                dispatcher.utter_message("Region:")
                 print(c)
 
         ## per salvare scelta seample feature
