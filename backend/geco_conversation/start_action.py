@@ -24,7 +24,7 @@ class StartAction(AbstractAction):
             next_node = ExperimentAction(self.context)
             self.context.payload.database = DB(experiment_fields, False, copy.deepcopy(self.context.payload.original_db))#copy.deepcopy(exp_db)
         else:
-            self.context.add_bot_msg([Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?"),Utils.workflow('Data selection')])
+            self.context.add_bot_msgs([Utils.chat_message("Sorry, I did not get. Do you want to select annotations or experiments?"),Utils.workflow('Data selection')])
             next_node = None
             bool = False
         return next_node, bool

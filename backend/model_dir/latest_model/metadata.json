@@ -61,7 +61,7 @@
                 256
             ],
             "batch_strategy": "balanced",
-            "epochs": 70,
+            "epochs": 100,
             "random_seed": null,
             "learning_rate": 0.001,
             "embedding_dimension": 20,
@@ -135,6 +135,6 @@
             "class": "rasa.nlu.extractors.entity_synonyms.EntitySynonymMapper"
         }
     ],
-    "trained_at": "20210215-163204",
+    "trained_at": "20210217-105450",
     "rasa_version": "1.9.6"
 }

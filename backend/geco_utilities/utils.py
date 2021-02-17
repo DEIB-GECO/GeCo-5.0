@@ -113,11 +113,7 @@ class Utils(object):
                     "payload": {"state": state}}
 
     def table_viz(show, df, show_index=True, order_by=None):
-        print(df.columns)
-        print(df.index)
         data = df.to_dict()
-        #print(data.items()[0:2])
-
         return {"type": "table",
                     "show": show,
                     "payload": {

@@ -97,18 +97,7 @@ class ConversationDBExplore(object):
     def receive(self, message):
         interpretation = interpreter.parse(message)
         intent = interpretation['intent']['name']
-        # if intent == 'reset_session':
-        #     session['dm'].context.add_bot_msg(Utils.chat_message('Are you sure to reset the session?'))
-        #     session['previous_intent'] = 'reset_session'
-        # elif session.get('previous_intent') == 'reset_session':
-        #     if intent == 'affirm':
-        #         reset(session)
-        #     elif intent == 'deny':
-        #         session['dm'].context.add_bot_msg(Utils.chat_message('Ok, I don\'t reset the session.\n The last message was:'))
-        #         session['dm'].context.add_bot_msg(Utils.chat_message(session['messages'][-4]['text']))
-        #     else:
-        #         session['dm'].context.add_bot_msg(Utils.chat_message('Sorry, I didn\'t understand.\n Are you sure to reset the session?'))
-        # elif intent == 'back':
+
         if intent == 'back':
             self.context.pop()
         else:
@@ -119,8 +108,8 @@ class ConversationDBExplore(object):
                     entities[e['entity']].append(e['value'].lower().strip())
                 else:
                     entities[e['entity']] = [e['value'].lower().strip()]
-            #Utils.pyconsole_debug(intent)
-            #Utils.pyconsole_debug(entities)
+            Utils.pyconsole_debug(intent)
+            Utils.pyconsole_debug(entities)
             self.context.modify_status(entities)
             self.run(message, intent, entities)
 
@@ -129,10 +118,6 @@ def index():
     flask.current_app.logger.info("serve index")
     return render_template('index.html', async_mode=socketio.async_mode)
 
-#@app.route('/')
-#def index():
- #   flask.current_app.logger.info("serve index")
- #   return render_template('my_index.html', async_mode=socketio.async_mode)
 
 @socketio.on('my_event', namespace='/test')
 def test_message(message):

@@ -188,7 +188,7 @@ export default class GecoAgent extends Vue {
     }
     // this.updateLastMessageId(data.message_id);
     this.lastMessageId = data.message_id;
-    //socket.emit('ack', { message_id: this.lastMessageId });
+    // socket.emit('ack', { message_id: this.lastMessageId });
     // @ts-ignore
     this.jsonResponseParsingFunctions[data.type](data.payload);
   }
@@ -219,6 +219,7 @@ export default class GecoAgent extends Vue {
       console.log('mandato RESET');
       // this.editMessage('reset session');
       // this.sendMessage();
+      socket.emit('ack', { message_id: this.lastMessageId });
       this.resetProcess();
       this.updateFieldList([]);
       this.parameterParser([]);

@@ -39,7 +39,7 @@ class AnnotationAction(AbstractAction):
 
         missing_fields = self.context.payload.database.fields_names
         list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
-
+        self.context.add_bot_msgs([Utils.table_viz('Data Available',self.context.payload.database.table)])
         if samples > 0:
             if len(list_param)!=0:
                 self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?"),

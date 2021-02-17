@@ -33,7 +33,7 @@ class database:
         self.fields_names = []
         self.values = {}
         res = db.engine.execute("select item_id, " + ', '.join(fields)
- + " from dw.flatten_gecoagent where dataset_name in ('grch38_cistrome_broadpeak')".format(tuple(sources), tuple(datasets)))
+ + " from dw.flatten_gecoagent where source in {} and dataset_name in {}".format(tuple(sources), tuple(datasets)))
         values = res.fetchall()
         self.table = pd.DataFrame(values, columns=res.keys())
 
@@ -67,18 +67,14 @@ class DB:
         self.meta_schema = self.db.meta_schema
 
     def update(self, gcm):
-        print('fields_pre_update', self.fields_names)
         self.all_values = []
         self.fields_names=[]
         for f in self.fields:
             values = []
-            if f=='is_healthy':
-                print('all',list(set(self.table[f])))
-                print('filter', list(filter(lambda x: x is not None, list(set(self.table[f])))))
             if f in gcm and f!='is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
-            val = list(set(self.table[f]))
-
+            #val = list(set(self.table[f]))
+            val = list(filter(lambda x: x is not None, list(set(self.table[f]))))
             #val = list(filter(None, val))
             if (val != []) and (len(val) > 1):
                 self.fields_names.append(f)
@@ -91,12 +87,10 @@ class DB:
 
             if values != []:
                 self.values[f]=values
-        print('fields_post_update', self.fields_names)
 
     def retrieve_values(self, gcm, f):
         values = list(self.table[f])
         set_val = list(set(values))
-        print(f, set_val)
         val = [{"value": i, "count": values.count(i)} for i in set_val]
         return val
 
