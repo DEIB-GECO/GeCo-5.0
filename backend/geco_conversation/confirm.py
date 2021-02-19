@@ -32,13 +32,17 @@ class Confirm(AbstractAction):
                 links = self.context.payload.database.download(fields)
                 #urls = []
                 list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
-                list_param.update({'metadata': '{}: {}'.format(x, self.status['metadata'][x]) for x in
-                                   self.status['metadata']})
+                meta = {'metadata': '{}: {}'.format(x, self.status['metadata'][x]) for x in
+                                   self.status['metadata']}
+                donors = self.context.payload.database.retrieve_donors(meta)
+                self.context.payload.insert('donors', donors)
+                list_param.update(meta)
                 list_param_ds = list_param.copy()
                 name = list_param['name']
                 del(list_param_ds['name'])
                 ds = Dataset(list_param_ds, name)
                 self.context.data_extraction.datasets.append(ds)
+
                 self.context.payload.database.go_back({})
                 #fields =  {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata' and x!='name'}
                 #print(fields)

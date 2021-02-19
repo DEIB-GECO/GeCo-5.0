@@ -14,7 +14,7 @@ class ValueAction(AbstractAction):
         request_field = self.status['field'][-1]
         db = self.context.payload.database.values[request_field]
         given_value = entities[request_field] if ((request_field in entities) and (any(elem in db for elem in entities[request_field]))) else [message.strip().lower()]
-
+        print('status_befare_value_action',self.status)
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in self.context.payload.database.fields and k!='is_healthy':
@@ -60,15 +60,16 @@ class ValueAction(AbstractAction):
                         self.context.payload.insert(request_field, [given_value[i]])
 
             gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
+            print('gcm_value_action', gcm_filter)
+            print('status_after_value_action', self.status)
             if len(gcm_filter) > 0:
                 self.context.payload.database.update(gcm_filter)
             choice = {x: x for x in self.context.payload.database.fields_names}
-
+            list_param = {k: v for (k, v) in self.status.items() if (k in self.context.payload.database.fields)}
             if len(choice) > 0:
 
                 self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
-                        Utils.choice('Available fields', choice), Utils.param_list(
-                        {k: v for (k, v) in self.status.items() if (k in self.context.payload.database.fields)})] + Utils.create_piecharts(self.context,gcm_filter))
+                        Utils.choice('Available fields', choice), Utils.param_list(list_param)] + Utils.create_piecharts(self.context,gcm_filter))
                 return FieldAction(self.context), False
             else:
 

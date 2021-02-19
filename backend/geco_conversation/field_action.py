@@ -43,7 +43,6 @@ class FieldAction(AbstractAction):
         self.check_status()
         gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
         samples = self.filter(gcm_filter)
-        print('samples',samples)
         if samples > 0:
             if intent != 'deny':
                 missing_fields = list(set(self.context.payload.database.fields_names).difference(set(self.status.keys())))

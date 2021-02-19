@@ -5,18 +5,14 @@ class NewDataset(AbstractAction):
         return []
 
     def on_enter(self):
-        for i in self.context.data_extraction.datasets:
-            gcm = {x: i.fields[x] for x in i.fields if x != 'metadata'}
-            if 'metadata' in i.fields:
-                meta = {x: i.fields['metadata'][x] for x in i.fields['metadata']}
-            else:
-                meta ={}
-            donors = self.context.payload.database.retrieve_donors(gcm, meta)
-            if len(set(self.table[self.table['donor_source_id'] in donors]['dataset_name'].values))>=2:
-                self.context.payload.insert('donors',donors)
-                self.context.add_bot_msgs([Utils.chat_message('The datasets on the right contain different data for the same patients that you selected. '
-                                                              'Do you want also one of these datasets?')])
-                return SameDonorDataset(self.context), False
+        num_tables = len(set(self.context.payload.database.table[self.context.payload.database.table['donor_source_id'].isin(self.status['donors'])]['dataset_name'].values))
+        print(num_tables)
+        print(len(self.status['donors']))
+        if num_tables>=2:
+            self.context.add_bot_msgs([Utils.chat_message('The datasets on the right contain different data for the same patients that you selected. '
+                                                          'Do you want also one of these datasets?'),
+                                       Utils.choice('Datasets',{i:i for i in list(set(self.context.payload.database.table[self.context.payload.database.table['donor_source_id'].isin(donors)]['dataset_name'].values))})])
+            return SameDonorDataset(self.context), False
         self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
         return None, False
 
@@ -59,3 +55,11 @@ class SameDonorDataset(AbstractAction):
                                        GMQLBinaryAction(self.context)), False
                 else:
                     return YesNoAction(self.context, GMQLUnaryAction(self.context), PivotAction(self.context)), False
+            elif intent=='affirm':
+                self.context.add_bot_msgs([Utils.chat_message(
+                    'Which one do you want?'),
+                                           Utils.choice('Datasets', {i: i for i in list(set(
+                                               self.context.payload.database.table[
+                                                   self.context.payload.database.table['donor_source_id'].isin(self.status['donors'])][
+                                                   'dataset_name'].values))})])
+                return None, False

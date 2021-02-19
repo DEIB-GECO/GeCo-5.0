@@ -1,4 +1,4 @@
-from rasa.nlu.training_data import load_data
+from rasa.shared.nlu.training_data.loading import load_data
 from rasa.nlu.model import Trainer
 from rasa.nlu import config
 import os
@@ -14,7 +14,7 @@ print('>> python -m spacy link en_core_web_md en')
 
 #training_data = load_data('./rasa_files/nlu.md')
 #trainer = Trainer(config.load("./rasa_files/config.yml"))
-training_data = load_data('nlu.md')
+training_data = load_data('nlu.yml')
 trainer = Trainer(config.load("config.yml"))
 trainer.train(training_data)
 model_directory = trainer.persist('./../model_dir/')  # Returns the directory the model is stored in

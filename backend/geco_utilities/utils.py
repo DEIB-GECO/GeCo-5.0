@@ -68,7 +68,7 @@ class Utils(object):
                 key = lambda x : len(x[1])))[:6]}
         copy_val = values.copy()
         for k, v in copy_val.items():
-            if len(v)==1:
+            if len(v)<=1:
                 del(values[k])
         del(copy_val)
         msgs.append(Utils.pie_chart(values))

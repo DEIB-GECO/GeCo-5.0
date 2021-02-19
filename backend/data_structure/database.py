@@ -17,7 +17,7 @@ db = create_engine(db_string)
 
 annotation_fields = ["content_type", "assembly", "source", 'dataset_name']
 experiment_fields = ['source', 'data_type', 'assembly', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
-fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
+fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name', 'assembly']
 sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
 #datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
 #            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
@@ -149,7 +149,8 @@ class DB:
             items=[i[0] for i in items]
         return items
 
-    def retrieve_donors(self, gcm, meta):
+    def retrieve_donors(self, meta):
+
         item_id = list(self.table['item_id'].values)
         items = ','.join(str(i) for i in item_id)
         if meta!={}:
