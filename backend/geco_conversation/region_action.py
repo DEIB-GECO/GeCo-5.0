@@ -11,17 +11,22 @@ class RegionAction(AbstractAction):
     def on_enter(self):
         from .confirm import Confirm
         self.context.payload.back = RegionAction
-        self.context.payload.insert('region', {})
-        gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
-        if 'metadata' in self.status['fields']:
-            meta_filter = {k: v for (k, v) in self.status['fields']['metadata'].items()}
-            regions = self.context.payload.database.find_regions(gcm_filter,meta_filter)
-        else:
-            regions = self.context.payload.database.find_regions(gcm_filter,{})
-        self.context.payload.insert('available_regions', {x: x for x in regions})
-        #list_param = {k: self.status['fields'][k] for k in self.status['fields'] if k != 'metadata'}
-        self.context.add_bot_msgs([Utils.chat_message(messages.region_filter)])#, Utils.param_list(list_param)])
-        return None, False
+        return Confirm(self.context), True
+
+    # def on_enter(self):
+    #     from .confirm import Confirm
+    #     self.context.payload.back = RegionAction
+    #     self.context.payload.insert('region', {})
+    #     gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
+    #     if 'metadata' in self.status['fields']:
+    #         meta_filter = {k: v for (k, v) in self.status['fields']['metadata'].items()}
+    #         regions = self.context.payload.database.find_regions(gcm_filter,meta_filter)
+    #     else:
+    #         regions = self.context.payload.database.find_regions(gcm_filter,{})
+    #     self.context.payload.insert('available_regions', {x: x for x in regions})
+    #     #list_param = {k: self.status['fields'][k] for k in self.status['fields'] if k != 'metadata'}
+    #     self.context.add_bot_msgs([Utils.chat_message(messages.region_filter)])#, Utils.param_list(list_param)])
+    #     return None, False
 
     def logic(self, message, intent, entities):
         from .confirm import Confirm

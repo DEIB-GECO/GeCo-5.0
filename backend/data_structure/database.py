@@ -19,10 +19,19 @@ annotation_fields = ["content_type", "assembly", "source", 'dataset_name']
 experiment_fields = ['source', 'data_type', 'assembly', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
 fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
 sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
+#datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+#            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
+#            'grch38_tcga_mirna_expression_2019_10']
 datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
-            'grch38_tcga_mirna_expression_2019_10']
-
+            'grch38_tcga_mirna_expression_2019_10', 'hg19_tcga_rnaseqv2_isoform','grch38_encode_broad_2020_01','hg19_roadmap_epigenomics_dmr','hg19_tcga_rnaseqv2_spljxn',
+            'hg19_tcga_rnaseq_spljxn','hg19_roadmap_epigenomics_bed','hg19_roadmap_epigenomics_narrow',
+            'hg19_tcga_mirnaseq_isoform','grch38_annotation_refseq','hg19_tcga_rnaseq_gene',
+            'grch38_annotation_gencode','hg19_tcga_rnaseqv2_exon','hg19_tads_aiden',
+            'hg19_roadmap_epigenomics_rna_expression','hg19_tcga_rnaseqv2_gene','hg19_tcga_cnv','hg19_tcga_rnaseq_exon',
+            'hg19_annotation_refseq','hg19_tcga_mirnaseq_mirna','hg19_roadmap_epigenomics_broad',
+            'hg19_tcga_dnaseq','grch38_encode_narrow_2020_01','hg19_annotation_gencode','hg19_roadmap_epigenomics_gapped','hg19_encode_broad_2020_01',
+            'hg19_tads_dixon','hg19_tcga_dnamethylation','hg19_encode_narrow_2020_01','grch38_tcga_mirna_isoform_expression_2019_10']
 
 class database:
     def __init__(self):
@@ -32,7 +41,7 @@ class database:
     def get_all_values(self):
         self.fields_names = []
         self.values = {}
-        res = db.engine.execute("select item_id, " + ', '.join(fields)
+        res = db.engine.execute("select item_id, local_url, donor_source_id, " + ', '.join(fields)
  + " from dw.flatten_gecoagent where source in {} and dataset_name in {}".format(tuple(sources), tuple(datasets)))
         values = res.fetchall()
         self.table = pd.DataFrame(values, columns=res.keys())
@@ -60,7 +69,7 @@ class DB:
         self.table = self.db.table.copy()
         #self.table = self.table[self.table['is_annotation']==self.is_ann]
         self.fields = [i for i in self.table.columns.values if
-                       i != 'item_id' and len(list(set(self.table[i].values))) > 1]
+                       i != 'item_id' and len(list(set(self.table[i].values))) > 1 and i in self.db.fields]
         self.values = {x:set(self.table[x].values) for x in fields if (x in self.table.columns.values) and len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
         print('is_healthy', set(self.table['is_healthy']))
@@ -91,10 +100,12 @@ class DB:
     def retrieve_values(self, gcm, f):
         values = list(self.table[f])
         set_val = list(set(values))
+        set_val = list(filter(lambda x: x is not None, set_val))
         val = [{"value": i, "count": values.count(i)} for i in set_val]
         return val
 
     def check_existance(self, gcm):
+        print(self.table.head())
         for f in gcm:
             self.table = self.table[self.table[f].isin(gcm[f])]
         if len(self.table)>0:
@@ -109,6 +120,7 @@ class DB:
 
     def go_back(self, gcm):
         self.table = self.db.table.copy()
+        print(self.table.head())
         for f in gcm:
             self.table = self.table[self.table[f].isin(gcm[f])]
 
@@ -136,6 +148,19 @@ class DB:
             items = db.engine.execute("select distinct(item_id) from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')).fetchall()
             items=[i[0] for i in items]
         return items
+
+    def retrieve_donors(self, gcm, meta):
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
+        if meta!={}:
+            items = self.query_key2(meta, items)
+        items = items.split(',')
+        items = [int(i) for i in items]
+            #items = ','.join(str(i) for i in items)
+
+        donors = self.table[self.table['item_id'].isin(items)]['donor_source_id'].values
+
+        return donors
 
     # Retrieves all keys
     def find_all_keys(self, filter, filter2={}):

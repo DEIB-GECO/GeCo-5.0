@@ -3,6 +3,7 @@ from rasa.nlu.model import Trainer
 from rasa.nlu import config
 import os
 import shutil
+from tensorflow.keras.callbacks import EarlyStopping
 
 import warnings
 warnings.filterwarnings('ignore')

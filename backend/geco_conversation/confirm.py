@@ -39,6 +39,7 @@ class Confirm(AbstractAction):
                 del(list_param_ds['name'])
                 ds = Dataset(list_param_ds, name)
                 self.context.data_extraction.datasets.append(ds)
+                self.context.payload.database.go_back({})
                 #fields =  {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata' and x!='name'}
                 #print(fields)
                 #print(self.status['fields']['metadata'])

@@ -41,7 +41,6 @@
 ## lookup:feature
 ./feature.txt
 
-
 ## intent:greet
  - hello
  - hi
@@ -165,9 +164,7 @@
 - clusters
 - clustering
 
-
 ## intent:retrieve_annotations
-- i want gene expressions from brca data
 - annotation
 - annotations
 - i want annotation
@@ -175,10 +172,10 @@
 - i am looking form annotation
 - i need structural annotation
 - I want to have [gene](content_type) annotation from [refseq](source)
-- can i have data regarding [gencode](source) from [hg19](assembly) annotations?
+- can i have annotations data regarding [gencode](source) from [hg19](assembly)?
 - I would like to have [gene](content_type) annotation data from [gencode](source)
-- [hg19](assembly)
-- [gene](content_type)
+- [hg19](assembly) ann
+- [gene](content_type) annotations
 - annotation for [hg19](assembly)
 - annotations for [grch38](assembly)
 - I want [hg19](assembly) annotations
@@ -188,7 +185,7 @@
 - [gene](content_type) annotations
 - I need annotations from [refseq](source)
 - [cds](content_type) annotations from [refseq](source)
-- [cds](content_type) annotations from [refseq](source) with [hg19](assembly)
+- [enhancer](content_type) annotations from [refseq](source) with [hg19](assembly)
 - structural annotations of [vault rna](content_type)
 - im looking for [mirna](content_type) annotations from [refseq](source)
 - [region](content_type) in [hg19](assembly)
@@ -325,18 +322,13 @@
 - i need [gappedpeak](file_format) files
 - i am looking form [narrowpeak](file_format) experiments from [encode](source)
 - [bed](file_format) files from [tcga](source) for [hg19](assembly)
-- i want experiment data
-- i need experiment
 - i am looking for experiment
-- i need experimental data
 - i want to retrieve experimental data
-- [target](field)
-- [assembly](field)
 - [hg19](assembly) data for [healthy](is_healthy) tissue
 - [gencode](source) data for [tumoral](is_healthy) patients with [breast invasive carcinoma](disease)
-- [source](field) 
 - I need to select [kidney tissue](tissue: kidney) data
 - I want [tcga](source) data
+- I want [expressions of mirna](data_type: mirna expression quantification)
 - I want to select [source](field)
 - samples with [breast invasive carcinoma](disease)
 - patients affected by [kidney renal clear cell carcinoma](disease)
@@ -353,7 +345,6 @@
 - [tcga](source)
 - [cna](data_type)
 - [blood](tissue)
-- [kidney](tissue)
 - [transcription factors]{"entity":"feature", "value":"transcription factor"}
 - [transcription factors]{"entity":"feature", "value":"transcription factor"} for [cervical carcinoma]{"entity":"disease", "value":"cervical adenocarcinoma"}
 - [gene expression]{"entity":"data_type", "value":"gene expression quantification"}
@@ -373,18 +364,17 @@
 - [kidney tissue]{"entity":"tissue", "value":"kidney"}
 - [heart tissue]{"entity":"tissue", "value":"heart, mediastinum, and pleura"}
 - I want experiment about [uveal melanoma](disease)
-- I need [large cell lymphoma; diffuse mixed histiocytic and lymphocytic lymphoma; follicular b cell lymphoma](disease)
+- I need [lymphoma](disease: large cell lymphoma; diffuse mixed histiocytic and lymphocytic lymphoma; follicular b cell lymphoma)
 - I want experiment about [thyroid carcinoma](disease) for [hg19](assembly)
 - I want [isoform expression quantification](data_type) for [igak myeloma](disease)
 - [hg19](assembly) [masked copy number segment](data_type) of [ovarian serous cystadenocarcinoma](disease)
 - [grch38](assembly) [copy number segment](data_type) data for [prostate adenocarcinoma](disease)
 - I want experiment about [uveal melanoma](disease)
-- I need [large cell lymphoma; diffuse mixed histiocytic and lymphocytic lymphoma; follicular b cell lymphoma](disease)
 - I want experiment about [thyroid carcinoma](disease) for [hg19](assembly)
-- I want [isoform expression quantification](data_type) for [igak myeloma](disease)
+- I want [isoform expression](data_type: isoform expression quantification) for [igak myeloma](disease)
 - [hg19](assembly) [masked copy number segment](data_type) of [ovarian serous cystadenocarcinoma](disease)
 - [grch38](assembly) [copy number segment](data_type) data for [prostate adenocarcinoma](disease)
-- [dukes' type c, grade iv, colorectal adenocarcinoma](disease) and [dukes' type c, grade iv, colorectal adenocarcinoma](disease) [isoform quantification](data_type)
+- [colorectal adenocarcinoma](disease:colon adenocarcinoma) and [lung squamous cancer](disease:lung squamous cell carcinoma) [isoform quantification](data_type)
 - im looking for [isoform expression quantification](data_type) from [roadmap epigenomics](source) regarding [uterine corpus endometrial carcinoma](disease)
 - patients with [osteosarcoma](disease)
 - [primary culture](biosample_type) data

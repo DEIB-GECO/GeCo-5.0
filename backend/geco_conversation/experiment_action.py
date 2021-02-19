@@ -72,6 +72,8 @@ class ExperimentAction(AbstractAction):
             for x in experiment_fields:
                 if x in self.status:
                     self.context.payload.delete(x)
+            print('status',self.status)
+            self.context.payload.database.go_back({})
             self.context.add_bot_msgs([Utils.param_list(fields), Utils.chat_message(messages.no_exp_found)])
             list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
             self.context.add_bot_msgs([Utils.chat_message(messages.choice_field),

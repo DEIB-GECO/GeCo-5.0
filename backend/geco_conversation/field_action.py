@@ -14,15 +14,16 @@ class FieldAction(AbstractAction):
         for (k, v) in temp.items():
             if k=='is_healthy':
                 if self.status['is_healthy'] == ['healthy']:
-                    self.context.payload.insert('is_healthy', ['true'])
+                    self.context.payload.insert('is_healthy', [True])
                 if self.status['is_healthy'] == ['tumoral']:
-                    self.context.payload.insert('is_healthy', ['false'])
+                    self.context.payload.insert('is_healthy', [False])
             if k in self.context.payload.database.fields and k!='is_healthy':
                 self.context.payload.replace(k, [x for x in v if x in self.context.payload.database.values[k]])
                 if len(self.status[k]) == 0:
                     self.context.payload.delete(k)
 
     def filter(self, gcm_filter):
+        print('gcm', gcm_filter)
         if len(gcm_filter) > 0:
             self.context.payload.database.update(gcm_filter)
 
@@ -38,9 +39,11 @@ class FieldAction(AbstractAction):
         from .change_add_action import ChangeAddAction
 
 
-        gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
+
         self.check_status()
+        gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
         samples = self.filter(gcm_filter)
+        print('samples',samples)
         if samples > 0:
             if intent != 'deny':
                 missing_fields = list(set(self.context.payload.database.fields_names).difference(set(self.status.keys())))
@@ -93,6 +96,8 @@ class FieldAction(AbstractAction):
             return DSNameAction(self.context), True
         else:
             self.context.payload.clear()
+            self.context.payload.database.go_back({})
+            print('status',self.status)
             self.context.add_bot_msgs([Utils.chat_message(messages.no_exp_found)])
             self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?")])
             return None, False

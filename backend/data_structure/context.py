@@ -32,6 +32,7 @@ class Payload:
         self.context = context
         self.status = {}
         self.original_db = db
+        self.database = None
 
     def insert(self, key, value):
         if isinstance(value, list) or isinstance(value, dict):
@@ -99,6 +100,7 @@ class Payload:
         for x in self.status:
             self.context.top_delta().delete_value(x, self.status[x])
         self.status.clear()
+
 
 class Data_Extraction:
     def __init__(self):

@@ -58,5 +58,6 @@ class AnnotationAction(AbstractAction):
             for x in annotation_fields:
                 if x in self.status:
                     self.context.payload.delete(x)
+            self.context.payload.database.go_back({})
             self.context.add_bot_msgs([Utils.chat_message(messages.no_exp_found)])
             return None, False
