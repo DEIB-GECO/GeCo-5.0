@@ -1,4 +1,4 @@
-SELECT distinct label_type, lower(pref_label), lower(label)
+SELECT distinct label_type, lower(pref_label) as pref_label, lower(label)  as label
 FROM (
          SELECT distinct 'tissue' as label_type, pref_label, label
          FROM biosample
@@ -76,7 +76,23 @@ FROM (
 		 WHERE lower(data_type) not in (SELECT lower(synonym) from dw.data_type_synonym)
 
 
+			UNION
+
+		 SELECT distinct 'source' as label_type, source as pref_label, source as label
+         FROM project
+
+
+		UNION
+
+		 SELECT distinct 'assembly' as label_type, assembly as pref_label, assembly as label
+         FROM dataset
+
+
+
+
 ) as inn
+WHERE pref_label is not null
 ORDER BY label_type, lower(pref_label), lower(label)
 -- limit 10
+
 

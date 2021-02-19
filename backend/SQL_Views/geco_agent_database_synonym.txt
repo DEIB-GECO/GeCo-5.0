@@ -1,4 +1,6 @@
-label_type	lower	lower-2
+label_type	pref_label	label
+assembly	grch38	grch38
+assembly	hg19	hg19
 cell	1015c	1015c
 cell	1205-lu	1205-lu
 cell	1205-lu	wm451-lu
@@ -2476,6 +2478,14 @@ disease	uveal melanoma	melanoma of the uvea
 disease	uveal melanoma	melanoma of uvea
 disease	uveal melanoma	melanoma, uveal, malignant
 disease	uveal melanoma	uveal melanoma
+source	1000 genomes	1000 genomes
+source	cistrome	cistrome
+source	encode	encode
+source	gencode	gencode
+source	refseq	refseq
+source	roadmap epigenomics	roadmap epigenomics
+source	tads	tads
+source	tcga	tcga
 target	aars	aars
 target	aars	cmt2n
 target	aatf	aatf
