@@ -1,3 +1,37 @@
+-- View: dw.data_type_synonym
+
+-- DROP MATERIALIZED VIEW dw.data_type_synonym;
+
+CREATE MATERIALIZED VIEW dw.data_type_synonym
+TABLESPACE default_ts
+AS
+ SELECT 'gene expression'::text AS pref_label,
+    'gene quantification'::text AS synonym
+UNION
+ SELECT 'gene expression'::text AS pref_label,
+    'gene expression quantification'::text AS synonym
+UNION
+ SELECT 'mirna expression'::text AS pref_label,
+    'mirna expression quantification'::text AS synonym
+UNION
+ SELECT 'mirna expression'::text AS pref_label,
+    'mirna quantification'::text AS synonym
+UNION
+ SELECT 'isoform expression'::text AS pref_label,
+    'isoform quantification'::text AS synonym
+UNION
+ SELECT 'isoform expression'::text AS pref_label,
+    'isoform expression quantification'::text AS synonym
+WITH DATA;
+
+ALTER TABLE dw.data_type_synonym
+    OWNER TO geco;
+
+GRANT ALL ON TABLE dw.data_type_synonym TO geco;
+GRANT SELECT ON TABLE dw.data_type_synonym TO geco_ro;
+
+
+
 -- View: dw.flatten_gecoagent
 
 -- DROP MATERIALIZED VIEW dw.flatten_gecoagent;
@@ -6,20 +40,17 @@ CREATE MATERIALIZED VIEW dw.flatten_gecoagent
 TABLESPACE default_ts
 AS
  SELECT DISTINCT i.item_id,
-    lower(b.biosample_type::text) AS biosample_type,
-    lower(b.tissue::text) AS tissue,
-    lower(b.cell::text) AS cell,
+    d2.donor_source_id,
+    lower(COALESCE(v_tissue.pref_label, b.tissue)::text) AS tissue,
+    lower(COALESCE(v_cell.pref_label, b.cell)::text) AS cell,
     b.is_healthy,
-    lower(b.disease::text) AS disease,
+    lower(COALESCE(v_disease.pref_label, b.disease)::text) AS disease,
     lower(d.dataset_name::text) AS dataset_name,
-    lower(d.data_type::text) AS data_type,
-    lower(d.file_format::text) AS file_format,
+    lower(COALESCE(v_data_type.pref_label, d.data_type::text)) AS data_type,
     lower(d.assembly::text) AS assembly,
     d.is_annotation,
-    lower(et.technique::text) AS technique,
-    lower(et.feature::text) AS feature,
-    lower(et.target::text) AS target,
-    lower(i.content_type::text) AS content_type,
+    lower(COALESCE(v_target.pref_label, et.target)::text) AS target,
+    lower(COALESCE(v_content_type.pref_label, i.content_type)::text) AS content_type,
     lower(p.source::text) AS source,
     i.local_url
    FROM dw.item i
@@ -32,19 +63,23 @@ AS
      JOIN dw.replicate r USING (replicate_id)
      JOIN biosample b USING (biosample_id)
      JOIN donor d2 USING (donor_id)
-WITH NO DATA;
+     LEFT JOIN vocabulary v_tissue ON b.tissue_tid = v_tissue.tid
+     LEFT JOIN vocabulary v_disease ON b.disease_tid = v_disease.tid
+     LEFT JOIN vocabulary v_cell ON b.cell_tid = v_cell.tid
+     LEFT JOIN dw.data_type_synonym v_data_type ON d.data_type::text = v_data_type.synonym
+     LEFT JOIN vocabulary v_target ON et.target_tid = v_target.tid
+     LEFT JOIN vocabulary v_content_type ON i.content_type_tid = v_content_type.tid
+WITH DATA;
 
 ALTER TABLE dw.flatten_gecoagent
     OWNER TO geco;
 
+GRANT ALL ON TABLE dw.flatten_gecoagent TO geco;
+GRANT SELECT ON TABLE dw.flatten_gecoagent TO geco_ro;
 
 CREATE INDEX flatten_gecoagent_assembly_idx
     ON dw.flatten_gecoagent USING btree
     (assembly COLLATE pg_catalog."default")
-    TABLESPACE default_ts;
-CREATE INDEX flatten_gecoagent_biosample_type_idx
-    ON dw.flatten_gecoagent USING btree
-    (biosample_type COLLATE pg_catalog."default")
     TABLESPACE default_ts;
 CREATE INDEX flatten_gecoagent_content_type_idx
     ON dw.flatten_gecoagent USING btree
@@ -62,18 +97,6 @@ CREATE INDEX flatten_gecoagent_disease_idx
     ON dw.flatten_gecoagent USING btree
     (disease COLLATE pg_catalog."default")
     TABLESPACE default_ts;
-CREATE INDEX flatten_gecoagent_disease_idx1
-    ON dw.flatten_gecoagent USING btree
-    (disease COLLATE pg_catalog."default")
-    TABLESPACE default_ts;
-CREATE INDEX flatten_gecoagent_feature_idx
-    ON dw.flatten_gecoagent USING btree
-    (feature COLLATE pg_catalog."default")
-    TABLESPACE default_ts;
-CREATE INDEX flatten_gecoagent_file_format_idx
-    ON dw.flatten_gecoagent USING btree
-    (file_format COLLATE pg_catalog."default")
-    TABLESPACE default_ts;
 CREATE INDEX flatten_gecoagent_is_annotation_idx
     ON dw.flatten_gecoagent USING btree
     (is_annotation)
@@ -89,10 +112,6 @@ CREATE INDEX flatten_gecoagent_source_idx
 CREATE INDEX flatten_gecoagent_target_idx
     ON dw.flatten_gecoagent USING btree
     (target COLLATE pg_catalog."default")
-    TABLESPACE default_ts;
-CREATE INDEX flatten_gecoagent_technique_idx
-    ON dw.flatten_gecoagent USING btree
-    (technique COLLATE pg_catalog."default")
     TABLESPACE default_ts;
 CREATE INDEX flatten_gecoagent_tissue_idx
     ON dw.flatten_gecoagent USING btree
