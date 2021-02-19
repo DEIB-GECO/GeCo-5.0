@@ -1,0 +1,39 @@
+I want to retrieve data from $disease$
+$source$ data for $disease$
+I want experiment about $disease$
+I need $disease$
+could you retrieve $data_type$ data from $disease$?
+$data_type$ from $tissue$
+data regarding $data_type$ for cell $cell$
+samples for $target$ data
+can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from $tissue$?
+I am looking for $data_type$
+experiments data for $tissue$ from $assembly$
+I want experiment about $disease$ for $assembly$
+I want $data_type$ for $disease$
+$assembly$ $data_type$ of $disease$
+data from $assembly$ $data_type$ for $disease$
+im looking for $data_type$ from $source$ regarding $disease$
+patients with $disease$
+I need to select $tissue$ data taken from $source$
+I need $tissue$ data taken from $source$
+files from $source$ for $assembly$
+data regarding $data_type$ for cell line $cell$
+i need cell $cell$
+can i have $target$ data?
+please give me $cell$ data
+I would like to have data regarding $tissue$ extracted from $assembly$
+can i have $target$ for cell line $cell$
+I am looking for $data_type$ data extracted from $source$
+data for $tissue$
+[tumoral]{"entity": "is_healthy", "value": "False"} patients affected by $disease$
+$tissue$ extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
+samples of $cell$ of patients affected by $disease$
+I would like to have $assembly$ assembly data regarding $tissue$ of [tumoral]{"entity":"is_healthy", "value":False} patients with $disease$
+we would like to have items from $assembly$ from [healthy]{"entity": "is_healthy", "value": "True"} $tissue$
+i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
+can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from $tissue$
+i'm looking for data from $source$ regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
+can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from $tissue$?
+
+
