@@ -143,7 +143,6 @@ def test_message(message):
     #session['previous_intent']= intent
 
 def add_session_message(session, message):
-
     msg = session['messages']
     if len(msg)==0:
         id = 0

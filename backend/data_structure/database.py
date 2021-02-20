@@ -19,9 +19,9 @@ annotation_fields = ["content_type", "assembly", "source", 'dataset_name']
 experiment_fields = ['source', 'data_type', 'assembly', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
 fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name', 'assembly']
 sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
-#datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
-#            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
-#            'grch38_tcga_mirna_expression_2019_10']
+region_datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
+            'grch38_tcga_mirna_expression_2019_10']
 datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
             'grch38_tcga_mirna_expression_2019_10', 'hg19_tcga_rnaseqv2_isoform','grch38_encode_broad_2020_01','hg19_roadmap_epigenomics_dmr','hg19_tcga_rnaseqv2_spljxn',
@@ -72,7 +72,6 @@ class DB:
                        i != 'item_id' and len(list(set(self.table[i].values))) > 1 and i in self.db.fields]
         self.values = {x:set(self.table[x].values) for x in fields if (x in self.table.columns.values) and len(set(self.table[x].values))>1}
         self.fields_names = list(self.values.keys())
-        print('is_healthy', set(self.table['is_healthy']))
         self.meta_schema = self.db.meta_schema
 
     def update(self, gcm):
@@ -105,7 +104,6 @@ class DB:
         return val
 
     def check_existance(self, gcm):
-        print(self.table.head())
         for f in gcm:
             self.table = self.table[self.table[f].isin(gcm[f])]
         if len(self.table)>0:
@@ -120,7 +118,6 @@ class DB:
 
     def go_back(self, gcm):
         self.table = self.db.table.copy()
-        print(self.table.head())
         for f in gcm:
             self.table = self.table[self.table[f].isin(gcm[f])]
 
@@ -150,7 +147,6 @@ class DB:
         return items
 
     def retrieve_donors(self, meta):
-
         item_id = list(self.table['item_id'].values)
         items = ','.join(str(i) for i in item_id)
         if meta!={}:
@@ -158,9 +154,9 @@ class DB:
         items = items.split(',')
         items = [int(i) for i in items]
             #items = ','.join(str(i) for i in items)
-
+        print(items)
         donors = self.table[self.table['item_id'].isin(items)]['donor_source_id'].values
-
+        print(donors)
         return donors
 
     # Retrieves all keys
@@ -194,7 +190,6 @@ class DB:
         items = ','.join(str(i) for i in item_id)
         items = self.query_key2(filter2, items)
         self.table = self.table[self.table['item_id'].isin(items)]
-        print(self.table.head())
 
     def find_keys(self, filter, string):
         item_id = list(self.table['item_id'].values)
@@ -250,15 +245,18 @@ class DB:
 
     def find_regions(self,gcm,filter2):
         ds_name = gcm['dataset_name'][0]
-        item_id = list(self.table['item_id'].values)
-        items = ','.join(str(i) for i in item_id)
-        if filter2 != {}:
-            items = self.query_key2(filter2, items)
-            items = ','.join(str(i) for i in items)
-        res = db.engine.execute(
-                "select * from rr.{} where (item_id in ({}))limit 1".format(ds_name,
-                    items))
-        self.region_schema = res.keys()
+        if ds_name in region_datasets:
+            item_id = list(self.table['item_id'].values)
+            items = ','.join(str(i) for i in item_id)
+            if filter2 != {}:
+                items = self.query_key2(filter2, items)
+                items = ','.join(str(i) for i in items)
+            res = db.engine.execute(
+                    "select * from rr.{} where (item_id in ({}))limit 1".format(ds_name,
+                        items))
+            self.region_schema = res.keys()
+        else:
+            self.region_schema = None
         return self.region_schema
 
 

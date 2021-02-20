@@ -209,6 +209,6 @@
             "class": "rasa.nlu.extractors.entity_synonyms.EntitySynonymMapper"
         }
     ],
-    "trained_at": "20210219-110217",
+    "trained_at": "20210219-180533",
     "rasa_version": "2.3.1"
 }

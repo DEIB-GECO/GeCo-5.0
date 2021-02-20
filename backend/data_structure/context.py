@@ -27,6 +27,12 @@ class Step:
         self.user_msg = user_msg
         self.delta = Delta()
 
+    def __repr__(self):
+        return f'Step:(Action:{self.action}, Bot_msgs:{[i for i in self.bot_msgs if i["type"]=="message" if self.bot_msgs!=None]}, User_msg:{self.user_msg})'
+
+    def __str__(self):
+        return self.__repr__()
+
 class Payload:
     def __init__(self, context, db):
         self.context = context
@@ -148,13 +154,14 @@ class Context:
         self.history[-1].user_msg = user_msg
 
     def add_bot_msg(self, bot_msg):
-        print()
         if type(self.history[-1].bot_msgs)== list:
             self.history[-1].bot_msgs.append(bot_msg)
         elif self.history[-1].bot_msgs==None:
             self.history[-1].bot_msgs = [bot_msg]
         else:
             self.history[-1].bot_msgs = [self.history[-1].bot_msgs, bot_msg]
+        print(self.history)
+
 
     def add_bot_msgs(self, bot_msgs):
         if (self.history[-1].bot_msgs!=None):
@@ -177,6 +184,8 @@ class Context:
         del (self.history[-1])
         self.add_step(action=action)
         print(self.history[-1])
+        if self.history.top_bot_msgs()==None:
+            self.add_bot_msgs(self.history[-3].bot_msgs)
         #self.history[-2].bot_msgs = None
 
     def last_valid_user_msg(self):

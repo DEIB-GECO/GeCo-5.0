@@ -14,6 +14,7 @@ from .field_action import FieldAction
 from .annotation_action import AnnotationAction
 from .experiment_action import ExperimentAction
 from .start_action import StartAction
+from .bye_action import ByeAction
 from .value_action import ValueAction, DSNameAction
 from .yes_no_action import YesNoAction
 from geco_conversation.pivot_actions.pivot_action import PivotAction

@@ -2205,26 +2205,30 @@ nlu:
     - [cnv](data_type)
     - [copy number segment](data_type)
     - [masked copy number segment](data_type)
-    - [isoform quantification](data_type)
+    - [isoform quantification]{"entity":"data_type","value":"isoform expression"}
     - [exon quantification](data_type)
     - [gene quantification](data_type)
     - [spljxn quantification](data_type)
     - [dna methylation](data_type)
     - [methylation beta value](data_type)
-    - [gene expression quantification](data_type)
     - [gene expression](data_type)
-    - [gene expression data](data_type)
-    - [gene expressions](data_type)
-    - [gene expression quantifications](data_type)
+    - [gene expression quantification]{"entity":"data_type","value":"gene expression"}
+    - [gene expressions]{"entity":"data_type","value":"gene expression"}
+    - [expression data of genes]{"entity":"data_type","value":"gene expression"}
+    - [expression data of long rna]{"entity":"data_type","value":"gene expression"}
+    - [expressions of genes]{"entity":"data_type","value":"gene expression"}
+    - [expressions of long rna]{"entity":"data_type","value":"gene expression"}
     - [rna expression](data_type)
-    - [gene quantifications](data_type)
-    - [isoform expression quantification](data_type)
-    - [mirna expression quantification](data_type)
-    - [mirna quantifications](data_type)
-    - [mirna expression quantifications](data_type)
+    - [gene quantification]{"entity":"data_type","value":"gene expression"}
+    - [isoform expression quantification]{"entity":"data_type","value":"isoform expression"}
+    - [mirna expression quantification]{"entity":"data_type","value":"mirna expression"}
+    - [mirna quantifications]{"entity":"data_type","value":"mirna expression"}
+    - [mirna expression quantifications]{"entity":"data_type","value":"mirna expression"}
     - [mirna expression](data_type)
-    - [mirna expression data](data_type)
-    - [mirna expressions](data_type)
+    - [expressions of mirna]{"entity":"data_type","value":"mirna expression"}
+    - [expressions of micro rna]{"entity":"data_type","value":"mirna expression"}
+    - [mirna expression data]{"entity":"data_type","value":"mirna expression"}
+    - [mirna expressions]{"entity":"data_type","value":"mirna expression"}
     - [masked somatic mutation](data_type)
     - [mirna quantification](data_type)
     - [dna seq](data_type)

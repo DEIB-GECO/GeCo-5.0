@@ -16,9 +16,13 @@ class PivotAction(AbstractAction):
 
         if ('metadata_row' not in self.status) and ('region_row' not in self.status):
             if message.lower() in  ['feature','features']:
-                self.context.add_bot_msgs([Utils.chat_message(messages.row_region_message),
-                                           Utils.choice('Available regions', {i:i for i in self.context.payload.database.region_schema})])
-                return RegionRow(self.context), False
+                if self.context.payload.database.region_schema!=None:
+                    self.context.add_bot_msgs([Utils.chat_message(messages.row_region_message),
+                                               Utils.choice('Available regions', {i:i for i in self.context.payload.database.region_schema})])
+                    return RegionRow(self.context), False
+                else:
+                    self.context.add_bot_msgs([Utils.chat_message(messages.regions_not_available)])
+                    return ByeAction(self.context), True
             elif message.lower() in  ['sample','samples']:
                 #self.context.add_bot_msgs([Utils.chat_message(messages.row_meta_message)])
                 self.context.add_bot_msgs([Utils.chat_message("I will put 'item_id' in the rows, ok?")])
