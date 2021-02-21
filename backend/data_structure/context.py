@@ -28,7 +28,10 @@ class Step:
         self.delta = Delta()
 
     def __repr__(self):
-        return f'Step:(Action:{self.action}, Bot_msgs:{[i for i in self.bot_msgs if i["type"]=="message" if self.bot_msgs!=None]}, User_msg:{self.user_msg})'
+        if self.bot_msgs!=None:
+            return f'Step:(Action:{self.action}, Bot_msgs:{[i for i in self.bot_msgs if i["type"]=="message" if self.bot_msgs!=None]}, User_msg:{self.user_msg})'
+        else:
+            return f'Step:(Action:{self.action}, Bot_msgs: None, User_msg:{self.user_msg})'
 
     def __str__(self):
         return self.__repr__()
@@ -184,7 +187,7 @@ class Context:
         del (self.history[-1])
         self.add_step(action=action)
         print(self.history[-1])
-        if self.history.top_bot_msgs()==None:
+        if self.top_bot_msgs()==None:
             self.add_bot_msgs(self.history[-3].bot_msgs)
         #self.history[-2].bot_msgs = None
 
