@@ -8593,13 +8593,13 @@ nlu:
     - i want to find cluster
     - find cluster
     - perform kmeans cluster
-- synonym: mirna expression quantification
+- synonym: mirna expression
   examples: |
     - mirna expressione data
     - mirna expressions
     - mirna quantifications
     - mirna expression quantifications
-    - mirna expression
+    - mirna expression quantification
     - mirna expression data
     - expression of micro rna
     - expression of microrna
@@ -8616,9 +8616,9 @@ nlu:
 - synonym: biosample_type
   examples: |
     - biosample type
-- synonym: gene expression quantification
+- synonym: gene expression
   examples: |
-    - gene expression
+    - gene expression quantification
     - gene expression data
     - gene expressions
     - gene expression quantifications
