@@ -7,34 +7,37 @@
 <script lang="ts">
 import { Bar } from 'vue-chartjs';
 import {bars, optionsTest} from "@/test/barchart_js";
+import { ChartData, ChartOptions } from 'chart.js';
 
 export default {
     name: 'Histogram',
     extends: Bar,
     props:{
         chartData: {
-          default: () => {return bars['datasets'][0]['data']}
+          default: function() {return bars['datasets'][0]['data'];},
+          type: Object as () =>  number[]
         },
         data : {
-            default: ()=> {return bars}
+            default: function() {return bars;},
+            type: Object as () => ChartData
         },
         options : {
-            default: ()=> {return optionsTest}
+            default: function() {return optionsTest;},
+            type: Object as () => ChartOptions
         }
     },
-    data: ()=> {
+    data () {
         return{
             frequencies: [[0,0]]
-        }
+        };
     },
   
-  mounted () {
+  mounted (){
     this.computeFrequencies(this.chartData);
     this.renderChart(this.data, this.options);
-    // console.log("ciaoooo");
   },
   methods: {
-    computeFrequencies(numberList: number[]) {
+    computeFrequencies(numberList: number[]){
         const map = numberList.reduce(
         (acc: any, e: number) => acc.set(e, (acc.get(e) || 0) + 1),
         new Map()
@@ -42,9 +45,12 @@ export default {
         const keys : any = Array.from(map.keys()).sort((a: any, b: any)=> {return a-b});
         const values: any = []
         keys.forEach((x: number|string)=> values.push(map.get(x)));
-        console.log(values);
-        this.data.datasets[0].data = values;
-        this.data.labels= keys;
+        // console.log(values);
+        if(this.data.datasets!= undefined){
+          this.data.datasets[0].data = values;
+          this.data.labels= keys;
+        }
+        
 
     }
   }
