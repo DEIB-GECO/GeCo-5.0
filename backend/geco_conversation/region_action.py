@@ -21,7 +21,10 @@ class RegionAction(AbstractAction):
 
         else:
             regions = self.context.payload.database.find_regions(gcm_filter, {})
-        self.context.payload.insert('available_regions', {x: x for x in regions})
+        if regions!= None:
+            self.context.payload.insert('available_regions', {x: x for x in regions})
+        else:
+            self.context.payload.insert('available_regions',None)
         return Confirm(self.context), True
 
 
