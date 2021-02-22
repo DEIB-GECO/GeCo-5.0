@@ -30,6 +30,9 @@ export default Vue.extend({
         return optionsTest;
       },
       type: Object as () => ChartOptions
+    },
+    chartTitle: {
+      default: ""
     }
   },
   data() {
@@ -45,14 +48,11 @@ export default Vue.extend({
   },
 
   mounted: function() {
-    this.computeFrequencies(this.chartData);
+    this.computeDiscreteFrequencies(this.chartData);
     // @ts-ignore
     this.renderChart(this.myData, this.options);
   },
   methods: {
-    newFunction() {
-      console.log(this.localData);
-    },
     computeFrequencies(numberList: number[]) {
       const map = numberList.reduce((acc: any, e: number) => {
         return acc.set(e, (acc.get(e) || 0) + 1);
@@ -67,10 +67,51 @@ export default Vue.extend({
         this.myData.labels= keys;
       }
 
+
       // if(this.localData.datasets!= undefined){
       //   this.localData.datasets[0].data = values;
       //   this.localData.labels= keys;
       // }
+    },
+    computeDiscreteFrequencies(numberList: number[]){
+      const binNumber = Math.ceil(Math.sqrt(numberList.length))
+      const min = Math.min(...numberList);
+      const max = Math.max(...numberList);
+      const step = Math.ceil((max-min)/binNumber)
+      const values = [];
+      const keys = [];
+
+      let binMin = 0;
+      let binMax = 0;
+      let filteredArray =  [];
+      const colorBgArray = [];
+      const colorBorderArray = [];
+
+      for(let i=0; i<binNumber; i++){
+        binMin = i*step + min;
+        binMax = Math.min(((i+1)*step+min), max);
+        filteredArray = numberList.filter(this.isInInterval(binMin, binMax));
+        values.push(filteredArray.length);
+        keys.push(binMin.toString()+" - "+binMax.toString());
+        colorBgArray.push('rgba(75, 192, 192, 0.2)');
+        colorBorderArray.push('rgba(75, 192, 192, 1)');
+      }
+
+      if(this.myData.datasets!= undefined){
+        this.myData.datasets[0].data = values;
+        this.myData.labels= keys;
+        this.myData.datasets[0].backgroundColor = colorBgArray;
+        this.myData.datasets[0].borderColor = colorBorderArray;
+        this.myData.datasets[0].label= this.chartTitle;
+
+      }
+
+
+    },
+    isInInterval(min: number, max: number){
+      return (x: number) => {
+        return (x>= min && x <= max);
+      };
     }
   }
 });

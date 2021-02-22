@@ -88,7 +88,7 @@ class Utils(object):
                 }}
 
     def hist(values, title):
-        viz = [{"vizType": "histDistChart",
+        viz = [{"vizType": "histogram",
                 "title" : title,
             "data": values}]
 
