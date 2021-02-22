@@ -8,6 +8,7 @@
 import { Scatter } from 'vue-chartjs';
 import {optionsTest, scatterTestData} from "@/test/scatter.ts";
 import {ScatterJSON} from "@/test/ScatterJSON.ts";
+import Vue from 'vue';
 
 const pointColors = [
             'rgba(255, 99, 132, 0.2)',
@@ -34,9 +35,9 @@ const borderColors = [
             'rgba(130, 32, 74, 1)'
         ];
 
-export default {
+export default Vue.extend({
     name: 'Scatter',
-    extends: Scatter,
+    // extends: Scatter,
     props:{
         chartData: {
           // type: [ScatterPointJSON],
@@ -58,13 +59,10 @@ export default {
     },
   
   mounted () {
-    this.transformDataset(this.chartData);
-    console.log("DataPoints", this.dataPoints);
-    this.renderChart(this.dataPoints, this.options);
-    // console.log("TestData", this.chartData);
-    // this.renderChart(this.data, this.options);
-    
-  },
+  //   this.transformDataset(this.chartData);
+  //   console.log("DataPoints", this.dataPoints);
+  //   this.renderChart(this.dataPoints, this.options);    
+   },
   methods: {
       transformDataset (serverData : ScatterPointJSON[]) {
           const labelsSet = [...new Set(serverData.map(item => item.label))];
@@ -102,15 +100,15 @@ export default {
               backgroundColor: backgroundColorArray,
               borderColor: borderColorArray
             };
-
-            this.dataPoints.datasets.push(dataGroup);
+            //FIXA
+            // this.dataPoints.datasets.push(dataGroup);
             // console.log(label, dataGroup);
           });
 
           console.log(this.dataPoints);
       }
   }
-}
+})
 
 // import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 // import makeid from '@/utils/makeid';

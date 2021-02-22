@@ -1,69 +1,84 @@
-
-  <div class="hist_container">
+<div class="hist_container">
     <div class="piechart_title">{{ chartTitle }}</div>
     <div :id="chartDivId"></div>
   </div>
 
 <script lang="ts">
+import Vue from 'vue'
 import { Bar } from 'vue-chartjs';
-import {bars, optionsTest} from "@/test/barchart_js";
+import { bars, optionsTest } from '@/test/barchart_js';
 import { ChartData, ChartOptions } from 'chart.js';
 
-export default {
-    name: 'Histogram',
-    extends: Bar,
-    props:{
-        chartData: {
-          default: function() {return bars['datasets'][0]['data'];},
-          type: Object as () =>  number[]
-        },
-        data : {
-            default: function() {return bars;},
-            type: Object as () => ChartData
-        },
-        options : {
-            default: function() {return optionsTest;},
-            type: Object as () => ChartOptions
-        }
+export default Vue.extend({
+  // name: 'Histogram',
+  extends: Bar,
+  props: {
+    chartData: {
+      default: function() {
+        return bars['datasets'][0]['data'];
+      },
+      type: Object as () => number[]
     },
-    data () {
-        return{
-            frequencies: [[0,0]]
-        };
+    myData: {
+      default: function() {
+        return bars;
+      },
+      type: Object as () => ChartData
     },
-  
-  mounted (){
+    options: {
+      default: function() {
+        return optionsTest;
+      },
+      type: Object as () => ChartOptions
+    }
+  },
+  data() {
+    return {
+      frequencies: [[0, 0]],
+      localData: {
+        default: function() {
+          return bars;
+        },
+        type: Object as () => ChartData
+      }
+    };
+  },
+
+  mounted: function() {
     this.computeFrequencies(this.chartData);
-    this.renderChart(this.data, this.options);
+    // @ts-ignore
+    this.renderChart(this.myData, this.options);
   },
   methods: {
-    computeFrequencies(numberList: number[]){
-        const map = numberList.reduce(
-        (acc: any, e: number) => acc.set(e, (acc.get(e) || 0) + 1),
-        new Map()
-        );
-        const keys : any = Array.from(map.keys()).sort((a: any, b: any)=> {return a-b});
-        const values: any = []
-        keys.forEach((x: number|string)=> values.push(map.get(x)));
-        // console.log(values);
-        if(this.data.datasets!= undefined){
-          this.data.datasets[0].data = values;
-          this.data.labels= keys;
-        }
-        
+    newFunction() {
+      console.log(this.localData);
+    },
+    computeFrequencies(numberList: number[]) {
+      const map = numberList.reduce((acc: any, e: number) => {
+        return acc.set(e, (acc.get(e) || 0) + 1);
+      }, new Map());
+      const keys: any = Array.from(map.keys()).sort((a: any, b: any) => {
+        return a - b;
+      });
+      const values: any = [];
+      keys.forEach((x: number | string) => values.push(map.get(x)));
+      if(this.myData.datasets!= undefined){
+        this.myData.datasets[0].data = values;
+        this.myData.labels= keys;
+      }
 
+      // if(this.localData.datasets!= undefined){
+      //   this.localData.datasets[0].data = values;
+      //   this.localData.labels= keys;
+      // }
     }
   }
-}
+});
 
 // import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 // import makeid from '@/utils/makeid';
 // import {bars, options} from "@/test/barchart_js";
 // import { Bar } from 'vue-chartjs';
-
-
-
-
 
 // @Component
 // export default class ChartJs extends Bar {
@@ -85,19 +100,15 @@ export default {
 //   })
 //   chartTitle!: string;
 
-
 // //   @Watch('chartData')
 // //   dataChanged() {
 // //   }
 
-
 // //   created() {
 // //     this.chartDivId = 'histdist_' + makeid(8);
 // //   }
-    
 
-
-//   mounted() { 
+//   mounted() {
 //       this.renderChart(this.barsData, this.optionsData)
 //   }
 // }
