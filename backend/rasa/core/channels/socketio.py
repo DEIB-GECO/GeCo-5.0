@@ -11,7 +11,7 @@ from socketio import AsyncServer
 
 import json
 
-tracker= False
+tracker= True
 
 logger = logging.getLogger(__name__)
 
@@ -233,6 +233,12 @@ class SocketIOInput(InputChannel):
         async def disconnect(sid: Text) -> None:
             logger.debug(f"User {sid} disconnected from socketIO endpoint.")
 
+        @sio.on("reconnect", namespace=self.namespace)
+        async def reconnect(sid: Text) -> None:
+            print("wwwweeeeee i'm backon")
+            logger.debug("wwwweeeeee i'm backon")
+
+
         @sio.on("session_request", namespace=self.namespace)
         async def session_request(sid: Text, data: Optional[Dict]):
             logger.debug("Ho ricevuto richiesta di sessione")
@@ -243,7 +249,7 @@ class SocketIOInput(InputChannel):
             if self.session_persistence:
                 sio.enter_room(sid, data["session_id"])
             await sio.emit("session_confirm", data["session_id"], room=sid)
-            logger.debug(f"User {sid} session requested to socketIO endpoint.")
+            logger.debug("User {sid} session requested to socketIO endpoint.")
 
 
         @sio.on(self.user_message_evt, namespace=self.namespace)
@@ -269,25 +275,25 @@ class SocketIOInput(InputChannel):
             await on_new_message(message)
 
         """fatta da me da é questo che funziona veramente"""
-        @sio.on('user_message_evt', namespace=self.namespace)    
-        async def handle_messagio(sid: Text, data: Dict) -> Any:
+        @sio.on('my_event', namespace=self.namespace)
+        async def handle_message(sid: Text, data: Dict) -> Any:
             output_channel = SocketIOOutput(sio, self.bot_message_evt)
             logger.debug("ho preso un messaggio fatto da me rimuovere 1")
 
             sender_id = sid
 
             message = UserMessage(
-                data["message"], output_channel, sender_id, input_channel=self.name()
+                data["data"], output_channel, sender_id, input_channel=self.name()
             )
-            print('self.bot_message_evt data',data["message"])
+            print('self.bot_message_evt data',data["data"])
             with open('data.txt', 'a') as outfile:
-                json.dump( data["message"]+'\n',outfile)
+                json.dump( data["data"]+'\n',outfile)
 
             if (tracker == True):
                 with open("sessions/"+sid+".json") as json_file:
                     data2 = json.load(json_file)
                     temp = data2['names']
-                    y = {"sender": sender_id, 'message': data["message"]}
+                    y = {"sender": sender_id, 'message': data["data"]}
                     temp.append(y)
 
                 write_json(data2,"sessions/"+sid+".json")
@@ -295,5 +301,3 @@ class SocketIOInput(InputChannel):
             await on_new_message(message)
 
         return socketio_webhook
-
-

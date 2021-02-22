@@ -51,7 +51,7 @@ import Toolbox from './../components/toolbox/toolbox_interface.vue';
 import ParametersBox from '@/components/ParametersBox.vue';
 import { conversation } from './../test/conversation';
 
-// const socket = io('/test', { path: '/geco_agent/socket.io' });
+//const socket = io('/test', { path: '/geco_agent/socket.io' });
 const socket = io('http://localhost:5980');
 const tools = namespace('tools');
 const gecoAgentStore = namespace('gecoAgent');
@@ -152,9 +152,6 @@ export default class GecoAgent extends Vue {
   }
 
   created() {
-    console.log('sono qua')
-    console.log('in created')
-    socket.emit('json_response', {'type':'message', 'payload':'Ciao'})
     socket.emit('ack', { message_id: this.lastMessageId });
     socket.on('json_response', (payload: any) => {
       if (payload.type) {
@@ -171,17 +168,11 @@ export default class GecoAgent extends Vue {
   }
 
   sendMessage() {
-    socket.emit('my_event',{ message_id: this.lastMessageId });
-    socket.emit('user_message_evt',{ message: this.message });
-    console.log('sono in send messagge')
     if (this.message != '') {
       this.setSendButtonStatus(false);
       this.addUserMessage(this.message);
       socket.emit('my_event', { data: this.message });
       this.editMessage('');
-    }
-    else {
-     socket.emit('errore')
     }
   }
 
@@ -196,16 +187,15 @@ export default class GecoAgent extends Vue {
       this.updateToolToShow(data.show);
     }
     // this.updateLastMessageId(data.message_id);
-    console.log('sono a this.json');
     this.lastMessageId = data.message_id;
-    socket.emit('ack', { message_id: this.lastMessageId });
+    // socket.emit('ack', { message_id: this.lastMessageId });
     // @ts-ignore
     this.jsonResponseParsingFunctions[data.type](data.payload);
   }
 
   pushBotMessage(msg: string) {
     if (msg != '') {
-      conversation.push({ sender: 'bot', text: msg }); //msg
+      conversation.push({ sender: 'bot', text: msg });
     }
   }
 
@@ -221,7 +211,7 @@ export default class GecoAgent extends Vue {
 
   reset(): void {
     if (
-      window.confirm('Do you want to lose all your progresses and start over?')
+      window.confirm('Do you want to lose all your progresses and start over? After confirm, recharge the page!')
     ) {
       socket.emit('reset', {});
 
@@ -229,6 +219,7 @@ export default class GecoAgent extends Vue {
       console.log('mandato RESET');
       // this.editMessage('reset session');
       // this.sendMessage();
+      socket.emit('ack', { message_id: this.lastMessageId });
       this.resetProcess();
       this.updateFieldList([]);
       this.parameterParser([]);

@@ -1060,7 +1060,7 @@ class SaveDb(Action):
         print(param_list)
         print("name db:", param_list["Name"])
 
-        ds=database.Dataset(dict_selection, param_list["Name"]) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
+        ds=dataset.Dataset(dict_selection, param_list["Name"]) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
 
         workflow.add(Select(ds))
         #workflow.run(workflow[-1])
@@ -1134,7 +1134,7 @@ class SetGMQL(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
 
-        for num, name in  enumerate(workflow):
+        for num, name in enumerate(workflow):
             c = num % 2
 
         if (c ==0 ):#number of dataset is odd new_dataset
