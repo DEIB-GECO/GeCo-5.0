@@ -10,12 +10,18 @@ class Utils(object):
     def choice(caption, list_params, show_search=False, show_details=False, show_help=False, helpIconContent=''):
         elements = []
         #print(list_params)
-
+        count=0
         for i in list_params:
             if(i== 'is_healthy'):
                 elements.append({'name': 'Health', 'value': 'Health' })
+                count=count+1
             else:
-                elements.append({'name': i, 'value': list_params[i] })
+                b=i.replace('_',' ')
+                #print(i)
+                elements.append({'name': b, 'value': i})
+                count=count+1
+            if(count>=15):
+                show_search=True
 
 
         return {"type": "available_choices",
@@ -105,6 +111,20 @@ class Utils(object):
         else:
             return {"type": "workflow",
                     "payload": {"state": state}}
+
+    def table_viz(show, df, show_index=True, order_by=None):
+        data = df.to_dict()
+        return {"type": "table",
+                    "show": show,
+                    "payload": {
+                            "data":data,
+                        "options":{
+                                "show_index": show_index
+                                #"order_by": string
+                        }
+                }}
+
+
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))

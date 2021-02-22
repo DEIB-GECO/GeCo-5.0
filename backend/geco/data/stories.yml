@@ -1909,3 +1909,17 @@ stories:
   - action: action_run_workflow
   - action: action_show_operations
   - action: utter_pivot_7
+
+- story: interactive_story_1
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - data_type: mirna expression quantification
+    - tissue: brain
+  - slot_was_set:
+    - data_type: mirna expression quantification
+  - slot_was_set:
+    - tissue: brain
+  - action: action_give_exact_experiment
+  - action: utter_filter_more
+  - action: action_show_field

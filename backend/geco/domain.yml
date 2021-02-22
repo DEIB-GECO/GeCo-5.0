@@ -3,20 +3,19 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- affirm
-- keep
-- sample
-- deny
 - choice_exact_experiment
-- region
-- choice_value_dataset_name
+- search_field
+- deny
 - rename_database
 - retrieve_experiments
+- choice_value_dataset_name
 - start
 - choice_value_healthy
+- affirm
 - choice_value_tissue
-- search_field
 - review
+- region
+- keep
 - choice_value_disease
 - operation
 - choice_value_assembly
@@ -55,6 +54,7 @@ intents:
 - change_field
 - back
 - feature
+- sample
 - cluster
 entities:
 - affirm
@@ -2203,10 +2203,6 @@ actions:
 - utter_pivot_2
 - utter_pivot_2b
 - utter_pivot_3
-- utter_pivot_4
-- utter_pivot_5
-- utter_pivot_6
-- utter_pivot_7
 - utter_please_k-means_0
 - utter_please_k-means_2
 - utter_please_k-means_3

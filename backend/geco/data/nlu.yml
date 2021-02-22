@@ -7,7 +7,7 @@ nlu:
     - restart
 - intent: choice_exact_experiment
   examples: |
-    - [mirna expressione data]{"entity": "data_type", "value": "mirna expression quantification"} for [grch38](assembly) assembly from [kidney](tissue)
+    - [mirna expressione data]{"entity": "data_type", "value": "mirna expression"} for [grch38](assembly) assembly from [kidney](tissue)
     - I would like to retrieve items from [tcga](source) regarding [kidney](tissue)
     - I want [isoform expression quantification](data_type) for [igak myeloma](disease)
     - I want experiment about [thyroid carcinoma](disease) for [hg19](assembly)
@@ -1825,7 +1825,8 @@ nlu:
     - [alveoli](tissue) [tissue](field)
     - [brain](disease) with [rna-seq](tissue) and [ctcf](target) and [encode](source) and [bed](file_format)
     - [hg19](assembly) and [cell line](biosample_type) and [h1](cell) and [dna seq](data_type) and [cancer](disease) and [mutations](feature) and [broadpeak](file_format) and [tads](source) and [zfx](target) and [wxs](technique) and [brain](tissue)
-    - i need [pancreas](tissue) and [mirna expression]{"entity": "data_type", "value": "mirna expression quantification"}
+    - i need [pancreas](tissue) and [mirna expression]{"entity": "data_type", "value": "mirna expression"}
+    - [mirna expression]{"entity": "data_type", "value": "mirna expression"} with [brain](tissue)
 - intent: retrieve_annotations
   examples: |
     - [annotation](annotations)
@@ -1873,6 +1874,7 @@ nlu:
     - now i want [assembly](field)
     - [dataset_name](field)
     - [dataset]{"entity": "field", "value": "dataset_name"}
+    - [dataset_name](field)
 - intent: reset
   examples: |
     - reset slot
@@ -2209,7 +2211,6 @@ nlu:
     - [grch38_encode_narrow_2020_01](dataset_name)
     - [hg19_encode_broad_2020_01](dataset_name)
     - [grch38_tcga_copy_number_masked_2019_10](dataset_name)
-    - [grch38_tcga_mirna_expression_2019_10](dataset_name)
 - intent: choice_value_tissue
   examples: |
     - [breast](tissue)
@@ -2514,6 +2515,10 @@ nlu:
     - [gene expression quantifications](data_type)
     - [rna expression](data_type)
     - [gene quantifications](data_type)
+    - [expression of genes](data_type)
+    - [expression of gene](data_type)
+    - [expressions of gene](data_type)
+    - [expression of long rna]
     - [isoform expression quantification](data_type)
     - [mirna expression quantification](data_type)
     - [mirna quantifications](data_type)
@@ -2521,6 +2526,9 @@ nlu:
     - [mirna expression](data_type)
     - [mirna expression data](data_type)
     - [mirna expressions](data_type)
+    - [expression of micro rna](data_type)
+    - [expression of microrna](data_type)
+    - [expressions of mirna](data_type)
     - [masked somatic mutation](data_type)
     - [mirna quantification](data_type)
     - [dna seq](data_type)
@@ -5655,13 +5663,13 @@ nlu:
     - i want to find cluster
     - find cluster
     - perform kmeans cluster
-- synonym: mirna expression quantification
+- synonym: mirna expression
   examples: |
     - mirna expressione data
+    - mirna expression quantification
     - mirna expressions
     - mirna quantifications
     - mirna expression quantifications
-    - mirna expression
     - mirna expression data
     - expression of micro rna
     - expression of microrna
@@ -5678,9 +5686,9 @@ nlu:
 - synonym: biosample_type
   examples: |
     - biosample type
-- synonym: gene expression quantification
+- synonym: gene expression
   examples: |
-    - gene expression
+    - gene expression quantification
     - gene expression data
     - gene expressions
     - gene expression quantifications

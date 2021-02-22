@@ -5,8 +5,8 @@ rules:
 - rule: start story
   steps:
   - intent: start
-  - action: utter_what_data
   - action: action_what_data
+  - action: utter_what_data
 
 - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
   steps:

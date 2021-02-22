@@ -1,5 +1,0 @@
-Devi:
-modificare il file gecoAgent.vue che: 
-	hai commentato riga 54 e decommentato la 55
-	sempre nello stesso file dalla riga 154 (created()...) tu usi socket.emit mentre di default
-	veniva usato socket.on che rasa non vedeva.

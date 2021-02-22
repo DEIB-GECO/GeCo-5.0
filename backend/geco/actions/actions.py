@@ -300,7 +300,11 @@ class ShowField(Action):
             for m in msg:
                 dispatcher.utter_message(m)
             dispatcher.utter_message(Utils.choice("Available Fields", list_param,show_help=True))
+
             dispatcher.utter_message(Utils.param_list(param_list))
+            #print(db.table)
+            dispatcher.utter_message(Utils.table_viz("table",db.table))
+
             #dispatcher.utter_message(Utils.create_piecharts(db,list_param,param_list))
 
         else:
@@ -383,6 +387,12 @@ class CheckValue(Action):
             request_value = tracker.get_slot(request_field)
 
             if( (request_field != "is_healthy")):
+                if((request_field not in db.fields_names)):
+                    print("db.fields_names",db.fields_names)
+
+                if(request_value not in db.values[request_field]):
+                    print("db.values[request_field]",db.values[request_field])
+
                 if ((request_field not in db.fields_names) or (request_value not in db.values[request_field])):
                 #if ((request_value not in domain['slots'][request_field]['values']) or (
                             #request_field not in db.fields_names) or (request_value not in db.values[request_field])):
@@ -443,12 +453,11 @@ class YesNo(Action):
         else:
             val=db.retrieve_values("","is_healthy")
             list_param = {}
-
             y=-1
             for x in val:
-                y=x+1
+                y=y+1
 
-            if(y>1):
+            if(y>0):
                 print(val[0]["value"])
                 list_param = {'Yes': 'Yes', 'No': 'No'}
 
@@ -882,7 +891,7 @@ class ShowMetadatum(Action):
                               'viz': [{'vizType': 'pie-chart', 'title': '', 'data': [{'value': '', 'count': 0}]}]}})
                     dispatcher.utter_message(m)
 
-                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c,show_search=True))
+                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c))
             else:
                 dispatcher.utter_message("First 50 metadatum:")
                 print(c)
@@ -895,7 +904,7 @@ class ShowMetadatum(Action):
                               'viz': [{'vizType': 'pie-chart', 'title': '', 'data': [{'value': '', 'count': 0}]}]}})
                     dispatcher.utter_message(m)
 
-                dispatcher.utter_message(Utils.choice("Options:", {'Recap': 'Recap'}, show_search=True))
+                dispatcher.utter_message(Utils.choice("Options:", {'Recap': 'Recap'}))
             else:
                 dispatcher.utter_message("You can only recap no metadatum avaialble to filter")
 
@@ -932,11 +941,13 @@ class MetadatumType(Action):
             dispatcher.utter_message(Utils.param_list(param_list))
 
         z = db.find_key_values(message, dict_selection)
+        print("z vale:",z,z[0],z[1])
         c = {}
         # if(z[1] == False):
         for y in z[0]:
             #print(y['value'])
             c.update({y['value']: y['value']})
+
         # y[count] sono i valori che mi serviranno per l istogramma
         # print(y['count'])
         # c.update({y['count']: y['count']})
@@ -946,7 +957,7 @@ class MetadatumType(Action):
 
             if (shell == False):
                 print("false",c)
-                dispatcher.utter_message(Utils.choice('Available values', c, show_search=True, show_help=True))
+                dispatcher.utter_message(Utils.choice('Available values', c, show_help=True))
                            #helpIconContent=helpMessages.fields_help)
             else:
                 dispatcher.utter_message('Available values')
@@ -955,9 +966,32 @@ class MetadatumType(Action):
         elif(z[1] == True):
             dispatcher.utter_message("Which range of values do you want? You can tell me the minimum or maximum value or both.\n The values are shown in the histogram.")
 
+            print("true", c)
+            min = 80000000000000
+            max = 0
+            count=0
+            sum_i=0
+            for i in c:
+                print("i vale",i)
+                print("i di zero vale",i[0])
+                print(i)
+                if (i[0] < min):
+                    min=i[0]
+                if (i[0] > max):
+                    max=i[0]
+                count=count+1
+                sum_i=sum_i+i
+
+            mean= sum_i/count
+
+            c={}
+            c.update({min:min})
+            c.update({max: max})
+            c.update({mean :mean})
+
+
             if (shell == False):
-                print("true",c)
-                dispatcher.utter_message(Utils.choice('Available values', c, show_search=True, show_help=True))
+                dispatcher.utter_message(Utils.choice('Available values',c, show_help=True))
 
             else:
                 dispatcher.utter_message('Available values')
@@ -1232,7 +1266,7 @@ class ModifyKeep(Action):
 
             if (meta_list != {}):
                 if (shell == False):
-                    dispatcher.utter_message(Utils.choice("First 50 metadatum:", c, show_search=True))
+                    dispatcher.utter_message(Utils.choice("First 50 metadatum:", c))
                 else:
                     dispatcher.utter_message("First 50 metadatum:")
                     print(c)
@@ -1264,7 +1298,7 @@ class ShowAllMetadatum(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c, show_search=True))
+                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c))
             else:
                 dispatcher.utter_message("First 50 metadatum:")
                 print(c)
@@ -1329,13 +1363,13 @@ class MetadatumValue(Action):
       #  if(last_intent == 'metadatum'):
         dispatcher.utter_message("Which operation do you want to do?")
         if (shell == False):
-            dispatcher.utter_message(Utils.choice('Available operations', {'sum': 'sum ', 'subtract': 'subtract ','divide': 'divide ','multiply': 'multiply '}, show_search=True, show_help=True))
+            dispatcher.utter_message(Utils.choice('Available operations', {'sum': 'sum ', 'subtract': 'subtract ','divide': 'divide ','multiply': 'multiply '}, show_help=True))
         return []
 
         #elif(last_intent == 'value'):
         #    dispatcher.utter_message("Which operation do you want to do?")
         #    if (shell == False):
-        #        dispatcher.utter_message(Utils.choice('Available operations', {'sum': 'sum ', 'subtract': 'subtract ', 'divide ': 'divide', 'multiply': 'multiply'},show_search=True, show_help=True))
+        #        dispatcher.utter_message(Utils.choice('Available operations', {'sum': 'sum ', 'subtract': 'subtract ', 'divide ': 'divide', 'multiply': 'multiply'}, show_help=True))
         #    return []
 
         #else:
@@ -1425,7 +1459,7 @@ class ShowAllRegion(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("Region:", c, show_search=True))
+                dispatcher.utter_message(Utils.choice("Region:", c))
             else:
                 dispatcher.utter_message("Region:")
                 print(c)
@@ -1487,13 +1521,13 @@ class ActionShowSample(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c, show_search=True))
+                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c))
             else:
                 dispatcher.utter_message("First 50 metadatum:")
                 print(c)
         else:
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("Options:", {'Recap': 'Recap'}, show_search=True))
+                dispatcher.utter_message(Utils.choice("Options:", {'Recap': 'Recap'}))
             else:
                 dispatcher.utter_message("You can only recap no metadatum avaialble to filter")
 
@@ -1548,7 +1582,7 @@ class ActionShowFeature(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("First 50 region:", z, show_search=True))
+                dispatcher.utter_message(Utils.choice("First 50 region:", z))
             else:
                 dispatcher.utter_message("First 50 region:")
                 print(z)
