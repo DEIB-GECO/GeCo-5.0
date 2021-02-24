@@ -26,22 +26,18 @@ class SelectLogic:
     def query_field(self):
         filter = ' and '.join(['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
                                  self.op.depends_on.fields.items()if k!='metadata'])
-        query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id where {}".format(filter)
+        if 'metadata' in self.op.depends_on.fields and self.op.depends_on.fields['metadata'] != None:
+            keys = ','.join(list(self.op.depends_on.fields['metadata'].keys()))
+            values = ','.join([i for k, v in self.op.depends_on.fields['metadata'].items() for i in v])
+            query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id join dw.unified_pair_gecoagent as du on rr.item_id = du.item_id " \
+                    "where {} and key in ({}) and value in ({})".format(filter, keys, values)
+        else:
+            query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id" \
+                    "where {}".format(filter)
+        print(query)
         #query = "select distinct(item_id) from dw.flatten_gecoagent where {} group by item_id".format(filter)
         return query
 
-    def query_key(self):
-        query = ""
-        i = 1
-        for k in self.op.depends_on.fields.metadata:
-            if i < len(self.op.depends_on.fields.metadata):
-                query += "item_id in (select distinct(item_id) from dw.unified_pair_gecoagent where key='{}' and value in {}) and ".format(
-                    k, ['{}'.format(x) for x in self.op.depends_on.fields.metadata[k]]).replace('[', '(').replace(']', ')')
-            else:
-                query += "item_id in (select distinct(item_id) from dw.unified_pair_gecoagent where key='{}' and value in {})".format(
-                    k, ['{}'.format(x) for x in self.op.depends_on.fields.metadata[k]]).replace('[', '(').replace(']', ')')
-            i += 1
-        return query
 
     def run(self):
         query = self.query_field()

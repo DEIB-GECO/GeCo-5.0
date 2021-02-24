@@ -9,6 +9,7 @@ class PivotAction(AbstractAction):
         #self.context.workflow.run(self.context.workflow[0])
         self.context.add_bot_msgs([Utils.chat_message(messages.pivot_message)])
         self.context.add_bot_msgs([Utils.chat_message('Do you want features or samples in the rows?')])
+        self.context.add_bot_msgs([Utils.workflow('Pivot')])
         return None, False
 
     def logic(self, message, intent, entities):

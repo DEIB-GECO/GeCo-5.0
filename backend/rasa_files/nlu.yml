@@ -69,6 +69,7 @@ nlu:
     - could you retrieve [spljxn quantification](data_type) data from [b-cell non-hodgkin lymphoma](disease)?
     - [variant calling](data_type) from [ascending aorta](tissue)
     - data regarding [gene expression quantification]{"entity":"data_type","value":"gene expression"} for cell [501-mel](cell)
+    - i want [expression of genes]{"entity":"data_type","value":"gene expression"} for [grch38](assembly) for [kidney](tissue) tissue
     - samples for [adnp](target) data
     - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [autonomic nervous system](tissue)?
     - I am looking for [gene quantification]{"entity":"data_type","value":"gene expression"}
@@ -1642,7 +1643,6 @@ nlu:
     - [large bowel adenocarcinoma]{"entity":"disease","value":"colorectal adenocarcinoma"}
     - [large intestine adenocarcinoma]{"entity":"disease","value":"colorectal adenocarcinoma"}
     - [colorectal cancer](disease)
-    - [colorectal cancer]{"entity":"disease","value":"colorectal cancer pathway"}
     - [colorectal cancer pathway](disease)
     - [crc pathway]{"entity":"disease","value":"colorectal cancer pathway"}
     - [cancer of large bowel]{"entity":"disease","value":"colorectal carcinoma"}
@@ -2054,7 +2054,6 @@ nlu:
     - [prostate adenocarcinoma](disease)
     - [prostate cancer](disease)
     - [cancer, prostate cancer]{"entity":"disease","value":"prostate cancer pathway"}
-    - [prostate cancer]{"entity":"disease","value":"prostate cancer pathway"}
     - [prostate cancer pathway](disease)
     - [prostate cancer, prostate carcinoma](disease)
     - [cancer of prostate]{"entity":"disease","value":"prostate carcinoma"}
@@ -2235,46 +2234,46 @@ nlu:
     - [variant calling](data_type)
 - intent: choice_value_content_type
   examples: |
-    - - [clonal rearrangement, multiple peaks](content_type)
-      - [peaks]{"entity":"content_type","value":"clonal rearrangement, multiple peaks"}
-      - [replicated peaks]{"entity":"content_type","value":"clonal rearrangement, multiple peaks"}
-      - [conservative idr thresholded peaks](content_type)
-      - [exon](content_type)
-      - [exon quantifications]{"entity":"content_type","value":"exon"}
-      - [exon quantifications](content_type)
-      - [filtered cigar](content_type)
-      - [filtered transcribed fragments]{"entity":"content_type","value":"filtered cigar"}
-      - [filtered transcribed fragments](content_type)
-      - [hotspots](content_type)
-      - [fsp3]{"entity":"content_type","value":"nipa1 wt allele"}
-      - [hotspots]{"entity":"content_type","value":"nipa1 wt allele"}
-      - [mgc102724]{"entity":"content_type","value":"nipa1 wt allele"}
-      - [mgc35570]{"entity":"content_type","value":"nipa1 wt allele"}
-      - [nipa1 wt allele](content_type)
-      - [non imprinted in prader-willi/angelman syndrome 1 wt allele]{"entity":"content_type","value":"nipa1 wt allele"}
-      - [spastic paraplegia 6 (autosomal dominant) gene]{"entity":"content_type","value":"nipa1 wt allele"}
-      - [spg6]{"entity":"content_type","value":"nipa1 wt allele"}
-      - [optimal idr thresholded peaks](content_type)
-      - [peaks](content_type)
-      - [peaks and background as input for idr](content_type)
-      - [pseudoreplicated idr thresholded peaks](content_type)
-      - [replicated peaks](content_type)
-      - [rna binding protein](content_type)
-      - [rna-binding protein associated mrnas]{"entity":"content_type","value":"rna binding protein"}
-      - [rna binding protein, chromatin remodeler]{"entity":"content_type","value":"rna binding protein"}
-      - [rna binding protein, chromatin remodeller, transcription factor]{"entity":"content_type","value":"rna binding protein"}
-      - [rna binding protein, cofactor]{"entity":"content_type","value":"rna binding protein"}
-      - [rna binding protein, recombinant protein, transcription factor]{"entity":"content_type","value":"rna binding protein"}
-      - [rna binding protein, transcription factor]{"entity":"content_type","value":"rna binding protein"}
-      - [rna-binding protein associated mrnas](content_type)
-      - [stable](content_type)
-      - [stable peaks]{"entity":"content_type","value":"stable"}
-      - [stable peaks](content_type)
-      - [transcribed fragment]{"entity":"content_type","value":"transcribed_fragment"}
-      - [transcribed_fragment](content_type)
-      - [transcribed fragments]{"entity":"content_type","value":"transcribed_fragment"}
-      - [transfrag]{"entity":"content_type","value":"transcribed_fragment"}
-      - [transcribed fragments](content_type)
+    - [clonal rearrangement, multiple peaks](content_type)
+    - [peaks]{"entity":"content_type","value":"clonal rearrangement, multiple peaks"}
+    - [replicated peaks]{"entity":"content_type","value":"clonal rearrangement, multiple peaks"}
+    - [conservative idr thresholded peaks](content_type)
+    - [exon](content_type)
+    - [exon quantifications]{"entity":"content_type","value":"exon"}
+    - [exon quantifications](content_type)
+    - [filtered cigar](content_type)
+    - [filtered transcribed fragments]{"entity":"content_type","value":"filtered cigar"}
+    - [filtered transcribed fragments](content_type)
+    - [hotspots](content_type)
+    - [fsp3]{"entity":"content_type","value":"nipa1 wt allele"}
+    - [hotspots]{"entity":"content_type","value":"nipa1 wt allele"}
+    - [mgc102724]{"entity":"content_type","value":"nipa1 wt allele"}
+    - [mgc35570]{"entity":"content_type","value":"nipa1 wt allele"}
+    - [nipa1 wt allele](content_type)
+    - [non imprinted in prader-willi/angelman syndrome 1 wt allele]{"entity":"content_type","value":"nipa1 wt allele"}
+    - [spastic paraplegia 6 (autosomal dominant) gene]{"entity":"content_type","value":"nipa1 wt allele"}
+    - [spg6]{"entity":"content_type","value":"nipa1 wt allele"}
+    - [optimal idr thresholded peaks](content_type)
+    - [peaks](content_type)
+    - [peaks and background as input for idr](content_type)
+    - [pseudoreplicated idr thresholded peaks](content_type)
+    - [replicated peaks](content_type)
+    - [rna binding protein](content_type)
+    - [rna-binding protein associated mrnas]{"entity":"content_type","value":"rna binding protein"}
+    - [rna binding protein, chromatin remodeler]{"entity":"content_type","value":"rna binding protein"}
+    - [rna binding protein, chromatin remodeller, transcription factor]{"entity":"content_type","value":"rna binding protein"}
+    - [rna binding protein, cofactor]{"entity":"content_type","value":"rna binding protein"}
+    - [rna binding protein, recombinant protein, transcription factor]{"entity":"content_type","value":"rna binding protein"}
+    - [rna binding protein, transcription factor]{"entity":"content_type","value":"rna binding protein"}
+    - [rna-binding protein associated mrnas](content_type)
+    - [stable](content_type)
+    - [stable peaks]{"entity":"content_type","value":"stable"}
+    - [stable peaks](content_type)
+    - [transcribed fragment]{"entity":"content_type","value":"transcribed_fragment"}
+    - [transcribed_fragment](content_type)
+    - [transcribed fragments]{"entity":"content_type","value":"transcribed_fragment"}
+    - [transfrag]{"entity":"content_type","value":"transcribed_fragment"}
+    - [transcribed fragments](content_type)
 
 - intent: choice_value_target
   examples: |

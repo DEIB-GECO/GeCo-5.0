@@ -2,9 +2,9 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7f9a610fcf10>
+result:<data_structure.dataset.Dataset object at 0x7f89c6067c50>
 depends_on:Dataset
-metadata:None
+metadata:{'gdc__treatments__treatment_type': ['radiation therapy, nos,radiation therapy, nos'], 'clinical__rad__anatomic_treatment_site': ['primary tumor field']}
 region:None
 -------
 1
@@ -17,7 +17,7 @@ region_row:['gene_symbol']
 meta_row:None
 region_col:None
 meta_col:['item_id']
-value:['gene_symbol']
+value:['fpkm']
 other_meta:None
 other_region:None
 -------

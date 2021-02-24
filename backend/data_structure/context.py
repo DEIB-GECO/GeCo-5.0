@@ -187,8 +187,10 @@ class Context:
         del (self.history[-1])
         self.add_step(action=action)
         print(self.history[-1])
-        if self.top_bot_msgs()==None:
-            self.add_bot_msgs(self.history[-3].bot_msgs)
+        i=-1
+        while(self.top_bot_msgs()==None):
+            i-=1
+        self.add_bot_msgs(self.history[i].bot_msgs)
         #self.history[-2].bot_msgs = None
 
     def last_valid_user_msg(self):

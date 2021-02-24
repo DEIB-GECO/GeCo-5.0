@@ -1,5 +1,5 @@
 from geco_conversation import *
-
+from data_structure.dataset import Dataset
 
 class NewDataset(AbstractAction):
     def help_message(self):
@@ -9,11 +9,11 @@ class NewDataset(AbstractAction):
         table = self.context.payload.database.table
         num_tables = 0
         ds_list = []
-        print(len(self.status['donors']))
+        print('donors',len(self.status['donors']))
         for ds in set(table['dataset_name']):
             common_donors = set(table[(table['donor_source_id'].isin(self.status['donors'])) & ((table['dataset_name'] == ds))]['donor_source_id'].values)
             self.context.payload.insert('common_donors', {ds: common_donors})
-            print(len(common_donors))
+            print('common', len(common_donors))
             if (len(common_donors) / len(self.status['donors'])) > 0.75:
                 num_tables += 1
                 ds_list.append(ds)
@@ -30,6 +30,7 @@ class NewDataset(AbstractAction):
         from geco_conversation.gmql_actions.gmql_unary_action import GMQLUnaryAction
         from geco_conversation.gmql_actions.gmql_binary_action import GMQLBinaryAction
         if intent == 'affirm':
+            self.context.add_bot_msg(Utils.workflow('Data Selection 2'))
             return StartAction(self.context), True
         elif intent == 'deny':
             if self.context.payload.back != PivotAction:
@@ -54,14 +55,19 @@ class SameDonorDataset(AbstractAction):
 
     def logic(self, message, intent, entities):
         from geco_conversation import PivotAction
+        from geco_conversation import GMQLUnaryAction, GMQLBinaryAction
         if intent != 'deny':
             if intent != 'affirm':
                 self.context.payload.insert('dataset_name', message)
                 gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
-                links = self.context.payload.database.download(gcm_filter, self.status['donors'])
-                self.context.add_bot_msgs([Utils.chat_message(messages.download),
+                self.context.payload.database.update(gcm_filter)
+                print(set(self.context.payload.database.table['dataset_name'].values))
+                links = self.context.payload.database.download(gcm_filter, self.status['common_donors'])
+                ds = Dataset(gcm_filter, 'DS_'+str(len(self.context.data_extraction.datasets) +1 ), donors=self.status['common_donors'])
+                self.context.data_extraction.datasets.append(ds)
+                self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection'),
                                            Utils.workflow('Data Selection', download=True, link_list=links),
-                                           Utils.chat_message(messages.gmql_operations), Utils.param_list(gcm_filter)])
+                                           Utils.chat_message(messages.gmql_operations), Utils.param_list(gcm_filter), Utils.tools_setup(add=[], remove=["available_choices"])])
                 if len(self.context.data_extraction.datasets) % 2 == 0:
                     return YesNoAction(self.context, GMQLUnaryAction(self.context),
                                        GMQLBinaryAction(self.context)), False

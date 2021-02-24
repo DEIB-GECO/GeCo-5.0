@@ -112,9 +112,13 @@ class DB:
             print("error")
             return 0
 
-    def download(self, gcm):
-        links = list(set(self.table['local_url']))
+    def download(self, gcm, donors =[]):
+        if len(donors)==0:
+            links = list(set(self.table['local_url']))
+        else:
+            links = list(set(self.table[self.table['donor_source_id'].isin(donors)]['local_url']))
         return links
+
 
     def go_back(self, gcm):
         self.table = self.db.table.copy()
@@ -140,10 +144,12 @@ class DB:
         return query
 
     def query_key2(self, gcm, items):
-        for k in gcm:
-            print("select distinct(item_id),  from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')'))
+        for k in gcm.keys():
+            print("select distinct(item_id),  from dw.unified_pair_gecoagent where item_id in {} and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')'))
             items = db.engine.execute("select distinct(item_id) from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')).fetchall()
-            items=[i[0] for i in items]
+            #items = [i[0] for i in items]
+            items = ','.join(str(i[0]) for i in items)
+        #items = items.split(',')
         return items
 
     def retrieve_donors(self, meta):
@@ -155,8 +161,7 @@ class DB:
         items = [int(i) for i in items]
             #items = ','.join(str(i) for i in items)
         print(items)
-        donors = self.table[self.table['item_id'].isin(items)]['donor_source_id'].values
-        print(donors)
+        donors = list(self.table[self.table['item_id'].isin(items)]['donor_source_id'].values)
         return donors
 
     # Retrieves all keys
@@ -166,7 +171,7 @@ class DB:
 
         if filter2!={}:
             items = self.query_key2(filter2, items)
-            items = ','.join(str(i) for i in items)
+
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(query, query2)).fetchall()
             keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
         else:
@@ -189,6 +194,7 @@ class DB:
         item_id = list(self.table['item_id'].values)
         items = ','.join(str(i) for i in item_id)
         items = self.query_key2(filter2, items)
+        items = items.split(',')
         self.table = self.table[self.table['item_id'].isin(items)]
 
     def find_keys(self, filter, string):
@@ -216,7 +222,6 @@ class DB:
         items = ','.join(str(i) for i in item_id)
         if filter2!={}:
             items = self.query_key2(filter2, items)
-            items = ','.join(str(i) for i in items)
             values = db.engine.execute(
                 "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(
                     items, str(key))).fetchall()
@@ -250,7 +255,6 @@ class DB:
             items = ','.join(str(i) for i in item_id)
             if filter2 != {}:
                 items = self.query_key2(filter2, items)
-                items = ','.join(str(i) for i in items)
             res = db.engine.execute(
                     "select * from rr.{} where (item_id in ({}))limit 1".format(ds_name,
                         items))
