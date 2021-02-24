@@ -3,7 +3,8 @@ from geco_conversation import *
 class JoinAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(messages.join_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.join_help)])
+        return None, False
 
     def on_enter(self):
         pass

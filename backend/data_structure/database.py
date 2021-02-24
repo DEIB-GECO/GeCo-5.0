@@ -19,10 +19,11 @@ annotation_fields = ["content_type", "assembly", "source", 'dataset_name']
 experiment_fields = ['source', 'data_type', 'assembly', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name']
 fields = ["content_type", 'source', 'data_type', 'tissue', 'cell', 'disease', 'is_healthy', 'target',  'dataset_name', 'assembly']
 sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
-region_datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
             'grch38_tcga_mirna_expression_2019_10']
-datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+
+all_datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
             'grch38_tcga_mirna_expression_2019_10', 'hg19_tcga_rnaseqv2_isoform','grch38_encode_broad_2020_01','hg19_roadmap_epigenomics_dmr','hg19_tcga_rnaseqv2_spljxn',
             'hg19_tcga_rnaseq_spljxn','hg19_roadmap_epigenomics_bed','hg19_roadmap_epigenomics_narrow',
@@ -32,6 +33,17 @@ datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation
             'hg19_annotation_refseq','hg19_tcga_mirnaseq_mirna','hg19_roadmap_epigenomics_broad',
             'hg19_tcga_dnaseq','grch38_encode_narrow_2020_01','hg19_annotation_gencode','hg19_roadmap_epigenomics_gapped','hg19_encode_broad_2020_01',
             'hg19_tads_dixon','hg19_tcga_dnamethylation','hg19_encode_narrow_2020_01','grch38_tcga_mirna_isoform_expression_2019_10']
+
+
+other_datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
+            'grch38_tcga_mirna_expression_2019_10', 'grch38_encode_broad_2020_01','hg19_roadmap_epigenomics_dmr',
+            'hg19_tcga_rnaseq_spljxn','hg19_roadmap_epigenomics_bed','hg19_roadmap_epigenomics_narrow',
+            'hg19_tcga_mirnaseq_isoform','grch38_annotation_refseq','hg19_tcga_rnaseq_gene',
+            'grch38_annotation_gencode','hg19_roadmap_epigenomics_rna_expression','hg19_tcga_cnv','hg19_tcga_rnaseq_exon',
+            'hg19_annotation_refseq','hg19_tcga_mirnaseq_mirna','hg19_roadmap_epigenomics_broad',
+            'hg19_tcga_dnaseq','grch38_encode_narrow_2020_01','hg19_annotation_gencode','hg19_roadmap_epigenomics_gapped','hg19_encode_broad_2020_01',
+            'hg19_tcga_dnamethylation','hg19_encode_narrow_2020_01','grch38_tcga_mirna_isoform_expression_2019_10']
 
 class database:
     def __init__(self):

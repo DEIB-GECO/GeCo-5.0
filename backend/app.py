@@ -167,10 +167,10 @@ def add_session_message(session, message):
         temp_d = dict(message)
         temp_d['message_id'] = id
         session['last_json'][message['type']] = temp_d
-    else:
-        for x in message['payload']['remove']:
-            if x in session['last_json']:
-                del session['last_json'][x]
+    # else:
+    #     for x in message['payload']['remove']:
+    #         if x in session['last_json']:
+    #             del session['last_json'][x]
 
     return id
 

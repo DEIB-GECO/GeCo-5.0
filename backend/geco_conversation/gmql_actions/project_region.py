@@ -3,12 +3,14 @@ from data_structure.operations import ArithmeticOperation
 
 class ProjectRegionAction(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_region_help)])
+		return None, True
 
 	def on_enter(self):
 		self.context.add_bot_msg(Utils.chat_message("We are beginning a Project operation, to create a new region  or modifying an existing one.\n"
 													"Write the name of an existing region , if you want to modify its values,"
 													" or tell me a new name for the region  you want to create."))
+		return None, False
 
 	def logic(self,message, intent, entities):
 		self.context.payload.insert('back', ProjectRegionAction)
@@ -25,7 +27,8 @@ class ProjectRegionAction(AbstractAction):
 
 class ProjectRegionS2Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_region_help)])
+		return None, False
 
 	def on_enter(self):
 		pass
@@ -42,7 +45,8 @@ class ProjectRegionS2Action(AbstractAction):
 
 class ProjectRegionS3Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_region_help)])
+		return None, False
 
 	def on_enter(self):
 		pass
@@ -76,7 +80,8 @@ class ProjectRegionS3Action(AbstractAction):
 
 class ProjectRegionS4Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_region_help)])
+		return None, False
 
 	def on_enter(self):
 		pass
@@ -94,7 +99,8 @@ class ProjectRegionS4Action(AbstractAction):
 
 class ProjectRegionS5Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_region_help)])
+		return None, True
 
 	def on_enter(self):
 		self.context.add_bot_msg(Utils.chat_message("Do you want to confirm your choices?"))
@@ -110,7 +116,8 @@ class ProjectRegionS5Action(AbstractAction):
 
 class ProjectRegionS6Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_region_help)])
+		return None, True
 
 	def on_enter(self):
 		self.context.add_bot_msg(Utils.chat_message("Do you want to add/modify other region ?\nIf so, tell me which one or the name of the new one."))

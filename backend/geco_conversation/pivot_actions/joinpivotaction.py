@@ -1,8 +1,13 @@
 from geco_conversation import *
 
 class JoinPivotAction(AbstractAction):
+	def help_message(self):
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.join_pivot_help)])
+		return None, True
+
 	def on_enter(self):
 		self.context.add_bot_msg("Do you want to choose a joinby value?\nIf so, tell me which one.")
+		return None, False
 
 	def logic(self,message, intent, entities):
 

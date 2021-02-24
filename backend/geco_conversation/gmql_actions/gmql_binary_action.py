@@ -2,7 +2,8 @@ from geco_conversation import *
 
 class GMQLBinaryAction(AbstractAction):
     def help_message(self):
-        return [Utils.chat_message(messages.binary_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.binary_help)])
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msgs(

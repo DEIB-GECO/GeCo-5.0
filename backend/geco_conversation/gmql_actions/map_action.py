@@ -1,7 +1,8 @@
 from geco_conversation import *
 class MapAction(AbstractAction):
 	def  help_message(self):
-		pass
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.map_help)])
+		return None, True
 
 	def on_enter(self):
 		ds_1 = self.context.data_extraction.datasets[-2].name

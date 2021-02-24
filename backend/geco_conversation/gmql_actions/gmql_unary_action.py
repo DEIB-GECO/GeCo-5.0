@@ -4,7 +4,8 @@ from geco_conversation import *
 class GMQLUnaryAction(AbstractAction):
 
     def help_message(self):
-        return []
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.unary_help)])
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message(messages.gmql_unary))

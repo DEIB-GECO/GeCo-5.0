@@ -6,7 +6,7 @@ from geco_conversation import *
 
 class CloseBinary(AbstractAction):
     def help_message(self):
-        return [Utils.chat_message(messages.confirm_help)]
+        return None, False
 
     def on_enter(self):
         pass

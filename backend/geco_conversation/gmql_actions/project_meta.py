@@ -3,7 +3,8 @@ from data_structure.operations import ArithmeticOperation
 
 class ProjectMetaAction(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_meta_help)])
+		return None, True
 
 	def on_enter(self):
 		self.context.add_bot_msg(Utils.chat_message("We are beginning a Project operation, to create a new metadatum or modifying an existing one.\n"
@@ -26,7 +27,8 @@ class ProjectMetaAction(AbstractAction):
 
 class ProjectMetaS2Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_meta_help)])
+		return None, False
 
 	def on_enter(self):
 		pass
@@ -43,7 +45,8 @@ class ProjectMetaS2Action(AbstractAction):
 
 class ProjectMetaS3Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_meta_help)])
+		return None, False
 
 	def on_enter(self):
 		pass
@@ -77,7 +80,8 @@ class ProjectMetaS3Action(AbstractAction):
 
 class ProjectMetaS4Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_meta_help)])
+		return None, False
 
 	def on_enter(self):
 		pass
@@ -95,7 +99,8 @@ class ProjectMetaS4Action(AbstractAction):
 
 class ProjectMetaS5Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_meta_help)])
+		return None, True
 
 	def on_enter(self):
 		self.context.add_bot_msg(Utils.chat_message("Do you want to confirm your choices?"))
@@ -111,7 +116,8 @@ class ProjectMetaS5Action(AbstractAction):
 
 class ProjectMetaS6Action(AbstractAction):
 	def help_message(self):
-		return []
+		self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_meta_help)])
+		return None, True
 
 	def on_enter(self):
 		self.context.add_bot_msg(Utils.chat_message("Do you want to add/modify other metadata?\nIf so, tell me which one or the name of the new one."))

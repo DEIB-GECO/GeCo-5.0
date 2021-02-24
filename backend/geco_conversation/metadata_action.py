@@ -6,7 +6,8 @@ from data_structure.operations import LogicalOperation
 class MetadataAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.metadata_help)])
+        return None, True
 
     def on_enter2(self):
         from .region_action import RegionAction
@@ -120,7 +121,8 @@ class MetadataAction(AbstractAction):
 class KeyAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_key_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.metadata_key_help)])
+        return None, True
 
     def on_enter(self):
         pass
@@ -169,7 +171,8 @@ class KeyAction(AbstractAction):
 class StringValueAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_string_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.metadata_string_help)])
+        return None, False
 
     def on_enter(self):
         pass
@@ -214,7 +217,8 @@ class StringValueAction(AbstractAction):
 class RangeValueAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.metadata_range_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.metadata_range_help)])
+        return None, False
 
     def on_enter(self):
         pass

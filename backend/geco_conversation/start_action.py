@@ -6,7 +6,8 @@ import copy
 class StartAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(messages.start_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.start_help)])
+        return None, True
 
     def on_enter(self):
         list_param = {'Annotations': 'annotations', 'Experimental data': 'experiments'}

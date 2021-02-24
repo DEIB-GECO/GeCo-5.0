@@ -4,7 +4,8 @@ from geco_conversation import *
 class FieldAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.fields_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.fields_help)])
+        return None, False
 
     def on_enter(self):
         pass

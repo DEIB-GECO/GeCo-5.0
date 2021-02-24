@@ -8,7 +8,8 @@ class RenameAction(AbstractAction):
         self.next = next_action
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.rename_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.rename_help)])
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])

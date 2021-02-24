@@ -3,7 +3,8 @@ from workflow.pivot import Pivot
 class PivotAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(messages.union_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.pivot_help)])
+        return None, True
 
     def on_enter(self):
         #self.context.workflow.run(self.context.workflow[0])

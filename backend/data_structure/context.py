@@ -102,7 +102,7 @@ class Payload:
                 self.status[key] = old.remove(value)
             elif isinstance(old, dict):
                 self.status[key].pop(value)
-            print(self.status[key])
+            #print(self.status[key])
             self.context.top_delta().update_value(key, old, self.status[key])
 
     def clear(self):
@@ -163,7 +163,7 @@ class Context:
             self.history[-1].bot_msgs = [bot_msg]
         else:
             self.history[-1].bot_msgs = [self.history[-1].bot_msgs, bot_msg]
-        print(self.history)
+        #print(self.history)
 
 
     def add_bot_msgs(self, bot_msgs):

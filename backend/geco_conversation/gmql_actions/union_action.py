@@ -4,6 +4,7 @@ class UnionAction(AbstractAction):
 
     def help_message(self):
         self.context.add_bot_msgs([Utils.chat_message(messages.union_help)])
+        return None, False
 
     def on_enter(self):
         self.context.add_bot_msgs([Utils.chat_message(messages.rename)])

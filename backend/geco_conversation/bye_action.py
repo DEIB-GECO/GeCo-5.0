@@ -6,7 +6,8 @@ import copy
 class ByeAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(messages.start_help)]
+        self.context.add_bot_msg(Utils.chat_message("You can restart from the beginning or close the page!"))
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message("Do you want to start again from the beginning?"))

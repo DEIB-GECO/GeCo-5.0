@@ -3,7 +3,8 @@ from geco_conversation import *
 class DifferenceAction(AbstractAction):
 
     def help_message(self):
-        self.context.add_bot_msgs([Utils.chat_message(messages.union_help)])
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.difference_help)])
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msgs([Utils.chat_message(messages.rename)])

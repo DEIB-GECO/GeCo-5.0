@@ -25,7 +25,7 @@ class AbstractAction(ABC):
     def run(self, message, intent, entities):
         if intent == "help":
             self.help_message()
-            return None, False
+            #return None, False
         else:
             return self.logic(message, intent, entities)
         '''

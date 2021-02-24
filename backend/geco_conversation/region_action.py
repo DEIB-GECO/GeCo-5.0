@@ -7,7 +7,9 @@ from data_structure.operations import LogicalOperation
 class RegionAction(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.region_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.region_help)])
+        return None, True
+
 
     def on_enter(self):
         from .confirm import Confirm
@@ -65,7 +67,8 @@ class RegionAction(AbstractAction):
 class RegionAction2(AbstractAction):
 
     def help_message(self):
-        return [Utils.chat_message(helpMessages.region_key_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.region_key_help)])
+        return None, False
 
     def on_enter(self):
         pass

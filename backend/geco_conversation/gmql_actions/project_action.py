@@ -4,7 +4,8 @@ from data_structure.dataset import Field
 class ProjectKeepMetaAction(AbstractAction):
 
     def help_message(self):
-        return []
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_meta_help)])
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message(
@@ -21,7 +22,8 @@ class ProjectKeepMetaAction(AbstractAction):
 class ProjectKeepRegionAction(AbstractAction):
 
     def help_message(self):
-        return []
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_region_help)])
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message(
@@ -38,7 +40,8 @@ class ProjectKeepRegionAction(AbstractAction):
 
 class KeepAction(AbstractAction):
     def help_message(self):
-        pass
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.project_keep_help)])
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message(messages.keep))

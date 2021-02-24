@@ -5,7 +5,8 @@ from geco_conversation import *
 class CoverAction(AbstractAction):
 
     def help_message(self):
-        return []
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.cover_help)])
+        return None, False
 
     def on_enter(self):
         pass
@@ -26,7 +27,8 @@ class CoverAction(AbstractAction):
 class CoverS1Action(AbstractAction):
 
     def help_message(self):
-        return []
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.cover_help)])
+        return None, False
 
     def on_enter(self):
         pass
@@ -48,7 +50,8 @@ class CoverS1Action(AbstractAction):
 class CoverS2Action(AbstractAction):
 
     def help_message(self):
-        return []
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.cover_help)])
+        return None, True
 
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message(messages.groupby))

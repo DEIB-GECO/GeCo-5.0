@@ -3,7 +3,8 @@ from geco_conversation import *
 
 class Confirm(AbstractAction):
     def help_message(self):
-        return [Utils.chat_message(helpMessages.confirm_help)]
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.confirm_help)])
+        return None, True
 
     def on_enter(self):
         list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}

@@ -23,10 +23,16 @@ class ExperimentAction(AbstractAction):
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in self.context.payload.database.fields:
-                self.context.payload.replace(k, [x for x in v if
-                                                 x in self.context.payload.database.values[k]])
+
+                self.context.payload.replace(k, [x for x in v if x in self.context.payload.database.values[k]])
+
                 if len(self.status[k]) == 0:
                     self.context.payload.delete(k)
+            else:
+                self.context.payload.delete(k)
+
+
+        print('status', self.status)
 
     def filter(self, gcm_filter):
         if len(gcm_filter) > 0:
@@ -49,7 +55,7 @@ class ExperimentAction(AbstractAction):
         # Find fields that are not already selected by the user
         # missing_fields = list(set(self.context.payload.database.fields_names).difference(set(self.status.keys())))
         missing_fields = self.context.payload.database.fields_names
-        fields = {k: v for (k, v) in self.status.items() if k in experiment_fields}
+        #fields = {k: v for (k, v) in self.status.items() if k in experiment_fields}
 
         self.context.add_bot_msgs([Utils.table_viz('Data Available', self.context.payload.database.table)])
         if samples > 0:
@@ -57,11 +63,12 @@ class ExperimentAction(AbstractAction):
                 list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
                 if len(list_param) != 0:
                     # print(self.logic)
+                   # param_list = {k: v for (k, v) in self.status.items() if k in experiment_fields}
+                    print(gcm_filter)
                     self.context.add_bot_msgs([Utils.chat_message(messages.choice_field),
                                                Utils.choice('Available fields', list_param, show_help=True,
                                                             helpIconContent=helpMessages.fields_help),
-                                               Utils.param_list({k: v for (k, v) in self.status.items() if
-                                                                 k in experiment_fields})] +
+                                               Utils.param_list(gcm_filter)] +
                                               Utils.create_piecharts(self.context, gcm_filter))
                     return FieldAction(self.context), False
                 else:
