@@ -3,36 +3,12 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 @Module({ namespaced: true })
 class Process extends VuexModule {
   stepList: ProcessStep[] = [
-    {
-      name: 'Data Selection',
-      urlList: [],
-      isDownloadButtonVisible: false,
-      state: 'active'
-    },
-    {
-      name: 'Data Selection',
-      urlList: [],
-      isDownloadButtonVisible: false,
-      state: 'active'
-    },
-    {
-      name: 'Data Selection',
-      urlList: [],
-      isDownloadButtonVisible: false,
-      state: 'active'
-    },
-    {
-      name: 'Data Selection',
-      urlList: [],
-      isDownloadButtonVisible: false,
-      state: 'active'
-    },
-    {
-      name: 'Data Selection',
-      urlList: [],
-      isDownloadButtonVisible: false,
-      state: 'active'
-    }
+    // {
+    //   name: 'Data Selection',
+    //   urlList: [],
+    //   isDownloadButtonVisible: false,
+    //   state: 'active'
+    // }
   ];
   lastElementName = '';
 

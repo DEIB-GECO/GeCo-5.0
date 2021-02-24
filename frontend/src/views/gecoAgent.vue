@@ -195,7 +195,8 @@ export default class GecoAgent extends Vue {
 
   pushBotMessage(msg: string) {
     if (msg != '') {
-      conversation.push({ sender: 'bot', text: msg });
+      // conversation.push({ sender: 'bot', text: msg });
+      this.messageParser({ sender: 'bot', text: msg });
     }
   }
 
@@ -209,20 +210,23 @@ export default class GecoAgent extends Vue {
     // this.downloadFile(this.message, 'esempio.txt', 'text/plain');
   }
 
-  reset(): void {
+  reset() {
     if (
-      window.confirm('Do you want to lose all your progresses and start over? After confirming, reload the page!')
+      window.confirm('Do you want to lose all your progresses and start over?')
     ) {
       socket.emit('reset', {});
 
       this.editMessage('');
-      console.log('mandato RESET');
-      // this.editMessage('reset session');
-      // this.sendMessage();
-      socket.emit('ack', { message_id: this.lastMessageId });
-      this.resetProcess();
+      
+      socket.emit('ack', { message_id: -1 });
+      this.resetProcess();;
+      
       this.updateFieldList([]);
       this.parameterParser([]);
+
+      this.pushBotMessage("Conversation restarted: I just forgot everything!");
+      console.log('mandato RESET', conversation);
+
     }
   }
 }
