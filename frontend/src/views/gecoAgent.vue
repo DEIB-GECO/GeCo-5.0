@@ -288,6 +288,7 @@ export default class GecoAgent extends Vue {
   display: flex;
   width: 100%;
   align-items: center;
+  overflow: auto;
 }
 
 .download_icon {
