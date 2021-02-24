@@ -101,8 +101,8 @@ nlu:
     - i'm looking for data from [cistrome](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
     - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [bones, joints and articular cartilage of other and unspecified sites](tissue)?
     - I want to retrieve data from [breast cancer (adenocarcinoma)](disease)
-    - [encode](source) data for [breast cancer, breast carcinoma](disease)
-    - I want experiment about [breast cancer, carcinoma](disease)
+    - [encode](source) data for [breast carcinoma](disease)
+    - I want experiment about [breast carcinoma](disease)
     - I need [breast carcinoma](disease)
     - could you retrieve [dna methylation](data_type) data from [breast ductal carcinoma](disease)?
     - [dna seq](data_type) from [bone tissue](tissue)
@@ -8603,6 +8603,7 @@ nlu:
     - expression of micro rna
     - expression of microrna
     - expressions of mirna
+    - mirna seq
 - synonym: thymoma
   examples: |
     - thynoma
@@ -8627,3 +8628,4 @@ nlu:
     - expression of gene
     - expressions of gene
     - expression of long rna
+    - rna seq

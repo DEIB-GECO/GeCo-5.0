@@ -126,7 +126,7 @@ class ProjectMetaS6Action(AbstractAction):
 			change_dict = {self.status['project_meta']['name']: self.status['project_meta']['operation']}
 			self.context.workflow.add(ProjectMetadata(self.context.workflow[-1], change_dict=change_dict))
 			self.context.add_bot_msg(Utils.chat_message(messages.new_gmql_operation))
-			self.context.payload.clear()
+			#self.context.payload.clear()
 
 			if len(self.context.data_extraction.datasets) % 2 == 0:
 				return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False

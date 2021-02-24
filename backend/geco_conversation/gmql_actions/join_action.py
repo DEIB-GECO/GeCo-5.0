@@ -38,6 +38,6 @@ class JoinAction(AbstractAction):
         # names['Join'] = name
 
         self.context.add_bot_msg(Utils.chat_message(messages.new_gmql_operation))
-        self.context.payload.clear()
+        #self.context.payload.clear()
         return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
 

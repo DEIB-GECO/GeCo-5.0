@@ -8,7 +8,7 @@ class MetadataAction(AbstractAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.metadata_help)]
 
-    def on_enter(self):
+    def on_enter2(self):
         from .region_action import RegionAction
         self.context.payload.insert('metadata', {})
         gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
@@ -23,11 +23,31 @@ class MetadataAction(AbstractAction):
             self.context.payload.back = MetadataAction
             return RegionAction(self.context), True
 
+    def on_enter(self):
+        #from .region_action import RegionAction
+        self.context.payload.insert('metadata', {})
+        #gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
+        #keys = self.context.payload.database.find_all_keys(gcm_filter)
+
+        #self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
+        # list_param = {k: self.status['fields'][k] for k in self.status['fields'] if k != 'metadata'}
+        #if len(self.status['available_keys']) >= 1:
+        self.context.add_bot_msgs(
+                [Utils.chat_message(messages.metadata_filter)])  # , Utils.param_list(list_param)])
+        return None, False
+        #else:
+        #    self.context.payload.back = MetadataAction
+        #    return RegionAction(self.context), True
+
     def logic(self, message, intent, entities):
         from .region_action import RegionAction
         self.context.payload.back = MetadataAction
 
         if intent == 'affirm':
+            gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
+            keys = self.context.payload.database.find_all_keys(gcm_filter)
+
+            self.context.payload.insert('available_keys', {x.replace('_', ' '): x for x in keys if keys[x] > 1})
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name']}
             list_param = {k: self.status['fields'][k] for k in self.status['fields']}
 

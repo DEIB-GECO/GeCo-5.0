@@ -65,7 +65,7 @@ class CoverS2Action(AbstractAction):
         else:
             self.context.workflow.add(Cover(self.context.workflow[-1],self.status['min'], self.status['max']))
         self.context.add_bot_msg(Utils.chat_message(messages.new_gmql_operation))
-        self.context.payload.clear()
+        #self.context.payload.clear()
         if len(self.context.data_extraction.datasets) % 2 == 0:
             return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
         else:

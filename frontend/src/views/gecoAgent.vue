@@ -211,7 +211,7 @@ export default class GecoAgent extends Vue {
 
   reset(): void {
     if (
-      window.confirm('Do you want to lose all your progresses and start over? After confirm, recharge the page!')
+      window.confirm('Do you want to lose all your progresses and start over? After confirming, reload the page!')
     ) {
       socket.emit('reset', {});
 
