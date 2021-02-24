@@ -8,6 +8,7 @@ FROM (
                   NATURAL JOIN replicate2item
                   NATURAL JOIN item
                   NATURAL JOIN dataset
+		 WHERE synonym.type IN ('RAW', 'PREF', 'SYN')
 
          UNION
 
@@ -17,6 +18,7 @@ FROM (
                   NATURAL JOIN replicate2item
                   NATURAL JOIN item
                   NATURAL JOIN dataset
+         WHERE tissue_tid is null
 
          UNION
 
@@ -28,6 +30,9 @@ FROM (
                   NATURAL JOIN replicate2item
                   NATURAL JOIN item
                   NATURAL JOIN dataset
+			 WHERE synonym.type IN ('RAW', 'PREF', 'SYN')
+
+
          UNION
 
          SELECT distinct is_annotation, 'disease' as label_type, disease as pref_label, disease as label
@@ -36,6 +41,7 @@ FROM (
                   NATURAL JOIN replicate2item
                   NATURAL JOIN item
                   NATURAL JOIN dataset
+         WHERE disease_tid is null
 
          UNION
 
@@ -47,6 +53,9 @@ FROM (
                   NATURAL JOIN replicate2item
                   NATURAL JOIN item
                   NATURAL JOIN dataset
+			 WHERE synonym.type IN ('RAW', 'PREF', 'SYN')
+
+
 
 
          UNION
@@ -57,6 +66,7 @@ FROM (
                   NATURAL JOIN replicate2item
                   NATURAL JOIN item
                   NATURAL JOIN dataset
+         WHERE cell_tid is null
 
          UNION
 
@@ -65,6 +75,9 @@ FROM (
                   JOIN vocabulary ON content_type_tid = tid
                   NATURAL JOIN synonym
                   NATURAL JOIN dataset
+			 WHERE synonym.type IN ('RAW', 'PREF', 'SYN')
+
+
 
 
          UNION
@@ -72,7 +85,7 @@ FROM (
          SELECT distinct is_annotation, 'content_type' as label_type, content_type as pref_label, content_type as label
          FROM item
                   NATURAL JOIN dataset
-
+         WHERE content_type_tid is null
 
          UNION
 
@@ -82,6 +95,9 @@ FROM (
                   NATURAL JOIN synonym
                   NATURAL JOIN item
                   NATURAL JOIN dataset
+			 WHERE synonym.type IN ('RAW', 'PREF', 'SYN')
+
+
 
 
          UNION
@@ -90,6 +106,7 @@ FROM (
          FROM experiment_type
                   NATURAL JOIN item
                   NATURAL JOIN dataset
+         WHERE target_tid is null
 
          UNION
 
@@ -121,6 +138,7 @@ FROM (
 WHERE pref_label is not null
 ORDER BY is_annotation, label_type, lower(pref_label), lower(label)
 -- limit 10
+
 
 
 

@@ -85,12 +85,23 @@ export default class FunctionsArea extends Vue {
   }
 
   choiceContainsKeyword(choice: AvailableChoice, keyWord: string): boolean {
+        
     const isInTheName = choice.name.includes(keyWord);
 
+    // let filteredSynonims = []
+
+    // if(choice.synonyms){
+    //     filteredSynonims = choice.synonyms.filter((item) => {
+    //           return item.includes(keyWord);
+    //           });
+    // }
+      
+    
+    
     const filteredSynonims = choice.synonyms
       ? choice.synonyms.filter((item) => {
-          return item.includes(keyWord);
-        })
+              return item.includes(keyWord);
+              })
       : [];
     const isInTheSynonims = filteredSynonims.length > 0;
     // const isInTheSynonims = true;
