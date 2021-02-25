@@ -33,7 +33,7 @@ class NewDataset(AbstractAction):
                                           self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),
                 Utils.tools_setup(add=[], remove=['pie-chart', 'table'])])
             return SameDonorDataset(self.context), False
-        print("************AaAAAAAAAAaAAAAAAAA**********\n\n\n\n\n\n\n")
+
         self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
         return None, False
 

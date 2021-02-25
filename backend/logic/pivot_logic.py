@@ -15,24 +15,29 @@ class PivotLogic:
 
 
     def run(self):
-        if self.op.meta_col != None:
-            items = list(self.ds.meta['item_id'])
-            items.sort()
-            temp_meta = pd.DataFrame(index=items, columns=self.op.meta_col)
-            for i in self.op.meta_col:
-                temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-        else:
-            items = list(self.ds.meta['item_id'])
-            items.sort()
-            temp_meta = pd.DataFrame(index=items, columns=self.op.meta_row)
-            for i in self.op.meta_row:
-                temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-        print('TEMP META')
-        print(temp_meta.head())
+        # if self.op.meta_col != None:
+        #     items = list(self.ds.meta['item_id'])
+        #     items.sort()
+        #     temp_meta = pd.DataFrame(index=items, columns=self.op.meta_col)
+        #     for i in self.op.meta_col:
+        #         if i!='item_id':
+        #             temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
+        # else:
+        #     items = list(self.ds.meta['item_id'])
+        #     items.sort()
+        #     temp_meta = pd.DataFrame(index=items, columns=self.op.meta_row)
+        #     for i in self.op.meta_row:
+        #         if i != 'item_id':
+        #             temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
+        items = list(self.ds.meta['item_id'])
+        items.sort()
+        temp_meta = pd.DataFrame(index=items)
+        #print('TEMP META')
+        #print(temp_meta.head())
         temp_reg = self.ds.region.merge(temp_meta, left_on='item_id', right_index=True)
         items_reg = pd.DataFrame(index=list(set(temp_reg['item_id'])))
-        print('TEMP REG')
-        print(temp_reg.head())
+        #print('TEMP REG')
+        #print(temp_reg.head())
         #if (self.op.region_col!=None) and (self.op.meta_col!=None):
         #    col = self.op.region_col.append(self.op.meta_col)
         if self.op.region_col!=None:
@@ -45,18 +50,19 @@ class PivotLogic:
             row = self.op.region_row
         else:
             row = self.op.meta_row
-        print('col', col)
-        print('row', row)
+        #print('col', col)
+        #print('row', row)
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)
 
         if self.op.other_region!=None:
             labels_reg = temp_reg[self.op.other_region]
-
+        labels = []
         if (self.op.meta_col != None):
             if self.op.other_meta!=None:
                 pivot = pivot.T
                 for i in self.op.other_meta:
+                    labels.append(i)
                     pivot[i]= ""
                     temp = self.ds.meta[self.ds.meta['key'] == i]
                     for x in pivot.index:
@@ -64,9 +70,9 @@ class PivotLogic:
                 pivot = pivot.T
             elif self.op.other_region!=None:
                 for i in self.op.other_region:
+                    labels.append(i)
                     pivot[i] = list(labels_reg[i])
         else:
-            labels=[]
             if self.op.other_meta!=None:
                 for i in self.op.other_meta:
                     labels.append(i)
@@ -86,7 +92,7 @@ class PivotLogic:
         pivot.to_csv('pivot.csv')
         self.op.result = PivotRes(pivot, labels)
         self.op.executed = True
-        self.write()
+        #self.write()
 
 
     def write(self):

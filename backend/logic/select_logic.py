@@ -26,26 +26,38 @@ class SelectLogic:
     def query_field(self):
         filter = ' and '.join(['{} in ({})'.format(k, ",".join(['\'{}\''.format(x) for x in v])) for (k, v) in
                                  self.op.depends_on.fields.items()if k!='metadata'])
-        if 'metadata' in self.op.depends_on.fields and self.op.depends_on.fields['metadata'] != None:
-            keys = ','.join(list(self.op.depends_on.fields['metadata'].keys()))
-            values = ','.join([i for k, v in self.op.depends_on.fields['metadata'].items() for i in v])
-            query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id join dw.unified_pair_gecoagent as du on rr.item_id = du.item_id " \
-                    "where {} and key in ({}) and value in ({})".format(filter, keys, values)
+        if self.ds.items!=[]:
+            items = ','.join(str(i) for i in self.ds.items)
+            if 'metadata' in self.op.depends_on.fields and self.op.depends_on.fields['metadata'] != None:
+                keys = ','.join(list(self.op.depends_on.fields['metadata'].keys()))
+                values = ','.join([i for k, v in self.op.depends_on.fields['metadata'].items() for i in v])
+                query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id join dw.unified_pair_gecoagent as du on rr.item_id = du.item_id " \
+                        "where df.item_id in ({}) and key in ({}) and value in ({})".format(items, keys, values)
+            else:
+                query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id " \
+                        "where df.item_id in ({})".format(items)
         else:
-            query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id" \
-                    "where {}".format(filter)
-        print(query)
+            if 'metadata' in self.op.depends_on.fields and self.op.depends_on.fields['metadata'] != None:
+                keys = ','.join(list(self.op.depends_on.fields['metadata'].keys()))
+                values = ','.join([i for k, v in self.op.depends_on.fields['metadata'].items() for i in v])
+                query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id join dw.unified_pair_gecoagent as du on rr.item_id = du.item_id " \
+                        "where {} and key in ({}) and value in ({})".format(filter, keys, values)
+            else:
+                query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id " \
+                        "where {}".format(filter)
+        #print(query)
         #query = "select distinct(item_id) from dw.flatten_gecoagent where {} group by item_id".format(filter)
         return query
 
 
     def run(self):
         query = self.query_field()
-        print("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
+        #print("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
         res = db.engine.execute("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
         values = res.fetchall()
         reg = pd.DataFrame(values, columns=res.keys())
-        print(reg.head())
+        #print(reg.head())
+
         self.ds.add_region_table(reg)
         self.ds.add_region_schema(list(res.keys()))
         if hasattr(self.op.depends_on.fields, 'metadata'):
@@ -59,8 +71,9 @@ class SelectLogic:
                      query))
         values = res.fetchall()
         meta = pd.DataFrame(values, columns=res.keys())
-        print('meta')
-        print(meta.head())
+        del values
+        #print('meta')
+        #print(meta.head())
         self.ds.add_meta_table(meta)
         #res = db.engine.execute("select * from rr.gene_expression_hg19 where item_id in ({}) limit 100".format(query))
         #values = res.fetchall()
@@ -70,4 +83,6 @@ class SelectLogic:
         #self.ds.add_region_schema(list(res.keys()))
         self.op.result = self.ds
         self.op.executed = True
+        #reg.to_csv('region_lung.csv')
+        #meta.to_csv('meta_lung.csv')
 

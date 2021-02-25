@@ -46,7 +46,7 @@ class Confirm(AbstractAction):
                 list_param_ds = list_param.copy()
                 name = list_param['name']
                 del(list_param_ds['name'])
-                ds = Dataset(list_param_ds, name)
+                ds = Dataset(list_param_ds, name, items=list(set(self.context.payload.database.table['item_id'])))
                 self.context.data_extraction.datasets.append(ds)
 
                 self.context.payload.database.go_back({})

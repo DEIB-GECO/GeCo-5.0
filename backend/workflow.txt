@@ -2,16 +2,16 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7f89c6067c50>
+result:<data_structure.dataset.Dataset object at 0x7fdc54f2a450>
 depends_on:Dataset
-metadata:{'gdc__treatments__treatment_type': ['radiation therapy, nos,radiation therapy, nos'], 'clinical__rad__anatomic_treatment_site': ['primary tumor field']}
+metadata:None
 region:None
 -------
 1
 Pivot
 --parameters--
-executed:False
-result:None
+executed:True
+result:<logic.pivot_logic.PivotRes object at 0x7fdc3a38d390>
 depends_on:Select
 region_row:['gene_symbol']
 meta_row:None
