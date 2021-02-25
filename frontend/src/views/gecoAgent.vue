@@ -270,10 +270,14 @@ export default class GecoAgent extends Vue {
 
 .process_step_box {
   width: 100px;
+  height: 80px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: solid 3px #0b3142;
   border-radius: 5px;
-  padding: 20px;
+  // padding: 20px;
   float: left;
   margin-left: 10px;
   font-weight: bold;
