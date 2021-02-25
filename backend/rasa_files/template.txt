@@ -2,6 +2,10 @@ I want to retrieve data from $disease$
 $source$ data for $disease$
 I want experiment about $disease$
 I need $disease$
+$data_type$ from $disease$ for $assembly$
+$assembly$ $data_type$ from $disease$
+$tissue$ data from $data_type$ for $disease$
+$data_type$ from $tissue$
 could you retrieve $data_type$ data from $disease$?
 $data_type$ from $tissue$
 data regarding $data_type$ for cell $cell$
@@ -35,5 +39,3 @@ i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
 can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from $tissue$
 i'm looking for data from $source$ regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
 can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from $tissue$?
-
-

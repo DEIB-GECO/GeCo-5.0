@@ -1,0 +1,166 @@
+is_annotation	LABEL_TYPE	PREF	LABEL
+TRUE	data_type	annotation	annotations
+TRUE	data_type	annotation	perform annotations
+TRUE	data_type	annotation	enrich regions
+FALSE	data_type	cnv	copy number variation
+FALSE	data_type	cnv	copy number variations
+FALSE	data_type	cnv	copy number
+FALSE	data_type	cnv	DNA Copy Number Variation
+FALSE	data_type	cnv	DNA Copy Number Variants
+FALSE	data_type	cnv	DNA Copy Number Polymorphisms
+FALSE	data_type	cnv	DNA Copy Number Polymorphism
+FALSE	data_type	cnv	Copy Number Polymorphisms
+FALSE	data_type	cnv	Copy Number Polymorphism
+FALSE	data_type	cnv	DNA Copy Number Changes
+FALSE	data_type	cnv	DNA Copy Number Change
+FALSE	data_type	masked copy number segment	masked copy number variation
+FALSE	data_type	masked copy number segment	masked copy number variations
+FALSE	data_type	masked copy number segment	masked copy number
+FALSE	data_type	masked copy number segment	masked DNA Copy Number Variation
+FALSE	data_type	masked copy number segment	masked DNA Copy Number Variants
+FALSE	data_type	masked copy number segment	masked DNA Copy Number Polymorphisms
+FALSE	data_type	masked copy number segment	masked DNA Copy Number Polymorphism
+FALSE	data_type	masked copy number segment	masked Copy Number Polymorphisms
+FALSE	data_type	masked copy number segment	masked Polymorphisms, Copy Number
+FALSE	data_type	masked copy number segment	masked DNA Copy Number Changes
+FALSE	data_type	copy number segment	copy number variation
+FALSE	data_type	copy number segment	copy number variations
+FALSE	data_type	copy number segment	copy number
+FALSE	data_type	copy number segment	DNA Copy Number Variation
+FALSE	data_type	copy number segment	DNA Copy Number Variants
+FALSE	data_type	copy number segment	DNA Copy Number Polymorphisms
+FALSE	data_type	copy number segment	DNA Copy Number Polymorphism
+FALSE	data_type	copy number segment	Copy Number Polymorphisms
+FALSE	data_type	copy number segment	Polymorphisms, Copy Number
+FALSE	data_type	copy number segment	DNA Copy Number Changes
+FALSE	data_type	copy number segment	DNA Copy Number Change
+FALSE	data_type	dna methylation	DNA Methylations
+FALSE	data_type	methylation beta value	DNA Methylations
+FALSE	data_type	methylation beta value	dna methylation
+FALSE	data_type	masked somatic mutation	dna seq
+FALSE	data_type	masked somatic mutation	dna sequencing
+FALSE	data_type	masked somatic mutation	masked dna mutations
+FALSE	data_type	dna seq	dna sequencing
+FALSE	data_type	dna seq	somatic mutations
+FALSE	data_type	dna seq	dna mutations
+FALSE	data_type	domain	chip-seq
+FALSE	data_type	domain	Chromatin Immunoprecipitation Sequencing
+FALSE	data_type	domain	ChIP-Seq
+FALSE	data_type	domain	ChIP Sequencing
+FALSE	data_type	domain	Sequencing, ChIP
+FALSE	data_type	domain	Chromatin Immuno-precipitation Sequencing
+FALSE	data_type	domain	Chromatin Immuno precipitation Sequencing
+FALSE	data_type	exon quantification	exon expression
+FALSE	data_type	exon quantification	quantification of transcriptomic features
+FALSE	data_type	exon quantification	exon RNA-Seq
+FALSE	data_type	exon quantification	expression of exons
+FALSE	data_type	exon quantification	quantification of exons
+FALSE	data_type	isoform expression	expression of isoforms
+FALSE	data_type	isoform expression	rna-seq
+FALSE	data_type	isoform expression	rna sequencing
+FALSE	data_type	isoform expression	rna seq
+FALSE	data_type	isoform expression	sequencing of isoforms
+FALSE	data_type	isoform expression	expression of isoforms
+FALSE	data_type	isoform expression	quantification of isoforms
+FALSE	data_type	isoform expression	isoform rna seq
+FALSE	data_type	isoform expression	isoform quantification
+FALSE	data_type	isoform expression	quantification of isoforms
+FALSE	data_type	gene expression	expression of genes
+FALSE	data_type	gene expression	rna-seq
+FALSE	data_type	gene expression	rna sequencing
+FALSE	data_type	gene expression	rna seq
+FALSE	data_type	gene expression	sequencing of genes
+FALSE	data_type	gene expression	expressions of genes
+FALSE	data_type	gene expression	transcriptomics
+FALSE	data_type	mirna expression	expressions of micrornas
+FALSE	data_type	mirna expression	expressions of micro rnas
+FALSE	data_type	mirna expression	micro rna sequencing
+FALSE	data_type	mirna expression	mirna seq
+FALSE	data_type	mirna expression	transcriptomics
+FALSE	data_type	mirna expression	quantification of micro rna
+FALSE	data_type	peaks	chip-seq
+FALSE	data_type	peaks	Chromatin Immunoprecipitation Sequencing
+FALSE	data_type	peaks	ChIP-Seq
+FALSE	data_type	peaks	ChIP Sequencing
+FALSE	data_type	peaks	Sequencing, ChIP
+FALSE	data_type	peaks	Chromatin Immuno-precipitation Sequencing
+FALSE	data_type	peaks	Chromatin Immuno precipitation Sequencing
+FALSE	data_type	variant calling	Genetic Variation
+FALSE	data_type	variant calling	mutations
+FALSE	data_type	variant calling	germline mutations
+FALSE	data_type	variant calling	variants
+FALSE	data_type	variant calling	germline substitutions
+FALSE	data_type	variant calling	germline variants
+FALSE	data_type	spljxn quantification	Splice junctions expression
+FALSE	data_type	spljxn quantification	quantification of Splice junctions
+FALSE	data_type	spljxn quantification	Splice junction RNA-Seq
+FALSE	data_type	spljxn quantification	expression of Splice junctions
+FALSE	data_type	spljxn quantification	quantification of Splice junctions
+FALSE	data_type	spljxn quantification	Splice junction quantification
+FALSE	is_healthy	FALSE	tumor
+FALSE	is_healthy	FALSE	diseased
+FALSE	is_healthy	FALSE	ill
+FALSE	is_healthy	FALSE	sick
+FALSE	is_healthy	FALSE	non-healthy
+FALSE	is_healthy	FALSE	tumoral
+FALSE	is_healthy	TRUE	control
+FALSE	is_healthy	TRUE	normal
+FALSE	is_healthy	TRUE	healthy
+FALSE	is_healthy	TRUE	non tumoral
+FALSE	is_healthy	TRUE	non tumoral
+FALSE	is_healthy	TRUE	normal tissue
+FALSE	is_healthy	TRUE	control sample
+FALSE	is_healthy	TRUE	healthy tissue
+FALSE	is_healthy	TRUE	healthy sample
+FALSE	tissue	leg bone	bone of the leg
+FALSE	tissue	leg bone	leg bones
+FALSE	tissue	leg bone	left or right lef bone
+FALSE	tissue	leg bone	lower limb bone
+FALSE	tissue	gall bladder	vescica
+FALSE	tissue	subcutaneous adipose tissue	fat tissue
+FALSE	tissue	right lobe of liver	liver
+FALSE	tissue	right lobe of liver	liver lobe
+FALSE	tissue	adipose tissue	fat tissue
+FALSE	tissue	alveolus of lung	lung alveolus
+FALSE	tissue	alveolus of lung	lung
+FALSE	tissue	Ammon's horn	hippocampus
+FALSE	tissue	aorta	vascular tissue
+FALSE	tissue	arm bone	upper limb bone
+FALSE	tissue	artery	vascular tissue
+FALSE	tissue	ascending aorta	aorta
+FALSE	tissue	ascending aorta	vascular tissue
+FALSE	tissue	Autonomic Nervous System	Nervous System
+FALSE	tissue	Autonomic Nervous System	Nerves
+FALSE	disease	head and neck squamous cell carcinoma	HNSC
+FALSE	disease	bladder urothelial carcinoma	BLCA
+FALSE	disease	hepatocellular carcinoma	LIHC
+FALSE	disease	cutaneous melanoma	SKCM
+FALSE	disease	adrenal cortex carcinoma	ACC
+FALSE	disease	glioblastoma	GBM
+FALSE	disease	granular renal cell carcinoma	KIRC
+FALSE	disease	ovarian serous cystadenocarcinoma	OV
+FALSE	disease	lung adenocarcinoma	LUAD
+FALSE	disease	esophageal carcinoma	ESCA
+FALSE	disease	prostate adenocarcinoma	PRAD
+FALSE	disease	uterine carcinosarcoma	UCS
+FALSE	disease	cholangiocarcinoma	CHOL
+FALSE	disease	brain glioma	LGG
+FALSE	disease	lung squamous cell carcinoma	LUSC
+FALSE	disease	diffuse large b-cell lymphoma	DLBC
+FALSE	disease	chromophobe renal cell carcinoma	KICH
+FALSE	disease	uveal melanoma	UVM
+FALSE	disease	mesothelioma	MESO
+FALSE	disease	thyroid gland carcinoma	THCA
+FALSE	disease	pancreatic adenocarcinoma	PAAD
+FALSE	disease	gastric adenocarcinoma	STAD
+FALSE	disease	cervical carcinoma	CESC
+FALSE	disease	acute myeloid leukemia	LAML
+FALSE	disease	uterine corpus endometrial carcinoma	UCEC
+FALSE	disease	thymoma	THYM
+FALSE	disease	colon adenocarcinoma	COAD
+FALSE	disease	testicular germ cell tumor	TGCT
+FALSE	disease	adrenal gland pheochromocytoma	PCPG
+FALSE	disease	papillary renal cell carcinoma	KIRP
+FALSE	disease	sarcoma	SARC
+FALSE	disease	rectal adenocarcinoma	READ
+FALSE	disease	invasive breast carcinoma	BRCA
