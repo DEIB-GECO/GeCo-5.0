@@ -109,6 +109,10 @@ class DB:
             if values != []:
                 self.values[f]=values
 
+    def update_donors(self, ds, donors):
+        self.table = self.table[self.table['dataset_name']==ds]
+        self.table =  self.table[self.table['donor_source_id'].isin(donors)]
+
     def retrieve_values(self, gcm, f):
         values = list(self.table[f])
         set_val = list(set(values))

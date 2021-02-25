@@ -28,17 +28,19 @@ class Confirm(AbstractAction):
                 fields = self.status['fields'].copy()
                 if 'metadata' in fields:
                     del(fields['metadata'])
-                del(fields['name'])
+                if 'name' in fields:
+                    del(fields['name'])
 
                 links = self.context.payload.database.download(fields)
                 #urls = []
                 list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
                 meta_dict = {}
-                for x in self.status['metadata']:
-                    meta_dict[x] = self.status["metadata"][x]
+                if 'metadata' in self.status:
+                    for x in self.status['metadata']:
+                        meta_dict[x] = self.status["metadata"][x]
                 meta = {'metadata': meta_dict}
                 print('meta', meta)
-                donors = self.context.payload.database.retrieve_donors(self.status["metadata"])
+                donors = self.context.payload.database.retrieve_donors(meta['metadata'])
                 self.context.payload.insert('donors', donors)
                 print(self.status['donors'])
                 if meta_dict!={}:

@@ -95,7 +95,7 @@ class MetadataAction(AbstractAction):
                                           self.status['metadata'][x] != []})
 
                 if number == False:
-                    list_param = {x: x for x in self.status['available_values']}
+                    list_param = {x: x+';' for x in self.status['available_values']}
 
                     self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_value),
                                                Utils.choice('Available values', list_param, show_search=True,show_help=True,
@@ -145,7 +145,7 @@ class KeyAction(AbstractAction):
                                self.status['metadata'] if self.status['metadata'][x]!=[]})
 
             if number==False:
-                list_param = {x: x for x in self.status['available_values']}
+                list_param = {x: x+';' for x in self.status['available_values']}
 
                 self.context.add_bot_msgs([Utils.chat_message(messages.metadatum_value),
                         Utils.choice('Available values', list_param, show_search=True,show_help=True, helpIconContent=helpMessages.fields_help),
@@ -178,7 +178,7 @@ class StringValueAction(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
-        values = message.lower().strip().split(';')
+        values = message.lower().strip().split(';')[:-1]
         not_present = []
         for v in values:
             v=v.strip()

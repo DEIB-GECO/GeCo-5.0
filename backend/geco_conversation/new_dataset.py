@@ -1,5 +1,7 @@
 from geco_conversation import *
 from data_structure.dataset import Dataset
+from data_structure.database import DB, fields
+import copy
 
 
 class NewDataset(AbstractAction):
@@ -112,8 +114,8 @@ class DonorDataset(AbstractAction):
 
         if num_tables >= 2:
             self.context.add_bot_msgs([Utils.chat_message(
-                'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'
-                'Do you want also one of these datasets?'),
+                'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'),
+                Utils.chat_message('Do you want also one of these datasets? If not, you will proceed with the analysis.'),
                 Utils.choice('Datasets', {f'{k}: {round((len(v) / len_donors) * 100, 2)}%': k for k, v in
                                           self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),
                 Utils.tools_setup(add=[], remove=['pie-chart', 'table'])])
@@ -135,28 +137,34 @@ class SameDonorDataset(AbstractAction):
         from geco_conversation import GMQLUnaryAction, GMQLBinaryAction
         if intent != 'deny':
             print('intent not deny')
-
+            del self.context.payload.database
+            self.context.payload.database = DB(fields, False, copy.deepcopy(self.context.payload.original_db))
             if intent != 'affirm':
                 print('intent not affirm')
                 self.context.payload.insert('dataset_name', message)
                 gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
                 self.context.payload.database.update(gcm_filter)
+                name = 'DS_' + str(len(self.context.data_extraction.datasets) + 1)
+                self.context.payload.insert('fields',{'dataset_name':message, 'name':name})
                 print(set(self.context.payload.database.table['dataset_name'].values))
                 links = self.context.payload.database.download(gcm_filter, self.status['common_donors'])
-                ds = Dataset(gcm_filter, 'DS_' + str(len(self.context.data_extraction.datasets) + 1),
+                self.context.payload.database.update({})
+                ds = Dataset(gcm_filter, name,
                              donors=self.status['common_donors'])
                 self.context.data_extraction.datasets.append(ds)
                 self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.workflow('Data Selection 2'),
                                            Utils.workflow('Data Selection 2', download=True, link_list=links),
                                             Utils.param_list(gcm_filter),
                                            Utils.tools_setup(add=[], remove=["available_choices"])])
+                regions = self.context.payload.database.find_regions(gcm_filter, {})
+
                 #self.context.add_bot_msgs([Utils.chat_message(messages.gmql_operations)])
                 #if len(self.context.data_extraction.datasets) % 2 == 0:
                  #   return YesNoAction(self.context, GMQLUnaryAction(self.context),
                 #                       GMQLBinaryAction(self.context)), False
                 #else:
                 #    return YesNoAction(self.context, GMQLUnaryAction(self.context), PivotAction(self.context)), False
-                return PivotAction(self.context), True
+                return RegionAction(self.context), True
             else:
                 print('intent affirm')
                 self.context.add_bot_msgs([Utils.chat_message(
