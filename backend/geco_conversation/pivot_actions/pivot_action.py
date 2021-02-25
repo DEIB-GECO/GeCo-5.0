@@ -171,7 +171,7 @@ class Labels(AbstractAction):
         if len(self.context.data_extraction.datasets)==1:
             self.context.workflow.run(self.context.workflow[-1])
             self.context.add_bot_msgs([Utils.chat_message('On the right there is your table.'),
-                                       Utils.table_viz('Pivot', self.context.workflow[-1].result)])
+                                       Utils.table_viz('Pivot', self.context.workflow[-1].result.ds)])
         else:
             self.context.workflow.write_workflow()
             with open('workflow.txt','r') as f:
@@ -180,7 +180,7 @@ class Labels(AbstractAction):
         self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
         # print(Utils.table_viz('Pivot',self.context.workflow[-1].result))
         self.context.payload.clear()
-        return NewDataset(self.context), False
+        return NewDataset(self.context), True
 
 
 class MetaLabels(AbstractAction):

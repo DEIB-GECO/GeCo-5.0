@@ -36,8 +36,8 @@ class PivotLogic:
         #print(temp_meta.head())
         temp_reg = self.ds.region.merge(temp_meta, left_on='item_id', right_index=True)
         items_reg = pd.DataFrame(index=list(set(temp_reg['item_id'])))
-        #print('TEMP REG')
-        #print(temp_reg.head())
+        print('TEMP REG')
+        print(temp_reg.head())
         #if (self.op.region_col!=None) and (self.op.meta_col!=None):
         #    col = self.op.region_col.append(self.op.meta_col)
         if self.op.region_col!=None:
@@ -52,6 +52,7 @@ class PivotLogic:
             row = self.op.meta_row
         #print('col', col)
         #print('row', row)
+        print('prima pivot')
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)
 

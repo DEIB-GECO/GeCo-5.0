@@ -3,6 +3,12 @@ import matplotlib.pyplot as plt
 from .kmeans_logic import KMeansRes
 from .pca_logic import PCARes
 
+class ScatterRes:
+    def __init__(self,x,y,labels,u_labels):
+        self.x = x
+        self.y = y
+        self.labels = labels
+        self.u_labels = u_labels
 
 class ScatterLogic:
     def __init__(self, scatter):
@@ -17,14 +23,18 @@ class ScatterLogic:
         self.run()
 
     def run(self):
-        #u_labels = np.unique(self.labels)
-
-        #for i in u_labels:
-        #    plt.scatter(self.df[self.labels == i, 0], self.df[self.labels == i, 1], label=i)
-
-        #plt.legend()
-        #plt.show()
-        self.op.result = self.op.depends_on_2.result
+        print(self.ds)
+        print(self.ds.shape)
+        u_labels = np.unique(self.labels)
+        print('labels', self.labels)
+        for i in u_labels:
+            plt.scatter(self.ds[self.labels == i, 0], self.ds[self.labels == i, 1], label=i)
+            print('0',self.ds[self.labels == i, 0])
+            print('1', self.ds[self.labels == i, 1])
+        plt.legend()
+        plt.show()
+        print('ciao')
+        self.op.result = ScatterRes(self.ds[:, 0], self.ds[:, 1], self.labels, u_labels)
         self.op.executed = True
         self.write()
 

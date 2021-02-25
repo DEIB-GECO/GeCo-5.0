@@ -15,8 +15,8 @@ class KMeansLogic:
         self.op = kmeans
         self.ds = self.op.depends_on.result
         if  isinstance(self.ds, PivotRes):
-            self.ds = self.ds.ds
             self.labels = self.ds.labels
+            self.ds = self.ds.ds
         self.tuning = kmeans.tuning
         if self.tuning:
             self.min = kmeans.min_clusters

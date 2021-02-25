@@ -13,7 +13,7 @@ class DataAnalysis(AbstractAction):
 
     def logic(self, message, intent, entities):
 
-        if intent == 'clustering':
+        if intent in ['clustering','cluster']:
             self.context.add_bot_msg(Utils.chat_message("Ok, I will perform K-Means clustering."))
             return Clustering(self.context), True
 

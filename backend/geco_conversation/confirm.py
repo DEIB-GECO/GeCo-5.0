@@ -46,7 +46,7 @@ class Confirm(AbstractAction):
                 list_param_ds = list_param.copy()
                 name = list_param['name']
                 del(list_param_ds['name'])
-                ds = Dataset(list_param_ds, name, items=list(set(self.context.payload.database.table['item_id'])))
+                ds = Dataset(list_param_ds, name, donors=self.status['donors'], items=list(set(self.context.payload.database.table['item_id'])))
                 self.context.data_extraction.datasets.append(ds)
 
                 self.context.payload.database.go_back({})
@@ -60,10 +60,11 @@ class Confirm(AbstractAction):
                 else:
                     self.context.workflow.add(Select(ds))
                 self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection',download=True,link_list=links), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param)])
-                if len(self.context.data_extraction.datasets)%2==0:
-                    return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
-                else:
-                    return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
+                #if len(self.context.data_extraction.datasets)%2==0:
+                #    return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
+                #else:
+                 #   return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
+                return PivotAction(self.context), True
 
 
 class ChangeSelection(AbstractAction):

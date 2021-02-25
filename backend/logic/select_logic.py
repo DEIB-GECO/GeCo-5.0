@@ -83,6 +83,7 @@ class SelectLogic:
         #self.ds.add_region_schema(list(res.keys()))
         self.op.result = self.ds
         self.op.executed = True
+        print('fine select')
         #reg.to_csv('region_lung.csv')
         #meta.to_csv('meta_lung.csv')
 

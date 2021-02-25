@@ -46,6 +46,7 @@ class ValueAction(AbstractAction):
                     Utils.choice('Available fields', choices),
                     Utils.param_list(list_param)] + \
                    Utils.create_piecharts(self.context,gcm_filter))
+            self.context.add_bot_msgs([Utils.table_viz('Data Available', self.context.payload.database.table)])
             return FieldAction(self.context), False
 
         elif any(elem in db for elem in given_value):
@@ -71,6 +72,7 @@ class ValueAction(AbstractAction):
 
                 self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
                         Utils.choice('Available fields', choice), Utils.param_list(list_param)] + Utils.create_piecharts(self.context,gcm_filter))
+                self.context.add_bot_msgs([Utils.table_viz('Data Available', self.context.payload.database.table)])
                 return FieldAction(self.context), False
             else:
 
@@ -106,6 +108,7 @@ class DSNameAction(AbstractAction):
         else:
             self.context.add_bot_msgs([Utils.chat_message('Which dataset do you want among these?'),
                                        Utils.choice('Datasets', {i:i for i in list(set(self.context.payload.database.table['dataset_name']))})])
+
             return None, False
 
     def logic(self, message, intent, entities):

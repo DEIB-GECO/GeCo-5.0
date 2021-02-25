@@ -10,19 +10,19 @@ class NewDataset(AbstractAction):
     def on_enter(self):
         table = self.context.payload.database.table
         num_tables = 0
-        len_donors = len(self.status['donors'])
-        print('donors', len(set(self.status['donors'])))
+        len_donors = len(self.context.data_extraction.datasets[-1].donors)
+        print('donors', len(set(self.context.data_extraction.datasets[-1].donors)))
         self.context.payload.insert('common_donors', {})
         for d in self.context.data_extraction.datasets:
             print(d.fields['dataset_name'])
         for ds in set(table['dataset_name']):
             for d in self.context.data_extraction.datasets:
                 if d.fields['dataset_name'] != [ds]:
-                    common_donors = set(table[(table['donor_source_id'].isin(list(set(self.status['donors'])))) & (
+                    common_donors = set(table[(table['donor_source_id'].isin(list(set(self.context.data_extraction.datasets[-1].donors)))) & (
                     (table['dataset_name'] == ds))]['donor_source_id'].values)
                     self.context.payload.update('common_donors', {ds: common_donors})
                     print('common', len(common_donors))
-                    if (len(common_donors) / len(self.status['donors'])) > 0.75:
+                    if (len(common_donors) / len_donors) > 0.75:
                         num_tables += 1
 
         if num_tables >= 2:

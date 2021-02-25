@@ -113,6 +113,7 @@ class Utils(object):
                     "payload": {"state": state}}
 
     def table_viz(show, df, show_index=True, order_by=None):
+        df = df.T
         data = df.to_dict()
         return {"type": "table",
                     "show": show,
@@ -124,6 +125,17 @@ class Utils(object):
                         }
                 }}
 
+    def scatter(x,y,labels, u_labels):
+        dict_scat = {}
+        for l in u_labels:
+            dict_scat[l]={}
+            dict_scat[l]['x']=x[labels==l]
+            dict_scat[l]['y']=y[labels == l]
+
+        return {
+            "vizType": "scatter",
+            "data": [dict_scat],
+        }
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))
