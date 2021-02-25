@@ -22,7 +22,7 @@ sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
 datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
             'grch38_tcga_mirna_expression_2019_10']
-
+region_datasets = datasets
 all_datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
             'grch38_tcga_mirna_expression_2019_10', 'hg19_tcga_rnaseqv2_isoform','grch38_encode_broad_2020_01','hg19_roadmap_epigenomics_dmr','hg19_tcga_rnaseqv2_spljxn',

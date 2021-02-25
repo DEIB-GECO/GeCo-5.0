@@ -124,7 +124,9 @@ class ConversationDBExplore(object):
 
 @simple_page.route('/')
 def index():
+    global thread
     flask.current_app.logger.info("serve index")
+
     return render_template('index.html', async_mode=socketio.async_mode)
 
 
