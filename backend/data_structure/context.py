@@ -138,10 +138,17 @@ class Context:
         self.history.append(Step(bot_msgs, action, user_msg))
 
     def top_bot_msgs(self):
-        if (self.history[-1].bot_msgs != None):
-            return self.history[-1].bot_msgs
-        elif (len(self.history) >= 2) and (self.history[-2].bot_msgs!=None):
-            return self.history[-2].bot_msgs
+        if self.history[-1].user_msg!=None:
+            if (self.history[-1].bot_msgs != None):
+                return self.history[-1].bot_msgs
+            elif (len(self.history) >= 2) and (self.history[-2].bot_msgs!=None):
+                return self.history[-2].bot_msgs
+        else:
+            if (self.history[-1].bot_msgs != None) and (len(self.history) >= 2) and (self.history[-2].bot_msgs!=None):
+                return self.history[-1].bot_msgs+self.history[-2]
+            elif (len(self.history) >= 2) and (self.history[-2].bot_msgs!=None):
+                return self.history[-2].bot_msgs
+
         return None
 
     def top_user_msg(self):

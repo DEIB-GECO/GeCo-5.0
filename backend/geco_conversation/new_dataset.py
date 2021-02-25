@@ -57,6 +57,71 @@ class NewDataset(AbstractAction):
             return None, False
 
 
+class DonorDataset(AbstractAction):
+    def help_message(self):
+        self.context.add_bot_msgs([Utils.chat_message(helpMessages.new_dataset_help)])
+        return None, True
+
+    def on_enter(self):
+        table = self.context.payload.database.table
+        num_tables = 0
+        len_donors = len(self.context.data_extraction.datasets[-1].donors)
+        print('donors', len(set(self.context.data_extraction.datasets[-1].donors)))
+        self.context.payload.insert('common_donors', {})
+        for d in self.context.data_extraction.datasets:
+            print(d.fields['dataset_name'])
+        for ds in set(table['dataset_name']):
+            for d in self.context.data_extraction.datasets:
+                if d.fields['dataset_name'] != [ds]:
+                    common_donors = set(table[(table['donor_source_id'].isin(list(set(self.context.data_extraction.datasets[-1].donors)))) & (
+                    (table['dataset_name'] == ds))]['donor_source_id'].values)
+                    self.context.payload.update('common_donors', {ds: common_donors})
+                    print('common', len(common_donors))
+                    if (len(common_donors) / len_donors) > 0.75:
+                        num_tables += 1
+
+        if num_tables >= 2:
+            self.context.add_bot_msgs([Utils.chat_message(
+                'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'
+                'Do you want also one of these datasets?'),
+                Utils.choice('Datasets', {f'{k}: {round((len(v) / len_donors) * 100, 2)}%': k for k, v in
+                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),
+                Utils.tools_setup(add=[], remove=['pie-chart', 'table'])])
+            return SameDonorDataset(self.context), False
+
+        return DataAnalysis(self.context), True
+
+    def logic(self, message, intent, entities):
+        table = self.context.payload.database.table
+        num_tables = 0
+        len_donors = len(self.context.data_extraction.datasets[-1].donors)
+        print('donors', len(set(self.context.data_extraction.datasets[-1].donors)))
+        self.context.payload.insert('common_donors', {})
+        for d in self.context.data_extraction.datasets:
+            print(d.fields['dataset_name'])
+        for ds in set(table['dataset_name']):
+            for d in self.context.data_extraction.datasets:
+                if d.fields['dataset_name'] != [ds]:
+                    common_donors = set(table[(table['donor_source_id'].isin(
+                        list(set(self.context.data_extraction.datasets[-1].donors)))) & (
+                                                  (table['dataset_name'] == ds))]['donor_source_id'].values)
+                    self.context.payload.update('common_donors', {ds: common_donors})
+                    print('common', len(common_donors))
+                    if (len(common_donors) / len_donors) > 0.75:
+                        num_tables += 1
+
+        if num_tables >= 2:
+            self.context.add_bot_msgs([Utils.chat_message(
+                'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'
+                'Do you want also one of these datasets?'),
+                Utils.choice('Datasets', {f'{k}: {round((len(v) / len_donors) * 100, 2)}%': k for k, v in
+                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),
+                Utils.tools_setup(add=[], remove=['pie-chart', 'table'])])
+            return SameDonorDataset(self.context), False
+
+        return DataAnalysis(self.context), True
+
+
 class SameDonorDataset(AbstractAction):
     def help_message(self):
         self.context.add_bot_msgs([Utils.chat_message(helpMessages.same_donor_help)])
@@ -83,13 +148,15 @@ class SameDonorDataset(AbstractAction):
                 self.context.data_extraction.datasets.append(ds)
                 self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.workflow('Data Selection 2'),
                                            Utils.workflow('Data Selection 2', download=True, link_list=links),
-                                           Utils.chat_message(messages.gmql_operations), Utils.param_list(gcm_filter),
+                                            Utils.param_list(gcm_filter),
                                            Utils.tools_setup(add=[], remove=["available_choices"])])
-                if len(self.context.data_extraction.datasets) % 2 == 0:
-                    return YesNoAction(self.context, GMQLUnaryAction(self.context),
-                                       GMQLBinaryAction(self.context)), False
-                else:
-                    return YesNoAction(self.context, GMQLUnaryAction(self.context), PivotAction(self.context)), False
+                #self.context.add_bot_msgs([Utils.chat_message(messages.gmql_operations)])
+                #if len(self.context.data_extraction.datasets) % 2 == 0:
+                 #   return YesNoAction(self.context, GMQLUnaryAction(self.context),
+                #                       GMQLBinaryAction(self.context)), False
+                #else:
+                #    return YesNoAction(self.context, GMQLUnaryAction(self.context), PivotAction(self.context)), False
+                return PivotAction(self.context), True
             else:
                 print('intent affirm')
                 self.context.add_bot_msgs([Utils.chat_message(
@@ -99,5 +166,6 @@ class SameDonorDataset(AbstractAction):
                 return None, False
         else:
             self.context.payload.delete('common_donors')
-            self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
-            return NewDataset(self.context), False
+            #self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
+            #return NewDataset(self.context), False
+            return DataAnalysis(self.context), True

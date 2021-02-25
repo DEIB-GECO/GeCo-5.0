@@ -39,13 +39,22 @@ class AnnotationAction(AbstractAction):
 
         missing_fields = self.context.payload.database.fields_names
         list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
-        self.context.add_bot_msgs([Utils.table_viz('Data Available',self.context.payload.database.table)])
+        self.context.add_bot_msgs([Utils.table_viz('Data Available',self.context.payload.database.table.drop('local_url',axis=1))])
         if samples > 0:
             if len(list_param)!=0:
-                self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?"),
-                        Utils.choice('Available fields', list_param, show_help=True, helpIconContent=helpMessages.fields_help),
-                        Utils.param_list({k:v for (k,v) in self.status.items() if k in self.context.database.fields})] + Utils.create_piecharts(self.context,gcm_filter))
-                return FieldAction(self.context), False
+                if gcm_filter!={}:
+                    self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select now?"),
+                                               Utils.choice('Available fields', list_param, show_help=True,
+                                                            helpIconContent=helpMessages.fields_help),
+                                               Utils.param_list({k: v for (k, v) in self.status.items() if
+                                                                 k in self.context.database.fields})] + Utils.create_piecharts(
+                        self.context, gcm_filter))
+                    return FieldAction(self.context), False
+                else:
+                    self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?"),
+                            Utils.choice('Available fields', list_param, show_help=True, helpIconContent=helpMessages.fields_help),
+                            Utils.param_list({k:v for (k,v) in self.status.items() if k in self.context.database.fields})] + Utils.create_piecharts(self.context,gcm_filter))
+                    return FieldAction(self.context), False
             else:
                 fields = {x: self.status[x] for x in self.context.payload.database.fields if x in self.status}
                 self.context.payload.clear()

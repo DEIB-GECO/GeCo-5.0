@@ -57,6 +57,5 @@ class NumClusters(AbstractAction):
             self.context.workflow.run(self.context.workflow[-1])
             self.context.add_bot_msg(
                 Utils.scatter(self.context.workflow[-1].result.x, self.context.workflow[-1].result.y,
-                              self.context.workflow[-1].result.labels))
-            self.context.add_bot_msg('CIAOOOOOHHH')
+                              self.context.workflow[-1].result.labels, self.context.workflow[-1].result.u_labels))
             return None, False

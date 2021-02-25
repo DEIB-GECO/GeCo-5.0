@@ -45,7 +45,7 @@ class Workflow(list):
                 if last_op.depends_on.executed == False:
                     self.run(last_op.depends_on)
             logic_class(last_op)
-        self.draw_workflow()
+        #self.draw_workflow()
         self.write_workflow()
 
 

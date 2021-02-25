@@ -1,6 +1,6 @@
 gecoagent = "I am GecoAgent, your assistant through the extraction, the analysis and the visualization of genomic data. Let's proceed with the analysis."
 mood = "I am good thank you! Let's proceed with the analysis."
-initial_greeting = "Hi, there!"
+initial_greeting = "Hi, there! I'm here to help you for the extraction and the analysis of genomic data."
 start_init = "What data are you looking for?"
 healthy_patients = "Do you want healthy patients?"
 wrong_choice = "Sorry, your choice is not available. Please reinsert one."

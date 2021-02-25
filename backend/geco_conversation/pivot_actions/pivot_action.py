@@ -32,8 +32,6 @@ class PivotAction(AbstractAction):
                 meta_row = 'item_id'
                 reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
                 self.context.payload.insert('metadata_row', [meta_row])
-                self.context.add_bot_msg(Utils.chat_message(messages.column_region_message))
-                self.context.add_bot_msg(Utils.choice('Available regions', reg_row))
                 # self.context.add_bot_msgs([Utils.chat_message(messages.row_meta_message)])
                 # self.context.add_bot_msgs([Utils.chat_message("I will put 'item_id' in the rows, ok?")])
                 return MetaRow(self.context), True
@@ -79,14 +77,21 @@ class MetaRow(AbstractAction):
         return [Utils.chat_message(messages.union_help)]
 
     def on_enter(self):
-        if 'meta_row' not in self.status:
+        if 'metadata_row' not in self.status:
             meta_row = 'item_id'
             self.context.payload.insert('metadata_row', [meta_row])
+            reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
             self.context.add_bot_msg(Utils.chat_message(messages.column_region_message))
+            self.context.add_bot_msgs([Utils.choice('Available regions', reg_row)])
+            return None, False
+        else:
+            reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
+            self.context.add_bot_msg(Utils.chat_message(messages.column_region_message))
+            self.context.add_bot_msgs([Utils.choice('Available regions', reg_row)])
             return None, False
 
     def logic(self, message, intent, entities):
-        if 'meta_row' not in self.status:
+        if 'metadata_row' not in self.status:
             meta_row = 'item_id'
             self.context.payload.insert('metadata_row', [meta_row])
             self.context.add_bot_msg(Utils.chat_message(messages.column_region_message))
@@ -112,7 +117,7 @@ class Labels(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
-        from geco_conversation.new_dataset import NewDataset
+        from geco_conversation.new_dataset import DonorDataset
         if intent != 'deny' and 'other_meta' not in self.status:
             self.context.payload.insert('other_meta', None)
             self.context.add_bot_msg(
@@ -156,7 +161,7 @@ class Labels(AbstractAction):
                                                 region_column=self.status['region_column'],
                                                 region_value=self.status['region_value'],
                                                 other_region=self.status['other_region']))
-            elif self.status['other_meta'] != [None]:
+            elif 'other_meta' in self.status and self.status['other_meta'] != [None]:
                 self.context.workflow.add(Pivot(self.context.workflow[-1], metadata_row=['item_id'],
                                                 region_column=self.status['region_column'],
                                                 region_value=self.status['region_value'],
@@ -169,18 +174,19 @@ class Labels(AbstractAction):
         # self.context.workflow.add(
         #    Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
         if len(self.context.data_extraction.datasets)==1:
+            print('CIAOHHHHHHHHHHHHHHHHHHHHHH')
             self.context.workflow.run(self.context.workflow[-1])
-            self.context.add_bot_msgs([Utils.chat_message('On the right there is your table.'),
-                                       Utils.table_viz('Pivot', self.context.workflow[-1].result.ds)])
+            self.context.add_bot_msgs([Utils.chat_message('On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
+                                       Utils.table_viz('Pivot', self.context.workflow[-1].result.ds), Utils.tools_setup(add=[],remove='pie-chart')])
         else:
             self.context.workflow.write_workflow()
             with open('workflow.txt','r') as f:
                 workflow = f.readlines()
             self.context.add_bot_msgs([Utils.chat_message('I am sorry but for now you can download only the workflow you did'), Utils.workflow('Download', download=True)])
-        self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
+        #self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
         # print(Utils.table_viz('Pivot',self.context.workflow[-1].result))
         self.context.payload.clear()
-        return NewDataset(self.context), True
+        return DonorDataset(self.context), False
 
 
 class MetaLabels(AbstractAction):

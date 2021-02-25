@@ -59,7 +59,7 @@ class Confirm(AbstractAction):
                     self.context.workflow.add(Select(ds, metadata=self.status['metadata']))
                 else:
                     self.context.workflow.add(Select(ds))
-                self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection',download=True,link_list=links), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param)])
+                self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection',download=True,link_list=links), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param), Utils.tools_setup(add=[],remove=['pie-chart'])])
                 #if len(self.context.data_extraction.datasets)%2==0:
                 #    return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
                 #else:
