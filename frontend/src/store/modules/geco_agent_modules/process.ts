@@ -8,6 +8,18 @@ class Process extends VuexModule {
     //   urlList: [],
     //   isDownloadButtonVisible: false,
     //   state: 'active'
+    // },
+    // {
+    //   name: 'Data',
+    //   urlList: [],
+    //   isDownloadButtonVisible: false,
+    //   state: 'active'
+    // },
+    // {
+    //   name: 'Data data data data data data',
+    //   urlList: [],
+    //   isDownloadButtonVisible: false,
+    //   state: 'active'
     // }
   ];
   lastElementName = '';
