@@ -67,30 +67,30 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { metadataValuesList } from '../../../../test/metadata_values_list';
+import Vue from "vue";
+import { metadataValuesList } from "../../../../test/metadata_values_list";
 
 export default Vue.extend({
   data() {
     return {
       valuesList: metadataValuesList,
-      orderBy: 'value-down',
+      orderBy: "value-down",
       isValueCaretDown: false,
-      isCountCaretDown: true
+      isCountCaretDown: true,
     };
   },
   props: {
     metadataKey: {
-      type: String
+      type: String,
       // default: "",
     },
     copyName: {
-      type: Function
-    }
+      type: Function,
+    },
   },
   methods: {
     emitCloseButton() {
-      this.$emit('closeDetails');
+      this.$emit("closeDetails");
     },
     orderByValue() {
       const greaterNumber = this.isValueCaretDown ? -1 : 1;
@@ -119,15 +119,15 @@ export default Vue.extend({
       if (this.copyName) {
         this.copyName(msg);
       } else {
-        console.log('error-funct not found');
+        console.log("error-funct not found");
       }
-    }
-  }
+    },
+  },
 });
 </script>
 
 <style scoped lang="scss">
-@import '../../../../style/base.scss';
+@import "../../../../style/base.scss";
 .metadata_detail {
   position: absolute;
   height: 100%;

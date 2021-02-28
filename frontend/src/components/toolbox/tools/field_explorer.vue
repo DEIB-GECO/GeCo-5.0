@@ -21,38 +21,38 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { mapState } from 'vuex';
+import Vue from "vue";
+import { mapState } from "vuex";
 
-import { fieldList } from '../../../test/field_list';
+import { fieldList } from "../../../test/field_list";
 
 export default Vue.extend({
   data() {
     return {
-      oldfieldList: fieldList
+      oldfieldList: fieldList,
     };
   },
   props: {
     copyName: {
-      type: Function
-    }
+      type: Function,
+    },
   },
   computed: {
     ...mapState({
-      fieldList: (state: any) => state.tools.fieldList
-    })
+      fieldList: (state: any) => state.tools.fieldList,
+    }),
   },
   methods: {
     elementClicked(msg: string) {
       this.copyName(msg);
       // console.log(this.$store.getters["getFieldList"]);
       console.log(this.fieldList);
-    }
-  }
+    },
+  },
 });
 </script>
 <style scoped lang="scss">
-@import '../../../style/base.scss';
+@import "../../../style/base.scss";
 .list_container {
   height: 80%;
   text-align: left;

@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7fca830b4dd0>
+result:<data_structure.dataset.Dataset object at 0x7fc350e42290>
 depends_on:Dataset
 metadata:None
 region:None
@@ -10,54 +10,40 @@ region:None
 1
 Pivot
 --parameters--
-executed:True
-result:gene_symbol                   mir1-1      mir1-2        mir100     mir101-1     mir101-2  mir105-1  ...     mirlet7e    mirlet7f1    mirlet7f2    mirlet7g    mirlet7i   snord138    age
-item_id                                                                                             ...                                                                                 
-421676       1336.109990  271.346020  275.820513   4781.741172  2166.400204  2209.334026  0.000000  ...  3104.871774  7263.166967  7444.810063  732.005695  328.449069   3.728744  28403
-421884       3730.003792   21.391052   24.243192   4236.283844  4018.665546  4062.588505  0.000000  ...  1442.042087  3838.125071  3888.037525  564.438546  529.072008   4.563424  22400
-421965       2916.265789    4.162925    4.483150   3167.345757  4666.959566  4647.746064  0.000000  ...   207.505818  2400.727039  2431.788867  464.966741  282.758700  20.814627  26239
-421973       3214.103992    2.736373    3.192435   8660.773329  5489.316743  5636.776856  0.608083  ...   870.166691  2272.557977  2349.936531  323.804167  685.765538  12.009638  32475
-422034       4702.389222    1.401953    2.803906   4914.312632  3060.930747  3153.926964  0.000000  ...   632.981786  3541.099655  3650.451990  267.305708  717.332626   7.477083  22148
-...                  ...         ...         ...           ...          ...          ...       ...  ...          ...          ...          ...         ...         ...        ...    ...
-432354       3790.071715    1.349901    1.349901   8719.011332  6212.784914  6176.877544  0.000000  ...   416.309505  1589.913539  1588.023677  254.321371  809.940672  19.168596  24078
-432396       4255.826428   14.211370   15.059810   7969.184660  2701.008689  2749.157658  0.000000  ...   831.683294  2556.773892  2587.105621  336.618564  435.673932   8.060180  25312
-432410       3135.205896  137.866345  157.257129   6176.071304  3859.831479  3866.863302  0.213086  ...  1688.489822  5317.336576  5436.664478  563.398169  636.912680  10.015020  26234
-432466       3337.362090   22.829058   19.785184  15841.506136  4024.847485  4094.011076  0.000000  ...  1601.923458  3873.330181  3944.184813  509.341651  865.813164  10.822665  18059
-432584       2454.046160  119.321373  125.736500   8749.067620  4822.193076  4821.259966  0.349916  ...   723.743029  1502.189600  1539.397340  249.956698  222.313330   9.681011  26379
-
-[183 rows x 1747 columns]
+executed:False
+result:None
 depends_on:Select
 region_row:None
 meta_row:['item_id']
 region_col:['gene_symbol']
 meta_col:None
 value:['reads_per_million_mirna_mapped']
-other_meta:['age']
-other_region:['strand']
+other_meta:None
+other_region:None
 -------
 2
 KMeans
 --parameters--
-executed:True
-result:<logic.kmeans_logic.KMeansRes object at 0x7fca8422c9d0>
+executed:False
+result:None
 depends_on:Pivot
 tuning:True
 min_clusters:3
-max_clusters:5
+max_clusters:6
 -------
 3
 PCA
 --parameters--
-executed:True
-result:<logic.pca_logic.PCARes object at 0x7fca83320cd0>
+executed:False
+result:None
 depends_on:KMeans
 components:2
 -------
 4
 Scatter
 --parameters--
-executed:True
-result:<logic.kmeans_logic.KMeansRes object at 0x7fca8422c9d0>
+executed:False
+result:None
 depends_on:PCA
 depends_on_2:KMeans
 -------

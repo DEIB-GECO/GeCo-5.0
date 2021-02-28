@@ -1,6 +1,6 @@
 interface AvailableChoice {
-  name: string;
-  value: string;
-  description?: string;
-  synonyms?: string[];
+  name: String;
+  value: String;
+  description?: String;
+  synonyms?: String[];
 }

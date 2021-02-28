@@ -36,16 +36,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { mapState, mapGetters } from 'vuex';
+import Vue from "vue";
+import { mapState, mapGetters } from "vuex";
 
 export default Vue.extend({
   computed: {
     ...mapState({
       queryParameters: (state: any) =>
-        state.gecoAgent.queryParameters.queryParameters
-    })
-  }
+        state.gecoAgent.queryParameters.queryParameters,
+    }),
+  },
 });
 </script>
 

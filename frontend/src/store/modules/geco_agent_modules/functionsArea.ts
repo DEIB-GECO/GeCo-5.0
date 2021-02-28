@@ -41,7 +41,7 @@ class FunctionArea extends VuexModule {
     // this.searchBarVisible = true;
     this.showDetails = newData.showDetails;
     this.choicesTitle = newData.caption;
-    this.choicesArray = newData.elements;
+    this.choicesArray = newData.elements.filter((item: AvailableChoice)=> item.name);
     this.showHelpIcon = newData.showHelpIcon;
     this.helpContent = newData.helpIconContent;
     console.log(this.choicesArray);

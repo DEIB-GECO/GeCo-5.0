@@ -16,13 +16,16 @@ class Utils(object):
                 elements.append({'name': 'Health', 'value': 'Health' })
                 count=count+1
             else:
-                b=i.replace('_',' ')
-                #print(i)
-                elements.append({'name': b, 'value': i})
+                if(type(i) == str):
+                    b=i.replace('_',' ')
+                    elements.append({'name': b, 'value': list_params[i]})
+                    #print(i)
+                else:
+
+                    elements.append({'name': i, 'value': list_params[i]})
                 count=count+1
             if(count>=15):
                 show_search=True
-
 
         return {"type": "available_choices",
                 "payload": {

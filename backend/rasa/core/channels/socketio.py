@@ -12,6 +12,7 @@ from socketio import AsyncServer
 import json
 
 tracker= True
+user_ID=""
 
 logger = logging.getLogger(__name__)
 
@@ -42,18 +43,19 @@ class SocketIOOutput(OutputChannel):
 
     """Creato da me"""
     async def _send_message(self,socket_id: Text, response: Any) -> None:
+        global user_ID
 
         X = response['text']
         await self.sio.emit('json_response', {"type" : "message", "payload" : {"sender": "bot","text": X}})
 
         if(tracker==True):
-            with open("sessions/"+socket_id+".json") as json_file:
+            with open("sessions/"+user_ID+".json") as json_file:
                 data2=json.load(json_file)
                 temp=data2['names']
                 y={"sender":"bot", 'message':X}
                 temp.append(y)
 
-            write_json(data2,"sessions/"+socket_id+".json")
+            write_json(data2,"sessions/"+user_ID+".json")
 
 
     async def _send_message2(self, socket_id: Text, response: Any) -> None:
@@ -210,9 +212,31 @@ class SocketIOInput(InputChannel):
             return response.json({"status": "ok"})
 
         @sio.on("connect", namespace=self.namespace)
-        async def connect(sid: Text, _) -> None:
+        async def connect(sid: Text, data: Dict) -> None:
             logger.debug(f"User {sid} connected to socketIO endpoint.")
             logger.debug("mi sono connesso")
+            logger.debug(data)
+
+
+            global user_ID
+            if("io="+user_ID == data["HTTP_COOKIE"] ):
+                logger.debug("we1")
+                sid=user_ID
+            else:
+                user_ID=sid
+                logger.debug(user_ID)
+
+
+            logger.debug("Ho ricevuto richiesta di sessione")
+            logger.debug(data["HTTP_COOKIE"])
+            if data is None:
+                data = {}
+            if "session_id" not in data or data["session_id"] is None:
+                data["session_id"] = uuid.uuid4().hex
+            if self.session_persistence:
+                sio.enter_room(sid, data["session_id"])
+            await sio.emit("session_confirm", data["session_id"], room=sid)
+            logger.debug(f"User {sid} session requested to socketIO endpoint.")
 
             if (tracker == True):
                 data = {}
@@ -235,9 +259,8 @@ class SocketIOInput(InputChannel):
 
         @sio.on("reconnect", namespace=self.namespace)
         async def reconnect(sid: Text) -> None:
-            print("wwwweeeeee i'm backon")
-            logger.debug("wwwweeeeee i'm backon")
-
+            print("i'm back online")
+            logger.debug(" i'm back")
 
         @sio.on("session_request", namespace=self.namespace)
         async def session_request(sid: Text, data: Optional[Dict]):
@@ -280,23 +303,23 @@ class SocketIOInput(InputChannel):
             output_channel = SocketIOOutput(sio, self.bot_message_evt)
             logger.debug("ho preso un messaggio fatto da me rimuovere 1")
 
-            sender_id = sid
+            global user_ID
 
             message = UserMessage(
-                data["data"], output_channel, sender_id, input_channel=self.name()
+                data["data"], output_channel, user_ID, input_channel=self.name()
             )
-            print('self.bot_message_evt data',data["data"])
+            print('data[data]',data["data"])
             with open('data.txt', 'a') as outfile:
                 json.dump( data["data"]+'\n',outfile)
 
             if (tracker == True):
-                with open("sessions/"+sid+".json") as json_file:
+                with open("sessions/"+user_ID+".json") as json_file:
                     data2 = json.load(json_file)
                     temp = data2['names']
-                    y = {"sender": sender_id, 'message': data["data"]}
+                    y = {"sender": user_ID, 'message': data["data"]}
                     temp.append(y)
 
-                write_json(data2,"sessions/"+sid+".json")
+                write_json(data2,"sessions/"+user_ID+".json")
 
             await on_new_message(message)
 

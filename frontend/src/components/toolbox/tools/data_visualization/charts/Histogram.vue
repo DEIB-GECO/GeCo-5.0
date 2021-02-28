@@ -4,57 +4,117 @@
   </div>
 
 <script lang="ts">
+import Vue from 'vue'
 import { Bar } from 'vue-chartjs';
 import { bars, optionsTest } from '@/test/barchart_js';
+import { ChartData, ChartOptions } from 'chart.js';
 
-export default {
-  name: 'Histogram',
+export default Vue.extend({
+  // name: 'Histogram',
   extends: Bar,
   props: {
     chartData: {
-      default: () => {
+      default: function() {
         return bars['datasets'][0]['data'];
-      }
+      },
+      type: Object as () => number[]
     },
-    data: {
-      default: () => {
+    myData: {
+      default: function() {
         return bars;
-      }
+      },
+      type: Object as () => ChartData
     },
     options: {
-      default: () => {
+      default: function() {
         return optionsTest;
-      }
+      },
+      type: Object as () => ChartOptions
+    },
+    chartTitle: {
+      default: ""
     }
   },
-  data: () => {
+  data() {
     return {
-      frequencies: [[0, 0]]
+      frequencies: [[0, 0]],
+      localData: {
+        default: function() {
+          return bars;
+        },
+        type: Object as () => ChartData
+      }
     };
   },
 
-  mounted() {
-    this.computeFrequencies(this.chartData);
-    this.renderChart(this.data, this.options);
-    // console.log("ciaoooo");
+  mounted: function() {
+    this.computeDiscreteFrequencies(this.chartData);
+    // @ts-ignore
+    this.renderChart(this.myData, this.options);
   },
   methods: {
     computeFrequencies(numberList: number[]) {
-      const map = numberList.reduce(
-        (acc: any, e: number) => acc.set(e, (acc.get(e) || 0) + 1),
-        new Map()
-      );
+      const map = numberList.reduce((acc: any, e: number) => {
+        return acc.set(e, (acc.get(e) || 0) + 1);
+      }, new Map());
       const keys: any = Array.from(map.keys()).sort((a: any, b: any) => {
         return a - b;
       });
       const values: any = [];
       keys.forEach((x: number | string) => values.push(map.get(x)));
-      console.log(values);
-      this.data.datasets[0].data = values;
-      this.data.labels = keys;
+      if(this.myData.datasets!= undefined){
+        this.myData.datasets[0].data = values;
+        this.myData.labels= keys;
+      }
+
+
+      // if(this.localData.datasets!= undefined){
+      //   this.localData.datasets[0].data = values;
+      //   this.localData.labels= keys;
+      // }
+    },
+    computeDiscreteFrequencies(numberList: number[]){
+      const binNumber = Math.ceil(Math.sqrt(numberList.length))
+      const min = Math.min(...numberList);
+      const max = Math.max(...numberList);
+      const step = Math.ceil((max-min)/binNumber)
+      const values = [];
+      const keys = [];
+
+      let binMin = 0;
+      let binMax = 0;
+      let filteredArray =  [];
+      const colorBgArray = [];
+      const colorBorderArray = [];
+
+      for(let i=0; i<binNumber; i++){
+        binMin = i*step + min;
+        binMax = Math.min(((i+1)*step+min), max);
+        filteredArray = numberList.filter(this.isInInterval(binMin, binMax));
+        values.push(filteredArray.length);
+        keys.push(binMin.toString()+" - "+binMax.toString());
+        colorBgArray.push('rgba(75, 192, 192, 0.2)');
+        colorBorderArray.push('rgba(75, 192, 192, 1)');
+      }
+
+      if(this.myData.datasets!= undefined){
+        this.myData.datasets[0].data = values;
+        this.myData.labels= keys;
+        this.myData.datasets[0].backgroundColor = colorBgArray;
+        this.myData.datasets[0].borderColor = colorBorderArray;
+        this.myData.datasets[0].label= this.chartTitle;
+
+      }
+
+
+    },
+    isInInterval(min: number, max: number){
+      return (x: number) => {
+        return (x>= min && x <= max);
+      };
     }
   }
-};
+});
 
 // import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 // import makeid from '@/utils/makeid';

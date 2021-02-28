@@ -7,7 +7,7 @@ from rasa_sdk.events import (
     UserUtteranceReverted,
     ActionReverted,
 )
-from data_structure.database import *
+from data_structure import database,dataset
 from workflow.workflow_class import Workflow
 from workflow import clustering,pca,scatter,pivot
 from workflow.gmql import Select
@@ -62,9 +62,15 @@ self = []
 #print(all_val)
 #print(dbfields)
 
+###############################
+###   Variabili Metadati   ###
+###############################
+
 meta_list={}
 saved_metadatum_msg  = []
 saved_metadatum_value = []
+min = 80000000000000
+max = 0
 
 ###############################
 ###   Variabili pivot   ###
@@ -810,47 +816,11 @@ class DownloadDatabase(Action):
         else:
             db_name = predefNameDb + str(number)
             number = number + 1
-        dict_selection = {}
-        for num, name in  enumerate(Selection_list):
-            if(name[1] == False):
-                dict_selection.update({name[0] : [False]})
-
-            elif(name[1] == True):
-                dict_selection.update({name[0] : [True]})
-
-            else:
-                dict_selection.update({name[0] : [name[1]]})
 
         param_list.update({"Name": db_name})
 
-
-
-    #    ds=DataSet(dict_selection, db_name) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
-    #    workflow.add(Select(DataSet(dict_selection, db_name)))
-
-    #    KM = clustering.KMeans(workflow[-1], clusters=None, tuning=True, min=1, max=3)
-    #    print(workflow)
-    #    workflow.add(KM)
-    #    workflow.add(pca.PCA(workflow[-1], 2))
-    #    workflow.add(scatter.Scatter(workflow[-1], workflow[-2]))
-    #    print(workflow)
-    #    workflow.run(workflow[-1])
-
-
-
-        #for num, name in  enumerate(workflow):
-        #    c = num % 2
-
-
-        #dispatcher.utter_message("OK, dataset saved with name: {}".format(db_name))
-
         if (shell == False):
             dispatcher.utter_message(Utils.param_list(param_list))
-
-        #c=database.download(dict_selection)
-
-        #with open(db_name + '.txt', 'w') as f:
-        #    print('Filename:', c, file=f)
 
         return []
 
@@ -919,12 +889,12 @@ class MetadatumType(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        global saved_metadatum_msg, saved_metadatum_value,param_list,meta_list,Selection_list
+        global saved_metadatum_msg, saved_metadatum_value,param_list,meta_list,Selection_list, min, max
 
         message = tracker.latest_message.get('text')
         saved_metadatum_msg=message
 
-        param_list.update({saved_metadatum_msg:''})
+       # param_list.update({saved_metadatum_msg:''})
 
         dict_selection = {}
         for num, name in enumerate(Selection_list):
@@ -937,11 +907,11 @@ class MetadatumType(Action):
             else:
                 dict_selection.update({name[0]: [name[1]]})
 
-        if(shell==False):
-            dispatcher.utter_message(Utils.param_list(param_list))
+     #   if(shell==False):
+     #       dispatcher.utter_message(Utils.param_list(param_list))
 
         z = db.find_key_values(message, dict_selection)
-        print("z vale:",z,z[0],z[1])
+        #print("z vale:",z,z[0],z[1])
         c = {}
         # if(z[1] == False):
         for y in z[0]:
@@ -967,27 +937,23 @@ class MetadatumType(Action):
             dispatcher.utter_message("Which range of values do you want? You can tell me the minimum or maximum value or both.\n The values are shown in the histogram.")
 
             print("true", c)
-            min = 80000000000000
-            max = 0
             count=0
             sum_i=0
             for i in c:
-                print("i vale",i)
-                print("i di zero vale",i[0])
-                print(i)
-                if (i[0] < min):
-                    min=i[0]
-                if (i[0] > max):
-                    max=i[0]
-                count=count+1
-                sum_i=sum_i+i
+                if(type(i)!= type(None)):
+                    if (int(i) < min):
+                        min=int(i)
+                    if (int(i) > max):
+                        max=int(i)
+                    count=count+1
+                    sum_i=sum_i+int(i)
 
-            mean= sum_i/count
+            mean= int(sum_i/count)
 
             c={}
-            c.update({min:min})
-            c.update({max: max})
-            c.update({mean :mean})
+            c.update({"min: "+str(min):min})
+            c.update({"max: "+str(max): max})
+            c.update({"mean: "+str(mean) :mean})
 
 
             if (shell == False):
@@ -1017,12 +983,15 @@ class TakeValue(Action):
         message = tracker.latest_message.get('text')
 
         if (';' not in message):
-            saved_metadatum_value=message
-           # print(saved_metadatum_msg)
-            Meta = saved_metadatum_msg + ': ' + saved_metadatum_value
-            meta_list.update( {saved_metadatum_msg: saved_metadatum_value } )
-            param_list.update( {saved_metadatum_msg: saved_metadatum_value } )
-            #print(meta_list)
+            if (min <= int(message) <=max):
+                saved_metadatum_value=message
+               # print(saved_metadatum_msg)
+                Meta = saved_metadatum_msg + ': ' + saved_metadatum_value
+                meta_list.update( {saved_metadatum_msg: saved_metadatum_value } )
+                param_list.update( {saved_metadatum_msg: saved_metadatum_value } )
+                #print(meta_list)
+            else:
+                dispatcher.utter_message("out of range value!")
 
             if(shell == False):
                 dispatcher.utter_message(Utils.param_list(param_list))

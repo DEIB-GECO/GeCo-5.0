@@ -29,22 +29,22 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
-import { datasetDetail } from '../../../../test/dataset_detail';
+import { datasetDetail } from "../../../../test/dataset_detail";
 
 export default Vue.extend({
   data() {
     return {
-      datasetDetail
+      datasetDetail,
     };
   },
   methods: {
     emitHidePopUp() {
-      console.log('Emit Hide Pop Up');
-      this.$emit('hidePopUp');
-    }
-  }
+      console.log("Emit Hide Pop Up");
+      this.$emit("hidePopUp");
+    },
+  },
 });
 </script>
 

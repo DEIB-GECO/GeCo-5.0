@@ -7,6 +7,7 @@ nlu:
     - restart
 - intent: choice_exact_experiment
   examples: |
+    - i want [gene expression](data_type) for [breast cancer](disease)
     - [mirna expressione data]{"entity": "data_type", "value": "mirna expression"} for [grch38](assembly) assembly from [kidney](tissue)
     - I would like to retrieve items from [tcga](source) regarding [kidney](tissue)
     - I want [isoform expression quantification](data_type) for [igak myeloma](disease)
@@ -2213,7 +2214,6 @@ nlu:
     - [grch38_tcga_copy_number_masked_2019_10](dataset_name)
 - intent: choice_value_tissue
   examples: |
-    - [adipose tissue](tissue)
     - [adipose]{"entity":"tissue","value":"adipose tissue"}
     - [bodyfat]{"entity":"tissue","value":"adipose tissue"}
     - [fat]{"entity":"tissue","value":"adipose tissue"}
@@ -3392,7 +3392,6 @@ nlu:
     - [large bowel adenocarcinoma]{"entity":"disease","value":"colorectal adenocarcinoma"}
     - [large intestine adenocarcinoma]{"entity":"disease","value":"colorectal adenocarcinoma"}
     - [colorectal cancer](disease)
-    - [colorectal cancer]{"entity":"disease","value":"colorectal cancer pathway"}
     - [colorectal cancer pathway](disease)
     - [crc pathway]{"entity":"disease","value":"colorectal cancer pathway"}
     - [cancer of large bowel]{"entity":"disease","value":"colorectal carcinoma"}
@@ -3804,7 +3803,6 @@ nlu:
     - [prostate adenocarcinoma](disease)
     - [prostate cancer](disease)
     - [cancer, prostate cancer]{"entity":"disease","value":"prostate cancer pathway"}
-    - [prostate cancer]{"entity":"disease","value":"prostate cancer pathway"}
     - [prostate cancer pathway](disease)
     - [prostate cancer, prostate carcinoma](disease)
     - [cancer of prostate]{"entity":"disease","value":"prostate carcinoma"}

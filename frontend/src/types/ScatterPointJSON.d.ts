@@ -1,5 +1,5 @@
 interface ScatterPointJSON {
-  x: number;
-  y: number;
-  label: string;
+    x: Number,
+    y: Number,
+    label: String
 }

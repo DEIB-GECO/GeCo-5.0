@@ -195,7 +195,8 @@ export default class GecoAgent extends Vue {
 
   pushBotMessage(msg: string) {
     if (msg != '') {
-      conversation.push({ sender: 'bot', text: msg });
+      // conversation.push({ sender: 'bot', text: msg });
+      this.messageParser({ sender: 'bot', text: msg });
     }
   }
 
@@ -209,20 +210,23 @@ export default class GecoAgent extends Vue {
     // this.downloadFile(this.message, 'esempio.txt', 'text/plain');
   }
 
-  reset(): void {
+  reset() {
     if (
-      window.confirm('Do you want to lose all your progresses and start over? After confirm, recharge the page!')
+      window.confirm('Do you want to lose all your progresses and start over?')
     ) {
       socket.emit('reset', {});
 
       this.editMessage('');
-      console.log('mandato RESET');
-      // this.editMessage('reset session');
-      // this.sendMessage();
-      socket.emit('ack', { message_id: this.lastMessageId });
-      this.resetProcess();
+      
+      socket.emit('ack', { message_id: -1 });
+      this.resetProcess();;
+      
       this.updateFieldList([]);
       this.parameterParser([]);
+
+      this.pushBotMessage("Conversation restarted: I just forgot everything!");
+      console.log('mandato RESET', conversation);
+
     }
   }
 }
@@ -266,10 +270,14 @@ export default class GecoAgent extends Vue {
 
 .process_step_box {
   width: 100px;
+  height: 80px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: solid 3px #0b3142;
   border-radius: 5px;
-  padding: 20px;
+  // padding: 20px;
   float: left;
   margin-left: 10px;
   font-weight: bold;
@@ -288,6 +296,7 @@ export default class GecoAgent extends Vue {
   display: flex;
   width: 100%;
   align-items: center;
+  overflow: auto;
 }
 
 .download_icon {

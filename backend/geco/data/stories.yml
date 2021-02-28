@@ -1004,8 +1004,6 @@ stories:
   - action: action_what_data
   - action: utter_what_data
 
-
-
 - story: modify_selection
   steps:
   - action: utter_start_over
@@ -1034,7 +1032,6 @@ stories:
   - action: action_check_value
   - action: utter_filter_more
   - action: action_show_field
-
 
 - story: interactive_story_3
   steps:
