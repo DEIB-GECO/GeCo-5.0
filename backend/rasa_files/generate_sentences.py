@@ -67,10 +67,12 @@ def generate_sentences(templates, dataframe, name_file):
 
                 f.write('\t- ' + ''.join(list_t) + '\n')
 
-
-    for k in syn_dict_copy.keys():
-        if k not in set(list_rewritten):
-            with open(f'sentences_syn_db_{k}_ann.txt', 'w') as f:
+    with open(f'sentences_syn_db.txt', 'w') as f:
+        for k in syn_dict_copy.keys():
+            if k not in set(list_rewritten):
+               # with open(f'sentences_syn_db_{k}.txt', 'w') as f:
+                f.write(f'- intent: choice_value_{k}\n'
+                        f'  examples: |\n')
                 inner_dict = syn_dict[k]
                 for pref, labels in inner_dict.items():
                     for label in labels:
@@ -80,7 +82,7 @@ def generate_sentences(templates, dataframe, name_file):
                             syn = f'[{label}]{{"entity":"{k}","value":"{pref}"}}'
                         f.write(f'\t- {syn}\n')
 
-    with open(f'synonyms_db_ann.txt', 'w') as f:
+    with open(f'synonyms_db.txt', 'w') as f:
         for k in syn_dict_copy.keys():
             inner_dict = syn_dict_copy[k]
             for pref, labels in inner_dict.items():
@@ -92,8 +94,8 @@ def generate_sentences(templates, dataframe, name_file):
                     else:
                         f.write(f'    - {label}\n')
 
-#generate_sentences(templates, exp_synonyms, 'sentences_syn_db_exp')
-generate_sentences(templates, ann_synonyms, 'sentences_syn_db_ann')
+generate_sentences(templates, exp_synonyms, 'sentences_syn_db_exp')
+#generate_sentences(templates, ann_synonyms, 'sentences_syn_db_ann')
 
 
 
