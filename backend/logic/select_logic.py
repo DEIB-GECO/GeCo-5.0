@@ -29,19 +29,19 @@ class SelectLogic:
         if self.ds.items!=[]:
             items = ','.join(str(i) for i in self.ds.items)
             if 'metadata' in self.op.depends_on.fields and self.op.depends_on.fields['metadata'] != None:
-                keys = ','.join(list(self.op.depends_on.fields['metadata'].keys()))
-                values = ','.join([i for k, v in self.op.depends_on.fields['metadata'].items() for i in v])
+                keys = ','.join([f'\'{str(i)}\'' for i in list(self.op.depends_on.fields['metadata'].keys())])
+                values = ','.join([f'\'{str(i)}\'' for k, v in self.op.depends_on.fields['metadata'].items() for i in v])
                 query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id join dw.unified_pair_gecoagent as du on rr.item_id = du.item_id " \
-                        "where df.item_id in ({}) and key in ({}) and value in ({})".format(items, keys, values)
+                        "where df.item_id in ({}) and du.key in ({}) and du.value in ({})".format(items, keys, values)
             else:
                 query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id " \
                         "where df.item_id in ({})".format(items)
         else:
             if 'metadata' in self.op.depends_on.fields and self.op.depends_on.fields['metadata'] != None:
-                keys = ','.join(list(self.op.depends_on.fields['metadata'].keys()))
-                values = ','.join([i for k, v in self.op.depends_on.fields['metadata'].items() for i in v])
+                keys = ','.join([f'\'{str(i)}\'' for i in list(self.op.depends_on.fields['metadata'].keys())])
+                values = ','.join([f'\'{str(i)}\'' for k, v in self.op.depends_on.fields['metadata'].items() for i in v])
                 query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id join dw.unified_pair_gecoagent as du on rr.item_id = du.item_id " \
-                        "where {} and key in ({}) and value in ({})".format(filter, keys, values)
+                        "where {} and du.key in ({}) and du.value in ({})".format(filter, keys, values)
             else:
                 query = "join dw.flatten_gecoagent as df on rr.item_id = df.item_id " \
                         "where {}".format(filter)

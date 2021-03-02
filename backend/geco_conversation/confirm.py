@@ -57,16 +57,20 @@ class Confirm(AbstractAction):
                 #print(self.status['fields']['metadata'])
                 #meta = self.context.payload.database.retrieve_meta(fields,self.status['fields']['metadata'])
                 #ds.add_meta_table(meta)
-                if len(self.status['metadata'].keys())>0:
-                    self.context.workflow.add(Select(ds, metadata=self.status['metadata']))
+                if len(meta_dict.keys())>0:
+                    self.context.workflow.add(Select(ds, metadata=meta_dict))
                 else:
                     self.context.workflow.add(Select(ds))
-                self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection',download=True,link_list=links), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param), Utils.tools_setup(add=[],remove=['pie-chart'])])
+                self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection',download=True,link_list=links), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param), Utils.tools_setup(add=None,remove='data_summary')])
                 #if len(self.context.data_extraction.datasets)%2==0:
                 #    return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
                 #else:
                  #   return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
                 return PivotAction(self.context), True
+            else:
+                self.context.add_bot_msgs(
+                    [Utils.chat_message('Do you want to restart your selection from scratch?')])
+                return ChangeSelection(self.context), False
 
 
 class ChangeSelection(AbstractAction):
@@ -96,21 +100,71 @@ class ChangeField(AbstractAction):
     def logic(self, message, intent, entities):
         selected_field = message.strip().lower()
 
-        if selected_field in self.status['fields']:
-            self.context.payload.delete(self.status['field'])
-            gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
-
+        if selected_field in self.status['fields'] and selected_field!='metadata':
+            #self.context.payload.delete(self.status['field'])
+            gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k in self.context.payload.database.fields and k!=selected_field and k!='metadata'}
+            self.context.payload.delete(selected_field,self.status['fields'][selected_field])
             if len(gcm_filter) > 0:
-                self.context.payload.database.update(gcm_filter)
+                self.context.payload.database.go_back(gcm_filter)
 
             list_param = {x: x for x in self.context.payload.database.values[selected_field]}
             #fields = {k:v for (k,v) in self.status['fields'].items() if k != selected_field}
 
+            #self.context.payload.delete(self.status['field'])
             self.context.add_bot_msgs([Utils.chat_message("Which value do you want?"),Utils.choice(str(selected_field), list_param)])
             return ValueAction(self.context), False
             #return self.status['back'](self.context), True
+        elif selected_field=='metadata' or selected_field in self.status['fields']['metadata']:
+            from .metadata_action import KeyAction
+            if selected_field=='metadata':
+                list_param = {x: x for x in self.status['fields']['metadata']}
+                if list_param.keys()==1:
+                    self.context.add_bot_msgs([Utils.chat_message('Which one do you want to change?'),
+                                               Utils.choice("Metadata selected", list_param)])
+                    return ChangeMetadata(self.context), False
+                else:
+                    selected_field=list_param.keys()[0]
+                    #gcm_filter = {k: v for (k, v) in self.status['field'].items() if k in self.context.payload.database.fields and k != selected_field  and k!='metadata'}
+
+                    #if len(gcm_filter) > 0:
+                     #   self.context.payload.database.go_back(gcm_filter)
+                    self.context.payload.delete(selected_field, self.status['fields']['metadata'][selected_field])
+                    list_param = {x: x for x in list(set(self.context.payload.database.metadata[self.context.payload.database.metadata['key']==selected_field]['values'].values))}
+                    self.context.add_bot_msgs(
+                        [Utils.chat_message("Which value do you want?"), Utils.choice(str(selected_field), list_param)])
+                    return KeyAction(self.context), False
+            else:
+                self.context.payload.delete(selected_field, self.status['fields']['metadata'][selected_field])
+                list_param = {x: x for x in list(set(self.context.payload.database.metadata[
+                                                         self.context.payload.database.metadata[
+                                                             'key'] == selected_field]['values'].values))}
+
+                self.context.add_bot_msgs(
+                    [Utils.chat_message("Which value do you want?"), Utils.choice(str(selected_field), list_param)])
+                return KeyAction(self.context), False
+
         else:
             self.context.add_bot_msgs([Utils.chat_message(messages.wrong_field)])
             return None, False
 
 
+class ChangeMetadata(AbstractAction):
+    def help_message(self):
+        return [Utils.chat_message(helpMessages.change_field_help)]
+
+    def on_enter(self):
+        pass
+
+    def logic(self, message, intent, entities):
+        from .metadata_action import KeyAction
+        selected_field = message.strip().lower()
+
+        if selected_field in self.status['fields']['metadata']:
+            self.context.payload.delete(selected_field, self.status['fields']['metadata'][selected_field])
+            list_param = {x: x for x in list(set(self.context.payload.database.metadata[
+                                                     self.context.payload.database.metadata[
+                                                         'key'] == selected_field]['values'].values))}
+
+            self.context.add_bot_msgs(
+                [Utils.chat_message("Which value do you want?"), Utils.choice(str(selected_field), list_param)])
+            return KeyAction(self.context), False

@@ -29,6 +29,11 @@ nlu:
     - sorry, can you explain?
 - intent: retrieve_experiments
   examples: |
+    - experiments
+    - I want experiments
+    - experimental data
+    - [cnv](data_type)
+    - [mirna expression quantification]{"entity":"data_type","value":"mirna expression"}
     - I want to retrieve data from [acute adult t-cell leukemia/lymphoma](disease)
     - [1000 genomes](source) data for [acute lymphoblastic leukemia](disease)
     - I want experiment about [acute myeloid leukemia](disease)

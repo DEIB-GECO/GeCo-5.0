@@ -97,7 +97,6 @@ class FieldAction(AbstractAction):
         else:
             self.context.payload.clear()
             self.context.payload.database.go_back({})
-            print('status',self.status)
             self.context.add_bot_msgs([Utils.chat_message(messages.no_exp_found)])
             self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?")])
             return None, False

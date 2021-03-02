@@ -33,7 +33,6 @@ class ScatterLogic:
             print('1', self.ds[self.labels == i, 1])
         plt.legend()
         plt.show()
-        print('ciao')
         self.op.result = ScatterRes(self.ds[:, 0], self.ds[:, 1], self.labels, u_labels)
         self.op.executed = True
         self.write()

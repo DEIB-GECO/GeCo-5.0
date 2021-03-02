@@ -13,7 +13,6 @@ class GMQLBinaryAction(AbstractAction):
 
 
     def logic(self, message, intent, entities):
-        print(intent)
         bool = True
         if intent == 'join':
             self.context.add_bot_msg(Utils.workflow('Join'))

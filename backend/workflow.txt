@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7fb80905a1d0>
+result:<data_structure.dataset.Dataset object at 0x7fd0e8084850>
 depends_on:Dataset
 metadata:None
 region:None
@@ -11,39 +11,13 @@ region:None
 Pivot
 --parameters--
 executed:True
-result:<logic.pivot_logic.PivotRes object at 0x7fb808535550>
+result:<logic.pivot_logic.PivotRes object at 0x7fd0fe21ff90>
 depends_on:Select
-region_row:['gene_symbol']
+region_row:['chrom', 'start', 'stop']
 meta_row:None
 region_col:None
 meta_col:['item_id']
 value:['reads_per_million_mirna_mapped']
 other_meta:None
 other_region:None
--------
-2
-KMeans
---parameters--
-executed:True
-result:<logic.kmeans_logic.KMeansRes object at 0x7fb7fda951d0>
-depends_on:Pivot
-tuning:True
-min_clusters:2
-max_clusters:10
--------
-3
-PCA
---parameters--
-executed:True
-result:<logic.pca_logic.PCARes object at 0x7fb90b55aa90>
-depends_on:KMeans
-components:2
--------
-4
-Scatter
---parameters--
-executed:True
-result:<logic.scatter_logic.ScatterRes object at 0x7fb7f7e43050>
-depends_on:PCA
-depends_on_2:KMeans
 -------

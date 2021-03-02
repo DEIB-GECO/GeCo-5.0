@@ -50,8 +50,9 @@ class PivotLogic:
             row = self.op.region_row
         else:
             row = self.op.meta_row
-        #print('col', col)
-        #print('row', row)
+
+        print('col', col)
+        print('row', row)
         print('prima pivot')
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)

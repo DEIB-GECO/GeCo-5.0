@@ -27,7 +27,9 @@ class PivotAction(AbstractAction):
                     return RegionRow(self.context), False
                 else:
                     self.context.add_bot_msgs([Utils.chat_message(messages.regions_not_available)])
-                    return ByeAction(self.context), True
+                    self.context.add_bot_msg(
+                        Utils.chat_message("Do you want to start again from the beginning?"))
+                    return ByeAction(self.context), False
             elif message.lower() in ['sample', 'samples']:
                 meta_row = 'item_id'
                 reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
@@ -58,8 +60,8 @@ class RegionRow(AbstractAction):
 
     def logic(self, message, intent, entities):
         if 'region_row' not in self.status:
-            region_row = message
-            self.context.payload.insert('region_row', [region_row])
+            region_row = message.strip().split(',')
+            self.context.payload.insert('region_row', region_row)
             # self.context.add_bot_msg(Utils.chat_message('I will put in the columns \'item_id\', ok?'))
             # return None, True
             # else:
@@ -98,8 +100,8 @@ class MetaRow(AbstractAction):
             return None, False
 
         else:
-            region_column = message
-            self.context.payload.insert('region_column', [region_column])
+            region_column = message.strip().split(',')
+            self.context.payload.insert('region_column', region_column)
             self.context.add_bot_msgs([Utils.chat_message(messages.value_region_message),
                                        Utils.choice('Available regions',
                                                     {i: i for i in self.context.payload.database.region_schema if
@@ -122,10 +124,9 @@ class Labels(AbstractAction):
             self.context.payload.insert('other_meta', None)
             self.context.add_bot_msg(
                 Utils.chat_message('Do you want to add a label to the samples? Choose one in the right pane'))
-            if hasattr('metadata',self.context.payload.database):
+            if hasattr(self.context.payload.database,'metadata'):
                 keys = list(set(self.context.payload.database.metadata['key'].values))
-            self.context.add_bot_msg(
-                Utils.choice('Metadata', {i:i for i in keys}))
+                self.context.add_bot_msg(Utils.choice('Metadata', {i:i for i in keys},show_search=True))
             return MetaLabels(self.context), False
         if intent != 'deny' and 'other_region' not in self.status:
             others = message.split(';')
@@ -176,7 +177,7 @@ class Labels(AbstractAction):
         if len(self.context.data_extraction.datasets)==1:
             self.context.workflow.run(self.context.workflow[-1])
             self.context.add_bot_msgs([Utils.chat_message('On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
-                                       Utils.table_viz('Pivot', self.context.workflow[-1].result.ds), Utils.tools_setup(add=[],remove=['pie-chart'])])
+                                       Utils.table_viz('Pivot', self.context.workflow[-1].result.ds), Utils.tools_setup(add=None,remove='pie-chart')])
         else:
             #self.context.workflow.write_workflow()
             #with open('workflow.txt','r') as f:
@@ -186,12 +187,12 @@ class Labels(AbstractAction):
             self.context.add_bot_msgs([Utils.chat_message(
                 'On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
                                        Utils.table_viz('Pivot', self.context.workflow[-1].result.ds),
-                                       Utils.tools_setup(add=[], remove=['pie-chart'])])
+                                       Utils.tools_setup(add=None, remove='data_summary')])
 
         #self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
         # print(Utils.table_viz('Pivot',self.context.workflow[-1].result))
         self.context.payload.clear()
-        return DonorDataset(self.context), False
+        return DonorDataset(self.context), True
 
 
 class MetaLabels(AbstractAction):
@@ -208,6 +209,9 @@ class MetaLabels(AbstractAction):
             print(others)
             self.context.add_bot_msg(
                 Utils.chat_message('Do you want to add a label to the features? Choose one in the right pane'))
-            self.context.add_bot_msg(Utils.param_list({i: i for i in self.context.payload.database.region_schema if
+            #self.context.add_bot_msg(Utils.choice('Regions',{i: i for i in self.context.payload.database.region_schema if
+             #                                        i != 'item_id'}))
+            self.context.add_bot_msg(Utils.choice('Available regions',
+                                                    {i: i for i in self.context.payload.database.region_schema if
                                                      i != 'item_id'}))
         return Labels(self.context), False

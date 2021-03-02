@@ -61,4 +61,5 @@ class NumClusters(AbstractAction):
             self.context.add_bot_msg(
                 Utils.scatter(self.context.workflow[-1].result.x, self.context.workflow[-1].result.y,
                               self.context.workflow[-1].result.labels, self.context.workflow[-1].result.u_labels))
-            return None, False
+            self.context.add_bot_msg(Utils.chat_message("You can restart from the beginning or close the page!"))
+            return ByeAction(self.context), False

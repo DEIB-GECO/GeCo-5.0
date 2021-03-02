@@ -62,6 +62,7 @@ if not os.path.exists('logger.json'):
 # Loading the data from database
 all_db = database()
 
+
 # Creation of the main class of Dialogue Manager
 class ConversationDBExplore(object):
     def __init__(self):
@@ -89,6 +90,7 @@ class ConversationDBExplore(object):
 
     # To call each time to run the needed action
     def run(self, message, intent, entities):
+        print( self.context.top_action())
         next_state, enter = self.context.top_action().run(message, intent, entities)
         if next_state is not None:
             self.context.add_step(action=next_state)
@@ -116,35 +118,45 @@ class ConversationDBExplore(object):
                     entities[e['entity']].append(e['value'].lower().strip())
                 else:
                     entities[e['entity']] = [e['value'].lower().strip()]
+
             Utils.pyconsole_debug(intent)
             Utils.pyconsole_debug(entities)
+
             self.context.modify_status(entities)
             self.run(message, intent, entities)
 
 
 @simple_page.route('/')
 def index():
-    global thread
     flask.current_app.logger.info("serve index")
-
     return render_template('index.html', async_mode=socketio.async_mode)
 
 
+# Receive messages from user
 @socketio.on('my_event', namespace='/test')
 def test_message(message):
+    # Read user message
     user_message = message['data'].strip()
+
+    # Add messages to the session to save them in case of disconnection
     add_session_message(session, {'type': 'message', 'payload': {'text': user_message, 'sender': 'user'}})
 
+    # Read the logger and save messages for improving nlu
     data = json.loads(open("logger.json").read())
-
     data[request.sid].append(user_message)
+
+    # Call the dialogue manager that receive the message, interprets it and pass it to the correct action
     session['dm'].receive(user_message)
     # if (session['dm'].context.top_bot_msgs()!=None):
+
+    # For each message in the top of the stack, we add it to the session and we send it to the user
+    #print(session['dm'].context.top_bot_msgs())
     for msg in session['dm'].context.top_bot_msgs():
         id = add_session_message(session, msg)
         msg['message_id'] = id
         emit('json_response', msg)
 
+        # If the msg is textual, we add it to the logger
         if msg['type'] == 'message':
             data[request.sid].append(msg['payload']['text'])
         with open("logger.json", "w") as file:
@@ -153,7 +165,7 @@ def test_message(message):
     # session['status'].clear_msgs()
     # session['previous_intent']= intent
 
-
+# To add the messages with an id to the session
 def add_session_message(session, message):
     msg = session['messages']
     if len(msg) == 0:
@@ -169,19 +181,22 @@ def add_session_message(session, message):
         temp_d = dict(message)
         temp_d['message_id'] = id
         session['last_json'][message['type']] = temp_d
-    # else:
-    #     for x in message['payload']['remove']:
-    #         if x in session['last_json']:
-    #             del session['last_json'][x]
+    else:
+        for x in message['payload']['remove']:
+            if x in session['last_json'].keys():
+                del session['last_json'][x]
 
     return id
 
-
+# Receive ack message and send the messages after the received ack number
+# If -1 then from the beginning
 @socketio.on('ack', namespace='/test')
 def test_ack_message(message):
+    # Check id of ack message received
     user_message = int(message['message_id'])
-    print(user_message)
+
     if 'messages' in session:
+        # If -1 we send all the messages in the conversation
         if user_message == -1:
             for x in session['messages']:
                 emit('json_response',
@@ -189,6 +204,8 @@ def test_ack_message(message):
                       'message_id': x['message_id']})
             for x in session['last_json']:
                 emit('json_response', session['last_json'][x])
+
+        # Else we send from user_message + 1
         else:
             for x in session['messages']:
                 if x['message_id'] > user_message + 1:
@@ -201,11 +218,15 @@ def test_ack_message(message):
                     emit('json_response', session['last_json'][x])
 
 
+# Receive reset message
 @socketio.on('reset', namespace='/test')
 def reset_button(message):
+    # Empty the logger for that session id
     with open('logger.json', 'r') as f:
         data = json.load(f)
         data[request.sid] = []
+
+    # Call function to reset the session
     reset(session)
 
     # emit('json_response', msg)
@@ -230,23 +251,28 @@ def disconnect_request():
          {'data': 'Disconnected!', 'count': session['receive_count']},
          callback=can_disconnect)
 
-
+# Reset the session
 def reset(session):
+    # Delete everything in the session
     for k in list(session.keys()):
         if not k.startswith("_"):
             del session[k]
+
+    # Starts a list of textual messages, a dict of visual messages and a dialogue manager
     session['messages'] = []
     session['last_json'] = {}
     session['dm'] = ConversationDBExplore()
 
+    # add the initial messages to the session
     for msg in session['dm'].context.top_bot_msgs():
         id = add_session_message(session, msg)
         msg['message_id'] = id
         # emit('json_response', msg)
 
-
+# Receive a new connection from the user
 @socketio.on('connect', namespace='/test')
 def test_connect():
+    # If it is the first time that cookie appears we start from the beginning by calling reset
     if 'dm' not in session:
         reset(session)
 
