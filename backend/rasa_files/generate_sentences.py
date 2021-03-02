@@ -80,7 +80,7 @@ def generate_sentences(templates, dataframe, name_file):
                             syn = f'[{label}]({k})'
                         else:
                             syn = f'[{label}]{{"entity":"{k}","value":"{pref}"}}'
-                        f.write(f'\t- {syn}\n')
+                        f.write(f'    - {syn}\n')
 
     with open(f'synonyms_db.txt', 'w') as f:
         for k in syn_dict_copy.keys():
