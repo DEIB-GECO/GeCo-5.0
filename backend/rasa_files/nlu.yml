@@ -31,21 +31,18 @@ nlu:
   examples: |
     - experiments
     - experimental data
-    - [peaks](data_type)
     - [mirna expression](data_type)
-    - [copy number]{"entity":"data_type","value":"cnv"}
-    - retrieve data from [acute adult t-cell leukemia/lymphoma](disease)
-    - data regarding [adenocarcinoma](disease)
+    - [dna methylation](data_type)
     - I want to retrieve data from [acute adult t-cell leukemia/lymphoma](disease)
     - [1000 genomes](source) data for [acute lymphoblastic leukemia](disease)
     - I want experiment about [acute myeloid leukemia](disease)
     - I need [acute promyelocytic leukemia](disease)
-    - Get [cnv](data_type) for [adenocarcinoma](disease)
-    - Get [copy number segment](data_type) for [adipose tissue](tissue) tissue
-    - [dna methylation](data_type) for [grch38](assembly)
-    - [adenoid cystic carcinoma](disease) [dna seq](data_type)
-    - [domain](data_type) from [adrenal cortex carcinoma](disease) for [hg19](assembly)
-    - [grch38](assembly) [exon quantification](data_type) from [adrenal gland pheochromocytoma](disease)
+    - [cnv](data_type) for [adenocarcinoma](disease)
+    - experiments for [copy number segment](data_type)
+    - Get [dna methylation](data_type) for [adenoid cystic carcinoma](disease)
+    - Get [dna seq](data_type) for [adipose tissue](tissue) tissue
+    - [domain](data_type) from [adrenal cortex carcinoma](disease) for [grch38](assembly)
+    - [hg19](assembly) [exon quantification](data_type) from [adrenal gland pheochromocytoma](disease)
     - [adrenal gland](tissue) data from [masked copy number segment](data_type) for [b-cell non-hodgkin lymphoma](disease)
     - [masked somatic mutation](data_type) from [alveolus of lung](tissue)
     - could you retrieve [methylation beta value](data_type) data from [bladder carcinoma](disease)?
@@ -55,131 +52,156 @@ nlu:
     - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [angular gyrus](tissue)?
     - [variant calling](data_type) of [aorta](tissue) tissue
     - I am looking for [copy number variation]{"entity":"data_type","value":"cnv"}
-    - experiments data for [arm bone](tissue) from [hg19](assembly)
-    - I want experiment about [bladder urothelial carcinoma](disease) for [grch38](assembly)
+    - experiments data for [arm bone](tissue) from [grch38](assembly)
+    - I want experiment about [bladder urothelial carcinoma](disease) for [hg19](assembly)
     - I want [copy number variations]{"entity":"data_type","value":"cnv"} for [bone osteosarcoma](disease)
-    - [hg19](assembly) [copy number]{"entity":"data_type","value":"cnv"} of [brain glioma](disease)
-    - data from [grch38](assembly) [dna copy number variation]{"entity":"data_type","value":"cnv"} for [breast adenocarcinoma](disease)
+    - [grch38](assembly) [copy number]{"entity":"data_type","value":"cnv"} of [brain glioma](disease)
+    - data from [hg19](assembly) [dna copy number variation]{"entity":"data_type","value":"cnv"} for [breast adenocarcinoma](disease)
     - im looking for [dna copy number variants]{"entity":"data_type","value":"cnv"} from [cistrome](source) regarding [breast carcinoma](disease)
     - patients with [breast ductal carcinoma](disease)
     - I need to select [artery](tissue) data taken from [encode](source)
     - I need [ascending aorta](tissue) data taken from [roadmap epigenomics](source)
-    - files from [tads](source) for [hg19](assembly)
+    - files from [tads](source) for [grch38](assembly)
     - data regarding [dna copy number polymorphisms]{"entity":"data_type","value":"cnv"} for cell line [1205-lu](cell)
     - i need cell [22rv1](cell)
     - [dna copy number polymorphism]{"entity":"data_type","value":"cnv"} of [293t](cell) cell
     - can i have [aatf](target) data?
     - please give me [537 mel](cell) data
-    - I would like to have data regarding [autonomic nervous system](tissue) extracted from [grch38](assembly)
+    - I would like to have data regarding [autonomic nervous system](tissue) extracted from [hg19](assembly)
     - can i have [abcf1](target) for cell line [786-0](cell)
     - I am looking for [copy number polymorphisms]{"entity":"data_type","value":"cnv"} data extracted from [tcga](source)
     - data for [biliary tract](tissue)
     - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [breast fibrocystic change](disease)
     - [bladder](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
     - samples of [8988t](cell) of patients affected by [burkitt lymphoma](disease)
-    - I would like to have [hg19](assembly) assembly data regarding [blood](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [cancer](disease)
-    - we would like to have items from [grch38](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [body of pancreas](tissue)
+    - I would like to have [grch38](assembly) assembly data regarding [blood](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [cancer](disease)
+    - we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [body of pancreas](tissue)
     - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
     - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [body of uterus](tissue)
     - i'm looking for data from [1000 genomes](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
     - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [bone marrow](tissue)?
     - [copy number polymorphism]{"entity":"data_type","value":"cnv"} for [healthy]{"entity": "is_healthy", "value": "False"} patients
-    - I want to retrieve data from [carcinoma](disease)
-    - [cistrome](source) data for [cervical adenocarcinoma](disease)
-    - I want experiment about [cervical carcinoma](disease)
-    - I need [cervicitis](disease)
-    - Get [dna copy number changes]{"entity":"data_type","value":"cnv"} for [childhood chronic myelogenous leukemia, bcr-abl1 positive](disease)
-    - Get [dna copy number change]{"entity":"data_type","value":"cnv"} for [bones, joints and articular cartilage of limbs](tissue) tissue
-    - [copy number variation]{"entity":"data_type","value":"copy number segment"} for [hg19](assembly)
-    - [cholangiocarcinoma](disease) [copy number variations]{"entity":"data_type","value":"copy number segment"}
-    - [copy number]{"entity":"data_type","value":"copy number segment"} from [chromophobe renal cell carcinoma](disease) for [grch38](assembly)
-    - [hg19](assembly) [dna copy number variation]{"entity":"data_type","value":"copy number segment"} from [chronic myeloid leukemia](disease)
-    - [bones, joints and articular cartilage of other and unspecified sites](tissue) data from [dna copy number variants]{"entity":"data_type","value":"copy number segment"} for [chronic myeloid leukemia pathway](disease)
-    - [dna copy number polymorphisms]{"entity":"data_type","value":"copy number segment"} from [bone tissue](tissue)
-    - could you retrieve [dna copy number polymorphism]{"entity":"data_type","value":"copy number segment"} data from [clavien-dindo grade iv](disease)?
-    - [copy number polymorphisms]{"entity":"data_type","value":"copy number segment"} from [brain](tissue)
-    - data regarding [polymorphisms, copy number]{"entity":"data_type","value":"copy number segment"} for cell [a172](cell)
+    - [dna copy number changes]{"entity":"data_type","value":"cnv"} for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [dna copy number change]{"entity":"data_type","value":"cnv"} of [carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [copy number variation]{"entity":"data_type","value":"copy number segment"} of [cervical adenocarcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - [copy number variations]{"entity":"data_type","value":"copy number segment"} of [bones, joints and articular cartilage of limbs](tissue) for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [copy number]{"entity":"data_type","value":"copy number segment"} of [bones, joints and articular cartilage of other and unspecified sites](tissue) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - [grch38](assembly) data for [cistrome](source)
+    - [bone tissue](tissue) dataset
+    - [cervical carcinoma](disease) dataset of [dna copy number variation]{"entity":"data_type","value":"copy number segment"}
+    - I want to retrieve data from [cervicitis](disease)
+    - [encode](source) data for [childhood chronic myelogenous leukemia, bcr-abl1 positive](disease)
+    - I want experiment about [cholangiocarcinoma](disease)
+    - I need [chromophobe renal cell carcinoma](disease)
+    - [dna copy number variants]{"entity":"data_type","value":"copy number segment"} for [chronic myeloid leukemia](disease)
+    - experiments for [dna copy number polymorphisms]{"entity":"data_type","value":"copy number segment"}
+    - Get [dna copy number polymorphism]{"entity":"data_type","value":"copy number segment"} for [clavien-dindo grade iv](disease)
+    - Get [copy number polymorphisms]{"entity":"data_type","value":"copy number segment"} for [brain](tissue) tissue
+    - [polymorphisms, copy number]{"entity":"data_type","value":"copy number segment"} from [colon adenocarcinoma](disease) for [hg19](assembly)
+    - [grch38](assembly) [dna copy number changes]{"entity":"data_type","value":"copy number segment"} from [colon carcinoma](disease)
+    - [breast](tissue) data from [dna copy number change]{"entity":"data_type","value":"copy number segment"} for [colorectal adenocarcinoma](disease)
+    - [dna methylations]{"entity":"data_type","value":"dna methylation"} from [breast epithelium](tissue)
+    - could you retrieve [dna sequencing]{"entity":"data_type","value":"dna seq"} data from [colorectal carcinoma](disease)?
+    - [somatic mutations]{"entity":"data_type","value":"dna seq"} from [cartilage element](tissue)
+    - data regarding [dna mutations]{"entity":"data_type","value":"dna seq"} for cell [a172](cell)
     - samples for [adnp](target) data
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [breast](tissue)?
-    - [dna copy number changes]{"entity":"data_type","value":"copy number segment"} of [breast epithelium](tissue) tissue
-    - I am looking for [dna copy number change]{"entity":"data_type","value":"copy number segment"}
-    - experiments data for [cartilage element](tissue) from [grch38](assembly)
-    - I want experiment about [colon adenocarcinoma](disease) for [hg19](assembly)
-    - I want [dna methylations]{"entity":"data_type","value":"dna methylation"} for [colon carcinoma](disease)
-    - [grch38](assembly) [dna sequencing]{"entity":"data_type","value":"dna seq"} of [colorectal adenocarcinoma](disease)
-    - data from [hg19](assembly) [somatic mutations]{"entity":"data_type","value":"dna seq"} for [colorectal cancer pathway](disease)
-    - im looking for [dna mutations]{"entity":"data_type","value":"dna seq"} from [encode](source) regarding [colorectal carcinoma](disease)
-    - patients with [cornelia de lange syndrome](disease)
-    - I need to select [caudate nucleus](tissue) data taken from [roadmap epigenomics](source)
-    - I need [central nervous system](tissue) data taken from [tads](source)
-    - files from [tcga](source) for [grch38](assembly)
-    - data regarding [chip-seq]{"entity":"data_type","value":"domain"} for cell line [a204.1](cell)
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [caudate nucleus](tissue)?
+    - [chip-seq]{"entity":"data_type","value":"domain"} of [central nervous system](tissue) tissue
+    - I am looking for [chromatin immunoprecipitation sequencing]{"entity":"data_type","value":"domain"}
+    - experiments data for [cerebellar cortex](tissue) from [hg19](assembly)
+    - I want experiment about [cornelia de lange syndrome](disease) for [grch38](assembly)
+    - I want [chip-seq]{"entity":"data_type","value":"domain"} for [coronary artery disease](disease)
+    - [hg19](assembly) [chip sequencing]{"entity":"data_type","value":"domain"} of [cutaneous melanoma](disease)
+    - data from [grch38](assembly) [sequencing, chip]{"entity":"data_type","value":"domain"} for [cystadenocarcinoma](disease)
+    - im looking for [chromatin immuno-precipitation sequencing]{"entity":"data_type","value":"domain"} from [roadmap epigenomics](source) regarding [diffuse large b-cell lymphoma](disease)
+    - patients with [down syndrome](disease)
+    - I need to select [cerebellum](tissue) data taken from [tads](source)
+    - I need [chorion](tissue) data taken from [tcga](source)
+    - files from [1000 genomes](source) for [hg19](assembly)
+    - data regarding [chromatin immuno precipitation sequencing]{"entity":"data_type","value":"domain"} for cell line [a204.1](cell)
     - i need cell [a3.01](cell)
-    - [chromatin immunoprecipitation sequencing]{"entity":"data_type","value":"domain"} of [a549](cell) cell
+    - [exon expression]{"entity":"data_type","value":"exon quantification"} of [a549](cell) cell
     - can i have [aebp2](target) data?
     - please give me [a673](cell) data
-    - I would like to have data regarding [cerebellar cortex](tissue) extracted from [hg19](assembly)
+    - I would like to have data regarding [cingulate gyrus](tissue) extracted from [grch38](assembly)
     - can i have [aff1](target) for cell line [acc112](cell)
-    - I am looking for [chip-seq]{"entity":"data_type","value":"domain"} data extracted from [1000 genomes](source)
-    - data for [cerebellum](tissue)
-    - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [coronary artery disease](disease)
-    - [chorion](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - samples of [ach2](cell) of patients affected by [cutaneous melanoma](disease)
-    - I would like to have [grch38](assembly) assembly data regarding [cingulate gyrus](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [cystadenocarcinoma](disease)
-    - we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [colon](tissue)
+    - I am looking for [quantification of transcriptomic features]{"entity":"data_type","value":"exon quantification"} data extracted from [cistrome](source)
+    - data for [colon](tissue)
+    - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [embryonal carcinoma](disease)
+    - [colonic mucosa](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - samples of [ach2](cell) of patients affected by [embryonal testis carcinoma](disease)
+    - I would like to have [hg19](assembly) assembly data regarding [connective tissue](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [endometrial adenocarcinoma](disease)
+    - we would like to have items from [grch38](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [coronary artery](tissue)
     - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [colonic mucosa](tissue)
-    - i'm looking for data from [cistrome](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [connective tissue](tissue)?
-    - [chip sequencing]{"entity":"data_type","value":"domain"} for [healthy]{"entity": "is_healthy", "value": "False"} patients
-    - I want to retrieve data from [diffuse large b-cell lymphoma](disease)
-    - [encode](source) data for [down syndrome](disease)
-    - I want experiment about [embryonal carcinoma](disease)
-    - I need [embryonal testis carcinoma](disease)
-    - Get [sequencing, chip]{"entity":"data_type","value":"domain"} for [endometrial adenocarcinoma](disease)
-    - Get [chromatin immuno-precipitation sequencing]{"entity":"data_type","value":"domain"} for [coronary artery](tissue) tissue
-    - [chromatin immuno precipitation sequencing]{"entity":"data_type","value":"domain"} for [grch38](assembly)
-    - [endometrial carcinoma](disease) [exon expression]{"entity":"data_type","value":"exon quantification"}
-    - [quantification of transcriptomic features]{"entity":"data_type","value":"exon quantification"} from [endometriosis](disease) for [hg19](assembly)
-    - [grch38](assembly) [exon rna-seq]{"entity":"data_type","value":"exon quantification"} from [esophageal carcinoma](disease)
-    - [cranial](tissue) data from [expression of exons]{"entity":"data_type","value":"exon quantification"} for [esophagitis](disease)
-    - [quantification of exons]{"entity":"data_type","value":"exon quantification"} from [duodenal mucosa](tissue)
-    - could you retrieve [gene expression quantification]{"entity":"data_type","value":"gene expression"} data from [essential thrombocythemia](disease)?
-    - [gene quantification]{"entity":"data_type","value":"gene expression"} from [duodenum](tissue)
-    - data regarding [expression of genes]{"entity":"data_type","value":"gene expression"} for cell [achn](cell)
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [cranial](tissue)
+    - i'm looking for data from [encode](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [duodenal mucosa](tissue)?
+    - [exon rna-seq]{"entity":"data_type","value":"exon quantification"} for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - [expression of exons]{"entity":"data_type","value":"exon quantification"} for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [quantification of exons]{"entity":"data_type","value":"exon quantification"} of [endometrial carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [gene expression quantification]{"entity":"data_type","value":"gene expression"} of [endometriosis](disease) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - [gene quantification]{"entity":"data_type","value":"gene expression"} of [duodenum](tissue) for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [expression of genes]{"entity":"data_type","value":"gene expression"} of [ear](tissue) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - [hg19](assembly) data for [roadmap epigenomics](source)
+    - [embryo](tissue) dataset
+    - [esophageal carcinoma](disease) dataset of [rna-seq]{"entity":"data_type","value":"gene expression"}
+    - I want to retrieve data from [esophagitis](disease)
+    - [tads](source) data for [essential thrombocythemia](disease)
+    - I want experiment about [ewing sarcoma](disease)
+    - I need [fibrosarcoma](disease)
+    - [rna sequencing]{"entity":"data_type","value":"gene expression"} for [follicular lymphoma](disease)
+    - experiments for [rna seq]{"entity":"data_type","value":"gene expression"}
+    - Get [sequencing of genes]{"entity":"data_type","value":"gene expression"} for [gastric adenocarcinoma](disease)
+    - Get [expressions of genes]{"entity":"data_type","value":"gene expression"} for [embryonic facial prominence](tissue) tissue
+    - [transcriptomics]{"entity":"data_type","value":"gene expression"} from [gastric carcinoma](disease) for [grch38](assembly)
+    - [hg19](assembly) [isoform expression quantification]{"entity":"data_type","value":"isoform expression"} from [gastrointestinal stromal tumor](disease)
+    - [endoderm](tissue) data from [isoform quantification]{"entity":"data_type","value":"isoform expression"} for [glioblastoma](disease)
+    - [expression of isoforms]{"entity":"data_type","value":"isoform expression"} from [endometrium](tissue)
+    - could you retrieve [rna-seq]{"entity":"data_type","value":"isoform expression"} data from [glioma](disease)?
+    - [rna sequencing]{"entity":"data_type","value":"isoform expression"} from [esophagus](tissue)
+    - data regarding [rna seq]{"entity":"data_type","value":"isoform expression"} for cell [achn](cell)
     - samples for [aggf1](target) data
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [ear](tissue)?
-    - [rna-seq]{"entity":"data_type","value":"gene expression"} of [embryo](tissue) tissue
-    - I am looking for [rna sequencing]{"entity":"data_type","value":"gene expression"}
-    - experiments data for [embryonic facial prominence](tissue) from [hg19](assembly)
-    - I want experiment about [ewing sarcoma](disease) for [grch38](assembly)
-    - I want [rna seq]{"entity":"data_type","value":"gene expression"} for [fibrosarcoma](disease)
-    - [hg19](assembly) [sequencing of genes]{"entity":"data_type","value":"gene expression"} of [follicular lymphoma](disease)
-    - data from [grch38](assembly) [expressions of genes]{"entity":"data_type","value":"gene expression"} for [gastric adenocarcinoma](disease)
-    - im looking for [transcriptomics]{"entity":"data_type","value":"gene expression"} from [roadmap epigenomics](source) regarding [gastric carcinoma](disease)
-    - patients with [gastrointestinal stromal tumor](disease)
-    - I need to select [endoderm](tissue) data taken from [tads](source)
-    - I need [endometrium](tissue) data taken from [tcga](source)
-    - files from [1000 genomes](source) for [hg19](assembly)
-    - data regarding [isoform expression quantification]{"entity":"data_type","value":"isoform expression"} for cell line [adipose derived mesenchymal stem cell cultured cells](cell)
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [esophagus muscularis mucosa](tissue)?
+    - [sequencing of isoforms]{"entity":"data_type","value":"isoform expression"} of [esophagus squamous epithelium](tissue) tissue
+    - I am looking for [expression of isoforms]{"entity":"data_type","value":"isoform expression"}
+    - experiments data for [eye](tissue) from [grch38](assembly)
+    - I want experiment about [granular renal cell carcinoma](disease) for [hg19](assembly)
+    - I want [quantification of isoforms]{"entity":"data_type","value":"isoform expression"} for [head and neck squamous cell carcinoma](disease)
+    - [grch38](assembly) [isoform rna seq]{"entity":"data_type","value":"isoform expression"} of [healthy](disease)
+    - data from [hg19](assembly) [isoform quantification]{"entity":"data_type","value":"isoform expression"} for [hepatitis](disease)
+    - im looking for [quantification of isoforms]{"entity":"data_type","value":"isoform expression"} from [tcga](source) regarding [hepatoblastoma](disease)
+    - patients with [hepatocellular carcinoma](disease)
+    - I need to select [fallopian tube](tissue) data taken from [1000 genomes](source)
+    - I need [femur](tissue) data taken from [cistrome](source)
+    - files from [encode](source) for [grch38](assembly)
+    - data regarding [masked copy number variation]{"entity":"data_type","value":"masked copy number segment"} for cell line [adipose derived mesenchymal stem cell cultured cells](cell)
     - i need cell [ag04450](cell)
-    - [isoform quantification]{"entity":"data_type","value":"isoform expression"} of [ag08396](cell) cell
+    - [masked copy number variations]{"entity":"data_type","value":"masked copy number segment"} of [ag08396](cell) cell
     - can i have [ago1](target) data?
     - please give me [ag08470 cell](cell) data
-    - I would like to have data regarding [esophagus](tissue) extracted from [grch38](assembly)
+    - I would like to have data regarding [frontal cortex](tissue) extracted from [hg19](assembly)
     - can i have [ago2](target) for cell line [ag09309](cell)
-    - I am looking for [expression of isoforms]{"entity":"data_type","value":"isoform expression"} data extracted from [cistrome](source)
-    - data for [esophagus muscularis mucosa](tissue)
-    - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [glioblastoma](disease)
-    - [esophagus squamous epithelium](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - samples of [ag09319 cell](cell) of patients affected by [glioma](disease)
-    - I would like to have [hg19](assembly) assembly data regarding [eye](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [granular renal cell carcinoma](disease)
-    - we would like to have items from [grch38](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [fallopian tube](tissue)
+    - I am looking for [masked copy number]{"entity":"data_type","value":"masked copy number segment"} data extracted from [roadmap epigenomics](source)
+    - data for [frontal lobe](tissue)
+    - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [hereditary spherocytosis](disease)
+    - [gall bladder](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - samples of [ag09319 cell](cell) of patients affected by [immunoblastic lymphoma](disease)
+    - I would like to have [grch38](assembly) assembly data regarding [gastrocnemius medialis](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [immunoglobulin lambda locus](disease)
+    - we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [gastroesophageal sphincter](tissue)
     - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [femur](tissue)
-    - i'm looking for data from [encode](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [frontal cortex](tissue)?
-    - [rna-seq]{"entity":"data_type","value":"isoform expression"} for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [germinal center](tissue)
+    - i'm looking for data from [tads](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [gingiva](tissue)?
+    - [masked dna copy number variation]{"entity":"data_type","value":"masked copy number segment"} for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - [masked dna copy number variants]{"entity":"data_type","value":"masked copy number segment"} for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [masked dna copy number polymorphisms]{"entity":"data_type","value":"masked copy number segment"} of [invasive breast carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [masked dna copy number polymorphism]{"entity":"data_type","value":"masked copy number segment"} of [leukemia](disease) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - [masked copy number polymorphisms]{"entity":"data_type","value":"masked copy number segment"} of [globus pallidus](tissue) for [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [masked polymorphisms, copy number]{"entity":"data_type","value":"masked copy number segment"} of [heart](tissue) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - [grch38](assembly) data for [tcga](source)
+    - [heart left ventricle](tissue) dataset
+    - [liver carcinoma](disease) dataset of [masked dna copy number changes]{"entity":"data_type","value":"masked copy number segment"}
+
 - intent: retrieve_annotations
   examples: |
     - [annotation](annotations)
@@ -1290,7 +1312,7 @@ nlu:
     - [lhsr](cell)
     - [prec]{"entity":"cell","value":"lhsr"}
     - [lncap](cell)
-    - [lncap-abl]{"entity":"cell","value":"lncap"}
+    - [lncap-abl ]{"entity":"cell","value":"lncap"}
     - [lncap cell]{"entity":"cell","value":"lncap"}
     - [crl-1740]{"entity":"cell","value":"lncap clone fgc"}
     - [lncap clone fgc](cell)
@@ -1304,9 +1326,6 @@ nlu:
     - [lox-imvi]{"entity":"cell","value":"loximvi"}
     - [ls174t](cell)
     - [lted](cell)
-    - [fibroblast of lung]{"entity":"cell","value":"lung fibroblast"}
-    - [lung fibroblast](cell)
-    - [nhlf]{"entity":"cell","value":"lung fibroblast"}
     - [lung microvascular endothelial cell](cell)
     - [gm2610]{"entity":"cell","value":"lymphoblastoid cell line"}
     - [gm2630]{"entity":"cell","value":"lymphoblastoid cell line"}
@@ -1747,7 +1766,7 @@ nlu:
     - [es-ucsf4  cells]{"entity":"cell","value":"ucsf4"}
     - [ucsf4](cell)
     - [ucsf-4]{"entity":"cell","value":"ucsf4"}
-    - [ucsf-4*]{"entity":"cell","value":"ucsf4"}
+    - [ucsf-4* ]{"entity":"cell","value":"ucsf4"}
     - [uke1](cell)
     - [uke-1]{"entity":"cell","value":"uke1"}
     - [um-scc-17a cell](cell)
@@ -1804,24 +1823,6 @@ nlu:
     - [transcribed fragments]{"entity":"content_type","value":"transcribed_fragment"}
 - intent: choice_value_data_type
   examples: |
-    - [rna sequencing]{"entity":"data_type","value":"isoform expression"}
-    - [rna seq]{"entity":"data_type","value":"isoform expression"}
-    - [sequencing of isoforms]{"entity":"data_type","value":"isoform expression"}
-    - [expression of isoforms]{"entity":"data_type","value":"isoform expression"}
-    - [quantification of isoforms]{"entity":"data_type","value":"isoform expression"}
-    - [isoform rna seq]{"entity":"data_type","value":"isoform expression"}
-    - [isoform quantification]{"entity":"data_type","value":"isoform expression"}
-    - [quantification of isoforms]{"entity":"data_type","value":"isoform expression"}
-    - [masked copy number variation]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked copy number variations]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked copy number]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked dna copy number variation]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked dna copy number variants]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked dna copy number polymorphisms]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked dna copy number polymorphism]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked copy number polymorphisms]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked polymorphisms, copy number]{"entity":"data_type","value":"masked copy number segment"}
-    - [masked dna copy number changes]{"entity":"data_type","value":"masked copy number segment"}
     - [dna seq]{"entity":"data_type","value":"masked somatic mutation"}
     - [dna sequencing]{"entity":"data_type","value":"masked somatic mutation"}
     - [masked dna mutations]{"entity":"data_type","value":"masked somatic mutation"}
@@ -2057,10 +2058,6 @@ nlu:
     - [cml]{"entity":"disease","value":"chronic myeloid leukemia"}
     - [cml - chronic myelogenous leukemia]{"entity":"disease","value":"chronic myeloid leukemia"}
     - [myeloid leukemia, chronic]{"entity":"disease","value":"chronic myeloid leukemia"}
-    - [cancer, chronic myeloid leukemia, leukemia]{"entity":"disease","value":"chronic myeloid leukemia pathway"}
-    - [chronic myeloid leukemia]{"entity":"disease","value":"chronic myeloid leukemia pathway"}
-    - [chronic myeloid leukemia, leukemia]{"entity":"disease","value":"chronic myeloid leukemia pathway"}
-    - [cml pathway]{"entity":"disease","value":"chronic myeloid leukemia pathway"}
     - [grade iv]{"entity":"disease","value":"clavien-dindo grade iv"}
     - [grade iv, adenocarcinoma]{"entity":"disease","value":"clavien-dindo grade iv"}
     - [adenocarcinoma - colon]{"entity":"disease","value":"colon adenocarcinoma"}
@@ -2081,8 +2078,6 @@ nlu:
     - [dukes' type c, grade iv, colorectal adenocarcinoma]{"entity":"disease","value":"colorectal adenocarcinoma"}
     - [large bowel adenocarcinoma]{"entity":"disease","value":"colorectal adenocarcinoma"}
     - [large intestine adenocarcinoma]{"entity":"disease","value":"colorectal adenocarcinoma"}
-    - [colorectal cancer]{"entity":"disease","value":"colorectal cancer pathway"}
-    - [crc pathway]{"entity":"disease","value":"colorectal cancer pathway"}
     - [cancer of large bowel]{"entity":"disease","value":"colorectal carcinoma"}
     - [cancer of large intestine]{"entity":"disease","value":"colorectal carcinoma"}
     - [cancer of the large bowel]{"entity":"disease","value":"colorectal carcinoma"}
@@ -2249,17 +2244,13 @@ nlu:
     - [kidney granular cell carcinoma]{"entity":"disease","value":"granular renal cell carcinoma"}
     - [kidney renal clear cell carcinoma]{"entity":"disease","value":"granular renal cell carcinoma"}
     - [kirc]{"entity":"disease","value":"granular renal cell carcinoma"}
-    - [head and neck squamous cell carcinoma](disease)
     - [head and neck squamous cell carcinoma, nos]{"entity":"disease","value":"head and neck squamous cell carcinoma"}
     - [scchn]{"entity":"disease","value":"head and neck squamous cell carcinoma"}
     - [squamous cell carcinoma of head and neck]{"entity":"disease","value":"head and neck squamous cell carcinoma"}
     - [squamous cell carcinoma of the head and neck]{"entity":"disease","value":"head and neck squamous cell carcinoma"}
     - [hnsc]{"entity":"disease","value":"head and neck squamous cell carcinoma"}
     - [apparently healthy]{"entity":"disease","value":"healthy"}
-    - [healthy](disease)
-    - [hepatitis](disease)
     - [hbl]{"entity":"disease","value":"hepatoblastoma"}
-    - [hepatoblastoma](disease)
     - [hepatoblastoma, malignant]{"entity":"disease","value":"hepatoblastoma"}
     - [pediatric embryonal hepatoma]{"entity":"disease","value":"hepatoblastoma"}
     - [pediatric hepatoblastoma]{"entity":"disease","value":"hepatoblastoma"}
@@ -2270,7 +2261,6 @@ nlu:
     - [hcc]{"entity":"disease","value":"hepatocellular carcinoma"}
     - [hepatocellular adenocarcinoma]{"entity":"disease","value":"hepatocellular carcinoma"}
     - [hepatocellular cancer]{"entity":"disease","value":"hepatocellular carcinoma"}
-    - [hepatocellular carcinoma](disease)
     - [hepatoma]{"entity":"disease","value":"hepatocellular carcinoma"}
     - [liver cell cancer (hepatocellular carcinoma)]{"entity":"disease","value":"hepatocellular carcinoma"}
     - [liver cell carcinoma]{"entity":"disease","value":"hepatocellular carcinoma"}
@@ -2278,15 +2268,12 @@ nlu:
     - [primary carcinoma of liver cells]{"entity":"disease","value":"hepatocellular carcinoma"}
     - [primary carcinoma of the liver cells]{"entity":"disease","value":"hepatocellular carcinoma"}
     - [lihc]{"entity":"disease","value":"hepatocellular carcinoma"}
-    - [hereditary spherocytosis](disease)
     - [hereditary spherocytosis type 2]{"entity":"disease","value":"hereditary spherocytosis"}
-    - [immunoblastic lymphoma](disease)
     - [lymphoma, immunoblastic, malignant]{"entity":"disease","value":"immunoblastic lymphoma"}
     - [refractory immunoblastic b cell lymphoma progressed from follicular centroblastic/centrocytic lymphoma]{"entity":"disease","value":"immunoblastic lymphoma"}
     - [igl]{"entity":"disease","value":"immunoglobulin lambda locus"}
     - [immunoglobulin a lambda myeloma]{"entity":"disease","value":"immunoglobulin lambda locus"}
     - [immunoglobulin lambda gene]{"entity":"disease","value":"immunoglobulin lambda locus"}
-    - [immunoglobulin lambda locus](disease)
     - [lambda light chain gene]{"entity":"disease","value":"immunoglobulin lambda locus"}
     - [breast invasive carcinoma]{"entity":"disease","value":"invasive breast carcinoma"}
     - [infiltrating breast cancer]{"entity":"disease","value":"invasive breast carcinoma"}
@@ -2294,14 +2281,12 @@ nlu:
     - [infiltrating carcinoma of breast]{"entity":"disease","value":"invasive breast carcinoma"}
     - [infiltrating carcinoma of the breast]{"entity":"disease","value":"invasive breast carcinoma"}
     - [invasive breast cancer]{"entity":"disease","value":"invasive breast carcinoma"}
-    - [invasive breast carcinoma](disease)
     - [invasive carcinoma of breast]{"entity":"disease","value":"invasive breast carcinoma"}
     - [invasive carcinoma of the breast]{"entity":"disease","value":"invasive breast carcinoma"}
     - [invasive mammary carcinoma]{"entity":"disease","value":"invasive breast carcinoma"}
     - [brca]{"entity":"disease","value":"invasive breast carcinoma"}
     - [blood (leukemia)]{"entity":"disease","value":"leukemia"}
     - [cancer, leukemia]{"entity":"disease","value":"leukemia"}
-    - [leukemia](disease)
     - [leukemia, disease]{"entity":"disease","value":"leukemia"}
     - [leukemia, malignant]{"entity":"disease","value":"leukemia"}
     - [leukemia nos]{"entity":"disease","value":"leukemia"}
@@ -2309,7 +2294,6 @@ nlu:
     - [leukemias]{"entity":"disease","value":"leukemia"}
     - [leukemias, general]{"entity":"disease","value":"leukemia"}
     - [liver and intrahepatic bile duct carcinoma]{"entity":"disease","value":"liver carcinoma"}
-    - [liver carcinoma](disease)
     - [adenocarcinoma of lung]{"entity":"disease","value":"lung adenocarcinoma"}
     - [adenocarcinoma of the lung]{"entity":"disease","value":"lung adenocarcinoma"}
     - [cancer, lung adenocarcinoma]{"entity":"disease","value":"lung adenocarcinoma"}
@@ -2442,9 +2426,6 @@ nlu:
     - [cancer, prostate adenocarcinoma, prostate carcinoma]{"entity":"disease","value":"prostate adenocarcinoma"}
     - [prostate adenocarcinoma](disease)
     - [prad]{"entity":"disease","value":"prostate adenocarcinoma"}
-    - [cancer, prostate cancer]{"entity":"disease","value":"prostate cancer pathway"}
-    - [prostate cancer]{"entity":"disease","value":"prostate cancer pathway"}
-    - [prostate cancer pathway](disease)
     - [cancer of prostate]{"entity":"disease","value":"prostate carcinoma"}
     - [cancer of the prostate]{"entity":"disease","value":"prostate carcinoma"}
     - [carcinoma of prostate]{"entity":"disease","value":"prostate carcinoma"}
@@ -2467,7 +2448,7 @@ nlu:
     - [carcinoma, renal cell, malignant]{"entity":"disease","value":"renal cell carcinoma"}
     - [kidney adenocarcinoma]{"entity":"disease","value":"renal cell carcinoma"}
     - [rcc]{"entity":"disease","value":"renal cell carcinoma"}
-    - [renal carcinoma]{"entity":"disease","value":"renal cell carcinoma"}
+    - [renal carcinoma ]{"entity":"disease","value":"renal cell carcinoma"}
     - [renal cell adenocarcinoma]{"entity":"disease","value":"renal cell carcinoma"}
     - [renal cell cancer]{"entity":"disease","value":"renal cell carcinoma"}
     - [renal cell carcinoma](disease)
@@ -3611,39 +3592,30 @@ nlu:
     - [frontal lobe cortex]{"entity":"tissue","value":"frontal cortex"}
     - [gray matter of frontal lobe]{"entity":"tissue","value":"frontal cortex"}
     - [grey matter of frontal lobe]{"entity":"tissue","value":"frontal cortex"}
-    - [frontal lobe](tissue)
     - [lobi frontales]{"entity":"tissue","value":"frontal lobe"}
     - [lobus frontalis]{"entity":"tissue","value":"frontal lobe"}
     - [mid frontal lobe]{"entity":"tissue","value":"frontal lobe"}
     - [gallbladder]{"entity":"tissue","value":"gall bladder"}
-    - [gall bladder](tissue)
     - [vescica]{"entity":"tissue","value":"gall bladder"}
     - [caput mediale musculus gastrocnemii]{"entity":"tissue","value":"gastrocnemius medialis"}
     - [caput mediale (musculus gastrocnemius)]{"entity":"tissue","value":"gastrocnemius medialis"}
-    - [gastrocnemius medialis](tissue)
     - [medial head of gastrocnemius]{"entity":"tissue","value":"gastrocnemius medialis"}
     - [medial head of gastrocnemius muscle]{"entity":"tissue","value":"gastrocnemius medialis"}
     - [cardiac sphincter]{"entity":"tissue","value":"gastroesophageal sphincter"}
-    - [gastroesophageal sphincter](tissue)
     - [gastroesophageal sphincter muscle]{"entity":"tissue","value":"gastroesophageal sphincter"}
     - [inferior esophageal sphincter]{"entity":"tissue","value":"gastroesophageal sphincter"}
     - [central zone of follice]{"entity":"tissue","value":"germinal center"}
-    - [germinal center](tissue)
     - [light zone of follicle]{"entity":"tissue","value":"germinal center"}
     - [reaction center of follicle]{"entity":"tissue","value":"germinal center"}
-    - [gingiva](tissue)
     - [gum]{"entity":"tissue","value":"gingiva"}
     - [gums]{"entity":"tissue","value":"gingiva"}
     - [gum tissue]{"entity":"tissue","value":"gingiva"}
-    - [globus pallidus](tissue)
     - [pale body]{"entity":"tissue","value":"globus pallidus"}
     - [paleostriatum]{"entity":"tissue","value":"globus pallidus"}
     - [chambered heart]{"entity":"tissue","value":"heart"}
     - [fetal heart]{"entity":"tissue","value":"heart"}
-    - [heart](tissue)
     - [vertebrate heart]{"entity":"tissue","value":"heart"}
     - [cardiac left ventricle]{"entity":"tissue","value":"heart left ventricle"}
-    - [heart left ventricle](tissue)
     - [left cardiac ventricle]{"entity":"tissue","value":"heart left ventricle"}
     - [left ventricle]{"entity":"tissue","value":"heart left ventricle"}
     - [left ventricle of heart]{"entity":"tissue","value":"heart left ventricle"}
@@ -3957,8 +3929,6 @@ nlu:
     - [lobus superior (pulmo sinister)]{"entity":"tissue","value":"upper lobe of left lung"}
     - [superior lobe of left lung]{"entity":"tissue","value":"upper lobe of left lung"}
     - [upper lobe of left lung](tissue)
-    - [urinary bladder](tissue)
-    - [vesica urinaria]{"entity":"tissue","value":"urinary bladder"}
     - [epithelium transitionale]{"entity":"tissue","value":"urothelium"}
     - [transitional epithelium]{"entity":"tissue","value":"urothelium"}
     - [uroepithelium]{"entity":"tissue","value":"urothelium"}

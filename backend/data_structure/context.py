@@ -86,6 +86,8 @@ class Payload:
                             self.status[key][k].append(new_value[k])
                     else:
                         self.status[key][k] = new_value[k]
+            elif self.status[key]=={}:
+                self.status[key] = new_value
             else:
                 self.status[key].update(new_value)
         elif old == None:

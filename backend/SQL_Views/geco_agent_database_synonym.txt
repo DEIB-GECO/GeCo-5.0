@@ -669,7 +669,7 @@ False	cell	lhcn-m2	lhcn-m2
 False	cell	lhsr	lhsr
 False	cell	lhsr	prec
 False	cell	lncap	lncap
-False	cell	lncap	lncap-abl
+False	cell	lncap	lncap-abl 
 False	cell	lncap	lncap cell
 False	cell	lncap clone fgc	crl-1740
 False	cell	lncap clone fgc	lncap clone fgc
@@ -683,9 +683,6 @@ False	cell	loximvi	lox imvi
 False	cell	loximvi	lox-imvi
 False	cell	ls174t	ls174t
 False	cell	lted	lted
-False	cell	lung fibroblast	fibroblast of lung
-False	cell	lung fibroblast	lung fibroblast
-False	cell	lung fibroblast	nhlf
 False	cell	lung microvascular endothelial cell	lung microvascular endothelial cell
 False	cell	lymphoblastoid cell line	gm2610
 False	cell	lymphoblastoid cell line	gm2630
@@ -1126,7 +1123,7 @@ False	cell	u937	u937
 False	cell	ucsf4	es-ucsf4  cells
 False	cell	ucsf4	ucsf4
 False	cell	ucsf4	ucsf-4
-False	cell	ucsf4	ucsf-4*
+False	cell	ucsf4	ucsf-4* 
 False	cell	uke1	uke1
 False	cell	uke1	uke-1
 False	cell	um-scc-17a cell	um-scc-17a cell
@@ -1417,11 +1414,6 @@ False	disease	chronic myeloid leukemia	chronic myeloid leukemia
 False	disease	chronic myeloid leukemia	cml
 False	disease	chronic myeloid leukemia	cml - chronic myelogenous leukemia
 False	disease	chronic myeloid leukemia	myeloid leukemia, chronic
-False	disease	chronic myeloid leukemia pathway	cancer, chronic myeloid leukemia, leukemia
-False	disease	chronic myeloid leukemia pathway	chronic myeloid leukemia
-False	disease	chronic myeloid leukemia pathway	chronic myeloid leukemia, leukemia
-False	disease	chronic myeloid leukemia pathway	chronic myeloid leukemia pathway
-False	disease	chronic myeloid leukemia pathway	cml pathway
 False	disease	clavien-dindo grade iv	clavien-dindo grade iv
 False	disease	clavien-dindo grade iv	grade iv
 False	disease	clavien-dindo grade iv	grade iv, adenocarcinoma
@@ -1445,9 +1437,6 @@ False	disease	colorectal adenocarcinoma	colorectal (colon or rectal) adenocarcin
 False	disease	colorectal adenocarcinoma	dukes' type c, grade iv, colorectal adenocarcinoma
 False	disease	colorectal adenocarcinoma	large bowel adenocarcinoma
 False	disease	colorectal adenocarcinoma	large intestine adenocarcinoma
-False	disease	colorectal cancer pathway	colorectal cancer
-False	disease	colorectal cancer pathway	colorectal cancer pathway
-False	disease	colorectal cancer pathway	crc pathway
 False	disease	colorectal carcinoma	cancer of large bowel
 False	disease	colorectal carcinoma	cancer of large intestine
 False	disease	colorectal carcinoma	cancer of the large bowel
@@ -1815,9 +1804,6 @@ False	disease	prostate adenocarcinoma	adenocarcinoma of prostate
 False	disease	prostate adenocarcinoma	adenocarcinoma of the prostate
 False	disease	prostate adenocarcinoma	cancer, prostate adenocarcinoma, prostate carcinoma
 False	disease	prostate adenocarcinoma	prostate adenocarcinoma
-False	disease	prostate cancer pathway	cancer, prostate cancer
-False	disease	prostate cancer pathway	prostate cancer
-False	disease	prostate cancer pathway	prostate cancer pathway
 False	disease	prostate carcinoma	cancer of prostate
 False	disease	prostate carcinoma	cancer of the prostate
 False	disease	prostate carcinoma	carcinoma of prostate
@@ -1839,7 +1825,7 @@ False	disease	renal cell carcinoma	adenocarcinoma of the kidney
 False	disease	renal cell carcinoma	carcinoma, renal cell, malignant
 False	disease	renal cell carcinoma	kidney adenocarcinoma
 False	disease	renal cell carcinoma	rcc
-False	disease	renal cell carcinoma	renal carcinoma
+False	disease	renal cell carcinoma	renal carcinoma 
 False	disease	renal cell carcinoma	renal cell adenocarcinoma
 False	disease	renal cell carcinoma	renal cell cancer
 False	disease	renal cell carcinoma	renal cell carcinoma
@@ -3362,8 +3348,6 @@ False	tissue	upper lobe of left lung	lobus superior pulmonis sinistri
 False	tissue	upper lobe of left lung	lobus superior (pulmo sinister)
 False	tissue	upper lobe of left lung	superior lobe of left lung
 False	tissue	upper lobe of left lung	upper lobe of left lung
-False	tissue	urinary bladder	urinary bladder
-False	tissue	urinary bladder	vesica urinaria
 False	tissue	urothelium	epithelium transitionale
 False	tissue	urothelium	transitional epithelium
 False	tissue	urothelium	uroepithelium
@@ -3503,4 +3487,3 @@ True	data_type	annotation	annotation
 True	source	gencode	gencode
 True	source	refseq	refseq
 True	source	roadmap epigenomics	roadmap epigenomics
-

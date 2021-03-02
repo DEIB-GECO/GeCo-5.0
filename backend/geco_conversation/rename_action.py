@@ -24,6 +24,6 @@ class RenameAction(AbstractAction):
         #urls = self.context.payload.database.download(self.status['fields'])
         self.context.payload.update('fields', {'name':name})
         list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x not in ['metadata','regions']}
-        self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),Utils.chat_message(messages.download),
+        self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),#Utils.chat_message(messages.download),
                 Utils.param_list(list_param)])
         return self.next, True

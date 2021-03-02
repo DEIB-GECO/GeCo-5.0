@@ -2,6 +2,7 @@ from geco_conversation import *
 from data_structure.dataset import Dataset
 from data_structure.database import DB, fields, datasets
 import copy
+import pandas as pd
 
 
 class NewDataset(AbstractAction):
@@ -85,11 +86,16 @@ class DonorDataset(AbstractAction):
                         num_tables += 1
 
         if num_tables >= 2:
+            table = pd.DataFrame(index=self.status['common_donors'].keys())
+            table['Number of Donors'] = [len(set(v)) for k, v in self.status['common_donors'].items() if
+                                         (len(v) / len_donors) * 100 > 0]
+            table['Common Percentage'] = [{round((len(v) / len_donors) * 100, 2)} for k, v in
+                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0]
             self.context.add_bot_msgs([Utils.chat_message(
                 'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'
                 'Do you want also one of these datasets?'),
                 Utils.choice('Datasets', {f'{k}: {round((len(v) / len_donors) * 100, 2)}%': k for k, v in
-                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),
+                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),Utils.table_viz(table),
                 Utils.tools_setup(add=None, remove='data_summary'), Utils.tools_setup(add=None, remove='table')])
             return SameDonorDataset(self.context), False
 
@@ -115,12 +121,16 @@ class DonorDataset(AbstractAction):
                         num_tables += 1
 
         if num_tables >= 2:
+            table = pd.DataFrame(index= self.status['common_donors'].keys())
+            table['Number of Donors'] =  [len(set(v)) for k,v in self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0]
+            table['Common Percentage'] = [{round((len(v) / len_donors) * 100, 2)} for k, v in
+                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0]
             self.context.add_bot_msgs([Utils.chat_message(
                 'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'),
                 Utils.chat_message(
                     'Do you want also one of these datasets? If not, you will proceed with the analysis.'),
                 Utils.choice('Datasets', {f'{k}: {round((len(v) / len_donors) * 100, 2)}%': k for k, v in
-                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),
+                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),Utils.table_viz(table),
                 Utils.tools_setup(add=None, remove='data_summary'), Utils.tools_setup(add=None, remove='table')])
             return SameDonorDataset(self.context), False
 

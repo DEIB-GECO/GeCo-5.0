@@ -1,6 +1,7 @@
 #from data_structure.database import db
 from sqlalchemy import create_engine
 import pandas as pd
+import time
 
 def get_db_uri():
     postgres_url = "localhost"
@@ -51,30 +52,47 @@ class SelectLogic:
 
 
     def run(self):
-        query = self.query_field()
-        #print("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
-        res = db.engine.execute("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
-        values = res.fetchall()
-        reg = pd.DataFrame(values, columns=res.keys())
+        pre = time.time()
+
+        #query = self.query_field()
+        query =  "select rr.* from rr.{} as rr where item_id in {}".format(self.ds.fields['dataset_name'][0],self.ds.items)
+        print(query)
+        #res = db.engine.execute("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
+        #print('time-first select:', time.time() - pre)
+        #values = res.fetchall()
+        #print('time-first select fetchall:', time.time() - pre)
+        #reg = pd.DataFrame(values, columns=res.keys())
+        #reg = pd.read_sql("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query), db.engine)
+        reg = pd.read_sql(query, db.engine)
+        print(reg.head())
+        print('time-first select df:', time.time() - pre)
         #print(reg.head())
 
         self.ds.add_region_table(reg)
-        self.ds.add_region_schema(list(res.keys()))
+        #self.ds.add_region_schema(list(res.keys()))
+        self.ds.add_region_schema(list(reg.columns))
+        print('time-add schema:', time.time() - pre)
         if hasattr(self.op.depends_on.fields, 'metadata'):
              query2 = self.query_key()
              res = db.engine.execute(
                  "select rr.* from dw.unified_pair_gecoagent as rr {} where ({})".format(
                      query, query2))
         else:
+             print("select rr.* from dw.unified_pair_gecoagent as rr {}".format(
+                     query))
              res = db.engine.execute(
                  "select rr.* from dw.unified_pair_gecoagent as rr {}".format(
                      query))
+        print('time-second select:', time.time() - pre)
         values = res.fetchall()
+        print('time-second fetchall:', time.time() - pre)
         meta = pd.DataFrame(values, columns=res.keys())
+        print('time-second df:', time.time() - pre)
         del values
         #print('meta')
         #print(meta.head())
         self.ds.add_meta_table(meta)
+        print('time-second add schema:', time.time() - pre)
         #res = db.engine.execute("select * from rr.gene_expression_hg19 where item_id in ({}) limit 100".format(query))
         #values = res.fetchall()
         #reg = pd.DataFrame(values, columns = res.keys())
@@ -82,7 +100,9 @@ class SelectLogic:
         #self.ds.add_region_table(reg)
         #self.ds.add_region_schema(list(res.keys()))
         self.op.result = self.ds
+        print('time-save result:', time.time() - pre)
         self.op.executed = True
+        print('time:', time.time()-pre)
         print('fine select')
         #reg.to_csv('region_lung.csv')
         #meta.to_csv('meta_lung.csv')

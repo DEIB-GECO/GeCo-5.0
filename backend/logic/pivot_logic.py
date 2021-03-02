@@ -15,6 +15,7 @@ class PivotLogic:
 
 
     def run(self):
+        print('inizio pivot')
         # if self.op.meta_col != None:
         #     items = list(self.ds.meta['item_id'])
         #     items.sort()
@@ -29,13 +30,15 @@ class PivotLogic:
         #     for i in self.op.meta_row:
         #         if i != 'item_id':
         #             temp_meta[i] = self.ds.meta[self.ds.meta['key'] == i]['value']
-        items = list(self.ds.meta['item_id'])
-        items.sort()
-        temp_meta = pd.DataFrame(index=items)
+        #items = list(self.ds.meta['item_id'])
+        #items.sort()
+        #temp_meta = pd.DataFrame(index=items)
+        #print('temp meta done')
         #print('TEMP META')
         #print(temp_meta.head())
-        temp_reg = self.ds.region.merge(temp_meta, left_on='item_id', right_index=True)
-        items_reg = pd.DataFrame(index=list(set(temp_reg['item_id'])))
+        #temp_reg = self.ds.region.merge(temp_meta, left_on='item_id', right_index=True)
+        temp_reg = self.ds.region
+        #items_reg = pd.DataFrame(index=list(set(temp_reg['item_id'])))
         print('TEMP REG')
         print(temp_reg.head())
         #if (self.op.region_col!=None) and (self.op.meta_col!=None):
@@ -56,6 +59,8 @@ class PivotLogic:
         print('prima pivot')
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)
+        print('dopo pivot')
+        print(pivot.head())
 
         if self.op.other_region!=None:
             labels_reg = temp_reg[self.op.other_region]

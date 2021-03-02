@@ -2,10 +2,10 @@ I want to retrieve data from $disease$
 $source$ data for $disease$
 I want experiment about $disease$
 I need $disease$
+$data_type$ for $disease$
+experiments for $data_type$
 Get $data_type$ for $disease$
 Get $data_type$ for $tissue$ tissue
-$data_type$ for $assembly$
-$disease$ $data_type$
 $data_type$ from $disease$ for $assembly$
 $assembly$ $data_type$ from $disease$
 $tissue$ data from $data_type$ for $disease$
@@ -39,10 +39,18 @@ data for $tissue$
 [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by $disease$
 $tissue$ extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
 samples of $cell$ of patients affected by $disease$
-I would like to have $assembly$ assembly data regarding $tissue$ of [tumoral]{"entity":"is_healthy", "value":False} patients with $disease$
+I would like to have $assembly$ assembly data regarding $tissue$ of [tumoral]{"entity":"is_healthy", "value":"False"} patients with $disease$
 we would like to have items from $assembly$ from [healthy]{"entity": "is_healthy", "value": "True"} $tissue$
 i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
 can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from $tissue$
 i'm looking for data from $source$ regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
 can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from $tissue$?
 $data_type$ for [healthy]{"entity": "is_healthy", "value": "False"} patients
+$data_type$ for [healthy]{"entity": "is_healthy", "value": "True"} patients
+$data_type$ of $disease$ for [healthy]{"entity": "is_healthy", "value": "True"} patients
+$data_type$ of $disease$ for [healthy]{"entity": "is_healthy", "value": "False"} patients
+$data_type$ of $tissue$ for [healthy]{"entity": "is_healthy", "value": "True"} patients
+$data_type$ of $tissue$ for [healthy]{"entity": "is_healthy", "value": "False"} patients
+$assembly$ data for $source$
+$tissue$ dataset
+$disease$ dataset of $data_type$
