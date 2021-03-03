@@ -168,11 +168,11 @@ class PivotLogic:
 
     def run_select(self):
         pre = time.time()
-        regions = list(set((self.op.region_row or []) + (self.op.region_col or []) + (self.op.other_region or [])))
+        regions = list(set((self.op.region_row or []) + (self.op.region_col or []) + (self.op.other_region or []) + list(self.op.value)))
         regions = ','.join(str(i) for i in regions)
         items = ','.join(str(i) for i in self.ds.items)
         #query = self.query_field()
-        query =  f"select {regions}  from rr.{self.ds.fields['dataset_name'][0]} as rr where item_id in ({items})"
+        query =  f"select item_id, {regions}  from rr.{self.ds.fields['dataset_name'][0]} as rr where item_id in ({items})"
         print(query)
         reg = pd.read_sql(query, db.engine)
         print(reg.head())
@@ -183,7 +183,7 @@ class PivotLogic:
         #self.ds.add_region_schema(list(res.keys()))
         self.ds.add_region_schema(list(reg.columns))
         print('time-add schema:', time.time() - pre)
-        if hasattr(self.op.depends_on.fields, 'metadata'):
+        if hasattr(self.ds.fields, 'metadata'):
              query2 = self.query_key()
              res = db.engine.execute(
                  "select rr.* from dw.unified_pair_gecoagent as rr {} where ({})".format(
