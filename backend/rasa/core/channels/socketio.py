@@ -208,13 +208,20 @@ class SocketIOInput(InputChannel):
         async def health(_: Request) -> HTTPResponse:
             return response.json({"status": "ok"})
 
+        @sio.on("Prova", namespace=self.namespace)
+        async def connect(sid: Text, data: Dict) -> None:
+            logger.debug("sono in prova")
+            logger.debug(data[0])
+
+
         @sio.on("connect", namespace=self.namespace)
         async def connect(sid: Text, data: Dict) -> None:
             logger.debug(f"User {sid} connected to socketIO endpoint.")
             logger.debug("mi sono connesso")
             logger.debug(data)
-
+            logger.debug("self.namespace", namespace)
             global user_ID
+
             if("io="+user_ID == data["HTTP_COOKIE"] ):
                 logger.debug("we1")
                 sid=user_ID
@@ -235,14 +242,6 @@ class SocketIOInput(InputChannel):
             if self.session_persistence:
                 sio.enter_room(sid, data["session_id"])
 
-           # if("io="+user_ID == data["HTTP_COOKIE"] ):
-           #     logger.debug("we1")
-           #     sid=user_ID
-
-           # else:
-           #     user_ID=sid
-           #     logger.debug(user_ID)
-
             await sio.emit("session_confirm", data["session_id"], room=sid)
             logger.debug(f"User {sid} session requested to socketIO endpoint.")
 
@@ -257,6 +256,7 @@ class SocketIOInput(InputChannel):
                 with open("sessions/" +sid+".json", "w") as f:
                     json.dump(data, f)
 
+            await self.sio.emit('json_response', {"type": "message", "payload": {"sender": "bot", "text": "Hi, there! I'm here to help you for the extraction and the analysis of genomic data."}})
             await self.sio.emit('json_response', {"type": "message", "payload": {"sender": "bot", "text": "What data are you looking for?"}})
             await self.sio.emit('json_response', {"type": "available_choices","payload": {"showSearchBar": False,"showDetails": False,"caption":'Data available',"showHelpIcon": False, "elements": [{'name': 'Annotations', 'value':'Annotations'},{'name': 'Experiments', 'value':'Experiments'}]}})
             await self.sio.emit('json_response', {"type": "workflow","payload": {"state": "Data Selection"}})
@@ -305,6 +305,14 @@ class SocketIOInput(InputChannel):
                 data["message"], output_channel, sender_id, input_channel=self.name()
             )
             await on_new_message(message)
+
+        @sio.on('ack', namespace='/test')
+        async def test_ack_message(message):
+            user_message = int(message['message_id'])
+            logger.debug("Ho ricevuto ack")
+            logger.debug(user_message)
+
+
 
         """fatta da me da é questo che funziona veramente"""
         @sio.on('my_event', namespace=self.namespace)

@@ -22,6 +22,28 @@ sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
 datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
             'grch38_tcga_mirna_expression_2019_10']
+region_datasets = datasets
+all_datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
+            'grch38_tcga_mirna_expression_2019_10', 'hg19_tcga_rnaseqv2_isoform','grch38_encode_broad_2020_01','hg19_roadmap_epigenomics_dmr','hg19_tcga_rnaseqv2_spljxn',
+            'hg19_tcga_rnaseq_spljxn','hg19_roadmap_epigenomics_bed','hg19_roadmap_epigenomics_narrow',
+            'hg19_tcga_mirnaseq_isoform','grch38_annotation_refseq','hg19_tcga_rnaseq_gene',
+            'grch38_annotation_gencode','hg19_tcga_rnaseqv2_exon','hg19_tads_aiden',
+            'hg19_roadmap_epigenomics_rna_expression','hg19_tcga_rnaseqv2_gene','hg19_tcga_cnv','hg19_tcga_rnaseq_exon',
+            'hg19_annotation_refseq','hg19_tcga_mirnaseq_mirna','hg19_roadmap_epigenomics_broad',
+            'hg19_tcga_dnaseq','grch38_encode_narrow_2020_01','hg19_annotation_gencode','hg19_roadmap_epigenomics_gapped','hg19_encode_broad_2020_01',
+            'hg19_tads_dixon','hg19_tcga_dnamethylation','hg19_encode_narrow_2020_01','grch38_tcga_mirna_isoform_expression_2019_10']
+
+
+other_datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
+            'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
+            'grch38_tcga_mirna_expression_2019_10', 'grch38_encode_broad_2020_01','hg19_roadmap_epigenomics_dmr',
+            'hg19_tcga_rnaseq_spljxn','hg19_roadmap_epigenomics_bed','hg19_roadmap_epigenomics_narrow',
+            'hg19_tcga_mirnaseq_isoform','grch38_annotation_refseq','hg19_tcga_rnaseq_gene',
+            'grch38_annotation_gencode','hg19_roadmap_epigenomics_rna_expression','hg19_tcga_cnv','hg19_tcga_rnaseq_exon',
+            'hg19_annotation_refseq','hg19_tcga_mirnaseq_mirna','hg19_roadmap_epigenomics_broad',
+            'hg19_tcga_dnaseq','grch38_encode_narrow_2020_01','hg19_annotation_gencode','hg19_roadmap_epigenomics_gapped','hg19_encode_broad_2020_01',
+            'hg19_tcga_dnamethylation','hg19_encode_narrow_2020_01','grch38_tcga_mirna_isoform_expression_2019_10']
 
 
 class database:
@@ -67,12 +89,14 @@ class DB:
 
     def update(self, gcm):
         self.all_values = []
-        self.fields_names = []
+        self.fields_names=[]
         for f in self.fields:
             values = []
             if f in gcm and f!='is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
-            val = list(self.table[f])
+            #val = list(set(self.table[f]))
+            val = list(filter(lambda x: x is not None, list(set(self.table[f]))))
+            #val = list(filter(None, val))
             if (val != []) and (len(val) > 1):
                 self.fields_names.append(f)
                 for i in range(len(val)):
@@ -81,13 +105,18 @@ class DB:
                         self.all_values.append(val[i])
             elif len(val) == 1:
                 values = [val[0]]
+
             if values != []:
                 self.values[f]=values
+
+    def update_donors(self, ds, donors):
+        self.table = self.table[self.table['dataset_name']==ds]
+        self.table =  self.table[self.table['donor_source_id'].isin(donors)]
 
     def retrieve_values(self, gcm, f):
         values = list(self.table[f])
         set_val = list(set(values))
-        print(f, set_val)
+        set_val = list(filter(lambda x: x is not None, set_val))
         val = [{"value": i, "count": values.count(i)} for i in set_val]
         return val
 
@@ -100,9 +129,13 @@ class DB:
             print("error")
             return 0
 
-    def download(self, gcm):
-        links = list(set(self.table['local_url']))
+    def download(self, gcm, donors =[]):
+        if len(donors)==0:
+            links = list(set(self.table['local_url']))
+        else:
+            links = list(set(self.table[self.table['donor_source_id'].isin(donors)]['local_url']))
         return links
+
 
     def go_back(self, gcm):
         self.table = self.db.table.copy()
@@ -128,11 +161,25 @@ class DB:
         return query
 
     def query_key2(self, gcm, items):
-        for k in gcm:
-            print("select distinct(item_id),  from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')'))
+        for k in gcm.keys():
+            print("select distinct(item_id),  from dw.unified_pair_gecoagent where item_id in {} and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')'))
             items = db.engine.execute("select distinct(item_id) from dw.unified_pair_gecoagent where item_id in ({}) and key='{}' and value in {}".format(items, k, ['{}'.format(x) for x in gcm[k]]).replace('[','(').replace(']',')')).fetchall()
-            items=[i[0] for i in items]
+            #items = [i[0] for i in items]
+            items = ','.join(str(i[0]) for i in items)
+        #items = items.split(',')
         return items
+
+    def retrieve_donors(self, meta):
+        item_id = list(self.table['item_id'].values)
+        items = ','.join(str(i) for i in item_id)
+        if meta!={}:
+            items = self.query_key2(meta, items)
+        items = items.split(',')
+        items = [int(i) for i in items]
+            #items = ','.join(str(i) for i in items)
+        print(items)
+        donors = list(self.table[self.table['item_id'].isin(items)]['donor_source_id'].values)
+        return donors
 
     # Retrieves all keys
     def find_all_keys(self, filter, filter2={}):
@@ -141,7 +188,7 @@ class DB:
 
         if filter2!={}:
             items = self.query_key2(filter2, items)
-            items = ','.join(str(i) for i in items)
+
             #keys = db.engine.execute("select key, count(distinct(value)) from dw.unified_pair_gecoagent where item_id in ({}) and {} group by key".format(query, query2)).fetchall()
             keys = db.engine.execute("select item_id, key, value from dw.unified_pair_gecoagent where item_id in ({})".format(items)).fetchall()
         else:
@@ -164,8 +211,8 @@ class DB:
         item_id = list(self.table['item_id'].values)
         items = ','.join(str(i) for i in item_id)
         items = self.query_key2(filter2, items)
+        items = items.split(',')
         self.table = self.table[self.table['item_id'].isin(items)]
-        print(self.table.head())
 
     def find_keys(self, filter, string):
         item_id = list(self.table['item_id'].values)
@@ -192,7 +239,6 @@ class DB:
         items = ','.join(str(i) for i in item_id)
         if filter2!={}:
             items = self.query_key2(filter2, items)
-            items = ','.join(str(i) for i in items)
             values = db.engine.execute(
                 "select value, count(distinct(item_id)) from dw.unified_pair_gecoagent where item_id in ({}) and key in ('{}') group by value".format(
                     items, str(key))).fetchall()
@@ -221,17 +267,18 @@ class DB:
 
     def find_regions(self,gcm,filter2):
         ds_name = gcm['dataset_name'][0]
-        item_id = list(self.table['item_id'].values)
-        items = ','.join(str(i) for i in item_id)
-        if filter2 != {}:
-            items = self.query_key2(filter2, items)
-            items = ','.join(str(i) for i in items)
-        res = db.engine.execute(
-                "select * from rr.{} where (item_id in ({}))limit 1".format(ds_name,
-                    items))
-        self.region_schema = res.keys()
+        if ds_name in region_datasets:
+            item_id = list(self.table['item_id'].values)
+            items = ','.join(str(i) for i in item_id)
+            if filter2 != {}:
+                items = self.query_key2(filter2, items)
+            res = db.engine.execute(
+                    "select * from rr.{} where (item_id in ({}))limit 1".format(ds_name,
+                        items))
+            self.region_schema = res.keys()
+        else:
+            self.region_schema = None
         return self.region_schema
-
 
 
 

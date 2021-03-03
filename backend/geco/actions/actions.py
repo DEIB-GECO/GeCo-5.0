@@ -13,7 +13,7 @@ from workflow import clustering,pca,scatter,pivot
 from workflow.gmql import Select
 from geco_utilities.utils import *
 import pandas as pd
-
+import re
 
 #import rasa.core.channels.socketio as file
 
@@ -92,7 +92,7 @@ N_cluster = int
 ###############################
 ### Per testare sulla shell ###
 ###############################
-shell = True
+shell = False
 
 #################################################################################################
 #######################################  SELECT  ################################################
@@ -295,6 +295,8 @@ class ShowField(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         global ann, param_list
+
+        print("conversationale ID", tracker.sender_id)
 
         list_param = {x: x for x in db.fields_names}
 
@@ -870,9 +872,9 @@ class ShowMetadatum(Action):
                               'viz': [{'vizType': 'pie-chart', 'title': '', 'data': [{'value': '', 'count': 0}]}]}})
                     dispatcher.utter_message(m)
 
-                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c))
+                dispatcher.utter_message(Utils.choice("metadatum:", c))
             else:
-                dispatcher.utter_message("First 50 metadatum:")
+                dispatcher.utter_message("Metadatum:")
                 print(c)
         else:
             if (shell == False):
@@ -987,18 +989,74 @@ class TakeValue(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        global saved_metadatum_msg, saved_metadatum_value, param_list, meta_list
+        global saved_metadatum_msg, saved_metadatum_value, param_list, meta_list, min, max
 
         message = tracker.latest_message.get('text')
+        last_intent=tracker.latest_message['intent'].get('name')
+
+        dict_selection = {}
+        for num, name in enumerate(Selection_list):
+            if (name[1] == False):
+                dict_selection.update({name[0]: [False]})
+
+            elif (name[1] == True):
+                dict_selection.update({name[0]: [True]})
+
+            else:
+                dict_selection.update({name[0]: [name[1]]})
+
+
+        z = db.find_key_values(saved_metadatum_msg, dict_selection)
+        #print("z vale:",z,z[0],z[1])
+        c = {}
+        # if(z[1] == False):
+        for y in z[0]:
+            #print(y['value'])
+            c.update({y['value']: y['value']})
+
+        d = [int(s) for s in re.findall(r'\b\d+\b', message)]
 
         if (';' not in message):
-            if (min <= int(message) <=max):
-                saved_metadatum_value=message
-               # print(saved_metadatum_msg)
-                Meta = saved_metadatum_msg + ': ' + saved_metadatum_value
-                meta_list.update( {saved_metadatum_msg: saved_metadatum_value } )
-                param_list.update( {saved_metadatum_msg: saved_metadatum_value } )
-                #print(meta_list)
+            if(last_intent == "value"):
+                print("value")
+                if (min <= int(d) <=max):
+                    saved_metadatum_value=str(d)
+                   # print(saved_metadatum_msg)
+                    Meta = saved_metadatum_msg + ': ' + saved_metadatum_value
+                    meta_list.update( {saved_metadatum_msg: saved_metadatum_value } )
+                    param_list.update( {saved_metadatum_msg: saved_metadatum_value } )
+                    #print(meta_list)
+
+            elif(last_intent == "greater"):
+                print("greater")
+                print(d)
+                h=[]
+                if (min <= d[0] <=max):
+                    for i in c:
+                        if(i!=None):
+                            if(d[0]<= int(i) <= max):
+                                h.append(int(i))
+                    saved_metadatum_value = str(h)
+                    # print(saved_metadatum_msg)
+                    Meta = saved_metadatum_msg + ': ' + saved_metadatum_value
+                    meta_list.update({saved_metadatum_msg: saved_metadatum_value})
+                    param_list.update({saved_metadatum_msg: saved_metadatum_value})
+
+            elif (last_intent == "minor"):
+                print("minor")
+                print(d)
+                h=[]
+                if (min <= d[0] <=max):
+                    for i in c:
+                        if(i!=None):
+                            if(min<= int(i) <= d[0]):
+                                h.append(int(i))
+                    saved_metadatum_value = str(h)
+                    # print(saved_metadatum_msg)
+                    Meta = saved_metadatum_msg + ': ' + saved_metadatum_value
+                    meta_list.update({saved_metadatum_msg: saved_metadatum_value})
+                    param_list.update({saved_metadatum_msg: saved_metadatum_value})
+
             else:
                 dispatcher.utter_message("out of range value!")
 
@@ -1172,7 +1230,6 @@ class Difference(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-
         dispatcher.utter_message("sei nella difference")
 
         return []
@@ -1244,9 +1301,9 @@ class ModifyKeep(Action):
 
             if (meta_list != {}):
                 if (shell == False):
-                    dispatcher.utter_message(Utils.choice("First 50 metadatum:", c))
+                    dispatcher.utter_message(Utils.choice("Metadatum:", c))
                 else:
-                    dispatcher.utter_message("First 50 metadatum:")
+                    dispatcher.utter_message("Metadatum:")
                     print(c)
 
             return [SlotSet("modify_keep", 'modify')]
@@ -1276,9 +1333,9 @@ class ShowAllMetadatum(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c))
+                dispatcher.utter_message(Utils.choice("Metadatum:", c))
             else:
-                dispatcher.utter_message("First 50 metadatum:")
+                dispatcher.utter_message("Metadatum:")
                 print(c)
 
         return []
@@ -1499,9 +1556,9 @@ class ActionShowSample(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("First 50 metadatum:", c))
+                dispatcher.utter_message(Utils.choice("Metadatum:", c))
             else:
-                dispatcher.utter_message("First 50 metadatum:")
+                dispatcher.utter_message("Metadatum:")
                 print(c)
         else:
             if (shell == False):
@@ -1536,8 +1593,6 @@ class ActionShowFeature(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-
         global feature_sample
 
         dict_selection = {}
@@ -1560,9 +1615,9 @@ class ActionShowFeature(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("First 50 region:", z))
+                dispatcher.utter_message(Utils.choice("Regions:", z))
             else:
-                dispatcher.utter_message("First 50 region:")
+                dispatcher.utter_message("Regions:")
                 print(z)
 
         ## per salvare scelta seample feature
@@ -1586,7 +1641,6 @@ class ActionSaveFeature(Action):
 
         label_region.append(tracker.latest_message.get('text'))
         print("messagio", label_region)
-
 
         return []
 
@@ -1616,8 +1670,6 @@ class RunWorkflow(Action):
             workflow.add(pivot.Pivot(workflow[-1],region_column= region, metadata_row=['item_id'], region_value=region_1,other_meta=label_region, other_region=label_meta ) )
         else:
             workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],  region_value=region_1, other_meta=label_region, other_region=label_meta  ))
-
-
 
        # workflow.run(workflow[-1])
         return []

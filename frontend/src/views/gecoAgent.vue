@@ -63,7 +63,11 @@ const dataVizStore = namespace('gecoAgent/DataViz');
 const processStore = namespace('gecoAgent/process');
 const tableStore = namespace('gecoAgent/TableViewer');
 
-document.cookie = "username=John Doe";
+//document.cookie = Math.random();
+//console.log("sono qua",document.location.href)
+//var session_id = /SESS\w*ID=([^;]+)/i.test(document.cookie) ? RegExp.$1 : false;
+//console.log("sono qua",session_id)
+
 
 @Component({
   components: {
@@ -156,6 +160,8 @@ export default class GecoAgent extends Vue {
 
   created() {
     socket.emit('ack', { message_id: this.lastMessageId });
+    console.log(document.cookie)
+    socket.emit('Prova', document.cookie );
     socket.on('json_response', (payload: any) => {
       if (payload.type) {
         console.log('server sent JSON_response', payload);
