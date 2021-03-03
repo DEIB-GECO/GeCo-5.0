@@ -13,30 +13,34 @@ class NewDataset(AbstractAction):
     def on_enter(self):
         table = self.context.payload.database.table
         num_tables = 0
-        len_donors = len(self.context.data_extraction.datasets[-1].donors)
-        print('donors', len(set(self.context.data_extraction.datasets[-1].donors)))
+        last_ds_selected = self.context.data_extraction.datasets[-1]
+        donors = set(last_ds_selected.donors)
+        len_donors = len(donors)
+        print('donors', len_donors)
         self.context.payload.insert('common_donors', {})
-        for d in self.context.data_extraction.datasets:
-            print(d.fields['dataset_name'])
-        for ds in datasets:
-            for d in self.context.data_extraction.datasets:
-                if d.fields['dataset_name'] != [ds]:
-                    common_donors = set(table[(table['donor_source_id'].isin(
-                        list(set(self.context.data_extraction.datasets[-1].donors)))) & (
-                                                  (table['dataset_name'] == ds))]['donor_source_id'].values)
-                    self.context.payload.update('common_donors', {ds: common_donors})
-                    print('common', len(common_donors))
-                    if (len(common_donors) / len_donors) > 0.75:
-                        num_tables += 1
 
+        table_donors = table[(table['donor_source_id'].isin(donors))]
+        for ds in datasets:
+            if last_ds_selected.fields['dataset_name'] != [ds]:
+                common_donors = set(table_donors[table['dataset_name'] == ds]['donor_source_id'].values)
+                self.context.payload.update('common_donors', {ds: common_donors})
+
+                print('common', len(common_donors))
+                if (len(common_donors) / len_donors) > 0.75:
+                    num_tables += 1
+        print(self.status['common_donors'])
         if num_tables >= 2:
+
+            table = pd.DataFrame(index=self.status['common_donors'].keys())
+            table['Number of Donors'] = [len(set(v)) for k, v in self.status['common_donors'].items()]
+            table['Common Percentage'] = ((table['Number of Donors']/len_donors)*100).apply(lambda x: round(x,2))
             self.context.add_bot_msgs([Utils.chat_message(
                 'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'
                 'Do you want also one of these datasets?'),
                 Utils.choice('Datasets', {f'{k}: {round((len(v) / len_donors) * 100, 2)}%': k for k, v in
                                           self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),
-                Utils.tools_setup(add=None, remove='data_summary'), Utils.tools_setup(add=None, remove='table')])
-            return SameDonorDataset(self.context), False
+                Utils.tools_setup(add=None, remove='data_summary'), Utils.table_viz('Common Donors',table)])
+            return DonorDataset(self.context), False
 
         self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
         return None, False
@@ -70,80 +74,32 @@ class DonorDataset(AbstractAction):
         table = self.context.payload.database.table
         num_tables = 0
         len_donors = len(self.context.data_extraction.datasets[-1].donors)
-        print('donors', len(set(self.context.data_extraction.datasets[-1].donors)))
         self.context.payload.insert('common_donors', {})
-        for d in self.context.data_extraction.datasets:
-            print(d.fields['dataset_name'])
-        for ds in set(table['dataset_name']):
-            for d in self.context.data_extraction.datasets:
-                if d.fields['dataset_name'] != [ds]:
-                    common_donors = set(table[(table['donor_source_id'].isin(
-                        list(set(self.context.data_extraction.datasets[-1].donors)))) & (
-                                                  (table['dataset_name'] == ds))]['donor_source_id'].values)
-                    self.context.payload.update('common_donors', {ds: common_donors})
-                    print('common', len(common_donors))
-                    if (len(common_donors) / len_donors) > 0.75:
-                        num_tables += 1
+        last_ds_selected = self.context.data_extraction.datasets[-1]
+        table_donors = table[(table['donor_source_id'].isin(
+            set(last_ds_selected.donors)))]
+        for ds in datasets:
+            if last_ds_selected.fields['dataset_name'] != [ds]:
+                common_donors = set(table_donors[table['dataset_name'] == ds]['donor_source_id'].values)
+                self.context.payload.update('common_donors', {ds: common_donors})
+                if (len(common_donors) / len_donors) > 0.75:
+                    num_tables += 1
 
         if num_tables >= 2:
             table = pd.DataFrame(index=self.status['common_donors'].keys())
-            table['Number of Donors'] = [len(set(v)) for k, v in self.status['common_donors'].items() if
-                                         (len(v) / len_donors) * 100 > 0]
-            table['Common Percentage'] = [{round((len(v) / len_donors) * 100, 2)} for k, v in
-                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0]
+            table['Number of Donors'] = [len(set(v)) for k, v in self.status['common_donors'].items()]
+            table['Common Percentage'] = ((table['Number of Donors'] / len_donors) * 100).apply(lambda x: round(x, 2))
+            #[{round((len(v) / len_donors) * 100, 2)} for k, v in
+             #                             self.status['common_donors'].items()]
             self.context.add_bot_msgs([Utils.chat_message(
                 'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'
                 'Do you want also one of these datasets?'),
                 Utils.choice('Datasets', {f'{k}: {round((len(v) / len_donors) * 100, 2)}%': k for k, v in
-                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),Utils.table_viz(table),
-                Utils.tools_setup(add=None, remove='data_summary'), Utils.tools_setup(add=None, remove='table')])
-            return SameDonorDataset(self.context), False
+                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),Utils.table_viz('Common Donors',table),
+                Utils.tools_setup(add=None, remove='data_summary')])
+            return None, False
 
         return DataAnalysis(self.context), True
-
-    def logic(self, message, intent, entities):
-        table = self.context.payload.database.table
-        num_tables = 0
-        len_donors = len(self.context.data_extraction.datasets[-1].donors)
-        print('donors', len(set(self.context.data_extraction.datasets[-1].donors)))
-        self.context.payload.insert('common_donors', {})
-        for d in self.context.data_extraction.datasets:
-            print(d.fields['dataset_name'])
-        for ds in set(table['dataset_name']):
-            for d in self.context.data_extraction.datasets:
-                if d.fields['dataset_name'] != [ds]:
-                    common_donors = set(table[(table['donor_source_id'].isin(
-                        list(set(self.context.data_extraction.datasets[-1].donors)))) & (
-                                                  (table['dataset_name'] == ds))]['donor_source_id'].values)
-                    self.context.payload.update('common_donors', {ds: common_donors})
-                    print('common', len(common_donors))
-                    if (len(common_donors) / len_donors) > 0.75:
-                        num_tables += 1
-
-        if num_tables >= 2:
-            table = pd.DataFrame(index= self.status['common_donors'].keys())
-            table['Number of Donors'] =  [len(set(v)) for k,v in self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0]
-            table['Common Percentage'] = [{round((len(v) / len_donors) * 100, 2)} for k, v in
-                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0]
-            self.context.add_bot_msgs([Utils.chat_message(
-                'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'),
-                Utils.chat_message(
-                    'Do you want also one of these datasets? If not, you will proceed with the analysis.'),
-                Utils.choice('Datasets', {f'{k}: {round((len(v) / len_donors) * 100, 2)}%': k for k, v in
-                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),Utils.table_viz(table),
-                Utils.tools_setup(add=None, remove='data_summary'), Utils.tools_setup(add=None, remove='table')])
-            return SameDonorDataset(self.context), False
-
-        return DataAnalysis(self.context), True
-
-
-class SameDonorDataset(AbstractAction):
-    def help_message(self):
-        self.context.add_bot_msgs([Utils.chat_message(helpMessages.same_donor_help)])
-        return None, False
-
-    def on_enter(self):
-        pass
 
     def logic(self, message, intent, entities):
         from geco_conversation import PivotAction
@@ -153,17 +109,15 @@ class SameDonorDataset(AbstractAction):
             del self.context.payload.database
             self.context.payload.database = DB(fields, False, copy.deepcopy(self.context.payload.original_db))
             if intent != 'affirm':
-                print('intent not affirm')
                 self.context.payload.insert('dataset_name', message)
                 gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
                 self.context.payload.database.update(gcm_filter)
                 name = 'DS_' + str(len(self.context.data_extraction.datasets) + 1)
                 self.context.payload.insert('fields', {'dataset_name': message, 'name': name})
-                print(set(self.context.payload.database.table['dataset_name'].values))
-                links = self.context.payload.database.download(gcm_filter, self.status['common_donors'])
+                links = self.context.payload.database.download(gcm_filter, self.status['common_donors'][message])
                 self.context.payload.database.update({})
                 ds = Dataset(gcm_filter, name,
-                             donors=self.status['common_donors'])
+                             donors=self.status['common_donors'][message])
                 self.context.data_extraction.datasets.append(ds)
                 self.context.add_bot_msgs([Utils.chat_message(messages.download), Utils.workflow('Data Selection 2'),
                                            Utils.workflow('Data Selection 2', download=True, link_list=links),
@@ -179,7 +133,6 @@ class SameDonorDataset(AbstractAction):
                 #    return YesNoAction(self.context, GMQLUnaryAction(self.context), PivotAction(self.context)), False
                 return RegionAction(self.context), True
             else:
-                print('intent affirm')
                 self.context.add_bot_msgs([Utils.chat_message(
                     'Which one do you want?'),
                     Utils.choice('Datasets', {k: k for k, v in self.status['common_donors'].items() if
@@ -190,3 +143,5 @@ class SameDonorDataset(AbstractAction):
             # self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
             # return NewDataset(self.context), False
             return DataAnalysis(self.context), True
+
+

@@ -1,7 +1,7 @@
 from geco_conversation import *
 
 
-class Clustering(AbstractAction):
+class KMeansClustering(AbstractAction):
 
     def help_message(self):
         pass
@@ -11,7 +11,7 @@ class Clustering(AbstractAction):
             Utils.chat_message("Do you already know how many clusters to create? If so, tell me the number"))
 
         self.context.add_bot_msg(
-            Utils.workflow("Clustering"))
+            Utils.workflow("KMeans Clustering"))
         return None, False
 
     def logic(self, message, intent, entities):

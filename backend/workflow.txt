@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7fc5cca34e90>
+result:<data_structure.dataset.Dataset object at 0x7fceff5c1710>
 depends_on:Dataset
 metadata:None
 region:None
@@ -11,7 +11,7 @@ region:None
 Pivot
 --parameters--
 executed:True
-result:<logic.pivot_logic.PivotRes object at 0x7fc5f2099f50>
+result:<logic.pivot_logic.PivotRes object at 0x7fcf9f846090>
 depends_on:Select
 region_row:['gene_symbol']
 meta_row:None

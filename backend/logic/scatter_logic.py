@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from .kmeans_logic import KMeansRes
+from .kmeans_logic import ClusteringRes
 from .pca_logic import PCARes
 
 class ScatterRes:
@@ -18,7 +18,7 @@ class ScatterLogic:
         if isinstance(self.ds, PCARes):
             self.ds = self.ds.pca_data
         self.labels = self.op.depends_on_2.result
-        if isinstance(self.labels, KMeansRes):
+        if isinstance(self.labels, ClusteringRes):
             self.labels = self.labels.labels
         self.run()
 

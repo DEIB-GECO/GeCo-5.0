@@ -15,7 +15,7 @@ class DataAnalysis(AbstractAction):
 
         if intent in ['clustering','cluster']:
             self.context.add_bot_msg(Utils.chat_message("Ok, I will perform K-Means clustering."))
-            return Clustering(self.context), True
+            return KMeansClustering(self.context), True
 
         else:
             self.context.add_bot_msg(Utils.chat_message("Sorry, only clustering is implemented till now."))

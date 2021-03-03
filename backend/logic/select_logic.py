@@ -53,9 +53,9 @@ class SelectLogic:
 
     def run(self):
         pre = time.time()
-
+        items = ','.join(str(i) for i in self.ds.items)
         #query = self.query_field()
-        query =  "select rr.* from rr.{} as rr where item_id in {}".format(self.ds.fields['dataset_name'][0],self.ds.items)
+        query =  "select item_id, gene_symbol, fpkm  from rr.{} as rr where item_id in ({})".format(self.ds.fields['dataset_name'][0],items)
         print(query)
         #res = db.engine.execute("select rr.* from rr.{} as rr {}".format(self.ds.fields['dataset_name'][0],query))
         #print('time-first select:', time.time() - pre)
@@ -78,11 +78,9 @@ class SelectLogic:
                  "select rr.* from dw.unified_pair_gecoagent as rr {} where ({})".format(
                      query, query2))
         else:
-             print("select rr.* from dw.unified_pair_gecoagent as rr {}".format(
-                     query))
-             res = db.engine.execute(
-                 "select rr.* from dw.unified_pair_gecoagent as rr {}".format(
-                     query))
+             query_meta =  "select * from dw.unified_pair_gecoagent where item_id in ({})".format(items)
+             print(query_meta)
+             res = db.engine.execute(query_meta)
         print('time-second select:', time.time() - pre)
         values = res.fetchall()
         print('time-second fetchall:', time.time() - pre)

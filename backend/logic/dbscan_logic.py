@@ -1,28 +1,24 @@
-from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN
 from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV
 from sklearn import *
 from logic.pivot_logic import PivotRes
+from logic.kmeans_logic import ClusteringRes
 
-class ClusteringRes:
-    def __init__(self, values, kmeans_fit, labels):
-        self.values = values
-        self.kmeans_fit = kmeans_fit
-        self.labels = labels
-
-class KMeansLogic:
-    def __init__(self, kmeans):
-        self.op = kmeans
+class DBScanLogic:
+    def __init__(self, dbscan):
+        self.op = dbscan
         self.ds = self.op.depends_on.result
         if  isinstance(self.ds, PivotRes):
             self.labels = self.ds.labels
             self.ds = self.ds.ds
-        self.tuning = kmeans.tuning
+        self.tuning = dbscan.tuning
         if self.tuning:
-            self.min = kmeans.min_clusters
-            self.max = kmeans.max_clusters
+            self.min = dbscan.min_clusters
+            self.max = dbscan.max_clusters
         else:
-            self.n_clust = kmeans.clusters
+            self.epsilon = dbscan.epsilon
+            self.min_samples = dbscan.min_samples
         self.run()
 
     def run(self):
@@ -34,10 +30,9 @@ class KMeansLogic:
                     self.ds = self.ds.drop(i, axis=0)
 
         if not self.tuning:
-            kmeans = KMeans(n_clusters=self.n_clust)
-            kmeans_fit = kmeans.fit(self.ds.values)
-            label =  kmeans.fit_predict(self.ds.values)
-            self.op.result = ClusteringRes(self.ds.values, kmeans_fit, label)
+            dbscan = DBSCAN(eps=self.epsilon, min_samples=self.min_samples).fit(self.ds.values)
+            label =  dbscan.labels_
+            self.op.result = ClusteringRes(self.ds.values, dbscan, label)
         else:
 
             def silhouette_score(estimator, X):
@@ -46,16 +41,16 @@ class KMeansLogic:
                 score = metrics.silhouette_score(self.ds.values, clusters)
                 return score
 
-            param_grid = {"n_clusters": range(self.min, self.max)}
+            param_grid = {"eps": range(self.min, self.max), "min_samples":range(self.min, self.max) }
             # run randomized search
-            search = GridSearchCV(KMeans(),
+            search = GridSearchCV(DBSCAN(),
                                   param_grid=param_grid,
                                   scoring=silhouette_score)
             grid = search.fit(self.ds.values)
-            kmeans = grid.best_estimator_
-            kmeans_fit = kmeans.fit(self.ds.values)
-            label = kmeans.fit_predict(self.ds.values)
-            self.op.result = ClusteringRes(self.ds.values, kmeans_fit, label)
+            dbscan = grid.best_estimator_
+            dbscan_fit = dbscan.fit(self.ds.values)
+            label = dbscan_fit.labels_
+            self.op.result = ClusteringRes(self.ds.values, dbscan_fit, label)
         self.op.executed = True
         self.write()
 
