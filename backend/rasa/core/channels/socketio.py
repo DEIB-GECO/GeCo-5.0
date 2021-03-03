@@ -208,18 +208,11 @@ class SocketIOInput(InputChannel):
         async def health(_: Request) -> HTTPResponse:
             return response.json({"status": "ok"})
 
-        @sio.on("Prova", namespace=self.namespace)
-        async def connect(sid: Text, data: Dict) -> None:
-            logger.debug("sono in prova")
-            logger.debug(data[0])
-
-
         @sio.on("connect", namespace=self.namespace)
         async def connect(sid: Text, data: Dict) -> None:
             logger.debug(f"User {sid} connected to socketIO endpoint.")
             logger.debug("mi sono connesso")
             logger.debug(data)
-            logger.debug("self.namespace", namespace)
             global user_ID
 
             if("io="+user_ID == data["HTTP_COOKIE"] ):

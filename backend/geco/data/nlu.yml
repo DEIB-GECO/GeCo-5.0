@@ -7264,6 +7264,12 @@ nlu:
     - gdc__analysis__workflow_link
     - age
     - req_field gdc__data_type
+- intent: choice_value_assembly
+  examples: |
+    - [hg19](assembly)
+    - [grch38](assembly)
+    - i prefer [hg19](assembly)
+
 - intent: review
   examples: |
     - i want to review my choiches
