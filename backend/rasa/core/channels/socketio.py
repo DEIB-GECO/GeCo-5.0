@@ -149,6 +149,7 @@ class SocketIOInput(InputChannel):
 
     @classmethod
     def name(cls) -> Text:
+        logger.debug(Text)
         return "socketio"
 
     @classmethod
@@ -203,10 +204,6 @@ class SocketIOInput(InputChannel):
         self.sio = sio
 
         """fatta da me"""
-        @sio.on('my_event',namespace=self.namespace)
-        async def ciallo(sid: Text, _) -> None:
-            logger.debug("ho trovato un messaggio ciallo")
-
         @socketio_webhook.route("/", methods=["GET"])
         async def health(_: Request) -> HTTPResponse:
             return response.json({"status": "ok"})
@@ -217,7 +214,6 @@ class SocketIOInput(InputChannel):
             logger.debug("mi sono connesso")
             logger.debug(data)
 
-
             global user_ID
             if("io="+user_ID == data["HTTP_COOKIE"] ):
                 logger.debug("we1")
@@ -227,14 +223,26 @@ class SocketIOInput(InputChannel):
                 logger.debug(user_ID)
 
 
-            logger.debug("Ho ricevuto richiesta di sessione")
-            logger.debug(data["HTTP_COOKIE"])
             if data is None:
                 data = {}
             if "session_id" not in data or data["session_id"] is None:
+            #    logger.debug(data["HTTP_COOKIE"])
                 data["session_id"] = uuid.uuid4().hex
+                logger.debug("session")
+             #   logger.debug(data["HTTP_COOKIE"])
+
+                logger.debug(data["session_id"])
             if self.session_persistence:
                 sio.enter_room(sid, data["session_id"])
+
+           # if("io="+user_ID == data["HTTP_COOKIE"] ):
+           #     logger.debug("we1")
+           #     sid=user_ID
+
+           # else:
+           #     user_ID=sid
+           #     logger.debug(user_ID)
+
             await sio.emit("session_confirm", data["session_id"], room=sid)
             logger.debug(f"User {sid} session requested to socketIO endpoint.")
 
@@ -265,6 +273,7 @@ class SocketIOInput(InputChannel):
         @sio.on("session_request", namespace=self.namespace)
         async def session_request(sid: Text, data: Optional[Dict]):
             logger.debug("Ho ricevuto richiesta di sessione")
+            logger.debug("data vale: data")
             if data is None:
                 data = {}
             if "session_id" not in data or data["session_id"] is None:

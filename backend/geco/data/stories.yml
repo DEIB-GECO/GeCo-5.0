@@ -1920,3 +1920,41 @@ stories:
   - action: action_give_exact_experiment
   - action: utter_filter_more
   - action: action_show_field
+
+- story: interactive_story_1
+  steps:
+  - intent: retrieve_experiments
+    entities:
+    - experiments: esperiments
+  - slot_was_set:
+    - experiments: esperiments
+  - action: action_data
+  - action: utter_field_name
+  - action: action_show_field
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'False'
+  - slot_was_set:
+    - is_healthy: 'False'
+  - action: action_is_healthy_no
+  - slot_was_set:
+    - is_healthy: no
+  - action: utter_filter_more
+  - action: action_show_field
+  - intent: search_field
+    entities:
+    - field: tissue
+  - slot_was_set:
+    - field: tissue
+  - action: utter_provide_value
+  - action: action_show_value
+  - intent: choice_value_tissue
+    entities:
+    - tissue: palate
+  - slot_was_set:
+    - tissue: palate
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: utter_filter_more
+  - action: action_show_field

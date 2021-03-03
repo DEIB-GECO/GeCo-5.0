@@ -3,16 +3,16 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
+- choice_value_tissue
+- retrieve_experiments
 - choice_exact_experiment
 - search_field
 - deny
 - rename_database
-- retrieve_experiments
 - choice_value_dataset_name
 - start
 - choice_value_healthy
 - affirm
-- choice_value_tissue
 - review
 - region
 - keep
@@ -757,6 +757,10 @@ slots:
     - mirna quantification
     - dna seq
     - variant calling
+    - masked somatic mutation
+    - gene expression
+    - methylation beta value
+    - mirna expression
     - __other__
   dataset_name:
     type: categorical

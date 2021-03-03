@@ -92,7 +92,7 @@ N_cluster = int
 ###############################
 ### Per testare sulla shell ###
 ###############################
-shell = False
+shell = True
 
 #################################################################################################
 #######################################  SELECT  ################################################
@@ -185,8 +185,11 @@ class MoreFields(Action):
 
             elif ((request_field != "is_healthy")):  #(request_value != old_value) and
                 # if (request_field not in domain['slots']['field']['values']) or (request_field not in db.fields_names):
-                if ((request_value not in domain['slots'][request_field]['values']) or (
-                        request_field not in db.fields_names) or (request_value not in db.values[request_field])):
+
+                #(request_value not in domain['slots'][request_field]['values']) ridondante?
+                if (request_field not in db.fields_names) or (request_value not in db.values[request_field]):
+                    print(request_value)
+                    print(request_field)
                     dispatcher.utter_message("The chosen value (exact experiment) is not correct. Choose between:")
                     # dispatcher.utter_message("The possible values for {} are: {}".format(request_field,field_db))
 
@@ -383,6 +386,7 @@ class CheckValue(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         global old_value, param_list
+        print("check value")
         request_field = tracker.get_slot("field")
 
         if(request_field == None):
@@ -391,12 +395,17 @@ class CheckValue(Action):
         else:
             request_field_db = request_field + '_db'
             request_value = tracker.get_slot(request_field)
+            print("request_field", request_field)
+            print("request_value", request_value)
+
 
             if( (request_field != "is_healthy")):
                 if((request_field not in db.fields_names)):
                     print("db.fields_names",db.fields_names)
 
                 if(request_value not in db.values[request_field]):
+                    print("request_field",request_field)
+                    print("request_value",request_value)
                     print("db.values[request_field]",db.values[request_field])
 
                 if ((request_field not in db.fields_names) or (request_value not in db.values[request_field])):

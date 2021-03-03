@@ -38,6 +38,7 @@
       <div class="prova pane_border"><parameters-box></parameters-box></div>
     </div>
   </div>
+
 </template>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -61,6 +62,8 @@ const functionsAreaStore = namespace('gecoAgent/functionsArea');
 const dataVizStore = namespace('gecoAgent/DataViz');
 const processStore = namespace('gecoAgent/process');
 const tableStore = namespace('gecoAgent/TableViewer');
+
+document.cookie = "username=John Doe";
 
 @Component({
   components: {
