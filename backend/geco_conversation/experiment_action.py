@@ -56,6 +56,7 @@ class ExperimentAction(AbstractAction):
         # Find fields that are not already selected by the user
         # missing_fields = list(set(self.context.payload.database.fields_names).difference(set(self.status.keys())))
         missing_fields = self.context.payload.database.fields_names
+        print(missing_fields)
         #fields = {k: v for (k, v) in self.status.items() if k in experiment_fields}
 
         self.context.add_bot_msgs([Utils.table_viz('Data Available', self.context.payload.database.table.drop('local_url',axis=1))])

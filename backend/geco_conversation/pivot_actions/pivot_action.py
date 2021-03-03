@@ -43,7 +43,14 @@ class PivotAction(AbstractAction):
 
         elif 'region_value' not in self.status:
 
-            value = message
+            value = message.strip()
+            if value not in self.context.payload.database.region_schema:
+                self.context.add_bot_msgs([Utils.chat_message("Sorry, your choice is not correct. Please, choose one in the right panel."),
+                                               Utils.choice('Available regions',
+                                                            {i: i for i in self.context.payload.database.region_schema
+                                                             if
+                                                             i != 'item_id'})])
+                return None, False
             self.context.payload.insert('region_value', [value])
             return Labels(self.context), True
 
@@ -61,6 +68,12 @@ class RegionRow(AbstractAction):
     def logic(self, message, intent, entities):
         if 'region_row' not in self.status:
             region_row = message.strip().split(',')
+            for r in region_row:
+                if r not in self.context.payload.database.region_schema:
+                    reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
+                    self.context.add_bot_msgs([Utils.chat_message("Sorry, your choice is not correct. Please, choose one in the right panel."),
+                                               Utils.choice('Available regions', reg_row)])
+                    return None, False
             self.context.payload.insert('region_row', region_row)
             # self.context.add_bot_msg(Utils.chat_message('I will put in the columns \'item_id\', ok?'))
             # return None, True
@@ -101,6 +114,12 @@ class MetaRow(AbstractAction):
 
         else:
             region_column = message.strip().split(',')
+            for r in region_column:
+                if r not in self.context.payload.database.region_schema:
+                    reg_col = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
+                    self.context.add_bot_msgs([Utils.chat_message("Sorry, your choice is not correct. Please, choose one in the right panel."),
+                                               Utils.choice('Available regions',reg_col)])
+                    return None, False
             self.context.payload.insert('region_column', region_column)
             self.context.add_bot_msgs([Utils.chat_message(messages.value_region_message),
                                        Utils.choice('Available regions',

@@ -90,13 +90,16 @@ class DB:
     def update(self, gcm):
         self.all_values = []
         self.fields_names=[]
+
+        for f in gcm:
+            if f!='is_healthy':
+                self.table = self.table[self.table[f].isin(gcm[f])]
+            else:
+                print(gcm[f])
+
         for f in self.fields:
             values = []
-            if f in gcm and f!='is_healthy':
-                self.table = self.table[self.table[f].isin(gcm[f])]
-            #val = list(set(self.table[f]))
             val = list(filter(lambda x: x is not None, list(set(self.table[f]))))
-            #val = list(filter(None, val))
             if (val != []) and (len(val) > 1):
                 self.fields_names.append(f)
                 for i in range(len(val)):
@@ -107,7 +110,8 @@ class DB:
                 values = [val[0]]
 
             if values != []:
-                self.values[f]=values
+                self.values[f] = values
+
 
     def update_donors(self, ds, donors):
         self.table = self.table[self.table['dataset_name']==ds]
