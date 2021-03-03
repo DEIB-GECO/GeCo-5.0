@@ -13,8 +13,8 @@ stories:
     - source: 'tcga'
     - tissue: 'kidney'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: more field (data_type-disease) 
   steps:
@@ -28,8 +28,8 @@ stories:
     - data_type: 'dna methylation'
     - disease: 'adrenocortical carcinoma'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 
 - story: more field (data_type-disease) 
@@ -46,8 +46,8 @@ stories:
     - data_type: 'mirna quantification'
     - disease: 'lung squamous cell carcinoma'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 
 - story: more field (data_type-disease) 
@@ -62,8 +62,8 @@ stories:
     - assembly: 'grch38'
     - disease: 'liver hepatocellular carcinoma'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 
 - story: Exact experiment target
@@ -78,8 +78,8 @@ stories:
     - field: 'target'
     - target: 'e4f1'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 
 - story: Exact experiment cell
@@ -92,8 +92,8 @@ stories:
     - field: 'cell'
     - cell: 'k562'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: Exact experiment source
   steps:
@@ -107,8 +107,8 @@ stories:
     - field: 'source'
     - source: 'tcga'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 
 - story: Exact experiment disease
@@ -121,8 +121,8 @@ stories:
     - field: 'disease'
     - source: 'cholangiocarcinoma'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 
 - story: Experiment tissue + exact experimet disease
@@ -135,8 +135,8 @@ stories:
   - slot_was_set:
     - experiments: "experiments"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities: 
     - field: "cell" 
@@ -146,8 +146,10 @@ stories:
     entities:
     - cell: "h1a549"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: choice_exact_experiment
     entities:
       - field: 'disease'
@@ -156,8 +158,8 @@ stories:
     - field: 'disease'
     - source: 'cholangiocarcinoma'
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 
 - story: Experiment dataset
@@ -168,8 +170,8 @@ stories:
     entities:
     - experiments: "experiments"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: "dataset_name"
@@ -179,8 +181,10 @@ stories:
     entities:
     - cell: "hg19_tcga_rnaseqv2_isoform"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: Experiment cell
   steps:
@@ -190,8 +194,8 @@ stories:
     entities:
     - experiments: "experiments"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities: 
     - field: "cell" 
@@ -201,8 +205,10 @@ stories:
     entities:
     - cell: "h1a549"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities:
     - field: "dataset_name"
@@ -212,8 +218,10 @@ stories:
     entities:
     - dataset_name: "grch38_tcga_gene_expression_2019_10"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: annotation 2
   steps:
@@ -221,8 +229,8 @@ stories:
     entities:
     - annotations: "Annotations"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: "cell"
@@ -232,8 +240,10 @@ stories:
     entities:
     - cell: "h1a549"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: Experiment tissue
   steps:
@@ -243,8 +253,8 @@ stories:
     entities:
     - experiments: "experiments"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities: 
     - field: "tissue" 
@@ -254,8 +264,10 @@ stories:
     entities:
     - tissue: "colon"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: Experiment Health yes
   steps:
@@ -265,8 +277,8 @@ stories:
     entities:
     - experiments: "Experiment"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: choice_value_healthy
   - action: utter_health
   - action: action_yes_no
@@ -274,8 +286,8 @@ stories:
   - action: action_is_healthy_yes
   - slot_was_set:
     - is_healthy: "yes"
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: Experiment Health no
   steps:
@@ -285,8 +297,8 @@ stories:
     entities:
     - experiments: "Experiment"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: choice_value_healthy
   - action: utter_health
   - action: action_yes_no
@@ -294,8 +306,8 @@ stories:
   - action: action_is_healthy_no
   - slot_was_set:
     - is_healthy: "no"
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: Experiment repeat field add
   steps:
@@ -310,8 +322,10 @@ stories:
     entities:
     - file_format: "hg19"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: Experiment repeat field modify
   steps:
@@ -326,8 +340,10 @@ stories:
     entities:
     - file_format: "gappedpeak"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: Mini modify
   steps:
@@ -371,8 +387,8 @@ stories:
     entities:
     - experiments: "Experiment"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: "dataset_name"
@@ -382,8 +398,10 @@ stories:
     entities:
     - cell: "hg19_tcga_cnv"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+    - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "technique" 
@@ -393,8 +411,10 @@ stories:
     entities:
     - technique: "rrbs"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "target"  
@@ -404,8 +424,10 @@ stories:
     entities:
     - target: "ctcf"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "biosample_type" 
@@ -415,8 +437,10 @@ stories:
     entities:
     - biosample_type: "primary culture"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "data_type" 
@@ -426,8 +450,10 @@ stories:
     entities:
     - data_type: "cnv"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "disease" 
@@ -437,8 +463,10 @@ stories:
     entities:
     - disease: "thynoma"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "feature"  
@@ -448,8 +476,10 @@ stories:
     entities:
     - feature: "tag"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "assembly" 
@@ -459,8 +489,10 @@ stories:
     entities:
     - assembly: "hg19"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "file_format" 
@@ -470,8 +502,10 @@ stories:
     entities:
     - file_format: "bed"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "tissue" 
@@ -481,8 +515,10 @@ stories:
     entities:
     - tissue: "colon"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "source" 
@@ -492,8 +528,10 @@ stories:
     entities:
     - source: "encode"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities: 
     - field: "cell" 
@@ -503,6 +541,9 @@ stories:
     entities:
     - cell: "h1a549"
   - action: action_check_value
+  - slot_was_set:
+      - field: null
+  - action: action_show_field
   - action: utter_filter_more
 
 - story: only meta choice
@@ -1030,8 +1071,8 @@ stories:
   steps:
   - action: utter_start_over
   - intent: change_field
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
 
 - story: Annotation
   steps:
@@ -1041,8 +1082,8 @@ stories:
     entities:
     - annotations: "Annotations"
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities: 
     - field: "cell" 
@@ -1052,8 +1093,10 @@ stories:
     entities:
     - cell: "h1a549"
   - action: action_check_value
-  - action: utter_filter_more
+  - slot_was_set:
+      - field: null
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_3
   steps:
@@ -1066,8 +1109,8 @@ stories:
   - slot_was_set:
     - field: cell
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: choice_exact_experiment
     entities:
     - tissue: chorion
@@ -1077,8 +1120,8 @@ stories:
   - slot_was_set:
     - tissue: chorion
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_4
   steps:
@@ -1094,8 +1137,8 @@ stories:
   - slot_was_set:
     - disease: livear
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_5
   steps:
@@ -1105,8 +1148,8 @@ stories:
   - slot_was_set:
     - file_format: broadpeak
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: choice_exact_experiment
     entities:
     - target: gabpa
@@ -1116,8 +1159,8 @@ stories:
   - slot_was_set:
     - target: gabpa
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_6
   steps:
@@ -1130,8 +1173,8 @@ stories:
   - slot_was_set:
     - tissue: caudate nucleus
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_7
   steps:
@@ -1144,8 +1187,8 @@ stories:
   - slot_was_set:
     - field: cell
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_1
   steps:
@@ -1158,8 +1201,8 @@ stories:
   - slot_was_set:
     - field: cell
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_8
   steps:
@@ -1181,8 +1224,8 @@ stories:
   - slot_was_set:
     - feature: cohesis
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_1
   steps:
@@ -1198,8 +1241,8 @@ stories:
   - slot_was_set:
     - tissue: thymus
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_1
   steps:
@@ -1221,8 +1264,8 @@ stories:
   - slot_was_set:
     - tissue: rna-seq
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_1
   steps:
@@ -1262,8 +1305,8 @@ stories:
   - slot_was_set:
     - tissue: brain
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_1
   steps:
@@ -1276,8 +1319,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: tissue
@@ -1293,8 +1336,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1426,8 +1469,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: disease
@@ -1443,8 +1486,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities:
     - field: dataset_name
@@ -1460,8 +1503,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1493,8 +1536,8 @@ stories:
   - slot_was_set:
     - tissue: kidney
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1523,8 +1566,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: tissue
@@ -1540,8 +1583,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities:
     - field: dataset_name
@@ -1557,8 +1600,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1593,8 +1636,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: dataset_name
@@ -1610,8 +1653,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities:
     - field: tissue
@@ -1627,8 +1670,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1653,8 +1696,8 @@ stories:
   - slot_was_set:
     - experiments: esperiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: tissue
@@ -1670,8 +1713,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1709,8 +1752,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: choice_value_healthy
   - action: utter_health
   - action: action_yes_no
@@ -1718,8 +1761,8 @@ stories:
   - action: action_is_healthy_yes
   - slot_was_set:
     - is_healthy: yes
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1757,8 +1800,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: choice_value_healthy
   - action: utter_health
   - action: action_yes_no
@@ -1766,8 +1809,8 @@ stories:
   - action: action_is_healthy_no
   - slot_was_set:
     - is_healthy: no
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities:
     - field: disease
@@ -1783,8 +1826,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1820,8 +1863,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: choice_value_healthy
   - action: utter_health
   - action: action_yes_no
@@ -1829,8 +1872,8 @@ stories:
   - action: action_is_healthy_yes
   - slot_was_set:
     - is_healthy: yes
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1866,8 +1909,8 @@ stories:
   - slot_was_set:
     - tissue: pancreas
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -1940,8 +1983,8 @@ stories:
   - slot_was_set:
     - tissue: brain
   - action: action_give_exact_experiment
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_1
   steps:
@@ -1951,8 +1994,8 @@ stories:
   - slot_was_set:
     - experiments: esperiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: choice_exact_experiment
     entities:
     - is_healthy: 'False'
@@ -1961,8 +2004,8 @@ stories:
   - action: action_is_healthy_no
   - slot_was_set:
     - is_healthy: no
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities:
     - field: tissue
@@ -1978,8 +2021,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
 
 - story: interactive_story_1
   steps:
@@ -1989,8 +2032,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: tissue
@@ -2006,8 +2049,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities:
     - field: data_type
@@ -2023,8 +2066,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: choice_value_healthy
   - action: utter_health
   - action: action_yes_no
@@ -2032,8 +2075,8 @@ stories:
   - action: action_is_healthy_no
   - slot_was_set:
     - is_healthy: no
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -2055,8 +2098,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: data_type
@@ -2072,8 +2115,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: choice_value_healthy
   - action: utter_health
   - action: action_yes_no
@@ -2081,8 +2124,8 @@ stories:
   - action: action_is_healthy_yes
   - slot_was_set:
     - is_healthy: yes
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: search_field
     entities:
     - field: disease
@@ -2098,8 +2141,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
@@ -2123,8 +2166,8 @@ stories:
   - slot_was_set:
     - experiments: experiments
   - action: action_data
-  - action: utter_field_name
   - action: action_show_field
+  - action: utter_field_name
   - intent: search_field
     entities:
     - field: data_type
@@ -2144,8 +2187,8 @@ stories:
   - action: action_check_value
   - slot_was_set:
     - field: null
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: choice_value_healthy
   - action: utter_health
   - action: action_yes_no
@@ -2153,8 +2196,8 @@ stories:
   - action: action_is_healthy_no
   - slot_was_set:
     - is_healthy: no
-  - action: utter_filter_more
   - action: action_show_field
+  - action: utter_filter_more
   - intent: deny
   - action: action_checkSlots
   - slot_was_set:
