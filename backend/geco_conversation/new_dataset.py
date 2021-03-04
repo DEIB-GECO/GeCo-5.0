@@ -140,9 +140,7 @@ class DonorDataset(AbstractAction):
                 return DSNameAction(self.context), True
             else:
                 self.context.add_bot_msgs([Utils.chat_message(
-                    'Which one do you want?'),
-                    Utils.choice('Datasets', {k: k for k, v in self.status['common_donors'].items() if
-                                              (len(v) / len(list(set(self.status['donors'])))) * 100 > 0})])
+                    'Which one do you want?')])
                 return None, False
         else:
             self.context.payload.delete('common_donors')
