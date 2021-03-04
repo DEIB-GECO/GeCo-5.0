@@ -21,9 +21,10 @@ db_string = get_db_uri()
 db = create_engine(db_string)
 
 class PivotRes:
-    def __init__(self, pivot, labels):
+    def __init__(self, pivot, labels, dict_for_join):
         self.ds = pivot
         self.labels = labels
+        self.dict_for_join = dict_for_join
 
 class PivotLogic:
     def __init__(self, op):
@@ -65,6 +66,8 @@ class PivotLogic:
         if self.op.region_col!=None:
             col = self.op.region_col
         else:
+            #donors = [d for i,d in self.ds.dict_for_join.items()]
+
             col = self.op.meta_col
         if (self.op.region_row!=None) and (self.op.meta_row!=None):
             row = self.op.region_row.append(self.op.meta_row)
@@ -72,12 +75,13 @@ class PivotLogic:
             row = self.op.region_row
         else:
             row = self.op.meta_row
-
+        df = pd.DataFrame().from_dict(self.ds.dict_for_join).T
         print('col', col)
         print('row', row)
         print('prima pivot')
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)
+        pivot.sort_index()
         print('dopo pivot')
         print(pivot.head())
 
@@ -116,7 +120,7 @@ class PivotLogic:
         print('pivot!')
         print(pivot.head())
         pivot.to_csv('pivot.csv')
-        self.op.result = PivotRes(pivot, labels)
+        self.op.result = PivotRes(pivot, labels, self.ds.dict_for_join)
         self.op.executed = True
         #self.write()
 

@@ -126,15 +126,19 @@ class Utils(object):
                 }}
 
     def scatter(x,y,labels, u_labels):
-        dict_scat = {}
-        for l in u_labels:
-            dict_scat[l]={}
-            dict_scat[l]['x']=x[labels==l]
-            dict_scat[l]['y']=y[labels == l]
+        dict_scat = []
+        for ax in x:
+            for ay in y:
+                for l in u_labels:
+                    dict_scat.append({'x':ax,'y':ay,'label':l})
+        #for l in u_labels:
+        #    dict_scat[l]={}
+        #    dict_scat[l]['x']=x[labels==l]
+        #    dict_scat[l]['y']=y[labels == l]
 
         return {
             "vizType": "scatter",
-            "data": [dict_scat],
+            "data": dict_scat,
         }
 
     def pyconsole_debug(payload):
