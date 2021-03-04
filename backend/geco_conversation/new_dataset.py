@@ -5,6 +5,7 @@ import copy
 import pandas as pd
 
 
+
 class NewDataset(AbstractAction):
     def help_message(self):
         self.context.add_bot_msgs([Utils.chat_message(helpMessages.new_dataset_help)])
@@ -115,13 +116,13 @@ class DonorDataset(AbstractAction):
                     self.context.payload.insert('disease', disease)
                 self.context.payload.insert('dataset_name', message)
                 gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
-                fields = {x: self.status[x] for x in self.status if x in self.context.payload.database.fields}
+                status_fields = {x: self.status[x] for x in self.status if x in self.context.payload.database.fields}
                 self.context.payload.database.update(gcm_filter)
                 #name = 'DS_' + str(len(self.context.data_extraction.datasets) + 1)
                 #self.context.payload.insert('fields', {'dataset_name': message, 'name': name})
                 self.context.payload.insert('fields', gcm_filter)
                 print('filter_new_ds', gcm_filter)
-                print('fields', fields)
+                print('fields', status_fields)
                 #links = self.context.payload.database.download(gcm_filter, self.status['common_donors'][message])
                 #self.context.payload.database.update({})
                 #ds = Dataset(gcm_filter, name,
