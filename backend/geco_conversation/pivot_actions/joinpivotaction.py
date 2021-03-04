@@ -6,6 +6,7 @@ class JoinPivotAction(AbstractAction):
 		return None, True
 
 	def on_enter(self):
+		print('HEREEEE JOINNNNNNNN')
 		#self.context.add_bot_msg("Do you want to choose a joinby value?\nIf so, tell me which one.")
 		self.context.add_bot_msg(Utils.chat_message("Do you want to join the two tables?"))
 		return None, False

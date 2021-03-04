@@ -109,14 +109,18 @@ class DonorDataset(AbstractAction):
             del self.context.payload.database
             self.context.payload.database = DB(fields, False, copy.deepcopy(self.context.payload.original_db))
             if intent != 'affirm':
+                last_ds_selected = self.context.data_extraction.datasets[-1]
+                if 'disease' in last_ds_selected.fields:
+                    disease = last_ds_selected.fields['disease']
+                    self.context.payload.insert('disease', message)
                 self.context.payload.insert('dataset_name', message)
                 gcm_filter = {k: v for (k, v) in self.status.items() if k in self.context.payload.database.fields}
                 self.context.payload.database.update(gcm_filter)
                 #name = 'DS_' + str(len(self.context.data_extraction.datasets) + 1)
                 #self.context.payload.insert('fields', {'dataset_name': message, 'name': name})
-                self.context.payload.insert('fields', {'dataset_name': message})
+                self.context.payload.insert('fields', gcm_filter)
                 #links = self.context.payload.database.download(gcm_filter, self.status['common_donors'][message])
-                self.context.payload.database.update({})
+                #self.context.payload.database.update({})
                 #ds = Dataset(gcm_filter, name,
                 #             donors=self.status['common_donors'][message])
                 #self.context.data_extraction.datasets.append(ds)
@@ -132,7 +136,8 @@ class DonorDataset(AbstractAction):
                 #                       GMQLBinaryAction(self.context)), False
                 # else:
                 #    return YesNoAction(self.context, GMQLUnaryAction(self.context), PivotAction(self.context)), False
-                return Confirm(self.context), True
+                #return Confirm(self.context), True
+                return DSNameAction(self.context), True
             else:
                 self.context.add_bot_msgs([Utils.chat_message(
                     'Which one do you want?'),
