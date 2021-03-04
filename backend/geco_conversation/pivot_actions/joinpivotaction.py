@@ -14,11 +14,9 @@ class JoinPivotAction(AbstractAction):
 	def logic(self,message, intent, entities):
 		from geco_conversation.data_analysis.data_analysis import DataAnalysis
 		if intent!='deny':
-			#self.context.add_bot_msg("Ok, I will join the two tables according to {}.\nDo you want to select another dataset?")
-			self.context.add_bot_msg(Utils.chat_message(
-				"Ok, I will join the two tables. It will take some times, at the end you will see the result on the right."))
+			self.context.add_bot_msg("Ok, I will join the two tables. It will take some times, at the end you will see the result on the right.")
 			print(self.context.workflow)
-			for i in range(len(self.context.workflow), 0,len(self.context.workflow)):
+			for i in range(len(self.context.workflow)-1, 0, -1):
 				print(self.context.workflow[i].__class__.__name__)
 				if self.context.workflow[i].__class__.__name__ == 'Pivot':
 					depends_on_2 = self.context.workflow[i]
@@ -26,6 +24,7 @@ class JoinPivotAction(AbstractAction):
 						JoinPivot(self.context.workflow[-1], depends_on_2))#, joinby=self.status['joinby']))
 					break
 			self.context.workflow.run(self.context.workflow[-1])
+
 			return DataAnalysis(self.context), True
 		else:
 			#self.context.add_bot_msg("Ok, I will do the cartesian product of the two tables.")
