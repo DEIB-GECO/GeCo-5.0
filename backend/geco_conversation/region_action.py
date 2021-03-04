@@ -19,6 +19,7 @@ class RegionAction(AbstractAction):
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
         else:
             gcm_filter={}
+        print(gcm_filter)
         if 'fields' in self.status and 'metadata' in self.status['fields']:
             meta_filter = {k: v for (k, v) in self.status['fields']['metadata'].items()}
             regions = self.context.payload.database.find_regions(gcm_filter, meta_filter)
