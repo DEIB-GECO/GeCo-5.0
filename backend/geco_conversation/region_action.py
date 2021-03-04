@@ -14,7 +14,6 @@ class RegionAction(AbstractAction):
     def on_enter(self):
         from .confirm import Confirm
         self.context.payload.back = RegionAction
-        self.context.payload.back = RegionAction
         self.context.payload.insert('region', {})
         if 'fields' in self.status:
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}

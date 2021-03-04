@@ -114,6 +114,7 @@ class MetaRow(AbstractAction):
 
         else:
             region_column = message.strip().split(',')
+            print(region_column)
             for r in region_column:
                 if r not in self.context.payload.database.region_schema:
                     reg_col = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
@@ -211,6 +212,9 @@ class Labels(AbstractAction):
         #self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
         # print(Utils.table_viz('Pivot',self.context.workflow[-1].result))
         self.context.payload.clear()
+        print(len(self.context.data_extraction.datasets))
+        if len(self.context.data_extraction.datasets)==2:
+            return JoinPivotAction(self.context), True
         return DonorDataset(self.context), True
 
 

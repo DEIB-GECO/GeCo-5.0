@@ -10,6 +10,7 @@ class Dataset:
         self.meta_schema = meta_schema
         self.donors = donors
         self.items = items
+        self.dict_for_join= {}
 
     def add_meta_schema(self, schema):
         self.meta_schema = schema

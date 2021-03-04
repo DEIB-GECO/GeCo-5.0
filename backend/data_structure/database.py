@@ -271,6 +271,7 @@ class DB:
 
     def find_regions(self,gcm,filter2):
         ds_name = gcm['dataset_name'][0]
+        print(ds_name)
         if ds_name in region_datasets:
             item_id = list(self.table['item_id'].values)
             items = ','.join(str(i) for i in item_id)

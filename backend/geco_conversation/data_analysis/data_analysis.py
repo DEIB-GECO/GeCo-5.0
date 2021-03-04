@@ -3,7 +3,7 @@ from geco_conversation import *
 class DataAnalysis(AbstractAction):
 
     def help_message(self):
-        self.context.add_bot_msg("")
+        #self.context.add_bot_msg("")
         return None, False
 
     def on_enter(self):

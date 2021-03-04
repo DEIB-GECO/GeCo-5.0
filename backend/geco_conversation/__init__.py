@@ -17,6 +17,7 @@ from .start_action import StartAction
 from .bye_action import ByeAction
 from .value_action import ValueAction, DSNameAction
 from .yes_no_action import YesNoAction
+from geco_conversation.pivot_actions.joinpivotaction import JoinPivotAction
 from geco_conversation.pivot_actions.pivot_action import PivotAction
 from geco_conversation.data_analysis.kmeans_clustering import KMeansClustering
 from geco_conversation.data_analysis.data_analysis import DataAnalysis

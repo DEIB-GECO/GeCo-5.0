@@ -42,13 +42,19 @@ class Confirm(AbstractAction):
                 print('meta', meta)
                 donors = self.context.payload.database.retrieve_donors(meta['metadata'])
                 self.context.payload.insert('donors', donors)
-                print(self.status['donors'])
+                #print(self.status['donors'])
                 if meta_dict!={}:
                     list_param.update(meta)
                 list_param_ds = list_param.copy()
                 name = list_param['name']
                 del(list_param_ds['name'])
+                table = self.context.payload.database.table
+                dict_for_join = {i: {'donor':table[table['item_id']==i]['donor_source_id'],
+                                 'is_healthy':table[table['item_id']==i]['is_healthy'],
+                                 'disease':table[table['item_id']==i]['disease']}
+                                 for i in set(table['item_id'])}
                 ds = Dataset(list_param_ds, name, donors=self.status['donors'], items=list(set(self.context.payload.database.table['item_id'])))
+                ds.dict_for_join = dict_for_join
                 self.context.data_extraction.datasets.append(ds)
 
                 self.context.payload.database.go_back({})
