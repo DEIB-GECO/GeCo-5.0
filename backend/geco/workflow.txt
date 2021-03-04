@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7fc350e42290>
+result:<data_structure.dataset.Dataset object at 0x7f93b79a9890>
 depends_on:Dataset
 metadata:None
 region:None
@@ -15,9 +15,9 @@ result:None
 depends_on:Select
 region_row:None
 meta_row:['item_id']
-region_col:['gene_symbol']
+region_col:['chrom']
 meta_col:None
-value:['reads_per_million_mirna_mapped']
+value:['chrom']
 other_meta:None
 other_region:None
 -------
@@ -28,8 +28,8 @@ executed:False
 result:None
 depends_on:Pivot
 tuning:True
-min_clusters:3
-max_clusters:6
+min_clusters:6
+max_clusters:90
 -------
 3
 PCA

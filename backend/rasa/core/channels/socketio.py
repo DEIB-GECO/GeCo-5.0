@@ -67,13 +67,11 @@ class SocketIOOutput(OutputChannel):
         self, recipient_id: Text, text: Text, **kwargs: Any
     ) -> None:
         """Send a message through this channel."""
-        print("il text eeeeee:",text)
         if(isinstance(text,dict) == False and isinstance(text,list)==False):
             for message_part in text.strip().split("\n\n"):
                 await self._send_message(recipient_id, {"text": message_part})
 
         else:
-            print('il testo é', text)
             await self.sio.emit('json_response',text)
 
 
@@ -149,7 +147,7 @@ class SocketIOInput(InputChannel):
 
     @classmethod
     def name(cls) -> Text:
-        logger.debug(Text)
+        #logger.debug(Text)
         return "socketio"
 
     @classmethod
@@ -210,9 +208,9 @@ class SocketIOInput(InputChannel):
 
         @sio.on("connect", namespace=self.namespace)
         async def connect(sid: Text, data: Dict) -> None:
-            logger.debug(f"User {sid} connected to socketIO endpoint.")
-            logger.debug("mi sono connesso")
-            logger.debug(data)
+            #logger.debug(f"User {sid} connected to socketIO endpoint.")
+            #logger.debug("mi sono connesso")
+            #logger.debug(data)
             global user_ID
 
             if("io="+user_ID == data["HTTP_COOKIE"] ):
@@ -228,15 +226,15 @@ class SocketIOInput(InputChannel):
             if "session_id" not in data or data["session_id"] is None:
             #    logger.debug(data["HTTP_COOKIE"])
                 data["session_id"] = uuid.uuid4().hex
-                logger.debug("session")
+                #logger.debug("session")
              #   logger.debug(data["HTTP_COOKIE"])
 
-                logger.debug(data["session_id"])
+                #logger.debug(data["session_id"])
             if self.session_persistence:
                 sio.enter_room(sid, data["session_id"])
 
             await sio.emit("session_confirm", data["session_id"], room=sid)
-            logger.debug(f"User {sid} session requested to socketIO endpoint.")
+            #logger.debug(f"User {sid} session requested to socketIO endpoint.")
 
             if (tracker == True):
                 data = {}
@@ -311,7 +309,6 @@ class SocketIOInput(InputChannel):
         @sio.on('my_event', namespace=self.namespace)
         async def handle_message(sid: Text, data: Dict) -> Any:
             output_channel = SocketIOOutput(sio, self.bot_message_evt)
-            logger.debug("ho preso un messaggio fatto da me rimuovere 1")
 
             global user_ID
 

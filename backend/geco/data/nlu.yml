@@ -641,42 +641,6 @@ nlu:
     - [wm262](cell) [cell](field)
     - [wm451-lu](cell) [cell](field)
     - [wsu-dlcl2](cell) [cell](field)
-    - [exon](content_type) [content_type](field)
-    - [gene](content_type) [content_type](field)
-    - [transcript](content_type) [content_type](field)
-    - [cds](content_type) [content_type](field)
-    - [selenocysteine](content_type) [content_type](field)
-    - [start codon](content_type) [content_type](field)
-    - [stop codon](content_type) [content_type](field)
-    - [utr](content_type) [content_type](field)
-    - [antisense rna](content_type) [content_type](field)
-    - [c gene segment](content_type) [content_type](field)
-    - [d gene segment](content_type) [content_type](field)
-    - [d loop](content_type) [content_type](field)
-    - [enhancer](content_type) [content_type](field)
-    - [j gene segment](content_type) [content_type](field)
-    - [lnc rna](content_type) [content_type](field)
-    - [mirna](content_type) [content_type](field)
-    - [mrna](content_type) [content_type](field)
-    - [ncrna](content_type) [content_type](field)
-    - [primary transcript](content_type) [content_type](field)
-    - [promoter](content_type) [content_type](field)
-    - [region](content_type) [content_type](field)
-    - [repeat region](content_type) [content_type](field)
-    - [rnase mrp rna](content_type) [content_type](field)
-    - [rnase p rna](content_type) [content_type](field)
-    - [rrna](content_type) [content_type](field)
-    - [sequence feature](content_type) [content_type](field)
-    - [snorna](content_type) [content_type](field)
-    - [snrna](content_type) [content_type](field)
-    - [srp rna](content_type) [content_type](field)
-    - [telomerase rna](content_type) [content_type](field)
-    - [trna](content_type) [content_type](field)
-    - [vault rna](content_type) [content_type](field)
-    - [v gene segment](content_type) [content_type](field)
-    - [y rna](content_type) [content_type](field)
-    - [centromere](content_type) [content_type](field)
-    - [intron](content_type) [content_type](field)
     - [peaks](data_type) [data_type](field)
     - [cnv](data_type) [data_type](field)
     - [copy number segment](data_type) [data_type](field)
@@ -785,7 +749,6 @@ nlu:
     - [pheochromocythoma and paraganglioma](disease) [disease](field)
     - [hepatic rhabdoid tumor](disease) [disease](field)
     - [rhabdomyosarcoma](disease) [disease](field)
-    - [gene expression](feature) [feature](field)
     - [copy number variation](feature) [feature](field)
     - [dna methylation](feature) [feature](field)
     - [transcription factor](feature) [feature](field)
@@ -1840,7 +1803,7 @@ nlu:
     - [exon quantification](data_type) from [alveolus of lung](tissue)
     - data regarding [masked copy number segment](data_type) for cell [1015c](cell)
     - samples for [aars](target) data
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [ammon's horn](tissue)?
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [ammon's horn](tissue)?
     - I am looking for [masked somatic mutation](data_type)
     - experiments data for [angular gyrus](tissue) from [grch38](assembly)
     - I want experiment about [b-cell non-hodgkin lymphoma](disease) for [hg19](assembly)
@@ -1950,6 +1913,19 @@ nlu:
     - i'm looking for data from [encode](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
     - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [esophagus](tissue)?
     - i need [tumoral]{"entity": "is_healthy", "value": "False"} patients
+    - i need [tumoral]{"entity": "is_healthy", "value": "false"} patients and [mirna expression](data_type)
+    - i need [tumoral]{"entity": "is_healthy", "value": "false"} entity patients and [mirna expression](data_type)
+    - i need [ill]{"entity": "is_healthy", "value": "false"} patients
+    - give me [hg19](assembly) [assembly](field)
+    - give me people with [diseased]{"entity": "is_healthy", "value": "false"}
+    - give me [non tumoral]{"entity": "is_healthy", "value": "true"} patients
+    - give me [ill]{"entity": "is_healthy", "value": "false"} people
+    - now i want [sick]{"entity": "is_healthy", "value": "false"} people
+    - i want [mirna expression data type](data_type)
+    - i want [mirna expression](data_type) [data type]{"entity": "field", "value": "data_type"}
+    - i want [gene expression](data_type)
+    - i want [mirna expression](data_type)
+    - [gene expression](data_type)
 - intent: retrieve_annotations
   examples: |
     - [annotation](annotations)
@@ -2069,7 +2045,6 @@ nlu:
     - [experimental data](experiments)
     - [experim](experiments)
     - [esperiments](experiments)
-    - [experiments](experiments)
 - intent: search_field
   examples: |
     - [file_format](field)
@@ -2091,8 +2066,8 @@ nlu:
     - now i want [assembly](field)
     - [dataset_name](field)
     - [dataset]{"entity": "field", "value": "dataset_name"}
-    - [data type]{"entity": "field", "value": "data_type"}
-    - [disease](field)
+    - [dataset name]{"entity": "field", "value": "dataset_name"}
+    - [dataset]{"entity": "field", "value": "dataset_name"} name
 - intent: reset
   examples: |
     - reset slot
@@ -2384,6 +2359,7 @@ nlu:
     - tcga-02-0080-10a-01d
     - tcga-02-0083-01a-01d
     - tcga-02-0083-10a-01d
+    - r1
 - intent: insert
   examples: |
     - add
@@ -2430,1132 +2406,6 @@ nlu:
     - [grch38_encode_narrow_2020_01](dataset_name)
     - [hg19_encode_broad_2020_01](dataset_name)
     - [grch38_tcga_copy_number_masked_2019_10](dataset_name)
-    - [grch38_tcga_mirna_expression_2019_10](dataset_name)
-- intent: choice_value_cell
-  examples: |
-    - [wm451-lu]{"entity": "cell", "value": "1205-lu"}
-    - [293t-rex]{"entity": "cell", "value": "293t"}
-    - [501-mel]{"entity": "cell", "value": "537 mel"}
-    - [537-mel]{"entity": "cell", "value": "537 mel"}
-    - [786_0]{"entity": "cell", "value": "786-0"}
-    - [786-o]{"entity": "cell", "value": "786-0"}
-    - [crl-1932]{"entity": "cell", "value": "786-0"}
-    - [rcc7860]{"entity": "cell", "value": "786-0"}
-    - [rcc 7860]{"entity": "cell", "value": "786-0"}
-    - [rcc_7860]{"entity": "cell", "value": "786-0"}
-    - [8988 t]{"entity": "cell", "value": "8988t"}
-    - [8988-t]{"entity": "cell", "value": "8988t"}
-    - [acc 162]{"entity": "cell", "value": "8988t"}
-    - [pa-tu-8988t]{"entity": "cell", "value": "8988t"}
-    - [a-549]{"entity": "cell", "value": "a549"}
-    - [a549 cell]{"entity": "cell", "value": "a549"}
-    - [a549 etoh 0.02pct lung carcinoma cell line]{"entity": "cell", "value": "a549"}
-    - [bt-549]{"entity": "cell", "value": "a549"}
-    - [utsw-acc112]{"entity": "cell", "value": "acc112"}
-    - [ag04449]{"entity": "cell", "value": "ag04450"}
-    - [ag08470]{"entity": "cell", "value": "ag08470 cell"}
-    - [ag09319]{"entity": "cell", "value": "ag09319 cell"}
-    - [ag10803](cell)
-    - [ags](cell)
-    - [all pairs](cell)
-    - [all_pairs]{"entity": "cell", "value": "all pairs"}
-    - [all-sil]{"entity": "cell", "value": "all pairs"}
-    - [amniotic stem cell](cell)
-    - [astrocyte](cell)
-    - [astrocytic glia]{"entity": "cell", "value": "astrocyte"}
-    - [astrocyte of the cerebellum](cell)
-    - [astrocyte of the hippocampus](cell)
-    - [astrocyte of the spinal cord](cell)
-    - [bcbl1](cell)
-    - [b cell](cell)
-    - [b-cell]{"entity": "cell", "value": "b cell"}
-    - [b lymphocyte]{"entity": "cell", "value": "b cell"}
-    - [b-lymphocyte]{"entity": "cell", "value": "b cell"}
-    - [b-cell non-hodgkin lymphoma cell line](cell)
-    - [oci-ly4]{"entity": "cell", "value": "b-cell non-hodgkin lymphoma cell line"}
-    - [be2c]{"entity": "cell", "value": "be(2)-c"}
-    - [be(2) c]{"entity": "cell", "value": "be(2)-c"}
-    - [be(2)_c]{"entity": "cell", "value": "be(2)-c"}
-    - [be(2)-c](cell)
-    - [be2_c]{"entity": "cell", "value": "be(2)-c"}
-    - [be2-c]{"entity": "cell", "value": "be(2)-c"}
-    - [be(2)-c cell]{"entity": "cell", "value": "be(2)-c"}
-    - [beas2b]{"entity": "cell", "value": "beas-2b"}
-    - [beas-2b](cell)
-    - [adipocyte]{"entity": "cell", "value": "beige adipocyte"}
-    - [beige adipocyte](cell)
-    - [beige/brite adipocyte]{"entity": "cell", "value": "beige adipocyte"}
-    - [beige brown adipocyte]{"entity": "cell", "value": "beige adipocyte"}
-    - [beige fat cell]{"entity": "cell", "value": "beige adipocyte"}
-    - [brite adipocyte]{"entity": "cell", "value": "beige adipocyte"}
-    - [brite cell]{"entity": "cell", "value": "beige adipocyte"}
-    - [brite fat cell]{"entity": "cell", "value": "beige adipocyte"}
-    - [[6]annulene]{"entity":"cell","value":"benzene"}
-    - [benzen]{"entity": "cell", "value": "benzene"}
-    - [benzene](cell)
-    - [benzine]{"entity": "cell", "value": "benzene"}
-    - [benzol]{"entity": "cell", "value": "benzene"}
-    - [benzole]{"entity": "cell", "value": "benzene"}
-    - [bicarburet of hydrogen]{"entity": "cell", "value": "benzene"}
-    - [c1ccccc1]{"entity": "cell", "value": "benzene"}
-    - [c6]{"entity": "cell", "value": "benzene"}
-    - [c6h6]{"entity": "cell", "value": "benzene"}
-    - [c6 vertebra]{"entity": "cell", "value": "benzene"}
-    - [coal naphtha]{"entity": "cell", "value": "benzene"}
-    - [cyclohexatriene]{"entity": "cell", "value": "benzene"}
-    - [inchi=1/c6h6/c1-2-4-6-5-3-1/h1-6h]{"entity": "cell", "value": "benzene"}
-    - [inchikey=uhovqnzjysornb-uhfffaoyah]{"entity": "cell", "value": "benzene"}
-    - [mineral naphtha]{"entity": "cell", "value": "benzene"}
-    - [phene]{"entity": "cell", "value": "benzene"}
-    - [phenyl hydride]{"entity": "cell", "value": "benzene"}
-    - [pyrobenzol]{"entity": "cell", "value": "benzene"}
-    - [pyrobenzole]{"entity": "cell", "value": "benzene"}
-    - [bg01](cell)
-    - [bg03](cell)
-    - [bipolar neuron](cell)
-    - [bj](cell)
-    - [bone marrow derived cultured mesenchymal stem cells](cell)
-    - [brain microvascular endothelial cell](cell)
-    - [brain pericyte](cell)
-    - [breast myoepithelial primary cells](cell)
-    - [breast variant human mammary epithelial cells (vhmec)](cell)
-    - [bronchial epithelial cell](cell)
-    - [c1 100080003](cell)
-    - [c1 100 08 0003]{"entity": "cell", "value": "c1 100080003"}
-    - [c803]{"entity": "cell", "value": "c1 100080003"}
-    - [c4-2]{"entity": "cell", "value": "c4-2b"}
-    - [c4-2b](cell)
-    - [b6]{"entity": "cell", "value": "c57bl/6"}
-    - [c57]{"entity": "cell", "value": "c57bl/6"}
-    - [c57/b6]{"entity": "cell", "value": "c57bl/6"}
-    - [c57b/6]{"entity": "cell", "value": "c57bl/6"}
-    - [c57bl,]{"entity": "cell", "value": "c57bl/6"}
-    - [c57bl6]{"entity": "cell", "value": "c57bl/6"}
-    - [c57/bl6]{"entity": "cell", "value": "c57bl/6"}
-    - [c57bl/6](cell)
-    - [c57bl\6]{"entity": "cell", "value": "c57bl/6"}
-    - [c57black]{"entity": "cell", "value": "c57bl/6"}
-    - [c57black6]{"entity": "cell", "value": "c57bl/6"}
-    - [c57 black/6]{"entity": "cell", "value": "c57bl/6"}
-    - [c57black/6]{"entity": "cell", "value": "c57bl/6"}
-    - [cb57]{"entity": "cell", "value": "c57bl/6"}
-    - [p493-6]{"entity": "cell", "value": "c57bl/6"}
-    - [caco2]{"entity": "cell", "value": "caco-2"}
-    - [caco-2](cell)
-    - [caki1](cell)
-    - [caki-1]{"entity": "cell", "value": "caki1"}
-    - [caki2](cell)
-    - [caki-2]{"entity": "cell", "value": "caki2"}
-    - [cal51](cell)
-    - [cal-51]{"entity": "cell", "value": "cal51"}
-    - [cal51-mcf7]{"entity": "cell", "value": "cal51"}
-    - [cardiac muscle cell](cell)
-    - [cardiac muscle fiber]{"entity": "cell", "value": "cardiac muscle cell"}
-    - [cardiac myocyte]{"entity": "cell", "value": "cardiac muscle cell"}
-    - [cardiomyocyte]{"entity": "cell", "value": "cardiac muscle cell"}
-    - [heart muscle cell]{"entity": "cell", "value": "cardiac muscle cell"}
-    - [cardiac myoblast](cell)
-    - [cardioblast](cell)
-    - [cardiovascular progenitor cell]{"entity": "cell", "value": "cardioblast"}
-    - [caski](cell)
-    - [cd14-positive monocyte](cell)
-    - [cd1c-positive myeloid dendritic cell](cell)
-    - [cd8-positive, alpha-beta memory t cell](cell)
-    - [cd8-positive, alpha-beta memory t-cell]{"entity": "cell", "value": "cd8-positive, alpha-beta memory t cell"}
-    - [cd8-positive, alpha-beta memory t lymphocyte]{"entity": "cell", "value": "cd8-positive, alpha-beta memory t cell"}
-    - [cd8-positive, alpha-beta memory t-lymphocyte]{"entity": "cell", "value": "cd8-positive, alpha-beta memory t cell"}
-    - [primary t cd8+ memory cells from peripheral blood]{"entity": "cell", "value": "cd8-positive, alpha-beta memory t cell"}
-    - [t.8mem.sp]{"entity": "cell", "value": "cd8-positive, alpha-beta memory t cell"}
-    - [cell of skeletal muscle](cell)
-    - [skeletal muscle cell]{"entity": "cell", "value": "cell of skeletal muscle"}
-    - [cervical carcinoma cell line](cell)
-    - [hela-s3 cervical carcinoma cell line]{"entity": "cell", "value": "cervical carcinoma cell line"}
-    - [hepg2 hepatocellular carcinoma cell line]{"entity": "cell", "value": "cervical carcinoma cell line"}
-    - [choroid plexus epithelial cell](cell)
-    - [epithelial cell of choroid plexus]{"entity": "cell", "value": "choroid plexus epithelial cell"}
-    - [cmk](cell)
-    - [colo 741](cell)
-    - [colo-741]{"entity": "cell", "value": "colo 741"}
-    - [colo-783]{"entity": "cell", "value": "colo 741"}
-    - [colo829](cell)
-    - [colo-829]{"entity": "cell", "value": "colo829"}
-    - [cortex derived primary cultured neurospheres](cell)
-    - [cutll1](cell)
-    - [cwru1](cell)
-    - [ips_cwru1]{"entity": "cell", "value": "cwru1"}
-    - [cyt49](cell)
-    - [d341med](cell)
-    - [d721]{"entity": "cell", "value": "d721med"}
-    - [d-721]{"entity": "cell", "value": "d721med"}
-    - [d721med](cell)
-    - [d-721med]{"entity": "cell", "value": "d721med"}
-    - [d-721 med]{"entity": "cell", "value": "d721med"}
-    - [daoy](cell)
-    - [htb186]{"entity": "cell", "value": "daoy"}
-    - [dedifferentiated amniotic fluid mesenchymal stem cell](cell)
-    - [dermis blood vessel endothelial cell](cell)
-    - [dermis microvascular lymphatic vessel endothelial cell](cell)
-    - [dko1](cell)
-    - [dl23](cell)
-    - [dld1](cell)
-    - [dld-1]{"entity": "cell", "value": "dld1"}
-    - [acc525]{"entity": "cell", "value": "dnd-41"}
-    - [dnd-41](cell)
-    - [dohh2](cell)
-    - [du145]{"entity": "cell", "value": "du 145"}
-    - [du 145](cell)
-    - [du-145]{"entity": "cell", "value": "du 145"}
-    - [eec16](cell)
-    - [bj-eh, bj eh]{"entity": "cell", "value": "eh"}
-    - [eh](cell)
-    - [ej]{"entity": "cell", "value": "ej cell"}
-    - [ej cell](cell)
-    - [bj-el, bj el]{"entity": "cell", "value": "el"}
-    - [el](cell)
-    - [elf1]{"entity": "cell", "value": "elf-1"}
-    - [elf-1](cell)
-    - [elf-1 cell]{"entity": "cell", "value": "elf-1"}
-    - [bj-elr, bj elr]{"entity": "cell", "value": "elr"}
-    - [elr](cell)
-    - [embryonic stem cell](cell)
-    - [embryonic stem cells]{"entity": "cell", "value": "embryonic stem cell"}
-    - [esc]{"entity": "cell", "value": "embryonic stem cell"}
-    - [lis2]{"entity": "cell", "value": "embryonic stem cell"}
-    - [wa-7]{"entity": "cell", "value": "embryonic stem cell"}
-    - [wibr2]{"entity": "cell", "value": "embryonic stem cell"}
-    - [endodermal cell](cell)
-    - [endoderm cell]{"entity": "cell", "value": "endodermal cell"}
-    - [endothelial cell derived cell line](cell)
-    - [hesc derived cd184+ endoderm cultured cells]{"entity": "cell", "value": "endothelial cell derived cell line"}
-    - [endothelial cell of umbilical vein](cell)
-    - [epidermal melanocyte](cell)
-    - [bicr]{"entity": "cell", "value": "epithelial cell derived cell line"}
-    - [epithelial cell derived cell line](cell)
-    - [21nt]{"entity": "cell", "value": "epithelial cell line"}
-    - [epithelial cell line](cell)
-    - [ft246]{"entity": "cell", "value": "epithelial cell line"}
-    - [h3396]{"entity": "cell", "value": "epithelial cell line"}
-    - [islk-219]{"entity": "cell", "value": "epithelial cell line"}
-    - [amniotic epithelial cell]{"entity": "cell", "value": "epithelial cell of amnion"}
-    - [epithelial cell of amnion](cell)
-    - [epithelial cell of esophagus](cell)
-    - [epithelial cell of prostate](cell)
-    - [prostate epithelial cell]{"entity": "cell", "value": "epithelial cell of prostate"}
-    - [epithelial cell of proximal tubule](cell)
-    - [kidney proximal tubule epithelial cell]{"entity": "cell", "value": "epithelial cell of proximal tubule"}
-    - [erythroblast](cell)
-    - [normoblast]{"entity": "cell", "value": "erythroblast"}
-    - [cj7 cell]{"entity": "cell", "value": "es-cj7"}
-    - [es-cj7](cell)
-    - [es-cj7 cell]{"entity": "cell", "value": "es-cj7"}
-    - [es-wa7 cells]{"entity": "cell", "value": "es-cj7"}
-    - [es-i3](cell)
-    - [es-i3 cells]{"entity": "cell", "value": "es-i3"}
-    - [hes i3]{"entity": "cell", "value": "es-i3"}
-    - [ews502](cell)
-    - [cardiac fibroblast]{"entity": "cell", "value": "fibroblast of cardiac tissue"}
-    - [fibroblast of cardiac tissue](cell)
-    - [fibroblast of dermis](cell)
-    - [fibroblast of gingiva](cell)
-    - [fibroblast of lung](cell)
-    - [fibroblast of mammary gland](cell)
-    - [fibroblast of peridontal ligament](cell)
-    - [fibroblast of pulmonary artery](cell)
-    - [fibroblast of the aortic adventitia](cell)
-    - [fibroblast of the conjunctiva](cell)
-    - [fibroblast of villous mesenchyme](cell)
-    - [bj fibroblast]{"entity": "cell", "value": "foreskin fibroblast"}
-    - [foreskin fibroblast](cell)
-    - [foreskin fibroblast primary cells skin01](cell)
-    - [foreskin fibroblast primary cells skin02](cell)
-    - [foreskin keratinocyte primary cells skin02](cell)
-    - [foreskin keratinocyte primary cells skin03](cell)
-    - [foreskin melanocyte primary cells skin01](cell)
-    - [foreskin melanocyte primary cells skin03](cell)
-    - [ft33](cell)
-    - [g401](cell)
-    - [g-401]{"entity": "cell", "value": "g401"}
-    - [g401.6](cell)
-    - [mrt_g401.6]{"entity": "cell", "value": "g401.6"}
-    - [ganglion eminence derived primary cultured neurospheres](cell)
-    - [gcb](cell)
-    - [gist48](cell)
-    - [glioblastoma h54](cell)
-    - [h54]{"entity": "cell", "value": "glioblastoma h54"}
-    - [glomerular endothelial cell](cell)
-    - [glomerular podocyte]{"entity": "cell", "value": "glomerular visceral epithelial cell"}
-    - [glomerular visceral epithelial cell](cell)
-    - [podocyte]{"entity": "cell", "value": "glomerular visceral epithelial cell"}
-    - [gm01660]{"entity": "cell", "value": "gm01660 cell"}
-    - [gm01660 cell](cell)
-    - [gm03348]{"entity": "cell", "value": "gm03348 cell"}
-    - [gm03348 cell](cell)
-    - [gm04503]{"entity": "cell", "value": "gm04503 cell"}
-    - [gm04503 cell](cell)
-    - [gm04504]{"entity": "cell", "value": "gm04504 cell"}
-    - [gm04504 cell](cell)
-    - [gm06990](cell)
-    - [gm08714](cell)
-    - [gm10248](cell)
-    - [gm10266](cell)
-    - [gm10847](cell)
-    - [gm12801](cell)
-    - [gm12864](cell)
-    - [gm12865](cell)
-    - [gm12866](cell)
-    - [gm12873](cell)
-    - [gm12874](cell)
-    - [gm12875](cell)
-    - [gm12878](cell)
-    - [gm12878 lymphoblastoid cells]{"entity": "cell", "value": "gm12878"}
-    - [gm12890]{"entity": "cell", "value": "gm12890 cell"}
-    - [gm12890 cell](cell)
-    - [gm12891](cell)
-    - [gm12892](cell)
-    - [gm13976](cell)
-    - [gm13977](cell)
-    - [gm18486]{"entity": "cell", "value": "gm18486 cell"}
-    - [gm18486 cell](cell)
-    - [gm18498]{"entity": "cell", "value": "gm18498 cell"}
-    - [gm18498 cell](cell)
-    - [gm18499]{"entity": "cell", "value": "gm18499 cell"}
-    - [gm18499 cell](cell)
-    - [gm18501]{"entity": "cell", "value": "gm18501 cell"}
-    - [gm18501 cell](cell)
-    - [gm18502]{"entity": "cell", "value": "gm18502 cell"}
-    - [gm18502 cell](cell)
-    - [gm18504]{"entity": "cell", "value": "gm18504 cell"}
-    - [gm18504 cell](cell)
-    - [gm18505](cell)
-    - [gm18507](cell)
-    - [gm18508]{"entity": "cell", "value": "gm18508 cell"}
-    - [gm18508 cell](cell)
-    - [gm18510]{"entity": "cell", "value": "gm18510 cell"}
-    - [gm18510 cell](cell)
-    - [gm18511]{"entity": "cell", "value": "gm18511 cell"}
-    - [gm18511 cell](cell)
-    - [gm18516]{"entity": "cell", "value": "gm18516 cell"}
-    - [gm18516 cell](cell)
-    - [gm18517]{"entity": "cell", "value": "gm18517 cell"}
-    - [gm18517 cell](cell)
-    - [gm18519]{"entity": "cell", "value": "gm18519 cell"}
-    - [gm18519 cell](cell)
-    - [gm18520]{"entity": "cell", "value": "gm18520 cell"}
-    - [gm18520 cell](cell)
-    - [gm18522]{"entity": "cell", "value": "gm18522 cell"}
-    - [gm18522 cell](cell)
-    - [gm18526](cell)
-    - [gm18852]{"entity": "cell", "value": "gm18852 cell"}
-    - [gm18852 cell](cell)
-    - [gm18853]{"entity": "cell", "value": "gm18853 cell"}
-    - [gm18853 cell](cell)
-    - [gm18855]{"entity": "cell", "value": "gm18855 cell"}
-    - [gm18855 cell](cell)
-    - [gm18856]{"entity": "cell", "value": "gm18856 cell"}
-    - [gm18856 cell](cell)
-    - [gm18858]{"entity": "cell", "value": "gm18858 cell"}
-    - [gm18858 cell](cell)
-    - [gm18859]{"entity": "cell", "value": "gm18859 cell"}
-    - [gm18859 cell](cell)
-    - [gm18861]{"entity": "cell", "value": "gm18861 cell"}
-    - [gm18861 cell](cell)
-    - [gm18862]{"entity": "cell", "value": "gm18862 cell"}
-    - [gm18862 cell](cell)
-    - [gm18870]{"entity": "cell", "value": "gm18870 cell"}
-    - [gm18870 cell](cell)
-    - [gm18907]{"entity": "cell", "value": "gm18907 cell"}
-    - [gm18907 cell](cell)
-    - [gm18909]{"entity": "cell", "value": "gm18909 cell"}
-    - [gm18909 cell](cell)
-    - [gm18912]{"entity": "cell", "value": "gm18912 cell"}
-    - [gm18912 cell](cell)
-    - [gm18913]{"entity": "cell", "value": "gm18913 cell"}
-    - [gm18913 cell](cell)
-    - [gm18916]{"entity": "cell", "value": "gm18916 cell"}
-    - [gm18916 cell](cell)
-    - [gm18951](cell)
-    - [gm19092]{"entity": "cell", "value": "gm19092 cell"}
-    - [gm19092 cell](cell)
-    - [gm19093]{"entity": "cell", "value": "gm19093 cell"}
-    - [gm19093 cell](cell)
-    - [gm19098]{"entity": "cell", "value": "gm19098 cell"}
-    - [gm19098 cell](cell)
-    - [gm19099](cell)
-    - [gm19101]{"entity": "cell", "value": "gm19101 cell"}
-    - [gm19101 cell](cell)
-    - [gm19114]{"entity": "cell", "value": "gm19114 cell"}
-    - [gm19114 cell](cell)
-    - [gm19116]{"entity": "cell", "value": "gm19116 cell"}
-    - [gm19116 cell](cell)
-    - [gm19119]{"entity": "cell", "value": "gm19119 cell"}
-    - [gm19119 cell](cell)
-    - [gm19127]{"entity": "cell", "value": "gm19127 cell"}
-    - [gm19127 cell](cell)
-    - [gm19130]{"entity": "cell", "value": "gm19130 cell"}
-    - [gm19130 cell](cell)
-    - [gm19131]{"entity": "cell", "value": "gm19131 cell"}
-    - [gm19131 cell](cell)
-    - [gm19137]{"entity": "cell", "value": "gm19137 cell"}
-    - [gm19137 cell](cell)
-    - [gm19138]{"entity": "cell", "value": "gm19138 cell"}
-    - [gm19138 cell](cell)
-    - [gm19140]{"entity": "cell", "value": "gm19140 cell"}
-    - [gm19140 cell](cell)
-    - [gm19141]{"entity": "cell", "value": "gm19141 cell"}
-    - [gm19141 cell](cell)
-    - [gm19143]{"entity": "cell", "value": "gm19143 cell"}
-    - [gm19143 cell](cell)
-    - [gm19144]{"entity": "cell", "value": "gm19144 cell"}
-    - [gm19144 cell](cell)
-    - [gm19147]{"entity": "cell", "value": "gm19147 cell"}
-    - [gm19147 cell](cell)
-    - [gm19152]{"entity": "cell", "value": "gm19152 cell"}
-    - [gm19152 cell](cell)
-    - [gm19153]{"entity": "cell", "value": "gm19153 cell"}
-    - [gm19153 cell](cell)
-    - [gm19159]{"entity": "cell", "value": "gm19159 cell"}
-    - [gm19159 cell](cell)
-    - [gm19160]{"entity": "cell", "value": "gm19160 cell"}
-    - [gm19160 cell](cell)
-    - [gm19171]{"entity": "cell", "value": "gm19171 cell"}
-    - [gm19171 cell](cell)
-    - [gm19190]{"entity": "cell", "value": "gm19190 cell"}
-    - [gm19190 cell](cell)
-    - [gm19193](cell)
-    - [gm19200]{"entity": "cell", "value": "gm19200 cell"}
-    - [gm19200 cell](cell)
-    - [gm19201]{"entity": "cell", "value": "gm19201 cell"}
-    - [gm19201 cell](cell)
-    - [gm19203]{"entity": "cell", "value": "gm19203 cell"}
-    - [gm19203 cell](cell)
-    - [gm19204]{"entity": "cell", "value": "gm19204 cell"}
-    - [gm19204 cell](cell)
-    - [gm19206]{"entity": "cell", "value": "gm19206 cell"}
-    - [gm19206 cell](cell)
-    - [gm19207]{"entity": "cell", "value": "gm19207 cell"}
-    - [gm19207 cell](cell)
-    - [gm19209]{"entity": "cell", "value": "gm19209 cell"}
-    - [gm19209 cell](cell)
-    - [gm19210]{"entity": "cell", "value": "gm19210 cell"}
-    - [gm19210 cell](cell)
-    - [gm19222]{"entity": "cell", "value": "gm19222 cell"}
-    - [gm19222 cell](cell)
-    - [gm19223]{"entity": "cell", "value": "gm19223 cell"}
-    - [gm19223 cell](cell)
-    - [gm19225]{"entity": "cell", "value": "gm19225 cell"}
-    - [gm19225 cell](cell)
-    - [gm19238](cell)
-    - [gm19239](cell)
-    - [gm19240](cell)
-    - [gm19257]{"entity": "cell", "value": "gm19257 cell"}
-    - [gm19257 cell](cell)
-    - [gm20000](cell)
-    - [gm2255](cell)
-    - [gm23248](cell)
-    - [gm23248 cell]{"entity": "cell", "value": "gm23248"}
-    - [gm23338](cell)
-    - [gm2555](cell)
-    - [gm2588](cell)
-    - [gp5d](cell)
-    - [granta-519](cell)
-    - [glc-16]{"entity": "cell", "value": "gtl-16"}
-    - [gtl-16](cell)
-    - [h128](cell)
-    - [h1 bmp4 derived mesendoderm cultured cells](cell)
-    - [h1 bmp4 derived trophoblast cultured cells](cell)
-    - [h1 derived mesenchymal stem cells](cell)
-    - [h1 derived neuronal progenitor cultured cells](cell)
-    - [h1]{"entity": "cell", "value": "h1-hesc"}
-    - [h1 cells]{"entity": "cell", "value": "h1-hesc"}
-    - [h1-hesc](cell)
-    - [h4](cell)
-    - [h7]{"entity": "cell", "value": "h7-hesc"}
-    - [h7 cell]{"entity": "cell", "value": "h7-hesc"}
-    - [h7-es]{"entity": "cell", "value": "h7-hesc"}
-    - [h7-hesc](cell)
-    - [wa07]{"entity": "cell", "value": "h7-hesc"}
-    - [h9](cell)
-    - [h9 cells]{"entity": "cell", "value": "h9"}
-    - [h9 derived neuronal progenitor cultured cells](cell)
-    - [h9 derived neuron cultured cells](cell)
-    - [hap1]{"entity": "cell", "value": "hap-1"}
-    - [hap-1](cell)
-    - [hbl1]{"entity": "cell", "value": "hbl-1 cell"}
-    - [hbl-1 cell](cell)
-    - [hcc1954](cell)
-    - [hcc-1954]{"entity": "cell", "value": "hcc1954"}
-    - [hcc2157](cell)
-    - [hcc-2157]{"entity": "cell", "value": "hcc2157"}
-    - [hcc95](cell)
-    - [hcc-95]{"entity": "cell", "value": "hcc95"}
-    - [hcec 1ct](cell)
-    - [hct116](cell)
-    - [hct-116 cell]{"entity": "cell", "value": "hct116"}
-    - [hct116 cell]{"entity": "cell", "value": "hct116"}
-    - [hct-116]{"entity": "cell", "value": "hct15"}
-    - [hct15](cell)
-    - [hct-15]{"entity": "cell", "value": "hct15"}
-    - [hek293](cell)
-    - [human embryonic kidney cell]{"entity": "cell", "value": "hek293"}
-    - [hek293a](cell)
-    - [hek293t](cell)
-    - [hela](cell)
-    - [hela-s3](cell)
-    - [helper t cell](cell)
-    - [helper t-cell]{"entity": "cell", "value": "helper t cell"}
-    - [helper t lymphocyte]{"entity": "cell", "value": "helper t cell"}
-    - [helper t-lymphocyte]{"entity": "cell", "value": "helper t cell"}
-    - [primary t helper memory cells from peripheral blood 2]{"entity": "cell", "value": "helper t cell"}
-    - [primary t helper naive cells from peripheral blood]{"entity": "cell", "value": "helper t cell"}
-    - [t-helper cell]{"entity": "cell", "value": "helper t cell"}
-    - [hematopoietic multipotent progenitor cell](cell)
-    - [hemopoietic progenitor cell]{"entity": "cell", "value": "hematopoietic multipotent progenitor cell"}
-    - [mpp]{"entity": "cell", "value": "hematopoietic multipotent progenitor cell"}
-    - [blood forming stem cell]{"entity": "cell", "value": "hematopoietic stem cell"}
-    - [hematopoietic stem cell](cell)
-    - [hemopoietic stem cell]{"entity": "cell", "value": "hematopoietic stem cell"}
-    - [hsc]{"entity": "cell", "value": "hematopoietic stem cell"}
-    - [primary hematopoietic stem cells]{"entity": "cell", "value": "hematopoietic stem cell"}
-    - [hepatic perisinusoidal cell]{"entity": "cell", "value": "hepatic stellate cell"}
-    - [hepatic stellate cell](cell)
-    - [ito cell]{"entity": "cell", "value": "hepatic stellate cell"}
-    - [lx2]{"entity": "cell", "value": "hepatic stellate cell"}
-    - [perisinusoidal cell]{"entity": "cell", "value": "hepatic stellate cell"}
-    - [hepatocyte](cell)
-    - [hepg2](cell)
-    - [hep-g2]{"entity": "cell", "value": "hepg2"}
-    - [hepg2 cell]{"entity": "cell", "value": "hepg2"}
-    - [hesc derived cd56+ ectoderm cultured cells](cell)
-    - [hesc derived cd56+ mesoderm cultured cells](cell)
-    - [hesc line h1](cell)
-    - [hffc6](cell)
-    - [hff-htert clone 6]{"entity": "cell", "value": "hffc6"}
-    - [hff cmyc]{"entity": "cell", "value": "hff-myc"}
-    - [hff_cmyc]{"entity": "cell", "value": "hff-myc"}
-    - [hff-cmyc]{"entity": "cell", "value": "hff-myc"}
-    - [hff myc]{"entity": "cell", "value": "hff-myc"}
-    - [hff_myc]{"entity": "cell", "value": "hff-myc"}
-    - [hff-myc](cell)
-    - [hgadfn167](cell)
-    - [hgadfn167 cell]{"entity": "cell", "value": "hgadfn167"}
-    - [hgps]{"entity": "cell", "value": "hgadfn167"}
-    - [hgps cell]{"entity": "cell", "value": "hgadfn167"}
-    - [hgfdfn168](cell)
-    - [hkc8](cell)
-    - [hl60]{"entity": "cell", "value": "hl-60"}
-    - [hl-60](cell)
-    - [hl-60 cell]{"entity": "cell", "value": "hl-60"}
-    - [hl60 cell]{"entity": "cell", "value": "hl-60"}
-    - [hmec](cell)
-    - [hmec mammary epithelial primary cells](cell)
-    - [hpde-6e6e7]{"entity": "cell", "value": "hpde6-e6e7"}
-    - [hpde-6_e6e7]{"entity": "cell", "value": "hpde6-e6e7"}
-    - [hpde-6/e6e7]{"entity": "cell", "value": "hpde6-e6e7"}
-    - [hpde6-e6e7](cell)
-    - [hpde6-e6e7-hpv]{"entity": "cell", "value": "hpde6-e6e7"}
-    - [pancreatic duct cells e6e7]{"entity": "cell", "value": "hpde6-e6e7"}
-    - [hre](cell)
-    - [human renal epithelial cell line]{"entity": "cell", "value": "hre"}
-    - [hs-27a](cell)
-    - [hs-27a cell]{"entity": "cell", "value": "hs-27a"}
-    - [hs 38.t](cell)
-    - [wi-38]{"entity": "cell", "value": "hs 38.t"}
-    - [hs-5](cell)
-    - [hs-5 cell]{"entity": "cell", "value": "hs-5"}
-    - [hs68](cell)
-    - [hsmm cell derived skeletal muscle myotubes cells](cell)
-    - [ht1080](cell)
-    - [ht29](cell)
-    - [ht-29](cell)
-    - [htr_8_svneo]{"entity": "cell", "value": "htr8/svneo"}
-    - [htr-8-svneo]{"entity": "cell", "value": "htr8/svneo"}
-    - [htr-8/svneo]{"entity": "cell", "value": "htr8/svneo"}
-    - [htr8-svneo]{"entity": "cell", "value": "htr8/svneo"}
-    - [htr8/svneo](cell)
-    - [hucct1](cell)
-    - [hues48](cell)
-    - [hues48 cells]{"entity": "cell", "value": "hues48"}
-    - [hues6](cell)
-    - [hues6 cells]{"entity": "cell", "value": "hues6"}
-    - [hues64](cell)
-    - [hues64 cells]{"entity": "cell", "value": "hues64"}
-    - [huh7]{"entity": "cell", "value": "huh-7"}
-    - [huh-7](cell)
-    - [huh-7.5](cell)
-    - [huref](cell)
-    - [human umbilical vein endothelial cell]{"entity": "cell", "value": "huvec cell"}
-    - [huvec]{"entity": "cell", "value": "huvec cell"}
-    - [huvec cell](cell)
-    - [huvec umbilical vein endothelial primary cells]{"entity": "cell", "value": "huvec cell"}
-    - [ha]{"entity": "cell", "value": "hypobranchial artery"}
-    - [ha-sp]{"entity": "cell", "value": "hypobranchial artery"}
-    - [hypobranchial artery](cell)
-    - [immortal human testis-derived cell line cell](cell)
-    - [nccit]{"entity": "cell", "value": "immortal human testis-derived cell line cell"}
-    - [imr90]{"entity": "cell", "value": "imr-90"}
-    - [imr-90](cell)
-    - [imr90 fetal lung fibroblast cell line]{"entity": "cell", "value": "imr-90"}
-    - [imr90 fetal lung fibroblasts cell line]{"entity": "cell", "value": "imr-90"}
-    - [ims13q](cell)
-    - [ioe11](cell)
-    - [ioe4](cell)
-    - [ips-11a](cell)
-    - [ips-15b](cell)
-    - [ips-15b cells]{"entity": "cell", "value": "ips-15b"}
-    - [ips-18c](cell)
-    - [ips-20b](cell)
-    - [ips-20b cells]{"entity": "cell", "value": "ips-20b"}
-    - [ips-18 cells]{"entity": "cell", "value": "ips-5"}
-    - [ips-5](cell)
-    - [induced pluripotent stem cell derived cell line]{"entity": "cell", "value": "ipsc derived cell line"}
-    - [ipsc derived]{"entity": "cell", "value": "ipsc derived cell line"}
-    - [ipsc derived cell line](cell)
-    - [m23f]{"entity": "cell", "value": "ipsc derived cell line"}
-    - [pdb1lox-17/puro-5]{"entity": "cell", "value": "ipsc derived cell line"}
-    - [pdb1lox-21/puro-26]{"entity": "cell", "value": "ipsc derived cell line"}
-    - [ips df 19.11](cell)
-    - [ips df 19.11 cells]{"entity": "cell", "value": "ips df 19.11"}
-    - [ips df 6.9](cell)
-    - [ips df 6.9 cells]{"entity": "cell", "value": "ips df 6.9"}
-    - [ag20443]{"entity": "cell", "value": "ips-nihi11"}
-    - [ips 4]{"entity": "cell", "value": "ips-nihi11"}
-    - [ips a1]{"entity": "cell", "value": "ips-nihi11"}
-    - [ips a6]{"entity": "cell", "value": "ips-nihi11"}
-    - [ips c1]{"entity": "cell", "value": "ips-nihi11"}
-    - [ips nihi11]{"entity": "cell", "value": "ips-nihi11"}
-    - [ips-nihi11](cell)
-    - [ag08395]{"entity": "cell", "value": "ips-nihi7"}
-    - [ips nihi7]{"entity": "cell", "value": "ips-nihi7"}
-    - [ips-nihi7](cell)
-    - [iris pigment epithelial cell](cell)
-    - [ishikawa](cell)
-    - [ishikawa cell]{"entity": "cell", "value": "ishikawa"}
-    - [jjn-3](cell)
-    - [jm]{"entity": "cell", "value": "jurkat"}
-    - [jm cell]{"entity": "cell", "value": "jurkat"}
-    - [jurkat](cell)
-    - [jurkat cell]{"entity": "cell", "value": "jurkat"}
-    - [jurkat clone e61]{"entity": "cell", "value": "jurkat"}
-    - [jurkat cell e-6.1]{"entity": "cell", "value": "jurkat e-6.1 cell"}
-    - [jurkat cell e6.1]{"entity": "cell", "value": "jurkat e-6.1 cell"}
-    - [jurkat e6-1]{"entity": "cell", "value": "jurkat e-6.1 cell"}
-    - [jurkat e6.1]{"entity": "cell", "value": "jurkat e-6.1 cell"}
-    - [jurkat e-6.1 cell](cell)
-    - [tib-152]{"entity": "cell", "value": "jurkat e-6.1 cell"}
-    - [k562](cell)
-    - [k-562]{"entity": "cell", "value": "k562"}
-    - [ k562 cell]{"entity": "cell", "value": "k562"}
-    - [k-562 cell]{"entity": "cell", "value": "k562"}
-    - [k562 leukemia cells]{"entity": "cell", "value": "k562"}
-    - [karpas 422](cell)
-    - [karpas-422]{"entity": "cell", "value": "karpas 422"}
-    - [karpas 422 cell]{"entity": "cell", "value": "karpas 422"}
-    - [kasumi-1](cell)
-    - [kbm7](cell)
-    - [kbm-7](cell)
-    - [kelly](cell)
-    - [keratinized cell of epidermis]{"entity": "cell", "value": "keratinocyte"}
-    - [keratinocyte](cell)
-    - [malpighian cell]{"entity": "cell", "value": "keratinocyte"}
-    - [kidney capillary endothelial cell](cell)
-    - [kidney epithelial cell](cell)
-    - [kidney glomerular epithelial cell](cell)
-    - [kidney tubule cell](cell)
-    - [kms11]{"entity": "cell", "value": "kms-11"}
-    - [kms_11]{"entity": "cell", "value": "kms-11"}
-    - [kms-11](cell)
-    - [mv4-11]{"entity": "cell", "value": "kms-11"}
-    - [tko]{"entity": "cell", "value": "kms-11"}
-    - [koptk1]{"entity": "cell", "value": "kopt-k1"}
-    - [kopt-k1](cell)
-    - [kyse-150](cell)
-    - [l1-s8](cell)
-    - [l1-s8r](cell)
-    - [lc2/ad](cell)
-    - [nhdf-ad]{"entity": "cell", "value": "lc2/ad"}
-    - [lcl](cell)
-    - [lhcnm2]{"entity": "cell", "value": "lhcn-m2"}
-    - [lhcn m2]{"entity": "cell", "value": "lhcn-m2"}
-    - [lhcn-m2](cell)
-    - [lhsr](cell)
-    - [prec]{"entity": "cell", "value": "lhsr"}
-    - [lncap](cell)
-    - [lncap-abl ]{"entity": "cell", "value": "lncap"}
-    - [lncap cell]{"entity": "cell", "value": "lncap"}
-    - [crl-1740]{"entity": "cell", "value": "lncap clone fgc"}
-    - [lncap clone fgc](cell)
-    - [lncap clone fgc cell]{"entity": "cell", "value": "lncap clone fgc"}
-    - [lncap_fgc]{"entity": "cell", "value": "lncap clone fgc"}
-    - [lncap-fgc]{"entity": "cell", "value": "lncap clone fgc"}
-    - [loucy](cell)
-    - [lovo](cell)
-    - [loximvi](cell)
-    - [lox imvi]{"entity": "cell", "value": "loximvi"}
-    - [lox-imvi]{"entity": "cell", "value": "loximvi"}
-    - [ls174t](cell)
-    - [lted](cell)
-    - [lung microvascular endothelial cell](cell)
-    - [gm2610]{"entity": "cell", "value": "lymphoblastoid cell line"}
-    - [gm2630]{"entity": "cell", "value": "lymphoblastoid cell line"}
-    - [lymphoblastoid cell line](cell)
-    - [ms1]{"entity": "cell", "value": "lymphoblastoid cell line"}
-    - [ms4221]{"entity": "cell", "value": "lymphoblastoid cell line"}
-    - [crl_2366]{"entity": "cell", "value": "m059j"}
-    - [m059j](cell)
-    - [breast epithelial cell]{"entity": "cell", "value": "mammary epithelial cell"}
-    - [mammary epithelial cell](cell)
-    - [cd3e-positive t cell]{"entity": "cell", "value": "mature t cell"}
-    - [mature t cell](cell)
-    - [mature t-cell]{"entity": "cell", "value": "mature t cell"}
-    - [primary t cells effector/memory enriched from peripheral blood]{"entity": "cell", "value": "mature t cell"}
-    - [mcf 10a](cell)
-    - [mcf-10a]{"entity": "cell", "value": "mcf 10a"}
-    - [mcf7]{"entity": "cell", "value": "mcf-7"}
-    - [mcf-7](cell)
-    - [mcf-7 cell]{"entity": "cell", "value": "mcf-7"}
-    - [mcf7 cell]{"entity": "cell", "value": "mcf-7"}
-    - [mcf7-lted]{"entity": "cell", "value": "mcf-7"}
-    - [mda-231]{"entity": "cell", "value": "mdamb231"}
-    - [mdamb231](cell)
-    - [mda-mb-231]{"entity": "cell", "value": "mdamb231"}
-    - [mdamb436](cell)
-    - [mda-mb-436]{"entity": "cell", "value": "mdamb436"}
-    - [mdamb453](cell)
-    - [mda-mb-453]{"entity": "cell", "value": "mdamb453"}
-    - [mdamb468](cell)
-    - [mda-mb-468]{"entity": "cell", "value": "mdamb468"}
-    - [me-1](cell)
-    - [melanocyte of skin](cell)
-    - [skin melanocyte]{"entity": "cell", "value": "melanocyte of skin"}
-    - [wm262]{"entity": "cell", "value": "melanocyte of skin"}
-    - [mel]{"entity": "cell", "value": "mel cell"}
-    - [mel cell](cell)
-    - [meljuso](cell)
-    - [mesenchymal stem cell derived adipocyte cultured cells](cell)
-    - [mesenchymal stem cell derived chondrocyte cultured cells](cell)
-    - [mesoblast]{"entity": "cell", "value": "mesodermal cell"}
-    - [mesodermal cell](cell)
-    - [mesoderm cell]{"entity": "cell", "value": "mesodermal cell"}
-    - [mg63](cell)
-    - [mgg4](cell)
-    - [mm1](cell)
-    - [mm1.s]{"entity": "cell", "value": "mm1"}
-    - [mm.1s](cell)
-    - [mm.1 s]{"entity": "cell", "value": "mm.1s"}
-    - [mm.1-s]{"entity": "cell", "value": "mm.1s"}
-    - [mm.1s cell]{"entity": "cell", "value": "mm.1s"}
-    - [mnc491](cell)
-    - [mnc492](cell)
-    - [molm-13]{"entity": "cell", "value": "molm-16"}
-    - [molm-14]{"entity": "cell", "value": "molm-16"}
-    - [molm-16](cell)
-    - [monocytes-cd14+ ro01746 primary cells](cell)
-    - [mononuclear cell](cell)
-    - [mononuclear leukocyte]{"entity": "cell", "value": "mononuclear cell"}
-    - [bis(acetato-kappao){3,3'-[4,5-diethyl-16,17-bis{2-[2-(2-methoxyethoxy)ethoxy]ethoxy}-10,23-dimethyl-13,20,25,26,27-pentaazapentacyclo[20.2.1.1(3,6).1(8,11).0(14,19)]heptacosa-1,3,5,7,9,11(26),12,14,16,18,20,22(25),23-tridecaene-9,24-diyl-kappa(5)n(13),n(20),n(25),n(26),n(27)]dipropan-1-olato}gadolinium]{"entity":"cell","value":"motexafin gadolinium"}
-    - [c52h72gdn5o14]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [ccc1c(cc)c2c=c3c(ccco)=c(c)c4=[n]3[gd]356(oc(c)=o)(oc(c)=o)[n](=cc7=[n]3c(=cc1n25)c(ccco)=c7c)c1cc(occoccoccoc)c(occoccoccoc)cc1[n]6=c4]{"entity":"cell","value":"motexafin gadolinium"}
-    - [gadolinium texaphyrin]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [gd-tex]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [gd texaphyrin]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [inchi=1/c48h66n5o10.2c2h4o2.gd/c1-7-35-36(8-2)40-28-42-38(12-10-14-55)34(4)46(53-42)32-50-44-30-48(63-26-24-61-22-20-59-18-16-57-6)47(62-25-23-60-21-19-58-17-15-56-5)29-43(44)49-31-45-33(3)37(11-9-13-54)41(52-45)27-39(35)51-40;2*1-2(3)4;/h27-32,54-55h,7-26h2,1-6h3;2*1h3,(h,3,4);/q-1;;;+3/p-2/b39-27-,40-28-,41-27-,42-28-,45-31-,46-32-,49-31+,49-43+,50-32+,50-44+;;;/fc48h66n5o10.2c2h3o2.gd/qm;2*-1;m]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [inchikey=vazlwpahmordgr-mpnkmpctdc]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [mgd]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [motexafin gadolinium](cell)
-    - [(pb-7-11-233'2'4)-bis(acetato-kappao)(9,10-diethyl-20,21-bis(2-(2-(2-methoxyethoxy)ethoxy)ethoxy)-4,15-dimethyl-8,11-imino-3,6:16,13-dinitrilo-1,18-benzodiazacycloeicosine-5,14-dipropanolato-kappan(1),kappan(18),kappan(23),kappan(24),kappan(25))gadolinium]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [tex]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [xcytrin]{"entity": "cell", "value": "motexafin gadolinium"}
-    - [ecto neural progenitor cell]{"entity": "cell", "value": "mouse neural progenitor cell"}
-    - [mouse neural progenitor cell](cell)
-    - [mouse npc]{"entity": "cell", "value": "mouse neural progenitor cell"}
-    - [neural progenitor cell]{"entity": "cell", "value": "mouse neural progenitor cell"}
-    - [muscle cell](cell)
-    - [myocyte]{"entity": "cell", "value": "muscle cell"}
-    - [muscle satellite cultured cells](cell)
-    - [mutui](cell)
-    - [dnd41 tcell leukemia cell line]{"entity": "cell", "value": "myeloid leukemia cell line"}
-    - [myeloid leukemia cell line](cell)
-    - [myotube](cell)
-    - [myotubule]{"entity": "cell", "value": "myotube"}
-    - [single cell sarcomere]{"entity": "cell", "value": "myotube"}
-    - [naive b cell](cell)
-    - [naive b-cell]{"entity": "cell", "value": "naive b cell"}
-    - [naive b lymphocyte]{"entity": "cell", "value": "naive b cell"}
-    - [naive b-lymphocyte]{"entity": "cell", "value": "naive b cell"}
-    - [naive thymus-derived cd4-positive, alpha-beta t cell](cell)
-    - [naive thymus-derived cd4-positive, alpha-beta t-cell]{"entity": "cell", "value": "naive thymus-derived cd4-positive, alpha-beta t cell"}
-    - [naive thymus-derived cd4-positive, alpha-beta t lymphocyte]{"entity": "cell", "value": "naive thymus-derived cd4-positive, alpha-beta t cell"}
-    - [naive thymus-derived cd4-positive, alpha-beta t-lymphocyte]{"entity": "cell", "value": "naive thymus-derived cd4-positive, alpha-beta t cell"}
-    - [t.4nve.sp]{"entity": "cell", "value": "naive thymus-derived cd4-positive, alpha-beta t cell"}
-    - [th0]{"entity": "cell", "value": "naive thymus-derived cd4-positive, alpha-beta t cell"}
-    - [naive thymus-derived cd8-positive, alpha-beta t cell](cell)
-    - [naive thymus-dervied cd8-positive, alpha-beta t-cell]{"entity": "cell", "value": "naive thymus-derived cd8-positive, alpha-beta t cell"}
-    - [naive thymus-dervied cd8-positive, alpha-beta t lymphocyte]{"entity": "cell", "value": "naive thymus-derived cd8-positive, alpha-beta t cell"}
-    - [naive thymus-dervied cd8-positive, alpha-beta t-lymphocyte]{"entity": "cell", "value": "naive thymus-derived cd8-positive, alpha-beta t cell"}
-    - [primary t cd8+ naive cells from peripheral blood]{"entity": "cell", "value": "naive thymus-derived cd8-positive, alpha-beta t cell"}
-    - [nalm6](cell)
-    - [namalwa](cell)
-    - [nb4](cell)
-    - [ncha2](cell)
-    - [h2009]{"entity": "cell", "value": "nci-h2009"}
-    - [nci-h2009](cell)
-    - [h2171]{"entity": "cell", "value": "nci-h2171"}
-    - [nci-h2171](cell)
-    - [nci-h226](cell)
-    - [h358]{"entity": "cell", "value": "nci-h358"}
-    - [nci-h358](cell)
-    - [nci-h460](cell)
-    - [h69]{"entity": "cell", "value": "nci-h69"}
-    - [h69 cell]{"entity": "cell", "value": "nci-h69"}
-    - [nci-h69](cell)
-    - [nci-h82](cell)
-    - [nci-h929](cell)
-    - [nci-h526]{"entity": "cell", "value": "nci-n87"}
-    - [nci-n87](cell)
-    - [neural cell](cell)
-    - [neuroepithelial stem cell](cell)
-    - [neutrocyte]{"entity": "cell", "value": "neutrophil"}
-    - [neutrophil](cell)
-    - [neutrophilic leucocyte]{"entity": "cell", "value": "neutrophil"}
-    - [neutrophilic leukocyte]{"entity": "cell", "value": "neutrophil"}
-    - [neutrophil leucocyte]{"entity": "cell", "value": "neutrophil"}
-    - [neutrophil leukocyte]{"entity": "cell", "value": "neutrophil"}
-    - [90-8tl]{"entity": "cell", "value": "nf90-8"}
-    - [nf90-8](cell)
-    - [ngp]{"entity": "cell", "value": "ngp cell"}
-    - [ngp cell](cell)
-    - [nh-a astrocytes primary cells](cell)
-    - [nhdf-ad adult dermal fibroblast primary cells](cell)
-    - [nhek](cell)
-    - [nhek-epidermal keratinocyte primary cells](cell)
-    - [nhlf lung fibroblast primary cells](cell)
-    - [nhu](cell)
-    - [non-pigmented ciliary epithelial cell](cell)
-    - [npe]{"entity": "cell", "value": "non-pigmented ciliary epithelial cell"}
-    - [nt2-d1]{"entity": "cell", "value": "nt2/d1"}
-    - [nt2/d1](cell)
-    - [nt2/d1 cell]{"entity": "cell", "value": "nt2/d1"}
-    - [ntera-2 cl.d1 cell]{"entity": "cell", "value": "nt2/d1"}
-    - [ntko](cell)
-    - [oci-ly1](cell)
-    - [oci-ly8]{"entity": "cell", "value": "oci-ly1"}
-    - [oci-ly3](cell)
-    - [oci-ly-3]{"entity": "cell", "value": "oci-ly3"}
-    - [oci-ly-3 cell]{"entity": "cell", "value": "oci-ly3"}
-    - [oci-ly7](cell)
-    - [osteoblast](cell)
-    - [osteoblast primary cells]{"entity": "cell", "value": "osteoblast"}
-    - [panc1](cell)
-    - [panc-1]{"entity": "cell", "value": "panc1"}
-    - [pc3]{"entity": "cell", "value": "pc-3"}
-    - [pc-3](cell)
-    - [pc-3 cell]{"entity": "cell", "value": "pc-3"}
-    - [pc3 cell]{"entity": "cell", "value": "pc-3"}
-    - [pc-7](cell)
-    - [te-7]{"entity": "cell", "value": "pc-7"}
-    - [pc-9](cell)
-    - [pfeiffer](cell)
-    - [pfsk-1](cell)
-    - [pfsk-1 cell]{"entity": "cell", "value": "pfsk-1"}
-    - [pdb2lox-21]{"entity": "cell", "value": "pl-21"}
-    - [pl-21](cell)
-    - [islet precursor cell]{"entity": "cell", "value": "precursor cell"}
-    - [precursor cell](cell)
-    - [primary b cells from cord blood](cell)
-    - [primary b cells from peripheral blood](cell)
-    - [primary hematopoietic stem cells g-csf-mobilized female](cell)
-    - [primary hematopoietic stem cells g-csf-mobilized male](cell)
-    - [primary hematopoietic stem cells short term culture](cell)
-    - [primary mononuclear cells from peripheral blood](cell)
-    - [agnogenic myeloid metaplasia]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [aleukemic myelosis]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [amm]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [bone marrow fibrosis]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [chronic idiopathic myelofibrosis]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [cimf]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [idiopathic bone marrow fibrosis]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [idiopathic myelofibrosis]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [megakaryocytic myelosclerosis]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [myelofibrosis with myeloid metaplasia]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [myelosclerosis]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [myelosclerosis with myeloid metaplasia]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [osteomyelofibrosis]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [primary monocytes from peripheral blood]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [primary myelofibrosis](cell)
-    - [primary neutrophils from peripheral blood]{"entity": "cell", "value": "primary myelofibrosis"}
-    - [primary natural killer cells from peripheral blood](cell)
-    - [primary t cells from cord blood](cell)
-    - [primary t cells from peripheral blood](cell)
-    - [primary t helper 17 cells pma-i stimulated](cell)
-    - [primary t helper cells from peripheral blood](cell)
-    - [primary t helper cells pma-i stimulated](cell)
-    - [primary t helper memory cells from peripheral blood 1](cell)
-    - [primary t helper naive cells from peripheral blood](cell)
-    - [primary t regulatory cells from peripheral blood](cell)
-    - [mr4]{"entity": "cell", "value": "promyelocytic leukemia cell line"}
-    - [promyelocytic leukemia cell line](cell)
-    - [upr9]{"entity": "cell", "value": "promyelocytic leukemia cell line"}
-    - [pulmonary artery endothelial cell](cell)
-    - [r1](cell)
-    - [mid-neurogenesis radial glial cells]{"entity": "cell", "value": "radial glial cell"}
-    - [radial glial cell](cell)
-    - [raji](cell)
-    - [ramos](cell)
-    - [regulatory t cell](cell)
-    - [regulatory t-cell]{"entity": "cell", "value": "regulatory t cell"}
-    - [regulatory t lymphocyte]{"entity": "cell", "value": "regulatory t cell"}
-    - [regulatory t-lymphocyte]{"entity": "cell", "value": "regulatory t cell"}
-    - [adenocarcinoma of kidney]{"entity": "cell", "value": "renal cell adenocarcinoma"}
-    - [adenocarcinoma of the kidney]{"entity": "cell", "value": "renal cell adenocarcinoma"}
-    - [carcinoma, renal cell, malignant]{"entity": "cell", "value": "renal cell adenocarcinoma"}
-    - [kidney adenocarcinoma]{"entity": "cell", "value": "renal cell adenocarcinoma"}
-    - [rcc]{"entity": "cell", "value": "renal cell adenocarcinoma"}
-    - [renal cell adenocarcinoma](cell)
-    - [renal cell cancer]{"entity": "cell", "value": "renal cell adenocarcinoma"}
-    - [renal cell carcinoma]{"entity": "cell", "value": "renal cell adenocarcinoma"}
-    - [renal cell carcinoma, stage unspecified]{"entity": "cell", "value": "renal cell adenocarcinoma"}
-    - [renal cortical epithelial cell](cell)
-    - [retinal pigment epithelial cell](cell)
-    - [rj2.2.5](cell)
-    - [rko](cell)
-    - [rpmi7951]{"entity": "cell", "value": "rpmi-7951"}
-    - [rpmi 7951]{"entity": "cell", "value": "rpmi-7951"}
-    - [rpmi_7951]{"entity": "cell", "value": "rpmi-7951"}
-    - [rpmi-7951](cell)
-    - [rpmi-8402]{"entity": "cell", "value": "rpmi-7951"}
-    - [rpmi8226](cell)
-    - [rptec](cell)
-    - [rs4]{"entity": "cell", "value": "rs4-11 cell"}
-    - [rs4-11 cell](cell)
-    - [rt112](cell)
-    - [crl-11609]{"entity": "cell", "value": "rwpe1"}
-    - [rwpe1](cell)
-    - [rwpe 1]{"entity": "cell", "value": "rwpe1"}
-    - [rwpe_1]{"entity": "cell", "value": "rwpe1"}
-    - [crl-11610]{"entity": "cell", "value": "rwpe2"}
-    - [rwpe2](cell)
-    - [rwpe 2]{"entity": "cell", "value": "rwpe2"}
-    - [rwpe_2]{"entity": "cell", "value": "rwpe2"}
-    - [saec](cell)
-    - [connective and soft tissue neoplasm]{"entity": "cell", "value": "sarcoma"}
-    - [connective and soft tissue neoplasms]{"entity": "cell", "value": "sarcoma"}
-    - [connective soft tissue neopl]{"entity": "cell", "value": "sarcoma"}
-    - [connective tissue sarcoma]{"entity": "cell", "value": "sarcoma"}
-    - [malignant mesenchymal tumor]{"entity": "cell", "value": "sarcoma"}
-    - [malignant mesenchymal tumour]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue (disorder)]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue of abdomen]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue of head, face, and neck]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue of lower limb, including hip]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue of pelvis]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue of thorax]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue of trunk, unspecified]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue of upper limb, including shoulder]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of connective and other soft tissue, site unspecified]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of other specified sites of connective and other soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of soft tissue (disorder)]{"entity": "cell", "value": "sarcoma"}
-    - [malignant neoplasm of the soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [malignant soft tissue neoplasm]{"entity": "cell", "value": "sarcoma"}
-    - [malignant soft tissue tumor]{"entity": "cell", "value": "sarcoma"}
-    - [malignant tumor of soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [malignant tumor of the soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [malignant tumour of soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [mal neopl trunk nos]{"entity": "cell", "value": "sarcoma"}
-    - [mal neo soft tis abdomen]{"entity": "cell", "value": "sarcoma"}
-    - [mal neo soft tis pelvis]{"entity": "cell", "value": "sarcoma"}
-    - [mal neo soft tissue arm]{"entity": "cell", "value": "sarcoma"}
-    - [mal neo soft tissue head]{"entity": "cell", "value": "sarcoma"}
-    - [mal neo soft tissue leg]{"entity": "cell", "value": "sarcoma"}
-    - [mal neo soft tissue nec]{"entity": "cell", "value": "sarcoma"}
-    - [mal neo soft tissue nos]{"entity": "cell", "value": "sarcoma"}
-    - [mal neo soft tis thorax]{"entity": "cell", "value": "sarcoma"}
-    - [mesenchymal tumor, malignant]{"entity": "cell", "value": "sarcoma"}
-    - [mesenchymal tumour, malignant]{"entity": "cell", "value": "sarcoma"}
-    - [[m]sarcoma nos]{"entity":"cell","value":"sarcoma"}
-    - [[m]sarcoma nos (morphologic abnormality)]{"entity":"cell","value":"sarcoma"}
-    - [neoplasms, connective and soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [neopl connective soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [nhdf-neo]{"entity": "cell", "value": "sarcoma"}
-    - [sarcoma](cell)
-    - [sarcoma, malignant]{"entity": "cell", "value": "sarcoma"}
-    - [sarcoma, no icd-o subtype]{"entity": "cell", "value": "sarcoma"}
-    - [sarcoma, no icd-o subtype (morphologic abnormality)]{"entity": "cell", "value": "sarcoma"}
-    - [sarcoma, nos]{"entity": "cell", "value": "sarcoma"}
-    - [sarcoma of soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [sarcoma of soft tissue and bone]{"entity": "cell", "value": "sarcoma"}
-    - [sarcoma of the soft tissue]{"entity": "cell", "value": "sarcoma"}
-    - [sarcoma of the soft tissue and bone]{"entity": "cell", "value": "sarcoma"}
-    - [soft tissue sarcoma]{"entity": "cell", "value": "sarcoma"}
-    - [soft tissue tumor, malignant]{"entity": "cell", "value": "sarcoma"}
-    - [soft tissue tumour, malignant]{"entity": "cell", "value": "sarcoma"}
-    - [tumor of soft tissue and skeleton]{"entity": "cell", "value": "sarcoma"}
-    - [calu-3]{"entity": "cell", "value": "sbc-3"}
-    - [hmads-3]{"entity": "cell", "value": "sbc-3"}
-    - [sbc-3](cell)
-    - [scc-9](cell)
-    - [um-scc-4]{"entity": "cell", "value": "scc-9"}
-    - [um-scc-47]{"entity": "cell", "value": "scc-9"}
-    - [sem](cell)
-    - [set2](cell)
-    - [sf268](cell)
-    - [sf-268]{"entity": "cell", "value": "sf268"}
-    - [sf7761](cell)
-    - [sf8628](cell)
-    - [shef1]{"entity": "cell", "value": "shef-1"}
-    - [shef-1](cell)
-    - [shef 4]{"entity": "cell", "value": "shef-1"}
-    - [sh-sy5y](cell)
-    - [dgsx]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [golabi-rosen syndrome]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [sara angers syndrome]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [sdys]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [sgbs]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [sgbs1]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [sgb syndrome]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [simpson dysmorphia syndrome]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [simpson-golabi-behmel syndrome](cell)
-    - [simpson-golabi-behmel syndrome type 1]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [x-linked dysplasia gigantism syndrome]{"entity": "cell", "value": "simpson-golabi-behmel syndrome"}
-    - [crl-2061]{"entity": "cell", "value": "sjcrh30"}
-    - [rms 13]{"entity": "cell", "value": "sjcrh30"}
-    - [sjcrh30](cell)
-    - [sjsa1](cell)
-    - [skbr3](cell)
-    - [hsmm skeletal muscle myoblasts cells]{"entity": "cell", "value": "skeletal muscle myoblast"}
-    - [skeletal muscle myoblast](cell)
-    - [skeletal myoblast]{"entity": "cell", "value": "skeletal muscle myoblast"}
-    - [human skeletal muscle cells]{"entity": "cell", "value": "skmc"}
-    - [skmc](cell)
-    - [mel-5]{"entity": "cell", "value": "sk-mel-5"}
-    - [skmel5]{"entity": "cell", "value": "sk-mel-5"}
-    - [sk mel 5]{"entity": "cell", "value": "sk-mel-5"}
-    - [sk_mel_5]{"entity": "cell", "value": "sk-mel-5"}
-    - [sk-mel-5](cell)
-    - [sk-mel-5 cell]{"entity": "cell", "value": "sk-mel-5"}
-    - [skndz]{"entity": "cell", "value": "sk-n-dz"}
-    - [sk n dz]{"entity": "cell", "value": "sk-n-dz"}
-    - [sk_n_dz]{"entity": "cell", "value": "sk-n-dz"}
-    - [sk-n-dz](cell)
-    - [sk-n-dz cell]{"entity": "cell", "value": "sk-n-dz"}
-    - [sknmc]{"entity": "cell", "value": "sk-n-mc"}
-    - [sk-n-mc](cell)
-    - [sknsh]{"entity": "cell", "value": "sk-n-sh"}
-    - [sk-n-sh](cell)
-    - [sk-n-sh_ra](cell)
-    - [myocytes, smooth muscle]{"entity": "cell", "value": "smooth muscle cell"}
-    - [smcs]{"entity": "cell", "value": "smooth muscle cell"}
-    - [smooth muscle cell](cell)
-    - [smooth muscle fiber]{"entity": "cell", "value": "smooth muscle cell"}
-    - [smooth muscle cell of the brain vasculature](cell)
-    - [pdb2lox-17]{"entity": "cell", "value": "somite 17"}
-    - [somite 17](cell)
-    - [bone marrow stromal cell]{"entity": "cell", "value": "stromal cell of bone marrow"}
-    - [stromal cell of bone marrow](cell)
-    - [su.86.86](cell)
-    - [su-dhl6]{"entity": "cell", "value": "su.86.86"}
-    - [sudhl6](cell)
-    - [su-dhl-6]{"entity": "cell", "value": "sudhl6"}
-    - [sum159]{"entity": "cell", "value": "sum159pt"}
-    - [sum 159]{"entity": "cell", "value": "sum159pt"}
-    - [sum-159]{"entity": "cell", "value": "sum159pt"}
-    - [sum159-mda453]{"entity": "cell", "value": "sum159pt"}
-    - [sum159pt](cell)
-    - [sum 159pt]{"entity": "cell", "value": "sum159pt"}
-    - [sum-159pt]{"entity": "cell", "value": "sum159pt"}
-    - [sw480](cell)
-    - [t47d](cell)
-    - [t47d-mtvl]{"entity": "cell", "value": "t47d"}
-    - [ncha1]{"entity": "cell", "value": "t cell"}
-    - [t cell](cell)
-    - [t-cell]{"entity": "cell", "value": "t cell"}
-    - [t lymphocyte]{"entity": "cell", "value": "t cell"}
-    - [t-lymphocyte]{"entity": "cell", "value": "t cell"}
-    - [tc-797]{"entity": "cell", "value": "tc-seq"}
-    - [tc-seq](cell)
-    - [skno-1]{"entity": "cell", "value": "th-1"}
-    - [th-1](cell)
-    - [zr-75-1]{"entity": "cell", "value": "th-1"}
-    - [hk-2]{"entity": "cell", "value": "th-2"}
-    - [tcam-2]{"entity": "cell", "value": "th-2"}
-    - [th-2](cell)
-    - [helper t cell type 17]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [il-17-producing cd4+ t helper]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [th17 cd4+ t cell]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [t(h)-17 cell]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [th17 cell]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [th17 t cell]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [th17 t-cell]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [th17 t lymphocyte]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [th17 t-lymphocyte]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [t-helper 17 cell](cell)
-    - [t helper cells type 17]{"entity": "cell", "value": "t-helper 17 cell"}
-    - [helper t cell type 1]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [th1 cd4+ t cell]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [t(h)-1 cell]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [th1 cell]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [th1 t cell]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [th1 t-cell]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [th1 t lymphocyte]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [th1 t-lymphocyte]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [t-helper 1 cell](cell)
-    - [t helper cells type 1]{"entity": "cell", "value": "t-helper 1 cell"}
-    - [helper t cell type 2]{"entity": "cell", "value": "t-helper 2 cell"}
-    - [t(h)-2 cell]{"entity": "cell", "value": "t-helper 2 cell"}
-    - [th2 cell]{"entity": "cell", "value": "t-helper 2 cell"}
-    - [th2 t cell]{"entity": "cell", "value": "t-helper 2 cell"}
-    - [th2 t-cell]{"entity": "cell", "value": "t-helper 2 cell"}
-    - [th2 t lymphocyte]{"entity": "cell", "value": "t-helper 2 cell"}
-    - [th2 t-lymphocyte]{"entity": "cell", "value": "t-helper 2 cell"}
-    - [t-helper 2 cell](cell)
-    - [t helper cells type 2]{"entity": "cell", "value": "t-helper 2 cell"}
-    - [tive](cell)
-    - [tive-ltc]{"entity": "cell", "value": "tive"}
-    - [tko2](cell)
-    - [atconv]{"entity": "cell", "value": "t-lymphocyte cell line"}
-    - [t-lymphocyte cell line](cell)
-    - [toledo](cell)
-    - [trophoblast cell](cell)
-    - [mrtttc549]{"entity": "cell", "value": "ttc549"}
-    - [ttc549](cell)
-    - [u2os](cell)
-    - [u2-os]{"entity": "cell", "value": "u2os"}
-    - [u87]{"entity": "cell", "value": "u-87 mg"}
-    - [u-87 cell]{"entity": "cell", "value": "u-87 mg"}
-    - [u87 cell]{"entity": "cell", "value": "u-87 mg"}
-    - [u-87 mg](cell)
-    - [u-87 mg cell]{"entity": "cell", "value": "u-87 mg"}
-    - [u-87-mg cell]{"entity": "cell", "value": "u-87 mg"}
-    - [u-87mg cell]{"entity": "cell", "value": "u-87 mg"}
-    - [u87-mg cell]{"entity": "cell", "value": "u-87 mg"}
-    - [u87mg cell]{"entity": "cell", "value": "u-87 mg"}
-    - [u937](cell)
-    - [es-ucsf4  cells]{"entity": "cell", "value": "ucsf4"}
-    - [ucsf4](cell)
-    - [ucsf-4]{"entity": "cell", "value": "ucsf4"}
-    - [ucsf-4* ]{"entity": "cell", "value": "ucsf4"}
-    - [uke1](cell)
-    - [uke-1]{"entity": "cell", "value": "uke1"}
-    - [um-scc-17a cell](cell)
-    - [um-scc-74a]{"entity": "cell", "value": "um-scc-17a cell"}
-    - [human ureter cell]{"entity": "cell", "value": "urothelium cell line"}
-    - [urothelial cell]{"entity": "cell", "value": "urothelium cell line"}
-    - [urothelium cell line](cell)
-    - [urotsa cell]{"entity": "cell", "value": "urothelium cell line"}
-    - [vcap](cell)
-    - [weri rb 1]{"entity": "cell", "value": "weri-rb-1"}
-    - [weri_rb_1]{"entity": "cell", "value": "weri-rb-1"}
-    - [weri-rb-1](cell)
-    - [wi38](cell)
-    - [wibr1](cell)
-    - [wibr3](cell)
-    - [wibr7](cell)
-    - [wis2](cell)
-    - [wm115](cell)
-    - [wm266-4]{"entity": "cell", "value": "wm 266-4 cell"}
-    - [wm 266-4 cell](cell)
-    - [wsu-dlcl2](cell)
 - intent: choice_value_content_type
   examples: |
     - [clonal rearrangement, multiple peaks](content_type)
@@ -3621,7 +2471,6 @@ nlu:
     - [variants]{"entity": "data_type", "value": "variant calling"}
     - [germline substitutions]{"entity": "data_type", "value": "variant calling"}
     - [germline variants]{"entity": "data_type", "value": "variant calling"}
-    - [gene expression](data_type)
     - [gene expression](data_type)
 - intent: choice_value_disease
   examples: |
@@ -4320,7 +3169,6 @@ nlu:
     - [melanoma, uveal, malignant]{"entity": "disease", "value": "uveal melanoma"}
     - [uveal melanoma](disease)
     - [uvm]{"entity": "disease", "value": "uveal melanoma"}
-    - [uveal melanoma](disease)
 - intent: choice_value_target
   examples: |
     - [ahr](target)
@@ -5232,7 +4080,6 @@ nlu:
   examples: |
     - [adipose]{"entity": "tissue", "value": "adipose tissue"}
     - [fat]{"entity": "tissue", "value": "adipose tissue"}
-    - [fat tissue]{"entity": "tissue", "value": "adipose tissue"}
     - [fatty tissue]{"entity": "tissue", "value": "adipose tissue"}
     - [adrenal]{"entity": "tissue", "value": "adrenal gland"}
     - [fetal adrenal gland]{"entity": "tissue", "value": "adrenal gland"}
@@ -5738,6 +4585,8 @@ nlu:
     - [control sample]{"entity": "is_healthy", "value": "true"}
     - [healthy tissue]{"entity": "is_healthy", "value": "true"}
     - [healthy sample]{"entity": "is_healthy", "value": "true"}
+    - i want [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - now give me [healthy]{"entity": "is_healthy", "value": "true"} people
 - intent: greet
   examples: |
     - hey
@@ -7264,12 +6113,12 @@ nlu:
     - gdc__analysis__workflow_link
     - age
     - req_field gdc__data_type
+    - clinical__clin_shared__residual_tumor
 - intent: choice_value_assembly
   examples: |
     - [hg19](assembly)
     - [grch38](assembly)
     - i prefer [hg19](assembly)
-
 - intent: review
   examples: |
     - i want to review my choiches
@@ -7279,6 +6128,7 @@ nlu:
     - recap
     - i want an easy recap
     - recap my choiches
+    - recap my choices
 - intent: back
   examples: |
     - back
@@ -7296,6 +6146,7 @@ nlu:
     - i keep
     - keep my selection
     - i want keep my selection
+    - i wannna keep it
 - intent: modify_extracted
   examples: |
     - i want to modify the extracted data
@@ -7468,1206 +6319,7 @@ nlu:
 - synonym: dataset_name
   examples: |
     - dataset
-- synonym: 1205-lu
-  examples: |
-    - wm451-lu
-- synonym: 293t
-  examples: |
-    - 293t-rex
-- synonym: 537 mel
-  examples: |
-    - 501-mel
-    - 537-mel
-- synonym: 786-0
-  examples: |
-    - 786_0
-    - 786-o
-    - crl-1932
-    - rcc7860
-    - rcc 7860
-    - rcc_7860
-- synonym: 8988t
-  examples: |
-    - 8988 t
-    - 8988-t
-    - acc 162
-    - pa-tu-8988t
-- synonym: a549
-  examples: |
-    - a-549
-    - a549 cell
-    - a549 etoh 0.02pct lung carcinoma cell line
-    - bt-549
-- synonym: acc112
-  examples: |
-    - utsw-acc112
-- synonym: ag04450
-  examples: |
-    - ag04449
-- synonym: ag08470 cell
-  examples: |
-    - ag08470
-- synonym: ag09319 cell
-  examples: |
-    - ag09319
-- synonym: all pairs
-  examples: |
-    - all_pairs
-    - all-sil
-- synonym: astrocyte
-  examples: |
-    - astrocytic glia
-- synonym: b cell
-  examples: |
-    - b-cell
-    - b lymphocyte
-    - b-lymphocyte
-- synonym: b-cell non-hodgkin lymphoma cell line
-  examples: |
-    - oci-ly4
-- synonym: be(2)-c
-  examples: |
-    - be2c
-    - be(2) c
-    - be(2)_c
-    - be2_c
-    - be2-c
-    - be(2)-c cell
-- synonym: beas-2b
-  examples: |
-    - beas2b
-- synonym: beige adipocyte
-  examples: |
-    - adipocyte
-    - beige/brite adipocyte
-    - beige brown adipocyte
-    - beige fat cell
-    - brite adipocyte
-    - brite cell
-    - brite fat cell
-- synonym: benzene
-  examples: |
-    - benzen
-    - benzine
-    - benzol
-    - benzole
-    - bicarburet of hydrogen
-    - c1ccccc1
-    - c6
-    - c6h6
-    - c6 vertebra
-    - coal naphtha
-    - cyclohexatriene
-    - inchi=1/c6h6/c1-2-4-6-5-3-1/h1-6h
-    - inchikey=uhovqnzjysornb-uhfffaoyah
-    - mineral naphtha
-    - phene
-    - phenyl hydride
-    - pyrobenzol
-    - pyrobenzole
-    - [6]annulene
-- synonym: c1 100080003
-  examples: |
-    - c1 100 08 0003
-    - c803
-- synonym: c4-2b
-  examples: |
-    - c4-2
-- synonym: c57bl/6
-  examples: |
-    - b6
-    - c57
-    - c57/b6
-    - c57b/6
-    - c57bl,
-    - c57bl6
-    - c57/bl6
-    - c57bl\6
-    - c57black
-    - c57black6
-    - c57 black/6
-    - c57black/6
-    - cb57
-    - p493-6
-- synonym: caco-2
-  examples: |
-    - caco2
-- synonym: caki1
-  examples: |
-    - caki-1
-- synonym: caki2
-  examples: |
-    - caki-2
-- synonym: cal51
-  examples: |
-    - cal-51
-    - cal51-mcf7
-- synonym: cardiac muscle cell
-  examples: |
-    - cardiac muscle fiber
-    - cardiac myocyte
-    - cardiomyocyte
-    - heart muscle cell
-- synonym: cardioblast
-  examples: |
-    - cardiovascular progenitor cell
-- synonym: cd8-positive, alpha-beta memory t cell
-  examples: |
-    - cd8-positive, alpha-beta memory t-cell
-    - cd8-positive, alpha-beta memory t lymphocyte
-    - cd8-positive, alpha-beta memory t-lymphocyte
-    - primary t cd8+ memory cells from peripheral blood
-    - t.8mem.sp
-- synonym: cell of skeletal muscle
-  examples: |
-    - skeletal muscle cell
-- synonym: cervical carcinoma cell line
-  examples: |
-    - hela-s3 cervical carcinoma cell line
-    - hepg2 hepatocellular carcinoma cell line
-- synonym: choroid plexus epithelial cell
-  examples: |
-    - epithelial cell of choroid plexus
-- synonym: colo 741
-  examples: |
-    - colo-741
-    - colo-783
-- synonym: colo829
-  examples: |
-    - colo-829
-- synonym: cwru1
-  examples: |
-    - ips_cwru1
-- synonym: d721med
-  examples: |
-    - d721
-    - d-721
-    - d-721med
-    - d-721 med
-- synonym: daoy
-  examples: |
-    - htb186
-- synonym: dld1
-  examples: |
-    - dld-1
-- synonym: dnd-41
-  examples: |
-    - acc525
-- synonym: du 145
-  examples: |
-    - du145
-    - du-145
-- synonym: eh
-  examples: |
-    - bj-eh, bj eh
-- synonym: ej cell
-  examples: |
-    - ej
-- synonym: el
-  examples: |
-    - bj-el, bj el
-- synonym: elf-1
-  examples: |
-    - elf1
-    - elf-1 cell
-- synonym: elr
-  examples: |
-    - bj-elr, bj elr
-- synonym: embryonic stem cell
-  examples: |
-    - embryonic stem cells
-    - esc
-    - lis2
-    - wa-7
-    - wibr2
-- synonym: endodermal cell
-  examples: |
-    - endoderm cell
-- synonym: endothelial cell derived cell line
-  examples: |
-    - hesc derived cd184+ endoderm cultured cells
-- synonym: epithelial cell derived cell line
-  examples: |
-    - bicr
-- synonym: epithelial cell line
-  examples: |
-    - 21nt
-    - ft246
-    - h3396
-    - islk-219
-- synonym: epithelial cell of amnion
-  examples: |
-    - amniotic epithelial cell
-- synonym: epithelial cell of prostate
-  examples: |
-    - prostate epithelial cell
-- synonym: epithelial cell of proximal tubule
-  examples: |
-    - kidney proximal tubule epithelial cell
-- synonym: erythroblast
-  examples: |
-    - normoblast
-- synonym: es-cj7
-  examples: |
-    - cj7 cell
-    - es-cj7 cell
-    - es-wa7 cells
-- synonym: es-i3
-  examples: |
-    - es-i3 cells
-    - hes i3
-- synonym: fibroblast of cardiac tissue
-  examples: |
-    - cardiac fibroblast
-- synonym: foreskin fibroblast
-  examples: |
-    - bj fibroblast
-- synonym: g401
-  examples: |
-    - g-401
-- synonym: g401.6
-  examples: |
-    - mrt_g401.6
-- synonym: glioblastoma h54
-  examples: |
-    - h54
-- synonym: glomerular visceral epithelial cell
-  examples: |
-    - glomerular podocyte
-    - podocyte
-- synonym: gm01660 cell
-  examples: |
-    - gm01660
-- synonym: gm03348 cell
-  examples: |
-    - gm03348
-- synonym: gm04503 cell
-  examples: |
-    - gm04503
-- synonym: gm04504 cell
-  examples: |
-    - gm04504
-- synonym: gm12878
-  examples: |
-    - gm12878 lymphoblastoid cells
-- synonym: gm12890 cell
-  examples: |
-    - gm12890
-- synonym: gm18486 cell
-  examples: |
-    - gm18486
-- synonym: gm18498 cell
-  examples: |
-    - gm18498
-- synonym: gm18499 cell
-  examples: |
-    - gm18499
-- synonym: gm18501 cell
-  examples: |
-    - gm18501
-- synonym: gm18502 cell
-  examples: |
-    - gm18502
-- synonym: gm18504 cell
-  examples: |
-    - gm18504
-- synonym: gm18508 cell
-  examples: |
-    - gm18508
-- synonym: gm18510 cell
-  examples: |
-    - gm18510
-- synonym: gm18511 cell
-  examples: |
-    - gm18511
-- synonym: gm18516 cell
-  examples: |
-    - gm18516
-- synonym: gm18517 cell
-  examples: |
-    - gm18517
-- synonym: gm18519 cell
-  examples: |
-    - gm18519
-- synonym: gm18520 cell
-  examples: |
-    - gm18520
-- synonym: gm18522 cell
-  examples: |
-    - gm18522
-- synonym: gm18852 cell
-  examples: |
-    - gm18852
-- synonym: gm18853 cell
-  examples: |
-    - gm18853
-- synonym: gm18855 cell
-  examples: |
-    - gm18855
-- synonym: gm18856 cell
-  examples: |
-    - gm18856
-- synonym: gm18858 cell
-  examples: |
-    - gm18858
-- synonym: gm18859 cell
-  examples: |
-    - gm18859
-- synonym: gm18861 cell
-  examples: |
-    - gm18861
-- synonym: gm18862 cell
-  examples: |
-    - gm18862
-- synonym: gm18870 cell
-  examples: |
-    - gm18870
-- synonym: gm18907 cell
-  examples: |
-    - gm18907
-- synonym: gm18909 cell
-  examples: |
-    - gm18909
-- synonym: gm18912 cell
-  examples: |
-    - gm18912
-- synonym: gm18913 cell
-  examples: |
-    - gm18913
-- synonym: gm18916 cell
-  examples: |
-    - gm18916
-- synonym: gm19092 cell
-  examples: |
-    - gm19092
-- synonym: gm19093 cell
-  examples: |
-    - gm19093
-- synonym: gm19098 cell
-  examples: |
-    - gm19098
-- synonym: gm19101 cell
-  examples: |
-    - gm19101
-- synonym: gm19114 cell
-  examples: |
-    - gm19114
-- synonym: gm19116 cell
-  examples: |
-    - gm19116
-- synonym: gm19119 cell
-  examples: |
-    - gm19119
-- synonym: gm19127 cell
-  examples: |
-    - gm19127
-- synonym: gm19130 cell
-  examples: |
-    - gm19130
-- synonym: gm19131 cell
-  examples: |
-    - gm19131
-- synonym: gm19137 cell
-  examples: |
-    - gm19137
-- synonym: gm19138 cell
-  examples: |
-    - gm19138
-- synonym: gm19140 cell
-  examples: |
-    - gm19140
-- synonym: gm19141 cell
-  examples: |
-    - gm19141
-- synonym: gm19143 cell
-  examples: |
-    - gm19143
-- synonym: gm19144 cell
-  examples: |
-    - gm19144
-- synonym: gm19147 cell
-  examples: |
-    - gm19147
-- synonym: gm19152 cell
-  examples: |
-    - gm19152
-- synonym: gm19153 cell
-  examples: |
-    - gm19153
-- synonym: gm19159 cell
-  examples: |
-    - gm19159
-- synonym: gm19160 cell
-  examples: |
-    - gm19160
-- synonym: gm19171 cell
-  examples: |
-    - gm19171
-- synonym: gm19190 cell
-  examples: |
-    - gm19190
-- synonym: gm19200 cell
-  examples: |
-    - gm19200
-- synonym: gm19201 cell
-  examples: |
-    - gm19201
-- synonym: gm19203 cell
-  examples: |
-    - gm19203
-- synonym: gm19204 cell
-  examples: |
-    - gm19204
-- synonym: gm19206 cell
-  examples: |
-    - gm19206
-- synonym: gm19207 cell
-  examples: |
-    - gm19207
-- synonym: gm19209 cell
-  examples: |
-    - gm19209
-- synonym: gm19210 cell
-  examples: |
-    - gm19210
-- synonym: gm19222 cell
-  examples: |
-    - gm19222
-- synonym: gm19223 cell
-  examples: |
-    - gm19223
-- synonym: gm19225 cell
-  examples: |
-    - gm19225
-- synonym: gm19257 cell
-  examples: |
-    - gm19257
-- synonym: gm23248
-  examples: |
-    - gm23248 cell
-- synonym: gtl-16
-  examples: |
-    - glc-16
-- synonym: h1-hesc
-  examples: |
-    - h1
-    - h1 cells
-- synonym: h7-hesc
-  examples: |
-    - h7
-    - h7 cell
-    - h7-es
-    - wa07
-- synonym: h9
-  examples: |
-    - h9 cells
-- synonym: hap-1
-  examples: |
-    - hap1
-- synonym: hbl-1 cell
-  examples: |
-    - hbl1
-- synonym: hcc1954
-  examples: |
-    - hcc-1954
-- synonym: hcc2157
-  examples: |
-    - hcc-2157
-- synonym: hcc95
-  examples: |
-    - hcc-95
-- synonym: hct116
-  examples: |
-    - hct-116 cell
-    - hct116 cell
-- synonym: hct15
-  examples: |
-    - hct-116
-    - hct-15
-- synonym: hek293
-  examples: |
-    - human embryonic kidney cell
-- synonym: helper t cell
-  examples: |
-    - helper t-cell
-    - helper t lymphocyte
-    - helper t-lymphocyte
-    - primary t helper memory cells from peripheral blood 2
-    - primary t helper naive cells from peripheral blood
-    - t-helper cell
-- synonym: hematopoietic multipotent progenitor cell
-  examples: |
-    - hemopoietic progenitor cell
-    - mpp
-- synonym: hematopoietic stem cell
-  examples: |
-    - blood forming stem cell
-    - hemopoietic stem cell
-    - hsc
-    - primary hematopoietic stem cells
-- synonym: hepatic stellate cell
-  examples: |
-    - hepatic perisinusoidal cell
-    - ito cell
-    - lx2
-    - perisinusoidal cell
-- synonym: hepg2
-  examples: |
-    - hep-g2
-    - hepg2 cell
-- synonym: hffc6
-  examples: |
-    - hff-htert clone 6
-- synonym: hff-myc
-  examples: |
-    - hff cmyc
-    - hff_cmyc
-    - hff-cmyc
-    - hff myc
-    - hff_myc
-- synonym: hgadfn167
-  examples: |
-    - hgadfn167 cell
-    - hgps
-    - hgps cell
-- synonym: hl-60
-  examples: |
-    - hl60
-    - hl-60 cell
-    - hl60 cell
-- synonym: hpde6-e6e7
-  examples: |
-    - hpde-6e6e7
-    - hpde-6_e6e7
-    - hpde-6/e6e7
-    - hpde6-e6e7-hpv
-    - pancreatic duct cells e6e7
-- synonym: hre
-  examples: |
-    - human renal epithelial cell line
-- synonym: hs-27a
-  examples: |
-    - hs-27a cell
-- synonym: hs 38.t
-  examples: |
-    - wi-38
-- synonym: hs-5
-  examples: |
-    - hs-5 cell
-- synonym: htr8/svneo
-  examples: |
-    - htr_8_svneo
-    - htr-8-svneo
-    - htr-8/svneo
-    - htr8-svneo
-- synonym: hues48
-  examples: |
-    - hues48 cells
-- synonym: hues6
-  examples: |
-    - hues6 cells
-- synonym: hues64
-  examples: |
-    - hues64 cells
-- synonym: huh-7
-  examples: |
-    - huh7
-- synonym: huvec cell
-  examples: |
-    - human umbilical vein endothelial cell
-    - huvec
-    - huvec umbilical vein endothelial primary cells
-- synonym: hypobranchial artery
-  examples: |
-    - ha
-    - ha-sp
-- synonym: immortal human testis-derived cell line cell
-  examples: |
-    - nccit
-- synonym: imr-90
-  examples: |
-    - imr90
-    - imr90 fetal lung fibroblast cell line
-    - imr90 fetal lung fibroblasts cell line
-- synonym: ips-15b
-  examples: |
-    - ips-15b cells
-- synonym: ips-20b
-  examples: |
-    - ips-20b cells
-- synonym: ips-5
-  examples: |
-    - ips-18 cells
-- synonym: ipsc derived cell line
-  examples: |
-    - induced pluripotent stem cell derived cell line
-    - ipsc derived
-    - m23f
-    - pdb1lox-17/puro-5
-    - pdb1lox-21/puro-26
-- synonym: ips df 19.11
-  examples: |
-    - ips df 19.11 cells
-- synonym: ips df 6.9
-  examples: |
-    - ips df 6.9 cells
-- synonym: ips-nihi11
-  examples: |
-    - ag20443
-    - ips 4
-    - ips a1
-    - ips a6
-    - ips c1
-    - ips nihi11
-- synonym: ips-nihi7
-  examples: |
-    - ag08395
-    - ips nihi7
-- synonym: ishikawa
-  examples: |
-    - ishikawa cell
-- synonym: jurkat
-  examples: |
-    - jm
-    - jm cell
-    - jurkat cell
-    - jurkat clone e61
-- synonym: jurkat e-6.1 cell
-  examples: |
-    - jurkat cell e-6.1
-    - jurkat cell e6.1
-    - jurkat e6-1
-    - jurkat e6.1
-    - tib-152
-- synonym: k562
-  examples: |
-    - k-562
-    - k562 cell
-    - k-562 cell
-    - k562 leukemia cells
-    - k562 cell
-- synonym: karpas 422
-  examples: |
-    - karpas-422
-    - karpas 422 cell
-- synonym: keratinocyte
-  examples: |
-    - keratinized cell of epidermis
-    - malpighian cell
-- synonym: kms-11
-  examples: |
-    - kms11
-    - kms_11
-    - mv4-11
-    - tko
-- synonym: kopt-k1
-  examples: |
-    - koptk1
-- synonym: lc2/ad
-  examples: |
-    - nhdf-ad
-- synonym: lhcn-m2
-  examples: |
-    - lhcnm2
-    - lhcn m2
-- synonym: lhsr
-  examples: |
-    - prec
-- synonym: lncap
-  examples: |
-    - lncap-abl
-    - lncap cell
-    - lncap-abl
-- synonym: lncap clone fgc
-  examples: |
-    - crl-1740
-    - lncap clone fgc cell
-    - lncap_fgc
-    - lncap-fgc
-- synonym: loximvi
-  examples: |
-    - lox imvi
-    - lox-imvi
-- synonym: lymphoblastoid cell line
-  examples: |
-    - gm2610
-    - gm2630
-    - ms1
-    - ms4221
-- synonym: m059j
-  examples: |
-    - crl_2366
-- synonym: mammary epithelial cell
-  examples: |
-    - breast epithelial cell
-- synonym: mature t cell
-  examples: |
-    - cd3e-positive t cell
-    - mature t-cell
-    - primary t cells effector/memory enriched from peripheral blood
-- synonym: mcf 10a
-  examples: |
-    - mcf-10a
-- synonym: mcf-7
-  examples: |
-    - mcf7
-    - mcf-7 cell
-    - mcf7 cell
-    - mcf7-lted
-- synonym: mdamb231
-  examples: |
-    - mda-231
-    - mda-mb-231
-- synonym: mdamb436
-  examples: |
-    - mda-mb-436
-- synonym: mdamb453
-  examples: |
-    - mda-mb-453
-- synonym: mdamb468
-  examples: |
-    - mda-mb-468
-- synonym: melanocyte of skin
-  examples: |
-    - skin melanocyte
-    - wm262
-- synonym: mel cell
-  examples: |
-    - mel
-- synonym: mesodermal cell
-  examples: |
-    - mesoblast
-    - mesoderm cell
-- synonym: mm1
-  examples: |
-    - mm1.s
-- synonym: mm.1s
-  examples: |
-    - mm.1 s
-    - mm.1-s
-    - mm.1s cell
-- synonym: molm-16
-  examples: |
-    - molm-13
-    - molm-14
-- synonym: mononuclear cell
-  examples: |
-    - mononuclear leukocyte
-- synonym: motexafin gadolinium
-  examples: |
-    - c52h72gdn5o14
-    - gadolinium texaphyrin
-    - gd-tex
-    - gd texaphyrin
-    - inchi=1/c48h66n5o10.2c2h4o2.gd/c1-7-35-36(8-2)40-28-42-38(12-10-14-55)34(4)46(53-42)32-50-44-30-48(63-26-24-61-22-20-59-18-16-57-6)47(62-25-23-60-21-19-58-17-15-56-5)29-43(44)49-31-45-33(3)37(11-9-13-54)41(52-45)27-39(35)51-40;2*1-2(3)4;/h27-32,54-55h,7-26h2,1-6h3;2*1h3,(h,3,4);/q-1;;;+3/p-2/b39-27-,40-28-,41-27-,42-28-,45-31-,46-32-,49-31+,49-43+,50-32+,50-44+;;;/fc48h66n5o10.2c2h3o2.gd/qm;2*-1;m
-    - inchikey=vazlwpahmordgr-mpnkmpctdc
-    - mgd
-    - (pb-7-11-233'2'4)-bis(acetato-kappao)(9,10-diethyl-20,21-bis(2-(2-(2-methoxyethoxy)ethoxy)ethoxy)-4,15-dimethyl-8,11-imino-3,6:16,13-dinitrilo-1,18-benzodiazacycloeicosine-5,14-dipropanolato-kappan(1),kappan(18),kappan(23),kappan(24),kappan(25))gadolinium
-    - tex
-    - xcytrin
-    - bis(acetato-kappao){3,3'-[4,5-diethyl-16,17-bis{2-[2-(2-methoxyethoxy)ethoxy]ethoxy}-10,23-dimethyl-13,20,25,26,27-pentaazapentacyclo[20.2.1.1(3,6).1(8,11).0(14,19)]heptacosa-1,3,5,7,9,11(26),12,14,16,18,20,22(25),23-tridecaene-9,24-diyl-kappa(5)n(13),n(20),n(25),n(26),n(27)]dipropan-1-olato}gadolinium
-    - ccc1c(cc)c2c=c3c(ccco)=c(c)c4=[n]3[gd]356(oc(c)=o)(oc(c)=o)[n](=cc7=[n]3c(=cc1n25)c(ccco)=c7c)c1cc(occoccoccoc)c(occoccoccoc)cc1[n]6=c4
-- synonym: mouse neural progenitor cell
-  examples: |
-    - ecto neural progenitor cell
-    - mouse npc
-    - neural progenitor cell
-- synonym: muscle cell
-  examples: |
-    - myocyte
-- synonym: myeloid leukemia cell line
-  examples: |
-    - dnd41 tcell leukemia cell line
-- synonym: myotube
-  examples: |
-    - myotubule
-    - single cell sarcomere
-- synonym: naive b cell
-  examples: |
-    - naive b-cell
-    - naive b lymphocyte
-    - naive b-lymphocyte
-- synonym: naive thymus-derived cd4-positive, alpha-beta t cell
-  examples: |
-    - naive thymus-derived cd4-positive, alpha-beta t-cell
-    - naive thymus-derived cd4-positive, alpha-beta t lymphocyte
-    - naive thymus-derived cd4-positive, alpha-beta t-lymphocyte
-    - t.4nve.sp
-    - th0
-- synonym: naive thymus-derived cd8-positive, alpha-beta t cell
-  examples: |
-    - naive thymus-dervied cd8-positive, alpha-beta t-cell
-    - naive thymus-dervied cd8-positive, alpha-beta t lymphocyte
-    - naive thymus-dervied cd8-positive, alpha-beta t-lymphocyte
-    - primary t cd8+ naive cells from peripheral blood
-- synonym: nci-h2009
-  examples: |
-    - h2009
-- synonym: nci-h2171
-  examples: |
-    - h2171
-- synonym: nci-h358
-  examples: |
-    - h358
-- synonym: nci-h69
-  examples: |
-    - h69
-    - h69 cell
-- synonym: nci-n87
-  examples: |
-    - nci-h526
-- synonym: neutrophil
-  examples: |
-    - neutrocyte
-    - neutrophilic leucocyte
-    - neutrophilic leukocyte
-    - neutrophil leucocyte
-    - neutrophil leukocyte
-- synonym: nf90-8
-  examples: |
-    - 90-8tl
-- synonym: ngp cell
-  examples: |
-    - ngp
-- synonym: non-pigmented ciliary epithelial cell
-  examples: |
-    - npe
-- synonym: nt2/d1
-  examples: |
-    - nt2-d1
-    - nt2/d1 cell
-    - ntera-2 cl.d1 cell
-- synonym: oci-ly1
-  examples: |
-    - oci-ly8
-- synonym: oci-ly3
-  examples: |
-    - oci-ly-3
-    - oci-ly-3 cell
-- synonym: osteoblast
-  examples: |
-    - osteoblast primary cells
-- synonym: panc1
-  examples: |
-    - panc-1
-- synonym: pc-3
-  examples: |
-    - pc3
-    - pc-3 cell
-    - pc3 cell
-- synonym: pc-7
-  examples: |
-    - te-7
-- synonym: pfsk-1
-  examples: |
-    - pfsk-1 cell
-- synonym: pl-21
-  examples: |
-    - pdb2lox-21
-- synonym: precursor cell
-  examples: |
-    - islet precursor cell
-- synonym: primary myelofibrosis
-  examples: |
-    - agnogenic myeloid metaplasia
-    - aleukemic myelosis
-    - amm
-    - bone marrow fibrosis
-    - chronic idiopathic myelofibrosis
-    - cimf
-    - idiopathic bone marrow fibrosis
-    - idiopathic myelofibrosis
-    - megakaryocytic myelosclerosis
-    - myelofibrosis with myeloid metaplasia
-    - myelosclerosis
-    - myelosclerosis with myeloid metaplasia
-    - osteomyelofibrosis
-    - primary monocytes from peripheral blood
-    - primary neutrophils from peripheral blood
-- synonym: promyelocytic leukemia cell line
-  examples: |
-    - mr4
-    - upr9
-- synonym: radial glial cell
-  examples: |
-    - mid-neurogenesis radial glial cells
-- synonym: regulatory t cell
-  examples: |
-    - regulatory t-cell
-    - regulatory t lymphocyte
-    - regulatory t-lymphocyte
-- synonym: renal cell carcinoma
-  examples: |
-    - adenocarcinoma of kidney
-    - adenocarcinoma of the kidney
-    - carcinoma, renal cell, malignant
-    - kidney adenocarcinoma
-    - rcc
-    - renal cell cancer
-    - renal cell carcinoma, stage unspecified
-    - renal carcinoma
-    - renal cell adenocarcinoma
-    - renal cell carcinoma, nos
-    - renal carcinoma
-- synonym: renal cell adenocarcinoma
-  examples: |
-    - renal cell carcinoma
-- synonym: rpmi-7951
-  examples: |
-    - rpmi7951
-    - rpmi 7951
-    - rpmi_7951
-    - rpmi-8402
-- synonym: rs4-11 cell
-  examples: |
-    - rs4
-- synonym: rwpe1
-  examples: |
-    - crl-11609
-    - rwpe 1
-    - rwpe_1
-- synonym: rwpe2
-  examples: |
-    - crl-11610
-    - rwpe 2
-    - rwpe_2
-- synonym: sarcoma
-  examples: |
-    - connective and soft tissue neoplasm
-    - connective and soft tissue neoplasms
-    - connective soft tissue neopl
-    - connective tissue sarcoma
-    - malignant mesenchymal tumor
-    - malignant mesenchymal tumour
-    - malignant neoplasm of connective and other soft tissue
-    - malignant neoplasm of connective and other soft tissue (disorder)
-    - malignant neoplasm of connective and other soft tissue of abdomen
-    - malignant neoplasm of connective and other soft tissue of head, face, and neck
-    - malignant neoplasm of connective and other soft tissue of lower limb, including hip
-    - malignant neoplasm of connective and other soft tissue of pelvis
-    - malignant neoplasm of connective and other soft tissue of thorax
-    - malignant neoplasm of connective and other soft tissue of trunk, unspecified
-    - malignant neoplasm of connective and other soft tissue of upper limb, including shoulder
-    - malignant neoplasm of connective and other soft tissue, site unspecified
-    - malignant neoplasm of other specified sites of connective and other soft tissue
-    - malignant neoplasm of soft tissue
-    - malignant neoplasm of soft tissue (disorder)
-    - malignant neoplasm of the soft tissue
-    - malignant soft tissue neoplasm
-    - malignant soft tissue tumor
-    - malignant tumor of soft tissue
-    - malignant tumor of the soft tissue
-    - malignant tumour of soft tissue
-    - mal neopl trunk nos
-    - mal neo soft tis abdomen
-    - mal neo soft tis pelvis
-    - mal neo soft tissue arm
-    - mal neo soft tissue head
-    - mal neo soft tissue leg
-    - mal neo soft tissue nec
-    - mal neo soft tissue nos
-    - mal neo soft tis thorax
-    - mesenchymal tumor, malignant
-    - mesenchymal tumour, malignant
-    - neoplasms, connective and soft tissue
-    - neopl connective soft tissue
-    - nhdf-neo
-    - sarcoma, malignant
-    - sarcoma, no icd-o subtype
-    - sarcoma, no icd-o subtype (morphologic abnormality)
-    - sarcoma, nos
-    - sarcoma of soft tissue
-    - sarcoma of soft tissue and bone
-    - sarcoma of the soft tissue
-    - sarcoma of the soft tissue and bone
-    - soft tissue sarcoma
-    - soft tissue tumor, malignant
-    - soft tissue tumour, malignant
-    - tumor of soft tissue and skeleton
-    - sarc
-    - [m]sarcoma nos
-    - [m]sarcoma nos (morphologic abnormality)
-- synonym: sbc-3
-  examples: |
-    - calu-3
-    - hmads-3
-- synonym: scc-9
-  examples: |
-    - um-scc-4
-    - um-scc-47
-- synonym: sf268
-  examples: |
-    - sf-268
-- synonym: shef-1
-  examples: |
-    - shef1
-    - shef 4
-- synonym: simpson-golabi-behmel syndrome
-  examples: |
-    - dgsx
-    - golabi-rosen syndrome
-    - sara angers syndrome
-    - sdys
-    - sgbs
-    - sgbs1
-    - sgb syndrome
-    - simpson dysmorphia syndrome
-    - simpson-golabi-behmel syndrome type 1
-    - x-linked dysplasia gigantism syndrome
-- synonym: sjcrh30
-  examples: |
-    - crl-2061
-    - rms 13
-- synonym: skeletal muscle myoblast
-  examples: |
-    - hsmm skeletal muscle myoblasts cells
-    - skeletal myoblast
-- synonym: skmc
-  examples: |
-    - human skeletal muscle cells
-- synonym: sk-mel-5
-  examples: |
-    - mel-5
-    - skmel5
-    - sk mel 5
-    - sk_mel_5
-    - sk-mel-5 cell
-- synonym: sk-n-dz
-  examples: |
-    - skndz
-    - sk n dz
-    - sk_n_dz
-    - sk-n-dz cell
-- synonym: sk-n-mc
-  examples: |
-    - sknmc
-- synonym: sk-n-sh
-  examples: |
-    - sknsh
-- synonym: smooth muscle cell
-  examples: |
-    - myocytes, smooth muscle
-    - smcs
-    - smooth muscle fiber
-- synonym: somite 17
-  examples: |
-    - pdb2lox-17
-- synonym: stromal cell of bone marrow
-  examples: |
-    - bone marrow stromal cell
-- synonym: su.86.86
-  examples: |
-    - su-dhl6
-- synonym: sudhl6
-  examples: |
-    - su-dhl-6
-- synonym: sum159pt
-  examples: |
-    - sum159
-    - sum 159
-    - sum-159
-    - sum159-mda453
-    - sum 159pt
-    - sum-159pt
-- synonym: t47d
-  examples: |
-    - t47d-mtvl
-- synonym: t cell
-  examples: |
-    - ncha1
-    - t-cell
-    - t lymphocyte
-    - t-lymphocyte
-- synonym: tc-seq
-  examples: |
-    - tc-797
-- synonym: th-1
-  examples: |
-    - skno-1
-    - zr-75-1
-- synonym: th-2
-  examples: |
-    - hk-2
-    - tcam-2
-- synonym: t-helper 17 cell
-  examples: |
-    - helper t cell type 17
-    - il-17-producing cd4+ t helper
-    - th17 cd4+ t cell
-    - t(h)-17 cell
-    - th17 cell
-    - th17 t cell
-    - th17 t-cell
-    - th17 t lymphocyte
-    - th17 t-lymphocyte
-    - t helper cells type 17
-- synonym: t-helper 1 cell
-  examples: |
-    - helper t cell type 1
-    - th1 cd4+ t cell
-    - t(h)-1 cell
-    - th1 cell
-    - th1 t cell
-    - th1 t-cell
-    - th1 t lymphocyte
-    - th1 t-lymphocyte
-    - t helper cells type 1
-- synonym: t-helper 2 cell
-  examples: |
-    - helper t cell type 2
-    - t(h)-2 cell
-    - th2 cell
-    - th2 t cell
-    - th2 t-cell
-    - th2 t lymphocyte
-    - th2 t-lymphocyte
-    - t helper cells type 2
-- synonym: tive
-  examples: |
-    - tive-ltc
-- synonym: t-lymphocyte cell line
-  examples: |
-    - atconv
-- synonym: ttc549
-  examples: |
-    - mrtttc549
-- synonym: u2os
-  examples: |
-    - u2-os
-- synonym: u-87 mg
-  examples: |
-    - u87
-    - u-87 cell
-    - u87 cell
-    - u-87 mg cell
-    - u-87-mg cell
-    - u-87mg cell
-    - u87-mg cell
-    - u87mg cell
-- synonym: ucsf4
-  examples: |
-    - es-ucsf4  cells
-    - ucsf-4
-    - ucsf-4*
-    - ucsf-4*
-- synonym: uke1
-  examples: |
-    - uke-1
-- synonym: um-scc-17a cell
-  examples: |
-    - um-scc-74a
-- synonym: urothelium cell line
-  examples: |
-    - human ureter cell
-    - urothelial cell
-    - urotsa cell
-- synonym: weri-rb-1
-  examples: |
-    - weri rb 1
-    - weri_rb_1
-- synonym: wm 266-4 cell
-  examples: |
-    - wm266-4
+    - dataset name
 - synonym: clonal rearrangement, multiple peaks
   examples: |
     - peaks
@@ -9449,6 +7101,19 @@ nlu:
     - adenocarcinoma - rectum
     - rectum adenocarcinoma
     - read
+- synonym: renal cell carcinoma
+  examples: |
+    - adenocarcinoma of kidney
+    - adenocarcinoma of the kidney
+    - carcinoma, renal cell, malignant
+    - kidney adenocarcinoma
+    - rcc
+    - renal carcinoma
+    - renal cell adenocarcinoma
+    - renal cell cancer
+    - renal cell carcinoma, nos
+    - renal cell carcinoma, stage unspecified
+    - renal carcinoma
 - synonym: retinoblastoma
   examples: |
     - cancer, retinoblastoma
@@ -9463,6 +7128,62 @@ nlu:
   examples: |
     - rhabdomyosarcoma, malignant
     - rhabdomyosarcoma, nos
+- synonym: sarcoma
+  examples: |
+    - mesenchymal tumor, malignant
+    - sarcoma, malignant
+    - sarcoma of soft tissue and bone
+    - sarcoma of the soft tissue and bone
+    - sarc
+    - connective and soft tissue neoplasm
+    - connective and soft tissue neoplasms
+    - connective soft tissue neopl
+    - connective tissue sarcoma
+    - malignant mesenchymal tumor
+    - malignant mesenchymal tumour
+    - malignant neoplasm of connective and other soft tissue
+    - malignant neoplasm of connective and other soft tissue (disorder)
+    - malignant neoplasm of connective and other soft tissue of abdomen
+    - malignant neoplasm of connective and other soft tissue of head, face, and neck
+    - malignant neoplasm of connective and other soft tissue of lower limb, including hip
+    - malignant neoplasm of connective and other soft tissue of pelvis
+    - malignant neoplasm of connective and other soft tissue of thorax
+    - malignant neoplasm of connective and other soft tissue of trunk, unspecified
+    - malignant neoplasm of connective and other soft tissue of upper limb, including shoulder
+    - malignant neoplasm of connective and other soft tissue, site unspecified
+    - malignant neoplasm of other specified sites of connective and other soft tissue
+    - malignant neoplasm of soft tissue
+    - malignant neoplasm of soft tissue (disorder)
+    - malignant neoplasm of the soft tissue
+    - malignant soft tissue neoplasm
+    - malignant soft tissue tumor
+    - malignant tumor of soft tissue
+    - malignant tumor of the soft tissue
+    - malignant tumour of soft tissue
+    - mal neopl trunk nos
+    - mal neo soft tis abdomen
+    - mal neo soft tis pelvis
+    - mal neo soft tissue arm
+    - mal neo soft tissue head
+    - mal neo soft tissue leg
+    - mal neo soft tissue nec
+    - mal neo soft tissue nos
+    - mal neo soft tis thorax
+    - mesenchymal tumour, malignant
+    - neoplasms, connective and soft tissue
+    - neopl connective soft tissue
+    - nhdf-neo
+    - sarcoma, no icd-o subtype
+    - sarcoma, no icd-o subtype (morphologic abnormality)
+    - sarcoma, nos
+    - sarcoma of soft tissue
+    - sarcoma of the soft tissue
+    - soft tissue sarcoma
+    - soft tissue tumor, malignant
+    - soft tissue tumour, malignant
+    - tumor of soft tissue and skeleton
+    - [m]sarcoma nos
+    - [m]sarcoma nos (morphologic abnormality)
 - synonym: seminoma
   examples: |
     - seminoma, malignant
@@ -9641,14 +7362,6 @@ nlu:
     - adipose
     - fat
     - fatty tissue
-- synonym: subcutaneous adipose tissue
-  examples: |
-    - fat tissue
-    - fatty layer of subcutaneous tissue
-    - hypodermis fat layer
-    - panniculus adiposus telae subcutaneae
-    - panniculus adiposus (tela subcutanea)
-    - subcutaneous fat layer
 - synonym: adrenal gland
   examples: |
     - adrenal
@@ -10203,6 +7916,14 @@ nlu:
   examples: |
     - fetal stomach
     - gi stomach
+- synonym: subcutaneous adipose tissue
+  examples: |
+    - fatty layer of subcutaneous tissue
+    - hypodermis fat layer
+    - panniculus adiposus telae subcutaneae
+    - panniculus adiposus (tela subcutanea)
+    - subcutaneous fat layer
+    - fat tissue
 - synonym: superior temporal gyrus
   examples: |
     - gyrus temporalis superior
@@ -10276,6 +7997,1134 @@ nlu:
     - skin
     - skin region
     - skin zone
+- synonym: 1205-lu
+  examples: |
+    - wm451-lu
+- synonym: 293t
+  examples: |
+    - 293t-rex
+- synonym: 537 mel
+  examples: |
+    - 501-mel
+    - 537-mel
+- synonym: 786-0
+  examples: |
+    - 786_0
+    - 786-o
+    - crl-1932
+    - rcc7860
+    - rcc 7860
+    - rcc_7860
+- synonym: 8988t
+  examples: |
+    - 8988 t
+    - 8988-t
+    - acc 162
+    - pa-tu-8988t
+- synonym: a549
+  examples: |
+    - a-549
+    - a549 cell
+    - a549 etoh 0.02pct lung carcinoma cell line
+    - bt-549
+- synonym: acc112
+  examples: |
+    - utsw-acc112
+- synonym: ag04450
+  examples: |
+    - ag04449
+- synonym: ag08470 cell
+  examples: |
+    - ag08470
+- synonym: ag09319 cell
+  examples: |
+    - ag09319
+- synonym: all pairs
+  examples: |
+    - all_pairs
+    - all-sil
+- synonym: astrocyte
+  examples: |
+    - astrocytic glia
+- synonym: b cell
+  examples: |
+    - b-cell
+    - b lymphocyte
+    - b-lymphocyte
+- synonym: b-cell non-hodgkin lymphoma cell line
+  examples: |
+    - oci-ly4
+- synonym: be(2)-c
+  examples: |
+    - be2c
+    - be(2) c
+    - be(2)_c
+    - be2_c
+    - be2-c
+    - be(2)-c cell
+- synonym: beas-2b
+  examples: |
+    - beas2b
+- synonym: beige adipocyte
+  examples: |
+    - adipocyte
+    - beige/brite adipocyte
+    - beige brown adipocyte
+    - beige fat cell
+    - brite adipocyte
+    - brite cell
+    - brite fat cell
+- synonym: benzene
+  examples: |
+    - benzen
+    - benzine
+    - benzol
+    - benzole
+    - bicarburet of hydrogen
+    - c1ccccc1
+    - c6
+    - c6h6
+    - c6 vertebra
+    - coal naphtha
+    - cyclohexatriene
+    - inchi=1/c6h6/c1-2-4-6-5-3-1/h1-6h
+    - inchikey=uhovqnzjysornb-uhfffaoyah
+    - mineral naphtha
+    - phene
+    - phenyl hydride
+    - pyrobenzol
+    - pyrobenzole
+    - [6]annulene
+- synonym: c1 100080003
+  examples: |
+    - c1 100 08 0003
+    - c803
+- synonym: c4-2b
+  examples: |
+    - c4-2
+- synonym: c57bl/6
+  examples: |
+    - b6
+    - c57
+    - c57/b6
+    - c57b/6
+    - c57bl,
+    - c57bl6
+    - c57/bl6
+    - c57bl\6
+    - c57black
+    - c57black6
+    - c57 black/6
+    - c57black/6
+    - cb57
+    - p493-6
+- synonym: caco-2
+  examples: |
+    - caco2
+- synonym: caki1
+  examples: |
+    - caki-1
+- synonym: caki2
+  examples: |
+    - caki-2
+- synonym: cal51
+  examples: |
+    - cal-51
+    - cal51-mcf7
+- synonym: cardiac muscle cell
+  examples: |
+    - cardiac muscle fiber
+    - cardiac myocyte
+    - cardiomyocyte
+    - heart muscle cell
+- synonym: cardioblast
+  examples: |
+    - cardiovascular progenitor cell
+- synonym: cd8-positive, alpha-beta memory t cell
+  examples: |
+    - cd8-positive, alpha-beta memory t-cell
+    - cd8-positive, alpha-beta memory t lymphocyte
+    - cd8-positive, alpha-beta memory t-lymphocyte
+    - primary t cd8+ memory cells from peripheral blood
+    - t.8mem.sp
+- synonym: cell of skeletal muscle
+  examples: |
+    - skeletal muscle cell
+- synonym: cervical carcinoma cell line
+  examples: |
+    - hela-s3 cervical carcinoma cell line
+    - hepg2 hepatocellular carcinoma cell line
+- synonym: choroid plexus epithelial cell
+  examples: |
+    - epithelial cell of choroid plexus
+- synonym: colo 741
+  examples: |
+    - colo-741
+    - colo-783
+- synonym: colo829
+  examples: |
+    - colo-829
+- synonym: cwru1
+  examples: |
+    - ips_cwru1
+- synonym: d721med
+  examples: |
+    - d721
+    - d-721
+    - d-721med
+    - d-721 med
+- synonym: daoy
+  examples: |
+    - htb186
+- synonym: dld1
+  examples: |
+    - dld-1
+- synonym: dnd-41
+  examples: |
+    - acc525
+- synonym: du 145
+  examples: |
+    - du145
+    - du-145
+- synonym: eh
+  examples: |
+    - bj-eh, bj eh
+- synonym: ej cell
+  examples: |
+    - ej
+- synonym: el
+  examples: |
+    - bj-el, bj el
+- synonym: elf-1
+  examples: |
+    - elf1
+    - elf-1 cell
+- synonym: elr
+  examples: |
+    - bj-elr, bj elr
+- synonym: embryonic stem cell
+  examples: |
+    - embryonic stem cells
+    - esc
+    - lis2
+    - wa-7
+    - wibr2
+- synonym: endodermal cell
+  examples: |
+    - endoderm cell
+- synonym: endothelial cell derived cell line
+  examples: |
+    - hesc derived cd184+ endoderm cultured cells
+- synonym: epithelial cell derived cell line
+  examples: |
+    - bicr
+- synonym: epithelial cell line
+  examples: |
+    - 21nt
+    - ft246
+    - h3396
+    - islk-219
+- synonym: epithelial cell of amnion
+  examples: |
+    - amniotic epithelial cell
+- synonym: epithelial cell of prostate
+  examples: |
+    - prostate epithelial cell
+- synonym: epithelial cell of proximal tubule
+  examples: |
+    - kidney proximal tubule epithelial cell
+- synonym: erythroblast
+  examples: |
+    - normoblast
+- synonym: es-cj7
+  examples: |
+    - cj7 cell
+    - es-cj7 cell
+    - es-wa7 cells
+- synonym: es-i3
+  examples: |
+    - es-i3 cells
+    - hes i3
+- synonym: fibroblast of cardiac tissue
+  examples: |
+    - cardiac fibroblast
+- synonym: foreskin fibroblast
+  examples: |
+    - bj fibroblast
+- synonym: g401
+  examples: |
+    - g-401
+- synonym: g401.6
+  examples: |
+    - mrt_g401.6
+- synonym: glioblastoma h54
+  examples: |
+    - h54
+- synonym: glomerular visceral epithelial cell
+  examples: |
+    - glomerular podocyte
+    - podocyte
+- synonym: gm01660 cell
+  examples: |
+    - gm01660
+- synonym: gm03348 cell
+  examples: |
+    - gm03348
+- synonym: gm04503 cell
+  examples: |
+    - gm04503
+- synonym: gm04504 cell
+  examples: |
+    - gm04504
+- synonym: gm12878
+  examples: |
+    - gm12878 lymphoblastoid cells
+- synonym: gm12890 cell
+  examples: |
+    - gm12890
+- synonym: gm18486 cell
+  examples: |
+    - gm18486
+- synonym: gm18498 cell
+  examples: |
+    - gm18498
+- synonym: gm18499 cell
+  examples: |
+    - gm18499
+- synonym: gm18501 cell
+  examples: |
+    - gm18501
+- synonym: gm18502 cell
+  examples: |
+    - gm18502
+- synonym: gm18504 cell
+  examples: |
+    - gm18504
+- synonym: gm18508 cell
+  examples: |
+    - gm18508
+- synonym: gm18510 cell
+  examples: |
+    - gm18510
+- synonym: gm18511 cell
+  examples: |
+    - gm18511
+- synonym: gm18516 cell
+  examples: |
+    - gm18516
+- synonym: gm18517 cell
+  examples: |
+    - gm18517
+- synonym: gm18519 cell
+  examples: |
+    - gm18519
+- synonym: gm18520 cell
+  examples: |
+    - gm18520
+- synonym: gm18522 cell
+  examples: |
+    - gm18522
+- synonym: gm18852 cell
+  examples: |
+    - gm18852
+- synonym: gm18853 cell
+  examples: |
+    - gm18853
+- synonym: gm18855 cell
+  examples: |
+    - gm18855
+- synonym: gm18856 cell
+  examples: |
+    - gm18856
+- synonym: gm18858 cell
+  examples: |
+    - gm18858
+- synonym: gm18859 cell
+  examples: |
+    - gm18859
+- synonym: gm18861 cell
+  examples: |
+    - gm18861
+- synonym: gm18862 cell
+  examples: |
+    - gm18862
+- synonym: gm18870 cell
+  examples: |
+    - gm18870
+- synonym: gm18907 cell
+  examples: |
+    - gm18907
+- synonym: gm18909 cell
+  examples: |
+    - gm18909
+- synonym: gm18912 cell
+  examples: |
+    - gm18912
+- synonym: gm18913 cell
+  examples: |
+    - gm18913
+- synonym: gm18916 cell
+  examples: |
+    - gm18916
+- synonym: gm19092 cell
+  examples: |
+    - gm19092
+- synonym: gm19093 cell
+  examples: |
+    - gm19093
+- synonym: gm19098 cell
+  examples: |
+    - gm19098
+- synonym: gm19101 cell
+  examples: |
+    - gm19101
+- synonym: gm19114 cell
+  examples: |
+    - gm19114
+- synonym: gm19116 cell
+  examples: |
+    - gm19116
+- synonym: gm19119 cell
+  examples: |
+    - gm19119
+- synonym: gm19127 cell
+  examples: |
+    - gm19127
+- synonym: gm19130 cell
+  examples: |
+    - gm19130
+- synonym: gm19131 cell
+  examples: |
+    - gm19131
+- synonym: gm19137 cell
+  examples: |
+    - gm19137
+- synonym: gm19138 cell
+  examples: |
+    - gm19138
+- synonym: gm19140 cell
+  examples: |
+    - gm19140
+- synonym: gm19141 cell
+  examples: |
+    - gm19141
+- synonym: gm19143 cell
+  examples: |
+    - gm19143
+- synonym: gm19144 cell
+  examples: |
+    - gm19144
+- synonym: gm19147 cell
+  examples: |
+    - gm19147
+- synonym: gm19152 cell
+  examples: |
+    - gm19152
+- synonym: gm19153 cell
+  examples: |
+    - gm19153
+- synonym: gm19159 cell
+  examples: |
+    - gm19159
+- synonym: gm19160 cell
+  examples: |
+    - gm19160
+- synonym: gm19171 cell
+  examples: |
+    - gm19171
+- synonym: gm19190 cell
+  examples: |
+    - gm19190
+- synonym: gm19200 cell
+  examples: |
+    - gm19200
+- synonym: gm19201 cell
+  examples: |
+    - gm19201
+- synonym: gm19203 cell
+  examples: |
+    - gm19203
+- synonym: gm19204 cell
+  examples: |
+    - gm19204
+- synonym: gm19206 cell
+  examples: |
+    - gm19206
+- synonym: gm19207 cell
+  examples: |
+    - gm19207
+- synonym: gm19209 cell
+  examples: |
+    - gm19209
+- synonym: gm19210 cell
+  examples: |
+    - gm19210
+- synonym: gm19222 cell
+  examples: |
+    - gm19222
+- synonym: gm19223 cell
+  examples: |
+    - gm19223
+- synonym: gm19225 cell
+  examples: |
+    - gm19225
+- synonym: gm19257 cell
+  examples: |
+    - gm19257
+- synonym: gm23248
+  examples: |
+    - gm23248 cell
+- synonym: gtl-16
+  examples: |
+    - glc-16
+- synonym: h1-hesc
+  examples: |
+    - h1
+    - h1 cells
+- synonym: h7-hesc
+  examples: |
+    - h7
+    - h7 cell
+    - h7-es
+    - wa07
+- synonym: h9
+  examples: |
+    - h9 cells
+- synonym: hap-1
+  examples: |
+    - hap1
+- synonym: hbl-1 cell
+  examples: |
+    - hbl1
+- synonym: hcc1954
+  examples: |
+    - hcc-1954
+- synonym: hcc2157
+  examples: |
+    - hcc-2157
+- synonym: hcc95
+  examples: |
+    - hcc-95
+- synonym: hct116
+  examples: |
+    - hct-116 cell
+    - hct116 cell
+- synonym: hct15
+  examples: |
+    - hct-116
+    - hct-15
+- synonym: hek293
+  examples: |
+    - human embryonic kidney cell
+- synonym: helper t cell
+  examples: |
+    - helper t-cell
+    - helper t lymphocyte
+    - helper t-lymphocyte
+    - primary t helper memory cells from peripheral blood 2
+    - primary t helper naive cells from peripheral blood
+    - t-helper cell
+- synonym: hematopoietic multipotent progenitor cell
+  examples: |
+    - hemopoietic progenitor cell
+    - mpp
+- synonym: hematopoietic stem cell
+  examples: |
+    - blood forming stem cell
+    - hemopoietic stem cell
+    - hsc
+    - primary hematopoietic stem cells
+- synonym: hepatic stellate cell
+  examples: |
+    - hepatic perisinusoidal cell
+    - ito cell
+    - lx2
+    - perisinusoidal cell
+- synonym: hepg2
+  examples: |
+    - hep-g2
+    - hepg2 cell
+- synonym: hffc6
+  examples: |
+    - hff-htert clone 6
+- synonym: hff-myc
+  examples: |
+    - hff cmyc
+    - hff_cmyc
+    - hff-cmyc
+    - hff myc
+    - hff_myc
+- synonym: hgadfn167
+  examples: |
+    - hgadfn167 cell
+    - hgps
+    - hgps cell
+- synonym: hl-60
+  examples: |
+    - hl60
+    - hl-60 cell
+    - hl60 cell
+- synonym: hpde6-e6e7
+  examples: |
+    - hpde-6e6e7
+    - hpde-6_e6e7
+    - hpde-6/e6e7
+    - hpde6-e6e7-hpv
+    - pancreatic duct cells e6e7
+- synonym: hre
+  examples: |
+    - human renal epithelial cell line
+- synonym: hs-27a
+  examples: |
+    - hs-27a cell
+- synonym: hs 38.t
+  examples: |
+    - wi-38
+- synonym: hs-5
+  examples: |
+    - hs-5 cell
+- synonym: htr8/svneo
+  examples: |
+    - htr_8_svneo
+    - htr-8-svneo
+    - htr-8/svneo
+    - htr8-svneo
+- synonym: hues48
+  examples: |
+    - hues48 cells
+- synonym: hues6
+  examples: |
+    - hues6 cells
+- synonym: hues64
+  examples: |
+    - hues64 cells
+- synonym: huh-7
+  examples: |
+    - huh7
+- synonym: huvec cell
+  examples: |
+    - human umbilical vein endothelial cell
+    - huvec
+    - huvec umbilical vein endothelial primary cells
+- synonym: hypobranchial artery
+  examples: |
+    - ha
+    - ha-sp
+- synonym: immortal human testis-derived cell line cell
+  examples: |
+    - nccit
+- synonym: imr-90
+  examples: |
+    - imr90
+    - imr90 fetal lung fibroblast cell line
+    - imr90 fetal lung fibroblasts cell line
+- synonym: ips-15b
+  examples: |
+    - ips-15b cells
+- synonym: ips-20b
+  examples: |
+    - ips-20b cells
+- synonym: ips-5
+  examples: |
+    - ips-18 cells
+- synonym: ipsc derived cell line
+  examples: |
+    - induced pluripotent stem cell derived cell line
+    - ipsc derived
+    - m23f
+    - pdb1lox-17/puro-5
+    - pdb1lox-21/puro-26
+- synonym: ips df 19.11
+  examples: |
+    - ips df 19.11 cells
+- synonym: ips df 6.9
+  examples: |
+    - ips df 6.9 cells
+- synonym: ips-nihi11
+  examples: |
+    - ag20443
+    - ips 4
+    - ips a1
+    - ips a6
+    - ips c1
+    - ips nihi11
+- synonym: ips-nihi7
+  examples: |
+    - ag08395
+    - ips nihi7
+- synonym: ishikawa
+  examples: |
+    - ishikawa cell
+- synonym: jurkat
+  examples: |
+    - jm
+    - jm cell
+    - jurkat cell
+    - jurkat clone e61
+- synonym: jurkat e-6.1 cell
+  examples: |
+    - jurkat cell e-6.1
+    - jurkat cell e6.1
+    - jurkat e6-1
+    - jurkat e6.1
+    - tib-152
+- synonym: k562
+  examples: |
+    - k-562
+    - k562 cell
+    - k-562 cell
+    - k562 leukemia cells
+- synonym: karpas 422
+  examples: |
+    - karpas-422
+    - karpas 422 cell
+- synonym: keratinocyte
+  examples: |
+    - keratinized cell of epidermis
+    - malpighian cell
+- synonym: kms-11
+  examples: |
+    - kms11
+    - kms_11
+    - mv4-11
+    - tko
+- synonym: kopt-k1
+  examples: |
+    - koptk1
+- synonym: lc2/ad
+  examples: |
+    - nhdf-ad
+- synonym: lhcn-m2
+  examples: |
+    - lhcnm2
+    - lhcn m2
+- synonym: lhsr
+  examples: |
+    - prec
+- synonym: lncap
+  examples: |
+    - lncap-abl
+    - lncap cell
+- synonym: lncap clone fgc
+  examples: |
+    - crl-1740
+    - lncap clone fgc cell
+    - lncap_fgc
+    - lncap-fgc
+- synonym: loximvi
+  examples: |
+    - lox imvi
+    - lox-imvi
+- synonym: lymphoblastoid cell line
+  examples: |
+    - gm2610
+    - gm2630
+    - ms1
+    - ms4221
+- synonym: m059j
+  examples: |
+    - crl_2366
+- synonym: mammary epithelial cell
+  examples: |
+    - breast epithelial cell
+- synonym: mature t cell
+  examples: |
+    - cd3e-positive t cell
+    - mature t-cell
+    - primary t cells effector/memory enriched from peripheral blood
+- synonym: mcf 10a
+  examples: |
+    - mcf-10a
+- synonym: mcf-7
+  examples: |
+    - mcf7
+    - mcf-7 cell
+    - mcf7 cell
+    - mcf7-lted
+- synonym: mdamb231
+  examples: |
+    - mda-231
+    - mda-mb-231
+- synonym: mdamb436
+  examples: |
+    - mda-mb-436
+- synonym: mdamb453
+  examples: |
+    - mda-mb-453
+- synonym: mdamb468
+  examples: |
+    - mda-mb-468
+- synonym: melanocyte of skin
+  examples: |
+    - skin melanocyte
+    - wm262
+- synonym: mel cell
+  examples: |
+    - mel
+- synonym: mesodermal cell
+  examples: |
+    - mesoblast
+    - mesoderm cell
+- synonym: mm1
+  examples: |
+    - mm1.s
+- synonym: mm.1s
+  examples: |
+    - mm.1 s
+    - mm.1-s
+    - mm.1s cell
+- synonym: molm-16
+  examples: |
+    - molm-13
+    - molm-14
+- synonym: mononuclear cell
+  examples: |
+    - mononuclear leukocyte
+- synonym: motexafin gadolinium
+  examples: |
+    - c52h72gdn5o14
+    - gadolinium texaphyrin
+    - gd-tex
+    - gd texaphyrin
+    - inchi=1/c48h66n5o10.2c2h4o2.gd/c1-7-35-36(8-2)40-28-42-38(12-10-14-55)34(4)46(53-42)32-50-44-30-48(63-26-24-61-22-20-59-18-16-57-6)47(62-25-23-60-21-19-58-17-15-56-5)29-43(44)49-31-45-33(3)37(11-9-13-54)41(52-45)27-39(35)51-40;2*1-2(3)4;/h27-32,54-55h,7-26h2,1-6h3;2*1h3,(h,3,4);/q-1;;;+3/p-2/b39-27-,40-28-,41-27-,42-28-,45-31-,46-32-,49-31+,49-43+,50-32+,50-44+;;;/fc48h66n5o10.2c2h3o2.gd/qm;2*-1;m
+    - inchikey=vazlwpahmordgr-mpnkmpctdc
+    - mgd
+    - (pb-7-11-233'2'4)-bis(acetato-kappao)(9,10-diethyl-20,21-bis(2-(2-(2-methoxyethoxy)ethoxy)ethoxy)-4,15-dimethyl-8,11-imino-3,6:16,13-dinitrilo-1,18-benzodiazacycloeicosine-5,14-dipropanolato-kappan(1),kappan(18),kappan(23),kappan(24),kappan(25))gadolinium
+    - tex
+    - xcytrin
+    - bis(acetato-kappao){3,3'-[4,5-diethyl-16,17-bis{2-[2-(2-methoxyethoxy)ethoxy]ethoxy}-10,23-dimethyl-13,20,25,26,27-pentaazapentacyclo[20.2.1.1(3,6).1(8,11).0(14,19)]heptacosa-1,3,5,7,9,11(26),12,14,16,18,20,22(25),23-tridecaene-9,24-diyl-kappa(5)n(13),n(20),n(25),n(26),n(27)]dipropan-1-olato}gadolinium
+    - ccc1c(cc)c2c=c3c(ccco)=c(c)c4=[n]3[gd]356(oc(c)=o)(oc(c)=o)[n](=cc7=[n]3c(=cc1n25)c(ccco)=c7c)c1cc(occoccoccoc)c(occoccoccoc)cc1[n]6=c4
+- synonym: mouse neural progenitor cell
+  examples: |
+    - ecto neural progenitor cell
+    - mouse npc
+    - neural progenitor cell
+- synonym: muscle cell
+  examples: |
+    - myocyte
+- synonym: myeloid leukemia cell line
+  examples: |
+    - dnd41 tcell leukemia cell line
+- synonym: myotube
+  examples: |
+    - myotubule
+    - single cell sarcomere
+- synonym: naive b cell
+  examples: |
+    - naive b-cell
+    - naive b lymphocyte
+    - naive b-lymphocyte
+- synonym: naive thymus-derived cd4-positive, alpha-beta t cell
+  examples: |
+    - naive thymus-derived cd4-positive, alpha-beta t-cell
+    - naive thymus-derived cd4-positive, alpha-beta t lymphocyte
+    - naive thymus-derived cd4-positive, alpha-beta t-lymphocyte
+    - t.4nve.sp
+    - th0
+- synonym: naive thymus-derived cd8-positive, alpha-beta t cell
+  examples: |
+    - naive thymus-dervied cd8-positive, alpha-beta t-cell
+    - naive thymus-dervied cd8-positive, alpha-beta t lymphocyte
+    - naive thymus-dervied cd8-positive, alpha-beta t-lymphocyte
+    - primary t cd8+ naive cells from peripheral blood
+- synonym: nci-h2009
+  examples: |
+    - h2009
+- synonym: nci-h2171
+  examples: |
+    - h2171
+- synonym: nci-h358
+  examples: |
+    - h358
+- synonym: nci-h69
+  examples: |
+    - h69
+    - h69 cell
+- synonym: nci-n87
+  examples: |
+    - nci-h526
+- synonym: neutrophil
+  examples: |
+    - neutrocyte
+    - neutrophilic leucocyte
+    - neutrophilic leukocyte
+    - neutrophil leucocyte
+    - neutrophil leukocyte
+- synonym: nf90-8
+  examples: |
+    - 90-8tl
+- synonym: ngp cell
+  examples: |
+    - ngp
+- synonym: non-pigmented ciliary epithelial cell
+  examples: |
+    - npe
+- synonym: nt2/d1
+  examples: |
+    - nt2-d1
+    - nt2/d1 cell
+    - ntera-2 cl.d1 cell
+- synonym: oci-ly1
+  examples: |
+    - oci-ly8
+- synonym: oci-ly3
+  examples: |
+    - oci-ly-3
+    - oci-ly-3 cell
+- synonym: osteoblast
+  examples: |
+    - osteoblast primary cells
+- synonym: panc1
+  examples: |
+    - panc-1
+- synonym: pc-3
+  examples: |
+    - pc3
+    - pc-3 cell
+    - pc3 cell
+- synonym: pc-7
+  examples: |
+    - te-7
+- synonym: pfsk-1
+  examples: |
+    - pfsk-1 cell
+- synonym: pl-21
+  examples: |
+    - pdb2lox-21
+- synonym: precursor cell
+  examples: |
+    - islet precursor cell
+- synonym: primary myelofibrosis
+  examples: |
+    - agnogenic myeloid metaplasia
+    - aleukemic myelosis
+    - amm
+    - bone marrow fibrosis
+    - chronic idiopathic myelofibrosis
+    - cimf
+    - idiopathic bone marrow fibrosis
+    - idiopathic myelofibrosis
+    - megakaryocytic myelosclerosis
+    - myelofibrosis with myeloid metaplasia
+    - myelosclerosis
+    - myelosclerosis with myeloid metaplasia
+    - osteomyelofibrosis
+    - primary monocytes from peripheral blood
+    - primary neutrophils from peripheral blood
+- synonym: promyelocytic leukemia cell line
+  examples: |
+    - mr4
+    - upr9
+- synonym: radial glial cell
+  examples: |
+    - mid-neurogenesis radial glial cells
+- synonym: regulatory t cell
+  examples: |
+    - regulatory t-cell
+    - regulatory t lymphocyte
+    - regulatory t-lymphocyte
+- synonym: renal cell adenocarcinoma
+  examples: |
+    - renal cell carcinoma
+- synonym: rpmi-7951
+  examples: |
+    - rpmi7951
+    - rpmi 7951
+    - rpmi_7951
+    - rpmi-8402
+- synonym: rs4-11 cell
+  examples: |
+    - rs4
+- synonym: rwpe1
+  examples: |
+    - crl-11609
+    - rwpe 1
+    - rwpe_1
+- synonym: rwpe2
+  examples: |
+    - crl-11610
+    - rwpe 2
+    - rwpe_2
+- synonym: sbc-3
+  examples: |
+    - calu-3
+    - hmads-3
+- synonym: scc-9
+  examples: |
+    - um-scc-4
+    - um-scc-47
+- synonym: sf268
+  examples: |
+    - sf-268
+- synonym: shef-1
+  examples: |
+    - shef1
+    - shef 4
+- synonym: simpson-golabi-behmel syndrome
+  examples: |
+    - dgsx
+    - golabi-rosen syndrome
+    - sara angers syndrome
+    - sdys
+    - sgbs
+    - sgbs1
+    - sgb syndrome
+    - simpson dysmorphia syndrome
+    - simpson-golabi-behmel syndrome type 1
+    - x-linked dysplasia gigantism syndrome
+- synonym: sjcrh30
+  examples: |
+    - crl-2061
+    - rms 13
+- synonym: skeletal muscle myoblast
+  examples: |
+    - hsmm skeletal muscle myoblasts cells
+    - skeletal myoblast
+- synonym: skmc
+  examples: |
+    - human skeletal muscle cells
+- synonym: sk-mel-5
+  examples: |
+    - mel-5
+    - skmel5
+    - sk mel 5
+    - sk_mel_5
+    - sk-mel-5 cell
+- synonym: sk-n-dz
+  examples: |
+    - skndz
+    - sk n dz
+    - sk_n_dz
+    - sk-n-dz cell
+- synonym: sk-n-mc
+  examples: |
+    - sknmc
+- synonym: sk-n-sh
+  examples: |
+    - sknsh
+- synonym: smooth muscle cell
+  examples: |
+    - myocytes, smooth muscle
+    - smcs
+    - smooth muscle fiber
+- synonym: somite 17
+  examples: |
+    - pdb2lox-17
+- synonym: stromal cell of bone marrow
+  examples: |
+    - bone marrow stromal cell
+- synonym: su.86.86
+  examples: |
+    - su-dhl6
+- synonym: sudhl6
+  examples: |
+    - su-dhl-6
+- synonym: sum159pt
+  examples: |
+    - sum159
+    - sum 159
+    - sum-159
+    - sum159-mda453
+    - sum 159pt
+    - sum-159pt
+- synonym: t47d
+  examples: |
+    - t47d-mtvl
+- synonym: t cell
+  examples: |
+    - ncha1
+    - t-cell
+    - t lymphocyte
+    - t-lymphocyte
+- synonym: tc-seq
+  examples: |
+    - tc-797
+- synonym: th-1
+  examples: |
+    - skno-1
+    - zr-75-1
+- synonym: th-2
+  examples: |
+    - hk-2
+    - tcam-2
+- synonym: t-helper 17 cell
+  examples: |
+    - helper t cell type 17
+    - il-17-producing cd4+ t helper
+    - th17 cd4+ t cell
+    - t(h)-17 cell
+    - th17 cell
+    - th17 t cell
+    - th17 t-cell
+    - th17 t lymphocyte
+    - th17 t-lymphocyte
+    - t helper cells type 17
+- synonym: t-helper 1 cell
+  examples: |
+    - helper t cell type 1
+    - th1 cd4+ t cell
+    - t(h)-1 cell
+    - th1 cell
+    - th1 t cell
+    - th1 t-cell
+    - th1 t lymphocyte
+    - th1 t-lymphocyte
+    - t helper cells type 1
+- synonym: t-helper 2 cell
+  examples: |
+    - helper t cell type 2
+    - t(h)-2 cell
+    - th2 cell
+    - th2 t cell
+    - th2 t-cell
+    - th2 t lymphocyte
+    - th2 t-lymphocyte
+    - t helper cells type 2
+- synonym: tive
+  examples: |
+    - tive-ltc
+- synonym: t-lymphocyte cell line
+  examples: |
+    - atconv
+- synonym: ttc549
+  examples: |
+    - mrtttc549
+- synonym: u2os
+  examples: |
+    - u2-os
+- synonym: u-87 mg
+  examples: |
+    - u87
+    - u-87 cell
+    - u87 cell
+    - u-87 mg cell
+    - u-87-mg cell
+    - u-87mg cell
+    - u87-mg cell
+    - u87mg cell
+- synonym: ucsf4
+  examples: |
+    - es-ucsf4  cells
+    - ucsf-4
+    - ucsf-4*
+- synonym: uke1
+  examples: |
+    - uke-1
+- synonym: um-scc-17a cell
+  examples: |
+    - um-scc-74a
+- synonym: urothelium cell line
+  examples: |
+    - human ureter cell
+    - urothelial cell
+    - urotsa cell
+- synonym: weri-rb-1
+  examples: |
+    - weri rb 1
+    - weri_rb_1
+- synonym: wm 266-4 cell
+  examples: |
+    - wm266-4
 - synonym: biosample_type
   examples: |
     - biosample type

@@ -3,16 +3,16 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
+- choice_value_healthy
+- choice_exact_experiment
 - retrieve_experiments
 - choice_value_tissue
 - deny
 - choice_value_data_type
 - rename_database
 - search_field
-- choice_exact_experiment
 - choice_value_dataset_name
 - start
-- choice_value_healthy
 - affirm
 - review
 - region
@@ -58,7 +58,6 @@ intents:
 - cluster
 - greater
 - minor
-
 entities:
 - affirm
 - annotations

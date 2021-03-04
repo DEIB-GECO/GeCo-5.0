@@ -159,6 +159,7 @@ class MoreFields(Action):
         technique = tracker.get_slot("technique")
         feature = tracker.get_slot("feature")
         target = tracker.get_slot("target")
+        is_healthy= tracker.get_slot("is_healthy")
 
         dict_selection = {}
 
@@ -170,7 +171,7 @@ class MoreFields(Action):
 
         Slots= {'source':source , 'data_type':data_type,'assembly':assembly,
                 'file_format':file_format,'biosample_type':biosample_type,'tissue':tissue,'cell':cell,'disease':disease,
-                'technique':technique,'feature':feature,'target':target}
+                'technique':technique,'feature':feature,'target':target, 'is_healthy':is_healthy }
 
         if (field != None):
             request_field = tracker.get_slot("field")
@@ -222,6 +223,9 @@ class MoreFields(Action):
                     if (shell == False):
                         dispatcher.utter_message(Utils.param_list(param_list))
 
+                    return [SlotSet("field", None)]
+
+
 
             else:
                 dispatcher.utter_message("The chosen value (else) is not correct. Choose between:")
@@ -229,18 +233,47 @@ class MoreFields(Action):
 
             return []
 
+        a="test"
        # for name1 in Slots_2:
        #     if (name1!= None):
        #         print('name1',name1)
         for num, name  in enumerate(Slots):
+
+            print(name)
             if (Slots[name] != None):
+                print("Slots[name]", Slots[name])
+                if(Slots[name].lower() == 'false'):
+                    print("sono in false")
+                    for num_2, name_2 in enumerate(Selection_list):
+                        if (name_2 == ['is_healthy', True]):
+                            del Selection_list[num_2]
+                    Selection_list.append([name, False])
+                    a= 'no'
+                    print(Selection_list)
+
+                elif(Slots[name].lower() == 'true'):
+                    print("sono in true")
+
+                    for num_2, name_2 in enumerate(Selection_list):
+                        if (name_2 == ['is_healthy', False]):
+                            del Selection_list[num_2]
+                    Selection_list.append([name, True])
+                    a='yes'
+                    print(Selection_list)
                     #if(name1 == name):
                 #dispatcher.utter_message("Succesful choice")
-                Selection_list.append([name,Slots[name]])
-                print(Selection_list)
+                else:
+                    if(name != "is_healthy" ):
+                        print("sono in vario")
+                        for num_2, name_2 in enumerate(Selection_list):
+                            if (name_2[0] == name):
+                                del Selection_list[num_2]
+                        Selection_list.append([name,Slots[name]])
+                        print(Selection_list)
 
         for num, name in  enumerate(Selection_list):
             if(name[1] == False):
+                print('aggiunto false alla select! ')
                 dict_selection.update({name[0] : [False]})
 
             elif(name[1] == True):
@@ -249,12 +282,17 @@ class MoreFields(Action):
             else:
                 dict_selection.update({name[0] : [name[1]]})
 
-
         if (dict_selection != {}):
             param_list.update(dict_selection)
 
         db.update(dict_selection)
-        return []
+
+        if(a != "test"):
+            return [SlotSet("is_healthy", a)]
+
+        else:
+            return []
+
 
 
 class SelectData(Action):
@@ -295,8 +333,6 @@ class ShowField(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         global ann, param_list
-
-        print("conversationale ID", tracker.sender_id)
 
         list_param = {x: x for x in db.fields_names}
 
@@ -441,7 +477,7 @@ class CheckValue(Action):
                         dispatcher.utter_message(Utils.param_list(param_list))
                     else:
                         print(param_list)
-                    return [SlotSet("field", None)]
+                    return[SlotSet("field", None)]
 
 
             elif(request_value in Selection_list):

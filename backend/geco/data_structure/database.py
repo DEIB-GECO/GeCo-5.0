@@ -111,7 +111,7 @@ class DB:
             if f != 'is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
             else:
-                print(gcm[f])
+                print("printooo", gcm[f])
 
         for f in self.fields:
             values = []
@@ -201,7 +201,7 @@ class DB:
         items = items.split(',')
         items = [int(i) for i in items]
         # items = ','.join(str(i) for i in items)
-        print(items)
+ #       print(items)
         donors = list(self.table[self.table['item_id'].isin(items)]['donor_source_id'].values)
         return donors
 

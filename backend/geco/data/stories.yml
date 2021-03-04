@@ -31,7 +31,6 @@ stories:
   - action: action_show_field
   - action: utter_filter_more
 
-
 - story: more field (data_type-disease) 
   steps:
   - action: action_what_data
@@ -124,191 +123,6 @@ stories:
   - action: action_show_field
   - action: utter_filter_more
 
-
-- story: Experiment tissue + exact experimet disease
-  steps:
-  - action: action_what_data
-  - action: utter_what_data
-  - intent: retrieve_experiments
-    entities:
-    - experiments: "experiments"
-  - slot_was_set:
-    - experiments: "experiments"
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: search_field
-    entities: 
-    - field: "cell" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_cell
-    entities:
-    - cell: "h1a549"
-  - action: action_check_value
-  - slot_was_set:
-    - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: choice_exact_experiment
-    entities:
-      - field: 'disease'
-      - source: 'cholangiocarcinoma'
-  - slot_was_set:
-    - field: 'disease'
-    - source: 'cholangiocarcinoma'
-  - action: action_give_exact_experiment
-  - action: action_show_field
-  - action: utter_filter_more
-
-
-- story: Experiment dataset
-  steps:
-  - action: action_what_data
-  - action: utter_what_data
-  - intent: retrieve_experiments
-    entities:
-    - experiments: "experiments"
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: search_field
-    entities:
-    - field: "dataset_name"
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_dataset_name
-    entities:
-    - cell: "hg19_tcga_rnaseqv2_isoform"
-  - action: action_check_value
-  - slot_was_set:
-    - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-
-- story: Experiment cell
-  steps:
-  - action: action_what_data
-  - action: utter_what_data
-  - intent: retrieve_experiments
-    entities:
-    - experiments: "experiments"
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: search_field
-    entities: 
-    - field: "cell" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_cell
-    entities:
-    - cell: "h1a549"
-  - action: action_check_value
-  - slot_was_set:
-    - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities:
-    - field: "dataset_name"
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_dataset_name
-    entities:
-    - dataset_name: "grch38_tcga_gene_expression_2019_10"
-  - action: action_check_value
-  - slot_was_set:
-    - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-
-- story: annotation 2
-  steps:
-  - intent: retrieve_annotations
-    entities:
-    - annotations: "Annotations"
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: search_field
-    entities:
-    - field: "cell"
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_cell
-    entities:
-    - cell: "h1a549"
-  - action: action_check_value
-  - slot_was_set:
-    - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-
-- story: Experiment tissue
-  steps:
-  - action: action_what_data
-  - action: utter_what_data
-  - intent: retrieve_experiments
-    entities:
-    - experiments: "experiments"
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: search_field
-    entities: 
-    - field: "tissue" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_tissue
-    entities:
-    - tissue: "colon"
-  - action: action_check_value
-  - slot_was_set:
-    - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-
-- story: Experiment Health yes
-  steps:
-  - action: action_what_data
-  - action: utter_what_data
-  - intent: retrieve_experiments
-    entities:
-    - experiments: "Experiment"
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: choice_value_healthy
-  - action: utter_health
-  - action: action_yes_no
-  - intent: affirm
-  - action: action_is_healthy_yes
-  - slot_was_set:
-    - is_healthy: "yes"
-  - action: action_show_field
-  - action: utter_filter_more
-
-- story: Experiment Health no
-  steps:
-  - action: action_what_data
-  - action: utter_what_data
-  - intent: retrieve_experiments
-    entities:
-    - experiments: "Experiment"
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: choice_value_healthy
-  - action: utter_health
-  - action: action_yes_no
-  - intent: deny
-  - action: action_is_healthy_no
-  - slot_was_set:
-    - is_healthy: "no"
-  - action: action_show_field
-  - action: utter_filter_more
-
 - story: Experiment repeat field add
   steps:
   - action: action_show_field
@@ -379,172 +193,6 @@ stories:
   - action: action_what_data
   - action: utter_what_data
 
-- story: Experiment all
-  steps:
-  - action: action_what_data
-  - action: utter_what_data
-  - intent: retrieve_experiments
-    entities:
-    - experiments: "Experiment"
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: search_field
-    entities:
-    - field: "dataset_name"
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_dataset_name
-    entities:
-    - cell: "hg19_tcga_cnv"
-  - action: action_check_value
-  - slot_was_set:
-    - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "technique" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_technique
-    entities:
-    - technique: "rrbs"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "target"  
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_target
-    entities:
-    - target: "ctcf"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "biosample_type" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_data_type
-    entities:
-    - biosample_type: "primary culture"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "data_type" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_data_type
-    entities:
-    - data_type: "cnv"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "disease" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_disease
-    entities:
-    - disease: "thynoma"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "feature"  
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_feature
-    entities:
-    - feature: "tag"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "assembly" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_assembly
-    entities:
-    - assembly: "hg19"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "file_format" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_file_format
-    entities:
-    - file_format: "bed"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "tissue" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_tissue
-    entities:
-    - tissue: "colon"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "source" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_source
-    entities:
-    - source: "encode"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities: 
-    - field: "cell" 
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_cell
-    entities:
-    - cell: "h1a549"
-  - action: action_check_value
-  - slot_was_set:
-      - field: null
-  - action: action_show_field
-  - action: utter_filter_more
 
 - story: only meta choice
   steps:
@@ -1739,8 +1387,6 @@ stories:
   - action: utter_filter
   - action: action_show_metadatum
 
-
-
 - story: interactive_story_1
   steps:
   - intent: start
@@ -1986,43 +1632,6 @@ stories:
   - action: action_show_field
   - action: utter_filter_more
 
-- story: interactive_story_1
-  steps:
-  - intent: retrieve_experiments
-    entities:
-    - experiments: esperiments
-  - slot_was_set:
-    - experiments: esperiments
-  - action: action_data
-  - action: action_show_field
-  - action: utter_field_name
-  - intent: choice_exact_experiment
-    entities:
-    - is_healthy: 'False'
-  - slot_was_set:
-    - is_healthy: 'False'
-  - action: action_is_healthy_no
-  - slot_was_set:
-    - is_healthy: no
-  - action: action_show_field
-  - action: utter_filter_more
-  - intent: search_field
-    entities:
-    - field: tissue
-  - slot_was_set:
-    - field: tissue
-  - action: utter_provide_value
-  - action: action_show_value
-  - intent: choice_value_tissue
-    entities:
-    - tissue: palate
-  - slot_was_set:
-    - tissue: palate
-  - action: action_check_value
-  - slot_was_set:
-    - field: null
-  - action: action_show_field
-  - action: utter_filter_more
 
 - story: interactive_story_1
   steps:
@@ -2221,3 +1830,388 @@ stories:
   - action: action_download_database
   - action: utter_filter
   - action: action_show_metadatum
+
+- story: interactive_story_1
+  steps:
+  - intent: retrieve_experiments
+    entities:
+    - experiments: experiments
+  - slot_was_set:
+    - experiments: experiments
+  - action: action_data
+  - action: action_show_field
+  - action: utter_field_name
+  - intent: search_field
+    entities:
+    - field: assembly
+  - slot_was_set:
+    - field: assembly
+  - action: utter_provide_value
+  - action: action_show_value
+  - intent: choice_value_assembly
+    entities:
+    - assembly: grch38
+  - slot_was_set:
+    - assembly: grch38
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: search_field
+    entities:
+    - field: dataset_name
+  - slot_was_set:
+    - field: dataset_name
+  - action: utter_provide_value
+  - action: action_show_value
+  - intent: choice_value_dataset_name
+    entities:
+    - dataset_name: grch38_tcga_somatic_mutation_masked_2019_10
+  - slot_was_set:
+    - dataset_name: grch38_tcga_somatic_mutation_masked_2019_10
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: search_field
+    entities:
+    - field: disease
+  - slot_was_set:
+    - field: disease
+  - action: utter_provide_value
+  - action: action_show_value
+  - intent: choice_value_disease
+    entities:
+    - disease: mesothelioma
+  - slot_was_set:
+    - disease: mesothelioma
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_value_healthy
+  - action: utter_health
+  - action: action_yes_no
+  - intent: affirm
+  - action: action_is_healthy_yes
+  - slot_was_set:
+    - is_healthy: yes
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: deny
+  - action: action_checkSlots
+  - slot_was_set:
+    - DS: true
+  - action: utter_rename_dataset
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+    - dataset_rename: null
+  - action: action_download_database
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: metadatum
+  - action: action_metadatum_type
+  - intent: strings
+  - action: action_take_value
+  - action: utter_what_metadata
+  - action: action_show_metadatum
+  - intent: deny
+  - action: action_save_dataset
+  - action: utter_keep_modify
+  - action: action_keep_modify
+
+- story: interactive_story_1
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+
+- story: interactive_story_2
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+
+- story: interactive_story_3
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+
+- story: interactive_story_4
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+
+- story: interactive_story_5
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+
+- story: interactive_story_6
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+
+- story: interactive_story_7
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+
+- story: interactive_story_8
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+  - slot_was_set:
+    - is_healthy: no
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: search_field
+    entities:
+    - field: dataset_name
+  - slot_was_set:
+    - field: dataset_name
+  - action: utter_provide_value
+  - action: action_show_value
+  - intent: choice_value_dataset_name
+    entities:
+    - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - slot_was_set:
+    - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: search_field
+    entities:
+    - field: disease
+  - slot_was_set:
+    - field: disease
+  - action: utter_provide_value
+  - action: action_show_value
+  - intent: choice_value_disease
+    entities:
+    - disease: papillary renal cell carcinoma
+  - slot_was_set:
+    - disease: papillary renal cell carcinoma
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: deny
+  - action: action_checkSlots
+  - slot_was_set:
+    - DS: true
+  - action: utter_rename_dataset
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+    - dataset_rename: null
+  - action: action_download_database
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: review
+  - action: action_save_dataset
+  - action: utter_keep_modify
+  - action: action_keep_modify
+  - intent: keep
+  - action: action_set_gmql
+  - slot_was_set:
+    - GMQL: true
+  - action: utter_new_dataset
+  - action: action_yes_no
+  - intent: deny
+  - action: action_workflow
+  - action: utter_pivot_0
+  - action: action_show_feature_sample
+
+- story: interactive_story_1
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+    - data_type: gene expression
+    - tissue: brain
+  - slot_was_set:
+    - data_type: gene expression
+  - slot_was_set:
+    - is_healthy: 'false'
+  - slot_was_set:
+    - tissue: brain
+  - action: action_give_exact_experiment
+  - slot_was_set:
+    - is_healthy: no
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_value_healthy
+  - action: utter_health
+  - action: action_yes_no
+  - intent: deny
+  - action: action_is_healthy_no
+  - slot_was_set:
+    - is_healthy: no
+  - action: action_show_field
+  - action: utter_filter_more
+
+- story: interactive_story_1
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+  - slot_was_set:
+    - is_healthy: no
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_value_healthy
+    entities:
+    - is_healthy: 'true'
+  - slot_was_set:
+    - is_healthy: 'true'
+  - action: action_give_exact_experiment
+  - slot_was_set:
+    - is_healthy: yes
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_exact_experiment
+    entities:
+    - assembly: hg19
+    - field: assembly
+  - slot_was_set:
+    - assembly: hg19
+  - slot_was_set:
+    - field: assembly
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'true'
+  - slot_was_set:
+    - is_healthy: 'true'
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+
+- story: interactive_story_2
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+  - slot_was_set:
+    - is_healthy: no
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_value_healthy
+    entities:
+    - is_healthy: 'true'
+  - slot_was_set:
+    - is_healthy: 'true'
+  - action: action_give_exact_experiment
+  - slot_was_set:
+    - is_healthy: yes
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_exact_experiment
+    entities:
+    - is_healthy: 'false'
+  - slot_was_set:
+    - is_healthy: 'false'
+  - action: action_give_exact_experiment
+  - slot_was_set:
+    - is_healthy: no
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_exact_experiment
+    entities:
+    - data_type: mirna expression
+    - field: data_type
+  - slot_was_set:
+    - data_type: mirna expression
+  - slot_was_set:
+    - field: data_type
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_exact_experiment
+    entities:
+    - data_type: gene expression
+  - slot_was_set:
+    - data_type: gene expression
+  - action: action_give_exact_experiment
+  - slot_was_set:
+    - field: null
+  - action: action_show_field
+  - action: utter_filter_more

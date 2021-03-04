@@ -1,7 +1,30 @@
 digraph  {
 0 [class="start active", fillcolor=green, fontsize=12, label=START, style=filled];
 1 [class=active, fontsize=12, label=action_session_start];
-2 [class="intent dashed active", label="  ?  ", shape=rect];
+2 [class=active, fontsize=12, label=action_give_exact_experiment];
+"-3" [class=ellipsis, label="..."];
+5 [class=active, fontsize=12, label=action_show_field];
+6 [class=active, fontsize=12, label=utter_filter_more];
+7 [class=active, fontsize=12, label=action_give_exact_experiment];
+28 [class=active, fontsize=12, label=action_give_exact_experiment];
+29 [class="intent dashed active", label="  ?  ", shape=rect];
+30 [class="intent active", fillcolor=lightblue, label="give me ill people", shape=rect, style=filled];
+31 [class="intent active", fillcolor=lightblue, label="now give me healthy people", shape=rect, style=filled];
+32 [class="intent active", fillcolor=lightblue, label="i want mirna expression", shape=rect, style=filled];
+33 [class="intent active", fillcolor=lightblue, label="gene expression", shape=rect, style=filled];
 0 -> 1  [class=active, key=NONE, label=""];
-1 -> 2  [class=active, key=NONE, label=""];
+1 -> 30  [class=active, key=0];
+2 -> "-3"  [class="", key=NONE, label=""];
+2 -> 5  [class=active, key=NONE, label=""];
+5 -> 6  [class=active, key=NONE, label=""];
+6 -> 31  [class=active, key=0];
+6 -> 32  [class=active, key=0];
+6 -> 33  [class=active, key=0];
+7 -> 5  [class=active, key=NONE, label=""];
+7 -> 7  [class=active, key=NONE, label=""];
+28 -> 29  [class=active, key=NONE, label=""];
+30 -> 2  [class=active, key=0];
+31 -> 7  [class=active, key=0];
+32 -> 7  [class=active, key=0];
+33 -> 28  [class=active, key=0];
 }
