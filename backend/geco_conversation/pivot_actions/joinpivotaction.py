@@ -16,7 +16,7 @@ class JoinPivotAction(AbstractAction):
 		if intent!='deny':
 			self.context.add_bot_msg(Utils.chat_message("Ok, I will join the two tables. It will take some times, at the end you will see the result on the right."))
 			print(len(self.context.workflow))
-			for i in range((len(self.context.workflow)-1), 0, -1):
+			for i in range((len(self.context.workflow)-2), 0, -1):
 				print(i)
 				print(self.context.workflow[i].__class__.__name__)
 				if self.context.workflow[i].__class__.__name__ == 'Pivot':

@@ -141,9 +141,12 @@ class Utils(object):
             dict_scat1[l]={}
             dict_scat1[l]['x']=x[labels==l]
             dict_scat1[l]['y']=y[labels == l]
+        print('len x', len(x))
+        print('len y', len(y))
 
         dict_scat = list(itertools.chain(*[[{'label': str(l), 'x': float(vv[0]), 'y': float(vv[1])} for vv in v] for l, v in
                                [(k, list(zip(v['x'], v['y']))) for (k, v) in dict_scat1.items()]]))
+        dict_scat = dict_scat[:100]
         #dict_scat = [{"x": ax, "y": ay, "label": l} for l, d in dict_scat1.items() for ax in d['x'] for ay in d['y']]
 
         print(dict_scat)
