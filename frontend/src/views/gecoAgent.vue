@@ -100,6 +100,7 @@ export default class GecoAgent extends Vue {
   // @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
 
   @processStore.Mutation resetProcess!: () => void;
+  @tools.Mutation resetToolPane!: () => void;
 
   lastMessageId = -1;
 
@@ -219,7 +220,8 @@ export default class GecoAgent extends Vue {
       this.editMessage('');
       
       socket.emit('ack', { message_id: -1 });
-      this.resetProcess();;
+      this.resetProcess();
+      this.resetToolPane();
       
       this.updateFieldList([]);
       this.parameterParser([]);
