@@ -14,7 +14,7 @@ class JoinPivotAction(AbstractAction):
 	def logic(self,message, intent, entities):
 		from geco_conversation.data_analysis.data_analysis import DataAnalysis
 		if intent!='deny':
-			self.context.add_bot_msg("Ok, I will join the two tables. It will take some times, at the end you will see the result on the right.")
+			self.context.add_bot_msg(Utils.chat_message("Ok, I will join the two tables. It will take some times, at the end you will see the result on the right."))
 			print(len(self.context.workflow))
 			for i in range((len(self.context.workflow)-1), 0, -1):
 				print(i)

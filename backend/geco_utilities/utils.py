@@ -1,3 +1,4 @@
+import itertools
 
 class Utils(object):
     def chat_message(message: str):
@@ -127,17 +128,27 @@ class Utils(object):
 
     def scatter(x,y,labels, u_labels):
         dict_scat = []
-        for ax in x:
-            for ay in y:
-                for l in u_labels:
-                    dict_scat.append({'x':ax,'y':ay,'label':l})
         #for l in u_labels:
-        #    dict_scat[l]={}
-        #    dict_scat[l]['x']=x[labels==l]
-        #    dict_scat[l]['y']=y[labels == l]
+        #    for ax in x[labels==l]:
+        #        for ay in y[labels==l]:
+        #            dict_scat.append({'x': ax, 'y': ay, 'label': l})
+        #for ax in x:
+        #    for ay in y:
+         #       for l in u_labels:
+         #           dict_scat.append({'x':ax,'y':ay,'label':l})
+        dict_scat1 = {}
+        for l in u_labels:
+            dict_scat1[l]={}
+            dict_scat1[l]['x']=x[labels==l]
+            dict_scat1[l]['y']=y[labels == l]
 
+        dict_scat = list(itertools.chain(*[[{'label': str(l), 'x': float(vv[0]), 'y': float(vv[1])} for vv in v] for l, v in
+                               [(k, list(zip(v['x'], v['y']))) for (k, v) in dict_scat1.items()]]))
+        #dict_scat = [{"x": ax, "y": ay, "label": l} for l, d in dict_scat1.items() for ax in d['x'] for ay in d['y']]
+
+        print(dict_scat)
         return {
-            "vizType": "scatter",
+            "type": "scatter",
             "data": dict_scat,
         }
 

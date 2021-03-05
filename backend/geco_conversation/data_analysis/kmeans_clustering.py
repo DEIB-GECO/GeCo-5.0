@@ -24,7 +24,7 @@ class KMeansClustering(AbstractAction):
             self.context.workflow.add(PCA(self.context.workflow[-1], 2))
             self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
             self.context.workflow.run(self.context.workflow[-1])
-            print(self.context.workflow[-1].result.__dict__)
+            #print(self.context.workflow[-1].result.__dict__)
             self.context.add_bot_msg(
                 Utils.scatter(self.context.workflow[-1].result.x, self.context.workflow[-1].result.y,
                               self.context.workflow[-1].result.labels, self.context.workflow[-1].result.u_labels))
