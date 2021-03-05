@@ -54,13 +54,13 @@ nlu:
     - I am looking for [copy number variation]{"entity":"data_type","value":"cnv"}
     - experiments data for [arm bone](tissue) from [grch38](assembly)
     - I want experiment about [bladder urothelial carcinoma](disease) for [hg19](assembly)
-    - I want [copy number variations]{"entity":"data_type","value":"cnv"} for [bone osteosarcoma](disease)
+    - I want [copy number variations]{"entity":"data_type","value":"cnv"} for [bone osteosarcoma](disease).
     - [grch38](assembly) [copy number]{"entity":"data_type","value":"cnv"} of [brain glioma](disease)
     - data from [hg19](assembly) [dna copy number variation]{"entity":"data_type","value":"cnv"} for [breast adenocarcinoma](disease)
     - im looking for [dna copy number variants]{"entity":"data_type","value":"cnv"} from [cistrome](source) regarding [breast carcinoma](disease)
     - patients with [breast ductal carcinoma](disease)
     - I need to select [artery](tissue) data taken from [encode](source)
-    - I need [ascending aorta](tissue) data taken from [roadmap epigenomics](source)
+    - I need [ascending aorta](tissue) data taken from [roadmap epigenomics](source).
     - files from [tads](source) for [grch38](assembly)
     - data regarding [dna copy number polymorphisms]{"entity":"data_type","value":"cnv"} for cell line [1205-lu](cell)
     - i need cell [22rv1](cell)
@@ -73,10 +73,10 @@ nlu:
     - data for [biliary tract](tissue)
     - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [breast fibrocystic change](disease)
     - [bladder](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - samples of [8988t](cell) of patients affected by [burkitt lymphoma](disease)
+    - samples of [8988t](cell) of patients affected by [burkitt lymphoma](disease).
     - I would like to have [grch38](assembly) assembly data regarding [blood](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [cancer](disease)
     - we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [body of pancreas](tissue)
-    - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients.
     - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [body of uterus](tissue)
     - i'm looking for data from [1000 genomes](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
     - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [bone marrow](tissue)?
@@ -93,7 +93,7 @@ nlu:
     - [encode](source) data for [childhood chronic myelogenous leukemia, bcr-abl1 positive](disease)
     - I want experiment about [cholangiocarcinoma](disease)
     - I need [chromophobe renal cell carcinoma](disease)
-    - [dna copy number variants]{"entity":"data_type","value":"copy number segment"} for [chronic myeloid leukemia](disease)
+    - [dna copy number variants]{"entity":"data_type","value":"copy number segment"} for [chronic myeloid leukemia](disease).
     - experiments for [dna copy number polymorphisms]{"entity":"data_type","value":"copy number segment"}
     - Get [dna copy number polymorphism]{"entity":"data_type","value":"copy number segment"} for [clavien-dindo grade iv](disease)
     - Get [copy number polymorphisms]{"entity":"data_type","value":"copy number segment"} for [brain](tissue) tissue
@@ -110,7 +110,7 @@ nlu:
     - I am looking for [chromatin immunoprecipitation sequencing]{"entity":"data_type","value":"domain"}
     - experiments data for [cerebellar cortex](tissue) from [hg19](assembly)
     - I want experiment about [cornelia de lange syndrome](disease) for [grch38](assembly)
-    - I want [chip-seq]{"entity":"data_type","value":"domain"} for [coronary artery disease](disease)
+    - I want [chip-seq]{"entity":"data_type","value":"domain"} for [coronary artery disease](disease).
     - [hg19](assembly) [chip sequencing]{"entity":"data_type","value":"domain"} of [cutaneous melanoma](disease)
     - data from [grch38](assembly) [sequencing, chip]{"entity":"data_type","value":"domain"} for [cystadenocarcinoma](disease)
     - im looking for [chromatin immuno-precipitation sequencing]{"entity":"data_type","value":"domain"} from [roadmap epigenomics](source) regarding [diffuse large b-cell lymphoma](disease)
@@ -165,7 +165,7 @@ nlu:
     - [sequencing of isoforms]{"entity":"data_type","value":"isoform expression"} of [esophagus squamous epithelium](tissue) tissue
     - I am looking for [expression of isoforms]{"entity":"data_type","value":"isoform expression"}
     - experiments data for [eye](tissue) from [grch38](assembly)
-    - I want experiment about [granular renal cell carcinoma](disease) for [hg19](assembly)
+    - I want experiment about [granular renal cell carcinoma](disease) for [hg19](assembly).
     - I want [quantification of isoforms]{"entity":"data_type","value":"isoform expression"} for [head and neck squamous cell carcinoma](disease)
     - [grch38](assembly) [isoform rna seq]{"entity":"data_type","value":"isoform expression"} of [healthy](disease)
     - data from [hg19](assembly) [isoform quantification]{"entity":"data_type","value":"isoform expression"} for [hepatitis](disease)

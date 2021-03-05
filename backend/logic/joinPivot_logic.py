@@ -14,6 +14,7 @@ class JoinPivotLogic:
         self.df2 = pd.DataFrame.from_dict(self.dict_2).T
         if any(i in list(self.table_1.index) for i in list(self.table_2.index)):
             self.table_1= self.table_1.merge(self.df1, left_index=True, right_index=True)
+            print(self.table_1.head())
             self.table_1 = self.table_1.drop('disease', axis=1)
             self.table_2= self.table_2.merge(self.df2, left_index=True, right_index=True)
             self.table_2 = self.table_2.drop('disease', axis=1)

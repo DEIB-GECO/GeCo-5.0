@@ -115,8 +115,11 @@ class Utils(object):
 
     def table_viz(show, df, show_index=True, order_by=None):
         df = df.T
+        df.index = map(str, df.index)
+        df.columns = map(str, df.columns)
         data = df.to_dict()
-        print(data)
+        #data = {str(k):v for k,v in data.items()}
+        print(list(data.items())[:3])
         return {"type": "table",
                     "show": show,
                     "payload": {
@@ -153,8 +156,8 @@ class Utils(object):
          dict_scat1.items()]
         #dict_scat = [{"x": ax, "y": ay, "label": l} for l, d in dict_scat1.items() for ax in d['x'] for ay in d['y']]
 
-        print(dict_scat)
-        viz = [{"vizType": "histogram",
+        #print(dict_scat)
+        viz = [{"vizType": "scatter",
                 "title": 'ScatterPlot',
                 "data": dict_scat}]
 
