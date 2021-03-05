@@ -27,9 +27,9 @@ class ScatterLogic:
         print(self.ds.shape)
         u_labels = np.unique(self.labels)
         print('labels', self.labels)
-        #for i in u_labels:
-         #   plt.scatter(self.ds[self.labels == i, 0], self.ds[self.labels == i, 1], label=i)
-        #    print('0',self.ds[self.labels == i, 0])
+        for i in u_labels:
+            plt.scatter(self.ds[self.labels == i, 0], self.ds[self.labels == i, 1], label=i)
+         #   print('0',self.ds[self.labels == i, 0])
         #    print('1', self.ds[self.labels == i, 1])
         #plt.legend()
         #plt.show()

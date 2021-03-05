@@ -49,10 +49,12 @@ class Confirm(AbstractAction):
                 name = list_param['name']
                 del(list_param_ds['name'])
                 table = self.context.payload.database.table
-                dict_for_join = {i: {'donor':table[table['item_id']==i]['donor_source_id'],
-                                 'is_healthy':table[table['item_id']==i]['is_healthy'],
-                                 'disease':table[table['item_id']==i]['disease']}
-                                 for i in set(table['item_id'])}
+                dict_for_join = {i: {'donor':d,'is_healthy':h,'disease':dis}
+                             for i,d,h,dis in table[['item_id','donor_source_id','is_healthy','disease']].values}
+                #dict_for_join = {i: {'donor':table[table['item_id']==i]['donor_source_id'].values[0],
+                #                 'is_healthy':table[table['item_id']==i]['is_healthy'].values[0],
+                #                 'disease':table[table['item_id']==i]['disease'].values[0]}
+                #                 for i in set(table['item_id'])}
                 ds = Dataset(list_param_ds, name, donors=self.status['donors'], items=list(set(self.context.payload.database.table['item_id'])))
                 ds.dict_for_join = dict_for_join
                 self.context.data_extraction.datasets.append(ds)
