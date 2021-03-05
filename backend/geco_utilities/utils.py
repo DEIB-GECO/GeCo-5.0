@@ -116,6 +116,7 @@ class Utils(object):
     def table_viz(show, df, show_index=True, order_by=None):
         df = df.T
         data = df.to_dict()
+        print(data)
         return {"type": "table",
                     "show": show,
                     "payload": {
@@ -153,10 +154,14 @@ class Utils(object):
         #dict_scat = [{"x": ax, "y": ay, "label": l} for l, d in dict_scat1.items() for ax in d['x'] for ay in d['y']]
 
         print(dict_scat)
-        return {
-            "type": "scatter",
-            "data": dict_scat,
-        }
+        viz = [{"vizType": "histogram",
+                "title": 'ScatterPlot',
+                "data": dict_scat}]
+
+        return {"type": "data_summary",
+                "payload": {
+                    "viz": viz
+                }}
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))
