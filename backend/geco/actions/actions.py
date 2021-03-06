@@ -239,11 +239,8 @@ class MoreFields(Action):
        #         print('name1',name1)
         for num, name  in enumerate(Slots):
 
-            print(name)
             if (Slots[name] != None):
-                print("Slots[name]", Slots[name])
                 if(Slots[name].lower() == 'false'):
-                    print("sono in false")
                     for num_2, name_2 in enumerate(Selection_list):
                         if (name_2 == ['is_healthy', True]):
                             del Selection_list[num_2]
@@ -252,8 +249,6 @@ class MoreFields(Action):
                     print(Selection_list)
 
                 elif(Slots[name].lower() == 'true'):
-                    print("sono in true")
-
                     for num_2, name_2 in enumerate(Selection_list):
                         if (name_2 == ['is_healthy', False]):
                             del Selection_list[num_2]
@@ -264,7 +259,6 @@ class MoreFields(Action):
                 #dispatcher.utter_message("Succesful choice")
                 else:
                     if(name != "is_healthy" ):
-                        print("sono in vario")
                         for num_2, name_2 in enumerate(Selection_list):
                             if (name_2[0] == name):
                                 del Selection_list[num_2]
@@ -960,10 +954,14 @@ class MetadatumType(Action):
         z = db.find_key_values(message, dict_selection)
         #print("z vale:",z,z[0],z[1])
         c = {}
+       # e=[]
         # if(z[1] == False):
         for y in z[0]:
             #print(y['value'])
             c.update({y['value']: y['value']})
+         #   if(y['value'] !=None):
+               # print(y['value'])
+         #       e.append(int(y['value']))
 
         # y[count] sono i valori che mi serviranno per l istogramma
         # print(y['count'])
@@ -997,14 +995,15 @@ class MetadatumType(Action):
 
             mean= int(sum_i/count)
 
-            c={}
-            c.update({"min: "+str(min):min})
-            c.update({"max: "+str(max): max})
-            c.update({"mean: "+str(mean) :mean})
+            d={}
+            d.update({"min: "+str(min):min})
+            d.update({"max: "+str(max): max})
+            d.update({"mean: "+str(mean) :mean})
 
 
             if (shell == False):
-                dispatcher.utter_message(Utils.choice('Available values',c, show_help=True))
+                dispatcher.utter_message(Utils.choice('Available values',d, show_help=True))
+               # dispatcher.utter_message(Utils.hist(e, "title"))
 
             else:
                 dispatcher.utter_message('Available values')
@@ -1528,9 +1527,12 @@ class ShowAllRegion(Action):
             c.update({y: y})
             print(y)
 
+        test={"chrom,start,stop":"chrom", "gene_symbol":"gene_symbol"}
+
+
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("Region:", c))
+                dispatcher.utter_message(Utils.choice("Region:", test)) #prima andava c
             else:
                 dispatcher.utter_message("Region:")
                 print(c)

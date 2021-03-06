@@ -77,6 +77,7 @@ def _create_single_channel(channel, credentials) -> Any:
 
 def _create_app_without_api(cors: Optional[Union[Text, List[Text]]] = None):
     app = Sanic(__name__, configure_logging=False)
+    print("ciao Sanic \n \n \n \n \n \n \n \n \n")
     server.add_root_route(app)
     server.configure_cors(app, cors)
     return app

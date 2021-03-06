@@ -111,7 +111,7 @@ class DB:
             if f != 'is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
             else:
-                print("printooo", gcm[f])
+                print("printo dal db", gcm[f])
 
         for f in self.fields:
             values = []

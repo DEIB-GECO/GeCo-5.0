@@ -11,7 +11,7 @@ from socketio import AsyncServer
 
 import json
 
-tracker= True
+tracker= False
 user_ID=""
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,9 @@ class SocketBlueprint(Blueprint):
     def __init__(self, sio: AsyncServer, socketio_path, *args, **kwargs):
         self.sio = sio
         self.socketio_path = socketio_path
+        #super().static('../../frontend/dist/static','../frontend/dist')
         super().__init__(*args, **kwargs)
+
 
     def register(self, app, options) -> None:
         self.sio.attach(app, self.socketio_path)
@@ -213,27 +215,47 @@ class SocketIOInput(InputChannel):
             #logger.debug(data)
             global user_ID
 
-            if("io="+user_ID == data["HTTP_COOKIE"] ):
-                logger.debug("we1")
-                sid=user_ID
-            else:
-                user_ID=sid
-                logger.debug(user_ID)
-
-
-            if data is None:
-                data = {}
-            if "session_id" not in data or data["session_id"] is None:
-            #    logger.debug(data["HTTP_COOKIE"])
-                data["session_id"] = uuid.uuid4().hex
-                #logger.debug("session")
-             #   logger.debug(data["HTTP_COOKIE"])
-
-                #logger.debug(data["session_id"])
-            if self.session_persistence:
-                sio.enter_room(sid, data["session_id"])
-
-            await sio.emit("session_confirm", data["session_id"], room=sid)
+            #else:
+             #   user_ID=sid
+              #  logger.debug(user_ID)
+            logger.debug(f"sid {sid}, {id(sid)}")
+            #if data is None:
+            #    data = {}
+         #        logger.debug("data is None")
+         #    logger.debug(data)
+         #    if("HTTP_COOKIE" in data and data["HTTP_COOKIE"] is not None):
+         #        logger.debug(f"one")
+         #        for x in data["HTTP_COOKIE"].split():
+         #            logger.debug(x)
+         #            if("io=" in x):
+         #                data["session_id"]= x.split("=")[1]
+         #                logger.debug(data["session_id"])
+         #                sid="pippo" #data["session_id"]
+         #                logger.debug(f"sid new? {sid}, {id(sid)}")
+         #
+         #    logger.debug(f"sid new? {sid}, {id(sid)}")
+         #    logger.debug(f"sid new? {sid}")
+         #
+         # #   if("io="+user_ID == data["HTTP_COOKIE"] ):
+         # #       logger.debug("Hello old cookie")
+         # #       sid=user_ID
+         # #       data["session_id"] = user_ID
+         #
+         #
+         #    if "session_id" not in data or data["session_id"] is None:
+         #    #    logger.debug(data["HTTP_COOKIE"])
+         #        data["session_id"] = uuid.uuid4().hex
+         #        logger.debug("data['session_id']")
+         #        logger.debug(data["session_id"])
+         #
+         #    #logger.debug("session")
+         #     #   logger.debug(data["HTTP_COOKIE"])
+         #
+         #        #logger.debug(data["session_id"])
+         #    if self.session_persistence:
+         #        sio.enter_room(sid, data["session_id"])
+         #
+         #    await sio.emit("session_confirm", data["session_id"], room=sid)
             #logger.debug(f"User {sid} session requested to socketIO endpoint.")
 
             if (tracker == True):
@@ -264,16 +286,23 @@ class SocketIOInput(InputChannel):
         @sio.on("session_request", namespace=self.namespace)
         async def session_request(sid: Text, data: Optional[Dict]):
             logger.debug("Ho ricevuto richiesta di sessione")
-            logger.debug("data vale: data")
+            logger.debug("data vale: ")
+            logger.debug(data)
+
+            for x in data["session_id"].split():
+                logger.debug(x)
+                if ("session=" in x):
+                    data["session_id"] = x.split("=")[1]
+
             if data is None:
                 data = {}
             if "session_id" not in data or data["session_id"] is None:
                 data["session_id"] = uuid.uuid4().hex
+                logger.debug("ciao")
             if self.session_persistence:
                 sio.enter_room(sid, data["session_id"])
             await sio.emit("session_confirm", data["session_id"], room=sid)
-            logger.debug("User {sid} session requested to socketIO endpoint.")
-
+            logger.debug(f"User {sid} session requested to socketIO endpoint.")
 
         @sio.on(self.user_message_evt, namespace=self.namespace)
         async def handle_message(sid: Text, data: Dict) -> Any:
@@ -297,13 +326,11 @@ class SocketIOInput(InputChannel):
             )
             await on_new_message(message)
 
-        @sio.on('ack', namespace='/test')
+        @sio.on('Prova', namespace='/test')
         async def test_ack_message(message):
-            user_message = int(message['message_id'])
+            #user_ID = int(message['message_id'])
             logger.debug("Ho ricevuto ack")
-            logger.debug(user_message)
-
-
+            logger.debug(message)
 
         """fatta da me da é questo che funziona veramente"""
         @sio.on('my_event', namespace=self.namespace)
@@ -315,7 +342,7 @@ class SocketIOInput(InputChannel):
             message = UserMessage(
                 data["data"], output_channel, user_ID, input_channel=self.name()
             )
-            print('data[data]',data["data"])
+            #('data[data]',data["data"])
             with open('data.txt', 'a') as outfile:
                 json.dump( data["data"]+'\n',outfile)
 

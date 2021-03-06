@@ -24,7 +24,7 @@ class Tools extends VuexModule {
   activeTools: ToolTuple[] = [
     // { name: 'Dataset List', component: 'dataset' },
     // { name: 'Metadata', component: 'metadata' },
-    { name: 'Table', component: 'tableViewer' }
+    // { name: 'Table', component: 'tableViewer' }
     // { name: 'Field Explorer', component: 'field' },
     // { name: 'Query', component: 'query' }
     // { name: 'Data', component: 'dataviz' }
@@ -91,6 +91,13 @@ class Tools extends VuexModule {
       const index = this.activeTools.indexOf(toolToRemove);
       this.activeTools.splice(index, 1);
     }
+  }
+
+  @Mutation
+  resetToolPane(){
+    this.toolToShow = '';
+    this.cleanCanvas = true;
+    this.activeTools = [];
   }
 }
 

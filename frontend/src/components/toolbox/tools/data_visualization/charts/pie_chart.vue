@@ -1,6 +1,7 @@
 <template>
   <div class="chart_container">
     <div class="piechart_title">{{ chartTitle }}</div>
+    <div class="sample_number">{{sampleNumber}} samples</div>
     <div :id="chartDivId"></div>
   </div>
 </template>
@@ -51,6 +52,7 @@ export default class PieChart extends Vue {
     // default: () => 'title'
   })
   chartTitle!: string;
+  sampleNumber =0;
 
   @Watch('chartData')
   dataChanged() {
@@ -75,6 +77,7 @@ export default class PieChart extends Vue {
         value: x.count
       };
     });
+    this.sampleNumber = data.map(item => item.value).reduce((prev, next) => prev + next);
     const radius = Math.min(this.width, this.height) / 2 - this.margin;
 
     const svg = d3.select<Element, PieData>('#' + this.chartDivId);
@@ -206,7 +209,7 @@ export default class PieChart extends Vue {
   border: solid 1px #0b3142;
   // overflow: auto;
   position: relative;
-  max-height: 230px;
+  max-height: 240px;
 }
 
 .piechart_title {

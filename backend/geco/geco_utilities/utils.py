@@ -1,6 +1,5 @@
 from data_structure.database import *
 
-
 class Utils(object):
     def chat_message(message: str):
         payload = {"sender": "bot",
@@ -101,10 +100,10 @@ class Utils(object):
                 }}
 
     def tools_setup(add, remove):
-        return {"type" : "tools_setup",
+        return {"type": "tools_setup",
                 "payload": {
-                    "add" : [add],
-                    "remove" : [remove]}}
+                    "add": [add],
+                    "remove": [remove]}}
 
     def workflow(state, download=False, link_list=[]):
         if download:
@@ -116,18 +115,50 @@ class Utils(object):
                     "payload": {"state": state}}
 
     def table_viz(show, df, show_index=True, order_by=None):
+        df = df.T
         data = df.to_dict()
         return {"type": "table",
-                    "show": show,
-                    "payload": {
-                            "data":data,
-                        "options":{
-                                "show_index": show_index
-                                #"order_by": string
-                        }
+                "show": show,
+                "payload": {
+                    "data": data,
+                    "options": {
+                        "show_index": show_index
+                        # "order_by": string
+                    }
                 }}
 
+    def scatter(x, y, labels, u_labels):
+        dict_scat = []
+        # for l in u_labels:
+        #    for ax in x[labels==l]:
+        #        for ay in y[labels==l]:
+        #            dict_scat.append({'x': ax, 'y': ay, 'label': l})
+        # for ax in x:
+        #    for ay in y:
+        #       for l in u_labels:
+        #           dict_scat.append({'x':ax,'y':ay,'label':l})
+        dict_scat1 = {}
+        for l in u_labels:
+            dict_scat1[l] = {}
+            dict_scat1[l]['x'] = x[labels == l]
+            dict_scat1[l]['y'] = y[labels == l]
+        print('len x', len(x))
+        print('len y', len(y))
 
+        # dict_scat = list(itertools.chain(*[[{'label': str(l), 'x': float(vv[0]), 'y': float(vv[1])} for vv in v] for l, v in
+        #                      [(k, list(zip(v['x'], v['y']))) for (k, v) in dict_scat1.items()]]))
+        # dict_scat = dict_scat[:100]
+        dict_scat = [{"label": int(l),
+                      'data': (lambda x, y: [{'x': float(z[0]), 'y': float(z[1])} for z in zip(x, y)])(v['x'], v['y'])}
+                     for l, v in
+                     dict_scat1.items()]
+        # dict_scat = [{"x": ax, "y": ay, "label": l} for l, d in dict_scat1.items() for ax in d['x'] for ay in d['y']]
+
+        print(dict_scat)
+        return {
+            "type": "scatter",
+            "data": dict_scat,
+        }
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))

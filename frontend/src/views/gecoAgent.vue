@@ -51,9 +51,26 @@ import FunctionsArea from '../components/functionsArea/functionsArea.vue';
 import Toolbox from './../components/toolbox/toolbox_interface.vue';
 import ParametersBox from '@/components/ParametersBox.vue';
 import { conversation } from './../test/conversation';
+console.log("before", document.cookie)
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+const session=getCookie('session')
+if(!session){
+    document.cookie="session="+Math.random()
+}
+
+
+var session_id = /SESS\w*ID=([^;]+)/i.test(document.cookie) ? RegExp.$1 : false;
+var mycookie= document.cookie
 
 //const socket = io('/test', { path: '/geco_agent/socket.io' });
-const socket = io('http://localhost:5980');
+//const socket = io('http://localhost:5980');
+const socket = io('http://localhost:5980', {extraHeaders: {cookie:"abc=pietro;io="+ mycookie }});
 const tools = namespace('tools');
 const gecoAgentStore = namespace('gecoAgent');
 const conversationStore = namespace('gecoAgent/conversation');
@@ -62,11 +79,6 @@ const functionsAreaStore = namespace('gecoAgent/functionsArea');
 const dataVizStore = namespace('gecoAgent/DataViz');
 const processStore = namespace('gecoAgent/process');
 const tableStore = namespace('gecoAgent/TableViewer');
-
-//document.cookie = Math.random();
-//console.log("sono qua",document.location.href)
-//var session_id = /SESS\w*ID=([^;]+)/i.test(document.cookie) ? RegExp.$1 : false;
-//console.log("sono qua",session_id)
 
 
 @Component({
@@ -107,6 +119,7 @@ export default class GecoAgent extends Vue {
   // @gecoAgentStore.Mutation updateLastMessageId!: (newValue: number) => void;
 
   @processStore.Mutation resetProcess!: () => void;
+  @tools.Mutation resetToolPane!: () => void;
 
   lastMessageId = -1;
 
@@ -159,6 +172,7 @@ export default class GecoAgent extends Vue {
   }
 
   created() {
+    socket.emit('session_request', { session_id: document.cookie });
     socket.emit('ack', { message_id: this.lastMessageId });
     console.log(document.cookie)
     socket.emit('Prova', document.cookie );
@@ -228,7 +242,8 @@ export default class GecoAgent extends Vue {
       this.editMessage('');
       
       socket.emit('ack', { message_id: -1 });
-      this.resetProcess();;
+      this.resetProcess();
+      this.resetToolPane();
       
       this.updateFieldList([]);
       this.parameterParser([]);
