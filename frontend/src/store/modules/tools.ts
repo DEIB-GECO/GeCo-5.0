@@ -27,7 +27,7 @@ class Tools extends VuexModule {
     // { name: 'Table', component: 'tableViewer' }
     // { name: 'Field Explorer', component: 'field' },
     // { name: 'Query', component: 'query' }
-    // { name: 'Data', component: 'dataviz' }
+    { name: 'Data', component: 'dataviz' }
   ];
 
   @Mutation

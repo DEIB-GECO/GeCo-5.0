@@ -38,11 +38,11 @@ export default class DataVisualization extends Vue {
   @datavizStore.State charts!: ChartData[];
 
   created() {
-    console.log('data_visualizaiton has the following data:', this.charts);
+    console.log('data_visualization has the following data:', this.charts);
   }
 
   updated() {
-    console.log('data_visualizaiton updated with following data:', this.charts);
+    console.log('data_visualization updated with following data:', this.charts);
   }
 
   get gridDimension() {
