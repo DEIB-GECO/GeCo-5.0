@@ -29,7 +29,6 @@ class KMeansClustering(AbstractAction):
                 Utils.scatter(self.context.workflow[-1].result.x, self.context.workflow[-1].result.y,
                               self.context.workflow[-1].result.labels, self.context.workflow[-1].result.u_labels))
             self.context.add_bot_msg(Utils.chat_message("Ok, I did K-Means clustering using {}.".format(n_clust)))
-
             return ByeAction(self.context), True
 
         else:

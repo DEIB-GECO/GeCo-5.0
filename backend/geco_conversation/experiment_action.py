@@ -59,7 +59,7 @@ class ExperimentAction(AbstractAction):
         print(missing_fields)
         #fields = {k: v for (k, v) in self.status.items() if k in experiment_fields}
 
-        self.context.add_bot_msgs([Utils.table_viz('Data Available', self.context.payload.database.table.drop('local_url',axis=1))])
+        self.context.add_bot_msgs([Utils.table_viz('Table', self.context.payload.database.table.drop('local_url',axis=1))])
         if samples > 0:
             list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
 

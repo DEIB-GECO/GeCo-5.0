@@ -46,7 +46,7 @@ class ValueAction(AbstractAction):
                     Utils.choice('Available fields', choices),
                     Utils.param_list(list_param)] + \
                    Utils.create_piecharts(self.context,gcm_filter))
-            self.context.add_bot_msgs([Utils.table_viz('Data Available', self.context.payload.database.table.drop('local_url',axis=1))])
+            self.context.add_bot_msgs([Utils.table_viz('Table', self.context.payload.database.table.drop('local_url',axis=1))])
             return FieldAction(self.context), False
 
         elif any(elem in db for elem in given_value):
@@ -72,7 +72,7 @@ class ValueAction(AbstractAction):
 
                 self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),
                         Utils.choice('Available fields', choice), Utils.param_list(list_param)] + Utils.create_piecharts(self.context,gcm_filter))
-                self.context.add_bot_msgs([Utils.table_viz('Data Available', self.context.payload.database.table.drop('local_url',axis=1))])
+                self.context.add_bot_msgs([Utils.table_viz('Table', self.context.payload.database.table.drop('local_url',axis=1))])
                 return FieldAction(self.context), False
             else:
 
