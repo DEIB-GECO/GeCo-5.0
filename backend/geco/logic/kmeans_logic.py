@@ -2,8 +2,9 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV
 from sklearn import *
+from logic.pivot_logic import PivotRes
 
-class KMeansRes:
+class ClusteringRes:
     def __init__(self, values, kmeans_fit, labels):
         self.values = values
         self.kmeans_fit = kmeans_fit
@@ -13,7 +14,9 @@ class KMeansLogic:
     def __init__(self, kmeans):
         self.op = kmeans
         self.ds = self.op.depends_on.result
-        print(self.ds)
+        if  isinstance(self.ds, PivotRes):
+            self.labels = self.ds.labels
+            self.ds = self.ds.ds
         self.tuning = kmeans.tuning
         if self.tuning:
             self.min = kmeans.min_clusters
@@ -23,42 +26,36 @@ class KMeansLogic:
         self.run()
 
     def run(self):
+        if hasattr(self, 'labels'):
+            for i in self.labels:
+                if i in self.ds.columns:
+                    self.ds = self.ds.drop(i, axis=1)
+                elif i in self.ds.index:
+                    self.ds = self.ds.drop(i, axis=0)
+
         if not self.tuning:
             kmeans = KMeans(n_clusters=self.n_clust)
             kmeans_fit = kmeans.fit(self.ds.values)
             label =  kmeans.fit_predict(self.ds.values)
-            self.op.result = KMeansRes(self.ds.values, kmeans_fit, label)
+            self.op.result = ClusteringRes(self.ds.values, kmeans_fit, label)
         else:
 
             def silhouette_score(estimator, X):
                 clusters = estimator.fit_predict(self.ds.values)
                 #print(X)
-                print("self.ds.values e clusters")
-                print(self.ds.values)
-                print(clusters)
                 score = metrics.silhouette_score(self.ds.values, clusters)
                 return score
-
-            print(self.min)
-            print(self.max)
-
-            if(self.min <=1):
-                self.min ==2
 
             param_grid = {"n_clusters": range(self.min, self.max)}
             # run randomized search
             search = GridSearchCV(KMeans(),
                                   param_grid=param_grid,
                                   scoring=silhouette_score)
-
-            print("printo self")
-            print(self.ds.values)
-
             grid = search.fit(self.ds.values)
             kmeans = grid.best_estimator_
             kmeans_fit = kmeans.fit(self.ds.values)
             label = kmeans.fit_predict(self.ds.values)
-            self.op.result = KMeansRes(self.ds.values, kmeans_fit, label)
+            self.op.result = ClusteringRes(self.ds.values, kmeans_fit, label)
         self.op.executed = True
         self.write()
 

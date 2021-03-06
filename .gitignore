@@ -220,13 +220,14 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
-backend/geco/models/20210213-093109.tar.gz
-backend/geco/models/20210212-225735.tar.gz
-backend/geco/models/20210212-121357.tar.gz
-backend/geco/models/20210210-130532.tar.gz
-backend/geco/models/20210210-102851.tar.gz
-backend/geco/models/20210203-152906.tar.gz
-*.gz
+<<<<<<< Updated upstream
+
 backend/geco/data.txt
+frontend/nohup.out
+=======
+*.gz
+>>>>>>> Stashed changes
+
 *.json
+frontend/nohup.out
 frontend/nohup.out

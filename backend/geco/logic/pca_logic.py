@@ -1,5 +1,5 @@
 from sklearn.decomposition import PCA
-from .kmeans_logic import KMeansRes
+from .kmeans_logic import ClusteringRes
 
 class PCARes:
     def __init__(self, data):
@@ -10,7 +10,7 @@ class PCALogic:
     def __init__(self, pca):
         self.op = pca
         self.ds = self.op.depends_on.result
-        if isinstance(self.ds, KMeansRes):
+        if isinstance(self.ds, ClusteringRes):
             self.ds = self.ds.values
         self.components = pca.components
         self.run()

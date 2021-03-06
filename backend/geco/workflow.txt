@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7fb1a5804ed0>
+result:<data_structure.dataset.Dataset object at 0x7f94f0ff5590>
 depends_on:Dataset
 metadata:None
 region:None
@@ -28,8 +28,8 @@ executed:False
 result:None
 depends_on:Pivot
 tuning:True
-min_clusters:4
-max_clusters:6
+min_clusters:2
+max_clusters:4
 -------
 3
 PCA

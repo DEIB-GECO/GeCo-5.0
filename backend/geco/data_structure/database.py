@@ -111,7 +111,7 @@ class DB:
             if f != 'is_healthy':
                 self.table = self.table[self.table[f].isin(gcm[f])]
             else:
-                print("printo dal db", gcm[f])
+                print(gcm[f])
 
         for f in self.fields:
             values = []
@@ -201,7 +201,7 @@ class DB:
         items = items.split(',')
         items = [int(i) for i in items]
         # items = ','.join(str(i) for i in items)
- #       print(items)
+        print(items)
         donors = list(self.table[self.table['item_id'].isin(items)]['donor_source_id'].values)
         return donors
 
@@ -299,6 +299,7 @@ class DB:
 
     def find_regions(self, gcm, filter2):
         ds_name = gcm['dataset_name'][0]
+        print(ds_name)
         if ds_name in region_datasets:
             item_id = list(self.table['item_id'].values)
             items = ','.join(str(i) for i in item_id)

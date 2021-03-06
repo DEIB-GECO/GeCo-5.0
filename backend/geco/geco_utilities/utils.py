@@ -128,37 +128,25 @@ class Utils(object):
                 }}
 
     def scatter(x, y, labels, u_labels):
-        dict_scat = []
-        # for l in u_labels:
-        #    for ax in x[labels==l]:
-        #        for ay in y[labels==l]:
-        #            dict_scat.append({'x': ax, 'y': ay, 'label': l})
-        # for ax in x:
-        #    for ay in y:
-        #       for l in u_labels:
-        #           dict_scat.append({'x':ax,'y':ay,'label':l})
-        dict_scat1 = {}
-        for l in u_labels:
-            dict_scat1[l] = {}
-            dict_scat1[l]['x'] = x[labels == l]
-            dict_scat1[l]['y'] = y[labels == l]
-        print('len x', len(x))
-        print('len y', len(y))
+        #dict_scat1 = {}
+        #for l in u_labels:
+        #    dict_scat1[l] = {}
+        #    dict_scat1[l]['x'] = x[labels == l]
+        #    dict_scat1[l]['y'] = y[labels == l]
+        dict_scatter1 = {l: {'x': x[labels == l], 'y': y[labels == l]} for l in u_labels}
+        dict_scatter = [{"label": int(l),
+                      'data': (lambda x, y:
+                               [{'x': float(z[0]), 'y': float(z[1])} for z in zip(x, y)])(v['x'], v['y'])}
+                     for l, v in dict_scatter1.items()]
 
-        # dict_scat = list(itertools.chain(*[[{'label': str(l), 'x': float(vv[0]), 'y': float(vv[1])} for vv in v] for l, v in
-        #                      [(k, list(zip(v['x'], v['y']))) for (k, v) in dict_scat1.items()]]))
-        # dict_scat = dict_scat[:100]
-        dict_scat = [{"label": int(l),
-                      'data': (lambda x, y: [{'x': float(z[0]), 'y': float(z[1])} for z in zip(x, y)])(v['x'], v['y'])}
-                     for l, v in
-                     dict_scat1.items()]
-        # dict_scat = [{"x": ax, "y": ay, "label": l} for l, d in dict_scat1.items() for ax in d['x'] for ay in d['y']]
+        viz = [{"vizType": "scatter",
+                "title": 'ScatterPlot',
+                "data": dict_scatter}]
 
-        print(dict_scat)
-        return {
-            "type": "scatter",
-            "data": dict_scat,
-        }
+        return {"type": "data_summary",
+                "payload": {
+                    "viz": viz
+                }}
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))

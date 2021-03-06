@@ -1532,7 +1532,7 @@ class ShowAllRegion(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("Region:", test)) #prima andava c
+                dispatcher.utter_message(Utils.choice("Region:", c)) #prima andava test
             else:
                 dispatcher.utter_message("Region:")
                 print(c)
@@ -1799,7 +1799,18 @@ class ActionNClusters(Action):
             workflow.run(workflow[-1])
             #aggiungere risultati di scatterplot
 
+
+            dispatcher.utter_message(Utils.scatter(workflow[-1].result.x, workflow[-1].result.y,workflow[-1].result.labels, workflow[-1].result.u_labels))
+
+
+
+
+
+
+
             return []
+
+
 
 
 
