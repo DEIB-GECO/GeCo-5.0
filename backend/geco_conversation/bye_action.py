@@ -10,7 +10,7 @@ class ByeAction(AbstractAction):
         return None, True
 
     def on_enter(self):
-        self.context.add_bot_msg(Utils.chat_message("Do you want to start again from the beginning?"))
+        self.context.add_bot_msg(Utils.chat_message("Do you want to start another analysis from the beginning?"))
         return None, False
 
     def logic(self, message, intent, entities):

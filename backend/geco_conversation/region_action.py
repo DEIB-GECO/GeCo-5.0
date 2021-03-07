@@ -4,7 +4,7 @@ from geco_conversation import *
 from data_structure.operations import LogicalOperation
 
 
-class RegionAction(AbstractAction):
+class RegionAction(AbstractDBAction):
 
     def help_message(self):
         self.context.add_bot_msgs([Utils.chat_message(helpMessages.region_help)])
@@ -19,12 +19,11 @@ class RegionAction(AbstractAction):
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k not in ['name', 'metadata']}
         else:
             gcm_filter={}
-        print(gcm_filter)
         if 'fields' in self.status and 'metadata' in self.status['fields']:
             meta_filter = {k: v for (k, v) in self.status['fields']['metadata'].items()}
-            regions = self.context.payload.database.find_regions(gcm_filter, meta_filter)
+            regions = self.db.find_regions(gcm_filter, meta_filter)
         else:
-            regions = self.context.payload.database.find_regions(gcm_filter, {})
+            regions = self.db.find_regions(gcm_filter, {})
         if regions!= None:
             self.context.payload.insert('available_regions', {x: x for x in regions})
         else:
@@ -66,7 +65,7 @@ class RegionAction(AbstractAction):
             return Confirm(self.context), True
 
 
-class RegionAction2(AbstractAction):
+class RegionAction2(AbstractDBAction):
 
     def help_message(self):
         self.context.add_bot_msgs([Utils.chat_message(helpMessages.region_key_help)])

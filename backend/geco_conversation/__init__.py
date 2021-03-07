@@ -6,7 +6,7 @@ from workflow.pivot import *
 from workflow.clustering import *
 from workflow.pca import *
 from workflow.scatter import *
-from .abstract_action import AbstractAction
+from .abstract_action import AbstractAction, AbstractDBAction
 from .metadata_action import MetadataAction
 from .region_action import RegionAction
 from .rename_action import RenameAction

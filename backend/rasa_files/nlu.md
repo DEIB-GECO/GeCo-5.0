@@ -300,7 +300,7 @@
 - experimental data
 - sample
 - samples
-- I want [gene expression]{"entity":"data_type", "value":"gene expression quantification"} data for [tcga](source) from [kidney tissue]{"entity":"tissue", "value":"kidney"} for [healthy](is_healthy) patients
+- I want [gene expression]{"entity":"data_type", "value":"gene expression"} data for [tcga](source) from [kidney tissue]{"entity":"tissue", "value":"kidney"} for [healthy](is_healthy) patients
 - [simple nucleotide variation](feature)
 - I want [simple nucleotide variation](feature)
 - I need data from [dna repair](feature)
@@ -328,6 +328,9 @@
 - [gencode](source) data for [tumoral](is_healthy) patients with [breast invasive carcinoma](disease)
 - I need to select [kidney tissue](tissue: kidney) data
 - I want [tcga](source) data
+- I want [expressions of genes]{"entity": "data_type", "value": "gene expression"} for [pancreas](tissue)
+- [expressions of genes]{"entity": "data_type", "value": "gene expression"} for [pancreas](tissue)
+- [pancreas](tissue) [expression data of genes]{"entity": "data_type", "value": "gene expression"}
 - I want [expressions of mirna](data_type: mirna expression quantification)
 - I want to select [source](field)
 - samples with [breast invasive carcinoma](disease)

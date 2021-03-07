@@ -109,10 +109,10 @@ class Payload:
         if value == None:
             del (self.status[key])
             self.context.top_delta().delete_value(key, value)
-        elif self.status[key] == value:
+        elif key in self.status and self.status[key] == value:
             del (self.status[key])
             self.context.top_delta().delete_value(key, value)
-        else:
+        elif key in self.status:
             old = self.status[key]
             if isinstance(old, list):
                 self.status[key] = old.remove(value)
@@ -120,6 +120,21 @@ class Payload:
                 self.status[key].pop(value)
             # print(self.status[key])
             self.context.top_delta().update_value(key, old, self.status[key])
+
+    def delete_from_dict(self, outer_key, inner_key, value=None):
+        if value == None:
+            old = self.status[outer_key][inner_key]
+            del (self.status[outer_key][inner_key])
+            self.context.top_delta().update_value(outer_key, old, self.status[outer_key])
+            #self.context.top_delta().delete_value(key, value)
+        else:
+            old = self.status[outer_key][inner_key]
+            if isinstance(old, list):
+                self.status[outer_key][inner_key] = old.remove(value)
+            elif isinstance(old, dict):
+                self.status[outer_key][inner_key].pop(value)
+            # print(self.status[key])
+            self.context.top_delta().update_value(outer_key, old, self.status[outer_key])
 
     # Clear the status
     def clear(self):
