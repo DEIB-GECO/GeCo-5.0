@@ -78,6 +78,7 @@ class PivotLogic:
         df = pd.DataFrame().from_dict(self.ds.dict_for_join).T
         print('col', col)
         print('row', row)
+        print("value", self.op.value)
         print('prima pivot')
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)

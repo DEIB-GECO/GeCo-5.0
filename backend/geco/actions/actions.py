@@ -344,7 +344,7 @@ class ShowField(Action):
 
             dispatcher.utter_message(Utils.param_list(param_list))
             #print(db.table)
-            dispatcher.utter_message(Utils.table_viz("table",db.table))
+            #dispatcher.utter_message(Utils.table_viz("table",db.table))
 
             #dispatcher.utter_message(Utils.create_piecharts(db,list_param,param_list))
 
@@ -1131,10 +1131,18 @@ class SaveDb(Action):
         print(param_list)
         print("name db:", param_list["Name"])
 
-        ds=dataset.Dataset(dict_selection, param_list["Name"]) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
-
+        print("fatto_0")
+        dict_for_join={i:{'donor':d,'is_healthy':h,'disease':dis} for i,d,h,dis in db.table [['item_id','donor_source_id','is_healthy','disease']].values}
+        print("fatto_1")
+        ds=dataset.Dataset(dict_selection, param_list["Name"], donors=list(set(db.table['donor_source_id'])), items=list(set(db.table['item_id']))) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
+        print("fatto_2")
+        ds.dict_for_join= dict_for_join
+        print("fatto_3")
         workflow.add(Select(ds))
+        print("fatto_4")
+
         #workflow.run(workflow[-1])
+        return []
 
         #for num, name in  enumerate(workflow):
         #   c = num % 2
@@ -1706,9 +1714,13 @@ class RunWorkflow(Action):
         print("ci sono")
         if(feature_sample == "sample" ):
             workflow.add(pivot.Pivot(workflow[-1],region_column= region, metadata_row=['item_id'], region_value=region_1,other_meta=label_region, other_region=label_meta ) )
+            workflow.run(workflow[-1])
+            dispatcher.utter_message(Utils.table_viz('Table', workflow[-1].result.ds))
+
         else:
             workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],  region_value=region_1, other_meta=label_region, other_region=label_meta  ))
-
+            workflow.run(workflow[-1])
+            dispatcher.utter_message(Utils.table_viz('Table', workflow[-1].result.ds))
        # workflow.run(workflow[-1])
         return []
 
@@ -1769,6 +1781,9 @@ class ActionTakeMinMax(Action):
                 workflow.add(scatter.Scatter(workflow[-1],workflow[-2]))
                 print(workflow)
                 workflow.run(workflow[-1])
+                dispatcher.utter_message(
+                    Utils.scatter(workflow[-1].result.x, workflow[-1].result.y, workflow[-1].result.labels,
+                                  workflow[-1].result.u_labels))
 
                 #for i in c:
                 #    print(c[i])
@@ -1799,20 +1814,9 @@ class ActionNClusters(Action):
             workflow.run(workflow[-1])
             #aggiungere risultati di scatterplot
 
-
             dispatcher.utter_message(Utils.scatter(workflow[-1].result.x, workflow[-1].result.y,workflow[-1].result.labels, workflow[-1].result.u_labels))
 
-
-
-
-
-
-
             return []
-
-
-
-
 
 
 #################################################################################################

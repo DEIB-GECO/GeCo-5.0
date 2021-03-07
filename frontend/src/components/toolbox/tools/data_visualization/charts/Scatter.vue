@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { Scatter } from 'vue-chartjs';
-import {optionsTest, scatterTestData} from "@/test/scatter.ts";
-import {ScatterJSON} from "@/test/ScatterJSON.ts";
+import {optionsTest, scatterTestData} from "@/test/scatter";
+import {ScatterJSON} from "@/test/ScatterJSON";
 import Vue from 'vue';
 
 const pointColors = [
@@ -36,32 +36,55 @@ const borderColors = [
         ];
 
 export default Vue.extend({
-    name: 'Scatter',
-    // extends: Scatter,
+    // name: 'Scatter',
+    extends: Scatter,
     props:{
         chartData: {
           // type: [ScatterPointJSON],
-          default: () => {return ScatterJSON},
+          default: function () {return ScatterJSON},
         },
         data : {
-            default: ()=> {return scatterTestData}
+            default: function(){ return scatterTestData}
         },
         options : {
-            default: ()=> {return optionsTest}
+            default: function() {return optionsTest}
         }
     },
-    data: ()=> {
-        return{
-          dataPoints: {
-            datasets: []
-          }
+    // data() {
+    //     return{
+    //       dataPoints: {
+    //         datasets: {
+    //           default : function() {
+    //             return ScatterJSON;
+    //           }
+    //         }
+    //       }
+    //     }
+    // },
+    computed:{
+      dataPoints: function(){
+        console.log('AAAA');
+        return {
+          // @ts-ignore
+          datasets: this.chartData
         }
+      }
     },
-  
-  mounted () {
+    watch: {
+      dataPoints: function(){
+        // @ts-ignore
+        this.renderChart(this.chartData, this.options);
+      }
+    },
+
+  mounted: function() {
   //   this.transformDataset(this.chartData);
-  //   console.log("DataPoints", this.dataPoints);
-  //   this.renderChart(this.dataPoints, this.options);    
+    // @ts-ignore
+  this.dataPoints.datasets = this.chartData;
+  // @ts-ignore
+  console.log("Scatter invocato", this.dataPoints);
+  // @ts-ignore
+  this.renderChart(this.dataPoints, this.options);
    },
   methods: {
       transformDataset (serverData : ScatterPointJSON[]) {
@@ -82,7 +105,7 @@ export default Vue.extend({
               const red = Math.random() * 255;
               const green = Math.random() * 255;
               const blue = Math.random() * 255;
-              
+
               currentPointColor = `rgba(${red}, ${blue}, ${green}, 0.2)`;
               currentBorderColor = `rgba(${red}, ${blue}, ${green}, 1)`;
             }
@@ -105,7 +128,7 @@ export default Vue.extend({
             // console.log(label, dataGroup);
           });
 
-          console.log(this.dataPoints);
+          // console.log(this.dataPoints);
       }
   }
 })

@@ -115,8 +115,16 @@ class Utils(object):
                     "payload": {"state": state}}
 
     def table_viz(show, df, show_index=True, order_by=None):
+        if not isinstance(df.index, pd.MultiIndex):
+            df = df[df.index.notnull()]
         df = df.T
+        if not isinstance(df.index, pd.MultiIndex):
+            df = df[df.index.notnull()]
+        df.index = map(str, df.index)
+        df.columns = map(str, df.columns)
         data = df.to_dict()
+        # data = {str(k):v for k,v in data.items()}
+        #print(list(data.items())[:3])
         return {"type": "table",
                 "show": show,
                 "payload": {
