@@ -115,11 +115,11 @@ class ChangeField(AbstractDBAction):
             # self.context.payload.delete(self.status['field'])
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if
                           k in self.db.fields and k != selected_field and k != 'metadata'}
-            self.context.payload.delete_from_dict('field',selected_field, self.status['fields'][selected_field])
+            self.context.payload.delete_from_dict('fields',selected_field)
             if len(gcm_filter) > 0:
                 self.db.go_back(gcm_filter)
 
-            list_param = {x: x for x in self.context.payload.database.values[selected_field]}
+            list_param = {x: x for x in self.db.values[selected_field]}
             # fields = {k:v for (k,v) in self.status['fields'].items() if k != selected_field}
 
             # self.context.payload.delete(self.status['field'])

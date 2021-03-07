@@ -130,7 +130,12 @@ class Payload:
         else:
             old = self.status[outer_key][inner_key]
             if isinstance(old, list):
-                self.status[outer_key][inner_key] = old.remove(value)
+                if isinstance(value,list):
+                    self.status[outer_key][inner_key] = list(set(old)-set(value))
+                    if self.status[outer_key][inner_key]==[]:
+                        del (self.status[outer_key][inner_key])
+                else:
+                    self.status[outer_key][inner_key] = old.remove(value)
             elif isinstance(old, dict):
                 self.status[outer_key][inner_key].pop(value)
             # print(self.status[key])
