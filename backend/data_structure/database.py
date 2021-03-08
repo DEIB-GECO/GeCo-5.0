@@ -50,10 +50,11 @@ class database:
     def __init__(self):
         self.fields = fields
         self.get_all_values()
-#and dataset_name in {}
+
+
     def get_all_values(self):
-        self.fields_names = []
-        self.values = {}
+        #self.fields_names = []
+        #self.values = {}
         res = db.engine.execute("select item_id, local_url, donor_source_id, " + ', '.join(fields)
  + " from dw.flatten_gecoagent where source in {} and dataset_name in {}".format(tuple(sources), tuple(datasets)))
         values = res.fetchall()
@@ -62,8 +63,8 @@ class database:
         for f in self.fields:
             res = list(set(self.table[f]))
             if res!=[] and len(res)>1:
-                self.fields_names.append(f)
-                self.values[f]= res
+                #self.fields_names.append(f)
+                #self.values[f]= res
                 setattr(self, (str(f) + '_db'), res)
             else:
                 self.table = self.table.drop(f,axis=1)

@@ -13,7 +13,8 @@ class PivotAction(AbstractAction):
         self.context.add_bot_msgs([Utils.chat_message(messages.pivot_message)])
         self.context.add_bot_msgs([Utils.chat_message('The table will contain some region data for each samples.'
                                                       ' What do you want to see in the rows of your table?'
-                                                      'Features (i.e. region data) or samples?')])
+                                                      'Features (i.e. region data) or samples?'),
+                                   Utils.choice('Rows', {'Features':'features','Samples':'samples'})])
         self.context.add_bot_msgs([Utils.workflow('Pivot')])
         return None, False
 
