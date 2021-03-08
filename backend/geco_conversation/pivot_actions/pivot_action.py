@@ -11,10 +11,9 @@ class PivotAction(AbstractAction):
     def on_enter(self):
         # self.context.workflow.run(self.context.workflow[0])
         self.context.add_bot_msgs([Utils.chat_message(messages.pivot_message)])
-        self.context.add_bot_msgs([Utils.chat_message('The table will contain some region data for each samples.'
-                                                      ' What do you want to see in the rows of your table?'
-                                                      'Features (i.e. region data) or samples?'),
-                                   Utils.choice('Rows', {'Features':'features','Samples':'samples'})])
+        self.context.add_bot_msgs([Utils.chat_message('According to what you want to analyze, I\'ll build your table. '
+                                                      'Do you want to do operations on the features (e.g. genes) or on the samples?'),
+                                   Utils.choice('Rows', {'Features': 'features', 'Samples': 'samples'})])
         self.context.add_bot_msgs([Utils.workflow('Pivot')])
         return None, False
 
@@ -22,7 +21,7 @@ class PivotAction(AbstractAction):
         self.context.payload.back = PivotAction
 
         if ('metadata_row' not in self.status) and ('region_row' not in self.status):
-            if message.lower() in ['feature', 'features', 'regions', 'region data', 'region'] or intent=='feature':
+            if message.lower() in ['feature', 'features', 'regions', 'region data', 'region'] or intent == 'feature':
                 if self.context.payload.database.region_schema != None:
                     reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
                     self.context.add_bot_msgs([Utils.chat_message(messages.row_region_message),
@@ -33,7 +32,7 @@ class PivotAction(AbstractAction):
                     self.context.add_bot_msg(
                         Utils.chat_message("Do you want to start again from the beginning?"))
                     return ByeAction(self.context), False
-            elif message.lower() in ['sample', 'samples']  or intent=='sample':
+            elif message.lower() in ['sample', 'samples'] or intent == 'sample':
                 meta_row = 'item_id'
                 reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
                 self.context.payload.insert('metadata_row', [meta_row])
@@ -48,11 +47,12 @@ class PivotAction(AbstractAction):
 
             value = message.strip()
             if value not in self.context.payload.database.region_schema:
-                self.context.add_bot_msgs([Utils.chat_message("Sorry, your choice is not correct. Please, choose one in the right panel."),
-                                               Utils.choice('Available regions',
-                                                            {i: i for i in self.context.payload.database.region_schema
-                                                             if
-                                                             i != 'item_id'})])
+                self.context.add_bot_msgs(
+                    [Utils.chat_message("Sorry, your choice is not correct. Please, choose one in the right panel."),
+                     Utils.choice('Available regions',
+                                  {i: i for i in self.context.payload.database.region_schema
+                                   if
+                                   i != 'item_id'})])
                 return None, False
             self.context.payload.insert('region_value', [value])
             return Labels(self.context), True
@@ -74,7 +74,8 @@ class RegionRow(AbstractAction):
             for r in region_row:
                 if r not in self.context.payload.database.region_schema:
                     reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
-                    self.context.add_bot_msgs([Utils.chat_message("Sorry, your choice is not correct. Please, choose one in the right panel."),
+                    self.context.add_bot_msgs([Utils.chat_message(
+                        "Sorry, your choice is not correct. Please, choose one in the right panel."),
                                                Utils.choice('Available regions', reg_row)])
                     return None, False
             self.context.payload.insert('region_row', region_row)
@@ -85,7 +86,8 @@ class RegionRow(AbstractAction):
             self.context.payload.insert('meta_column', [meta_column])
             self.context.add_bot_msgs([Utils.chat_message(messages.value_region_message),
                                        Utils.choice('Available regions',
-                                                    {i: i for i in self.context.payload.database.region_schema if i!='item_id'})])
+                                                    {i: i for i in self.context.payload.database.region_schema if
+                                                     i != 'item_id'})])
 
             return PivotAction(self.context), False
 
@@ -121,8 +123,9 @@ class MetaRow(AbstractAction):
             for r in region_column:
                 if r not in self.context.payload.database.region_schema:
                     reg_col = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
-                    self.context.add_bot_msgs([Utils.chat_message("Sorry, your choice is not correct. Please, choose one in the right panel."),
-                                               Utils.choice('Available regions',reg_col)])
+                    self.context.add_bot_msgs([Utils.chat_message(
+                        "Sorry, your choice is not correct. Please, choose one in the right panel."),
+                                               Utils.choice('Available regions', reg_col)])
                     return None, False
             self.context.payload.insert('region_column', region_column)
             self.context.add_bot_msgs([Utils.chat_message(messages.value_region_message),
@@ -147,9 +150,9 @@ class Labels(AbstractAction):
             self.context.payload.insert('other_meta', None)
             self.context.add_bot_msg(
                 Utils.chat_message('Do you want to add a label to the samples? Choose one in the right pane'))
-            if hasattr(self.context.payload.database,'metadata'):
+            if hasattr(self.context.payload.database, 'metadata'):
                 keys = list(set(self.context.payload.database.metadata['key'].values))
-                self.context.add_bot_msg(Utils.choice('Metadata', {i:i for i in keys},show_search=True))
+                self.context.add_bot_msg(Utils.choice('Metadata', {i: i for i in keys}, show_search=True))
             return MetaLabels(self.context), False
         if intent != 'deny' and 'other_region' not in self.status:
             others = message.split(';')
@@ -197,26 +200,28 @@ class Labels(AbstractAction):
 
         # self.context.workflow.add(
         #    Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
-        if len(self.context.data_extraction.datasets)==1:
-            self.context.workflow.run(self.context.workflow[-1])
-            self.context.add_bot_msgs([Utils.chat_message('On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
-                                       Utils.table_viz('Table', self.context.workflow[-1].result.ds), Utils.tools_setup(add=None,remove='pie-chart')])
-        else:
-            #self.context.workflow.write_workflow()
-            #with open('workflow.txt','r') as f:
-            #    workflow = f.readlines()
-           # self.context.add_bot_msgs([Utils.chat_message('I am sorry but for now you can download only the workflow you did'), Utils.workflow('Download', download=True)])
+        if len(self.context.data_extraction.datasets) == 1:
             self.context.workflow.run(self.context.workflow[-1])
             self.context.add_bot_msgs([Utils.chat_message(
                 'On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
                                        Utils.table_viz('Table', self.context.workflow[-1].result.ds),
-                                       Utils.tools_setup(add=None, remove='data_summary')])
+                                       Utils.tools_setup(add=None, remove='pie-chart')])
+        else:
+            # self.context.workflow.write_workflow()
+            # with open('workflow.txt','r') as f:
+            #    workflow = f.readlines()
+            # self.context.add_bot_msgs([Utils.chat_message('I am sorry but for now you can download only the workflow you did'), Utils.workflow('Download', download=True)])
+            self.context.workflow.run(self.context.workflow[-1])
+            self.context.add_bot_msgs([Utils.chat_message(
+                'On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
+                Utils.table_viz('Table', self.context.workflow[-1].result.ds),
+                Utils.tools_setup(add=None, remove='data_summary')])
 
-        #self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
+        # self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
         # print(Utils.table_viz('Pivot',self.context.workflow[-1].result))
         self.context.payload.clear()
         print(len(self.context.data_extraction.datasets))
-        if len(self.context.data_extraction.datasets)==2:
+        if len(self.context.data_extraction.datasets) == 2:
             return JoinPivotAction(self.context), True
         return DonorDataset(self.context), True
 
@@ -235,9 +240,9 @@ class MetaLabels(AbstractAction):
             print(others)
             self.context.add_bot_msg(
                 Utils.chat_message('Do you want to add a label to the features? Choose one in the right pane'))
-            #self.context.add_bot_msg(Utils.choice('Regions',{i: i for i in self.context.payload.database.region_schema if
-             #                                        i != 'item_id'}))
+            # self.context.add_bot_msg(Utils.choice('Regions',{i: i for i in self.context.payload.database.region_schema if
+            #                                        i != 'item_id'}))
             self.context.add_bot_msg(Utils.choice('Available regions',
-                                                    {i: i for i in self.context.payload.database.region_schema if
-                                                     i != 'item_id'}))
+                                                  {i: i for i in self.context.payload.database.region_schema if
+                                                   i != 'item_id'}))
         return Labels(self.context), False

@@ -14,10 +14,13 @@ class ValueAction(AbstractDBAction):
     def logic(self, message, intent, entities):
 
         request_field = self.status['field'][-1]
+        print('gfields', self.status['field'])
+        print('req_field', request_field)
         db = self.db.values[request_field]
         given_value = entities[request_field] if (
                 (request_field in entities) and (any(elem in db for elem in entities[request_field]))) else [
             message.strip().lower()]
+        print('given_val', given_value)
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k in self.db.fields and k != 'is_healthy':
