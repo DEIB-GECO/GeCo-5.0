@@ -24,7 +24,7 @@ class Tools extends VuexModule {
   activeTools: ToolTuple[] = [
     // { name: 'Dataset List', component: 'dataset' },
     // { name: 'Metadata', component: 'metadata' },
-    // { name: 'Table', component: 'tableViewer' }
+    { name: 'Table', component: 'tableViewer' },
     // { name: 'Field Explorer', component: 'field' },
     // { name: 'Query', component: 'query' }
     { name: 'Data', component: 'dataviz' }
