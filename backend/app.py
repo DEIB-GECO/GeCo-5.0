@@ -177,16 +177,16 @@ def add_session_message(session, message):
         payload = message['payload']
         msg.append({'sender': payload['sender'], 'text': payload['text'], 'message_id': id})
         session['messages'] = msg
-    elif (message['type'] not in ['tools_setup', 'workflow']):
+    elif (message['type'] not in ['tools_setup']):
         temp_d = dict(message)
         temp_d['message_id'] = id
         session['last_json'][message['type']] = temp_d
-    elif (message['type']=='workflow'):
-        temp_d = dict(message)
-        temp_d['message_id'] = id
-        if message['type'] not in session['last_json']:
-            session['last_json'][message['type']] = [temp_d]
-        session['last_json'][message['type']].append(temp_d)
+    # elif (message['type']=='workflow'):
+    #     temp_d = dict(message)
+    #     temp_d['message_id'] = id
+    #     if message['type'] not in session['last_json']:
+    #         session['last_json'][message['type']] = [temp_d]
+    #     session['last_json'][message['type']].append(temp_d)
     else:
         for x in message['payload']['remove']:
             if x in session['last_json'].keys():
@@ -223,13 +223,12 @@ def test_ack_message(message):
             emit('json_response',
                  {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']},
                   'message_id': x['message_id']})
-        last_json = [x for x in session['last_json'] if session['last_json'][x]['message_id'] > user_message + 1]
+
+        last_json = [x for x in session['last_json'] if session['last_json'][x]['message_id'] >= user_message + 1]
         for x in last_json:
         #     if session['last_json'][x]['message_id'] > user_message + 1:
-            if x=='workflow':
-                for i in session['last_json'][x]:
-                    emit('json_response', i)
             emit('json_response', session['last_json'][x])
+
         #
         #
         # print(last_json)
