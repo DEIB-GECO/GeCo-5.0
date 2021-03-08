@@ -40,7 +40,7 @@ class AnnotationAction(AbstractDBAction):
 
         missing_fields = self.db.fields_names
         list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
-        self.context.add_bot_msgs([Utils.table_viz('Table', self.db_table.drop('local_url', axis=1))])
+        #self.context.add_bot_msgs([Utils.table_viz('Table', self.db_table.drop('local_url', axis=1))])
         if samples > 0:
             if len(list_param) != 0:
                 if gcm_filter != {}:

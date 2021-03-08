@@ -11,7 +11,9 @@ class PivotAction(AbstractAction):
     def on_enter(self):
         # self.context.workflow.run(self.context.workflow[0])
         self.context.add_bot_msgs([Utils.chat_message(messages.pivot_message)])
-        self.context.add_bot_msgs([Utils.chat_message('Do you want features or samples in the rows?')])
+        self.context.add_bot_msgs([Utils.chat_message('The table will contain some region data for each samples.'
+                                                      ' What do you want to see in the rows of your table?'
+                                                      'Features (i.e. region data) or samples?')])
         self.context.add_bot_msgs([Utils.workflow('Pivot')])
         return None, False
 
@@ -19,7 +21,7 @@ class PivotAction(AbstractAction):
         self.context.payload.back = PivotAction
 
         if ('metadata_row' not in self.status) and ('region_row' not in self.status):
-            if message.lower() in ['feature', 'features']:
+            if message.lower() in ['feature', 'features', 'regions', 'region data', 'region'] or intent=='feature':
                 if self.context.payload.database.region_schema != None:
                     reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
                     self.context.add_bot_msgs([Utils.chat_message(messages.row_region_message),
@@ -30,7 +32,7 @@ class PivotAction(AbstractAction):
                     self.context.add_bot_msg(
                         Utils.chat_message("Do you want to start again from the beginning?"))
                     return ByeAction(self.context), False
-            elif message.lower() in ['sample', 'samples']:
+            elif message.lower() in ['sample', 'samples']  or intent=='sample':
                 meta_row = 'item_id'
                 reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
                 self.context.payload.insert('metadata_row', [meta_row])

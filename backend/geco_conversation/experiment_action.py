@@ -49,7 +49,7 @@ class ExperimentAction(AbstractDBAction):
         # Find fields that are not already selected by the user
         missing_fields = self.db.fields_names
 
-        self.context.add_bot_msgs([Utils.table_viz('Table', self.db_table.drop('local_url', axis=1))])
+        #self.context.add_bot_msgs([Utils.table_viz('Table', self.db_table.drop('local_url', axis=1))])
         if samples > 0:
             list_param = {x: x for x in list(set(missing_fields).difference(set(self.status.keys())))}
 

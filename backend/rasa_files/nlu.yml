@@ -5535,10 +5535,19 @@ nlu:
   examples: |
     - feature
     - features
+    - region data
+    - i want features
+    - feture
+    - regions
 - intent: sample
   examples: |
     - sample
     - samples
+    - i want samples
+    - sampless
+    - i want items
+    - i want patients
+    - patients
 - intent: region
   examples: |
     - item_id
