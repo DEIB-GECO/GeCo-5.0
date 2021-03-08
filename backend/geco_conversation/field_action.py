@@ -51,7 +51,7 @@ class FieldAction(AbstractDBAction):
 
                     list_param = {x: x for x in self.db.values[field[0]]}
                     choice = [True if len(list_param) > 10 else False]
-                    self.context.add_bot_msgs([Utils.chat_message("Please provide a {}".format(field[0])),
+                    self.context.add_bot_msgs([Utils.chat_message(f"Please provide a {field[0]}"),
                                                Utils.choice(field[0], list_param, show_search=choice)])
                     return ValueAction(self.context), False
 
@@ -78,7 +78,7 @@ class FieldAction(AbstractDBAction):
                     return ValueAction(self.context), False
 
                 else:
-                    list_param = {x: x for x in missing_fields}
+                    list_param = {x: x for x in self.db.fields_names}
                     self.context.add_bot_msgs([Utils.chat_message(messages.wrong_choice),
                                                Utils.choice('Available fields', list_param)])
                     return None, False

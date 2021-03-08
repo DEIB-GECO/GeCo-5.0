@@ -112,7 +112,6 @@ class ChangeField(AbstractDBAction):
         selected_field = message.strip().lower()
 
         if selected_field in self.status['fields'] and selected_field != 'metadata':
-            # self.context.payload.delete(self.status['field'])
             gcm_filter = {k: v for (k, v) in self.status['fields'].items() if
                           k in self.db.fields and k != selected_field and k != 'metadata'}
             self.context.payload.delete_from_dict('fields',selected_field)
@@ -120,9 +119,7 @@ class ChangeField(AbstractDBAction):
                 self.db.go_back(gcm_filter)
 
             list_param = {x: x for x in self.db.values[selected_field]}
-            # fields = {k:v for (k,v) in self.status['fields'].items() if k != selected_field}
 
-            # self.context.payload.delete(self.status['field'])
             self.context.add_bot_msgs(
                 [Utils.chat_message("Which value do you want?"), Utils.choice(str(selected_field), list_param)])
             return ValueAction(self.context), False
@@ -142,6 +139,10 @@ class ChangeField(AbstractDBAction):
                     # if len(gcm_filter) > 0:
                     #   self.context.payload.database.go_back(gcm_filter)
                     self.context.payload.delete(selected_field, self.status['fields']['metadata'][selected_field])
+                    gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k in self.db.fields and k != selected_field  and k!='metadata'}
+
+                    if len(gcm_filter) > 0:
+                       self.db.go_back(gcm_filter)
                     list_param = {x: x for x in list(
                         set(self.db.metadata[self.db.metadata['key'] == selected_field]['values'].values))}
                     self.context.add_bot_msgs(

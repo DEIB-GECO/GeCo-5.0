@@ -16,7 +16,7 @@ class ValueAction(AbstractDBAction):
         request_field = self.status['field'][-1]
         db = self.db.values[request_field]
         given_value = entities[request_field] if (
-                    (request_field in entities) and (any(elem in db for elem in entities[request_field]))) else [
+                (request_field in entities) and (any(elem in db for elem in entities[request_field]))) else [
             message.strip().lower()]
         temp = self.status.copy()
         for (k, v) in temp.items():
@@ -51,14 +51,13 @@ class ValueAction(AbstractDBAction):
                     if request_field in self.status:
                         if given_value[i] not in self.status[request_field]:
                             self.context.payload.update(request_field, given_value[i])
-                            ì
                     else:
                         self.context.payload.insert(request_field, [given_value[i]])
 
             gcm_filter = {k: v for (k, v) in self.status.items() if k in self.db.fields}
             if len(gcm_filter) > 0:
                 self.db.update(gcm_filter)
-            choice = {x: x for x in self.context.payload.database.fields_names}
+            choice = {x: x for x in self.db.fields_names}
             list_param = {k: v for (k, v) in self.status.items() if (k in self.db.fields)}
             if len(choice) > 0:
                 self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),

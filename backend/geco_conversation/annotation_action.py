@@ -63,7 +63,9 @@ class AnnotationAction(AbstractDBAction):
                 fields = {x: self.status[x] for x in self.db.fields if x in self.status}
                 self.context.payload.clear()
                 self.context.payload.insert('fields', fields)
-                self.context.add_bot_msgs([Utils.param_list(fields)])
+                self.context.add_bot_msgs(
+                    [Utils.param_list(fields), Utils.tools_setup(add=None, remove='available_choices'),
+                     Utils.tools_setup(add=None, remove='table')])
                 return DSNameAction(self.context), True
 
         else:

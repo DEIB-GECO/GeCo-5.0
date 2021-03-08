@@ -16,12 +16,13 @@ class RenameAction(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
-        if intent != "deny":
-            name = message.strip()
-        else:
+        if intent != "affirm":
+            self.context.add_bot_msgs([Utils.chat_message(messages.name)])
+            return None, False
+        elif intent=='deny':
             name = "DS_" + str(len(self.context.data_extraction.datasets) +1 )
-
-        #urls = self.context.payload.database.download(self.status['fields'])
+        else:
+            name = message.strip()
         self.context.payload.update('fields', {'name':name})
         list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x not in ['metadata','regions']}
         self.context.add_bot_msgs([Utils.chat_message("OK, dataset saved with name: " + name),#Utils.chat_message(messages.download),

@@ -5,10 +5,12 @@ from sklearn import *
 from logic.pivot_logic import PivotRes
 
 class ClusteringRes:
-    def __init__(self, values, kmeans_fit, labels):
+    def __init__(self, name, values, kmeans_fit, labels):
+        self.name = name
         self.values = values
         self.kmeans_fit = kmeans_fit
         self.labels = labels
+
 
 class KMeansLogic:
     def __init__(self, kmeans):
@@ -16,6 +18,7 @@ class KMeansLogic:
         self.ds = self.op.depends_on.result
         if  isinstance(self.ds, PivotRes):
             self.labels = self.ds.labels
+            self.name = self.ds.ds_name
             self.ds = self.ds.ds
         self.tuning = kmeans.tuning
         if self.tuning:
@@ -55,7 +58,7 @@ class KMeansLogic:
             kmeans = grid.best_estimator_
             kmeans_fit = kmeans.fit(self.ds.values)
             label = kmeans.fit_predict(self.ds.values)
-            self.op.result = ClusteringRes(self.ds.values, kmeans_fit, label)
+            self.op.result = ClusteringRes(self.name, self.ds.values, kmeans_fit, label)
         self.op.executed = True
         self.write()
 
@@ -71,12 +74,14 @@ class KMeansLogic:
                         '"execution_count": 0,' +
                         '"metadata": {},' +
                         '"outputs": [],' +
-                        '"source": [kmeans = KMeans(n_clusters={})\n'.format(self.n_clust)+'kmeans_fit=kmeans.fit(table.values)\nlabels=kmeans.fit_predict(table.values)]},')
+                        f'"source": [kmeans = KMeans(n_clusters={self.n_clust})\n'+
+                        f'kmeans_fit=kmeans.fit({self.name}.values)\nlabels=kmeans.fit_predict({self.name}.values)]'+'},')
             f.close()
 
             with open('python_script.py', 'a') as f:
                 f.write('from sklearn.cluster import KMeans\n'+
-                        'kmeans = KMeans(n_clusters={})\nkmeans_fit=kmeans.fit(table.values)\nlabels=kmeans.fit_predict(table.values)'.format(self.n_clust))
+                        f'kmeans = KMeans(n_clusters={self.n_clust})\n'+
+                        f'kmeans_fit=kmeans.fit({self.name}.values)\nlabels=kmeans.fit_predict({self.name}.values)')
             f.close()
         else:
             with open('jupyter_notebook.ipynb', 'a') as f:
@@ -95,8 +100,8 @@ class KMeansLogic:
                         '"outputs": [],' +
                         '"source": ['+
                         'def silhouette_score(estimator, X):\n' +
-                        '\tclusters = estimator.fit_predict(table.values)\n' +
-                        '\tscore = metrics.silhouette_score(table.values, clusters)\n' +
+                        f'\tclusters = estimator.fit_predict({self.name}.values)\n' +
+                        f'\tscore = metrics.silhouette_score({self.name}.values, clusters)\n' +
                         '\treturn score\n\n'+
                         ']},')
                 f.write('{ "cell_type": "code",' +
@@ -105,9 +110,10 @@ class KMeansLogic:
                         '"outputs": [],' +
                         '"source": [' +
                         'param_grid = {"n_clusters": range')
-                f.write('({}, {})'.format(self.min, self.max)+'}\n')
+                f.write(f'({self.min}, {self.max})'+'}\n')
                 f.write('search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)\n'+
-                        'grid = search.fit(table.values)\n'+'labels=search.fit_predict(table.values)\n'+
+                        f'grid = search.fit({self.name}.values)\n'+
+                        f'labels=search.fit_predict({self.name}.values)\n'+
                         ']},')
             f.close()
 
@@ -116,12 +122,13 @@ class KMeansLogic:
                         'from sklearn.model_selection import GridSearchCV\n'+
                         'from sklearn import *\n'+
                         'def silhouette_score(estimator, X):\n'+
-                        '\tclusters = estimator.fit_predict(table.values)\n'+
-                        '\tscore = metrics.silhouette_score(table.values, clusters)\n'+
+                        f'\tclusters = estimator.fit_predict({self.name}.values)\n'+
+                        f'\tscore = metrics.silhouette_score({self.name}.values, clusters)\n'+
                         '\treturn score\n\n'+
-                        'param_grid = {"n_clusters":'+ 'range({}, {})'.format(self.min, self.max)+'}\n'+
+                        'param_grid = {"n_clusters":'+ f'range({self.min}, {self.max})'+'}\n'+
                         'search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)\n'+
-                        'grid = search.fit(table.values)\n'+'labels=search.fit_predict(table.values)\n')
+                        f'grid = search.fit({self.name}.values)\n'+
+                        f'labels=search.fit_predict({self.name}.values)\n')
             f.close()
 
 

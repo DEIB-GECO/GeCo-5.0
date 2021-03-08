@@ -11,6 +11,7 @@ class PCALogic:
         self.op = pca
         self.ds = self.op.depends_on.result
         if isinstance(self.ds, ClusteringRes):
+            self.name = self.ds.name
             self.ds = self.ds.values
         self.components = pca.components
         self.run()
@@ -33,10 +34,12 @@ class PCALogic:
                     '"execution_count": 0,' +
                     '"metadata": {},' +
                     '"outputs": [],' +
-                    '"source": [pca = PCA({})\n' + 'pca_data = pca.fit_transform(table.values)\n]},')
+                    f'"source": [pca = PCA({self.components})\n' +
+                    f'pca_data = pca.fit_transform({self.name}.values)\n]'+'},')
         f.close()
 
         with open('python_script.py', 'a') as f:
             f.write('from sklearn.decomposition import PCA\n' +
-                    'pca = PCA({})\n'.format(self.components) + 'pca_data = pca.fit_transform(table.values)\n'.format(self.components))
+                    f'pca = PCA({self.components})\n' +
+                    f'pca_data = pca.fit_transform({self.name}.values)\n')
         f.close()

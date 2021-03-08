@@ -1,5 +1,5 @@
-import itertools
 import pandas as pd
+
 
 class Utils(object):
     def chat_message(message: str):
@@ -9,11 +9,9 @@ class Utils(object):
 
     def choice(caption, list_params, show_search=False, show_details=False, show_help=False, helpIconContent=''):
         elements = []
-        if show_search and show_details and show_help:
+        if show_details and show_help:
             raise Exception('Not implemented yet')
-        elif show_search and show_details and not show_help:
-            raise Exception('Not implemented yet')
-        elif show_search and not show_details and show_help:
+        elif show_help and not show_details:
             for i in list_params:
                 elements.append({'name': i, 'value': list_params[i]})
             return {"type": "available_choices",
@@ -27,10 +25,6 @@ class Utils(object):
         elif show_search and not show_details and not show_help:
             for i in list_params:
                 elements.append({'name': i, 'value': list_params[i]})
-        elif not show_search and show_details and show_help:
-            raise Exception('Not implemented yet')
-        elif not show_search and show_details and not show_help:
-            raise Exception('Not implemented yet')
         elif not show_search and not show_details and show_help:
             for i in list_params:
                 elements.append({'name': i, 'value': list_params[i]})
@@ -62,12 +56,13 @@ class Utils(object):
                 "payload": elements}
 
     def create_piecharts(context, gcm_filter):
+        db = context.payload.database
         msgs = []
         msgs.append(Utils.tools_setup('dataviz', 'dataset'))
         values = {k: v for (k, v) in list(
             sorted(
-                [(x, context.payload.database.retrieve_values(gcm_filter, x)) for x in
-                 context.payload.database.fields_names if x not in context.payload.status],
+                [(x, db.retrieve_values(gcm_filter, x)) for x in
+                 db.fields_names if x not in context.payload.status],
                 key=lambda x: len(x[1])))[:6]}
         copy_val = values.copy()
         for k, v in copy_val.items():
@@ -125,7 +120,7 @@ class Utils(object):
         df.columns = map(str, df.columns)
         data = df.to_dict()
         # data = {str(k):v for k,v in data.items()}
-        #print(list(data.items())[:3])
+        # print(list(data.items())[:3])
         return {"type": "table",
                 "show": show,
                 "payload": {
@@ -137,16 +132,11 @@ class Utils(object):
                 }}
 
     def scatter(x, y, labels, u_labels):
-        #dict_scat1 = {}
-        #for l in u_labels:
-        #    dict_scat1[l] = {}
-        #    dict_scat1[l]['x'] = x[labels == l]
-        #    dict_scat1[l]['y'] = y[labels == l]
         dict_scatter1 = {l: {'x': x[labels == l], 'y': y[labels == l]} for l in u_labels}
         dict_scatter = [{"label": int(l),
-                      'data': (lambda x, y:
-                               [{'x': float(z[0]), 'y': float(z[1])} for z in zip(x, y)])(v['x'], v['y'])}
-                     for l, v in dict_scatter1.items()]
+                         'data': (lambda x, y:
+                                  [{'x': float(z[0]), 'y': float(z[1])} for z in zip(x, y)])(v['x'], v['y'])}
+                        for l, v in dict_scatter1.items()]
 
         viz = [{"vizType": "scatter",
                 "title": 'ScatterPlot',
