@@ -217,7 +217,7 @@ def test_ack_message(message):
         #
         # # Else we send from user_message + 1
         # else:
-        last_msgs = [x for x in session['messages'] if x['message_id'] > user_message + 1]
+        last_msgs = [x for x in session['messages'] if x['message_id'] >= user_message + 1]
         for x in last_msgs:
             #if x['message_id'] > user_message + 1:
             emit('json_response',
