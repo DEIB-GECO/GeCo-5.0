@@ -21,7 +21,8 @@ db_string = get_db_uri()
 db = create_engine(db_string)
 
 class PivotRes:
-    def __init__(self, pivot, labels, dict_for_join):
+    def __init__(self, name, pivot, labels, dict_for_join):
+        self.ds_name = name
         self.ds = pivot
         self.labels = labels
         self.dict_for_join = dict_for_join
@@ -59,8 +60,6 @@ class PivotLogic:
         #temp_reg = self.ds.region.merge(temp_meta, left_on='item_id', right_index=True)
         temp_reg = self.ds.region
         #items_reg = pd.DataFrame(index=list(set(temp_reg['item_id'])))
-        print('TEMP REG')
-        print(temp_reg.head())
         #if (self.op.region_col!=None) and (self.op.meta_col!=None):
         #    col = self.op.region_col.append(self.op.meta_col)
         if self.op.region_col!=None:
@@ -119,10 +118,10 @@ class PivotLogic:
         #pivot.index= pivot.index.droplevel(0)
         print('pivot!')
         print(pivot.head())
-        pivot.to_csv('pivot.csv')
-        self.op.result = PivotRes(pivot, labels, self.ds.dict_for_join)
+        pivot.to_csv(f'{self.ds.name}.csv')
+        self.op.result = PivotRes(self.ds.name, pivot, labels, self.ds.dict_for_join)
         self.op.executed = True
-        #self.write()
+        self.write()
 
 
     def write(self):

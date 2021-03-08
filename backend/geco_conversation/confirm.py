@@ -1,7 +1,8 @@
 from data_structure.dataset import Dataset
 from geco_conversation import *
 
-class Confirm(AbstractAction):
+
+class Confirm(AbstractDBAction):
     def help_message(self):
         self.context.add_bot_msgs([Utils.chat_message(helpMessages.confirm_help)])
         return None, True
@@ -15,69 +16,66 @@ class Confirm(AbstractAction):
         return None, False
 
     def logic(self, message, intent, entities):
-        if self.context.payload.back!= RegionAction:
+        if self.context.payload.back != RegionAction:
             return DSNameAction(self.context), True
-            #if intent == "affirm":
+            # if intent == "affirm":
             #    self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
-             #   return RenameAction(self.context, MetadataAction(self.context)), False
-            #else:
-             #   self.context.add_bot_msgs([Utils.chat_message(messages.restart_selection)])
-             #   return ChangeSelection(self.context), False
+            #   return RenameAction(self.context, MetadataAction(self.context)), False
+            # else:
+            #   self.context.add_bot_msgs([Utils.chat_message(messages.restart_selection)])
+            #   return ChangeSelection(self.context), False
         else:
             if intent == "affirm":
                 fields = self.status['fields'].copy()
                 if 'metadata' in fields:
-                    del(fields['metadata'])
+                    del (fields['metadata'])
                 if 'name' in fields:
-                    del(fields['name'])
+                    del (fields['name'])
 
-                links = self.context.payload.database.download(fields)
-                #urls = []
+                links = self.db.download(fields)
+                # urls = []
                 list_param = {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata'}
                 meta_dict = {}
                 if 'metadata' in self.status:
                     for x in self.status['metadata']:
                         meta_dict[x] = self.status["metadata"][x]
                 meta = {'metadata': meta_dict}
-                print('meta', meta)
-                donors = self.context.payload.database.retrieve_donors(meta['metadata'])
+                donors = self.db.retrieve_donors(meta['metadata'])
                 self.context.payload.insert('donors', donors)
-                #print(self.status['donors'])
-                if meta_dict!={}:
+                # print(self.status['donors'])
+                if meta_dict != {}:
                     list_param.update(meta)
                 list_param_ds = list_param.copy()
                 name = list_param['name']
-                del(list_param_ds['name'])
-                table = self.context.payload.database.table
-                dict_for_join = {i: {'donor':d,'is_healthy':h,'disease':dis}
-                             for i,d,h,dis in table[['item_id','donor_source_id','is_healthy','disease']].values}
-                #dict_for_join = {i: {'donor':table[table['item_id']==i]['donor_source_id'].values[0],
-                #                 'is_healthy':table[table['item_id']==i]['is_healthy'].values[0],
-                #                 'disease':table[table['item_id']==i]['disease'].values[0]}
-                #                 for i in set(table['item_id'])}
-                ds = Dataset(list_param_ds, name, donors=self.status['donors'], items=list(set(self.context.payload.database.table['item_id'])))
+                del (list_param_ds['name'])
+                dict_for_join = {i: {'donor': d, 'is_healthy': h, 'disease': dis}
+                                 for i, d, h, dis in
+                                 self.db_table[['item_id', 'donor_source_id', 'is_healthy', 'disease']].values}
+                ds = Dataset(list_param_ds, name, donors=self.status['donors'],
+                             items=list(set(self.db_table['item_id'])))
                 ds.dict_for_join = dict_for_join
                 self.context.data_extraction.datasets.append(ds)
 
-                self.context.payload.database.go_back({})
-                #fields =  {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata' and x!='name'}
-                #print(fields)
-                #print(self.status['fields']['metadata'])
-                #meta = self.context.payload.database.retrieve_meta(fields,self.status['fields']['metadata'])
-                #ds.add_meta_table(meta)
-                if len(meta_dict.keys())>0:
+                self.db.go_back({})
+                # fields =  {x: self.status['fields'][x] for x in self.status['fields'] if x != 'metadata' and x!='name'}
+                # print(fields)
+                # print(self.status['fields']['metadata'])
+                # meta = self.context.payload.database.retrieve_meta(fields,self.status['fields']['metadata'])
+                # ds.add_meta_table(meta)
+                if len(meta_dict.keys()) > 0:
                     self.context.workflow.add(Select(ds, metadata=meta_dict))
                 else:
                     self.context.workflow.add(Select(ds))
                 self.context.add_bot_msgs([Utils.chat_message(messages.download),
-                                           Utils.workflow('Data Selection', download=True, link_list=links), Utils.param_list(list_param),
+                                           Utils.workflow('Data Selection', download=True, link_list=links),
+                                           Utils.param_list(list_param),
                                            Utils.tools_setup(add=None, remove='data_summary')])
 
-                #self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection',download=True,link_list=links), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param), Utils.tools_setup(add=None,remove='data_summary')])
-                #if len(self.context.data_extraction.datasets)%2==0:
+                # self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection',download=True,link_list=links), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param), Utils.tools_setup(add=None,remove='data_summary')])
+                # if len(self.context.data_extraction.datasets)%2==0:
                 #    return YesNoAction(self.context, GMQLUnaryAction(self.context), GMQLBinaryAction(self.context)), False
-                #else:
-                 #   return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
+                # else:
+                #   return YesNoAction(self.context, GMQLUnaryAction(self.context), NewDataset(self.context)), False
                 return PivotAction(self.context), True
             else:
                 self.context.add_bot_msgs(
@@ -99,10 +97,11 @@ class ChangeSelection(AbstractAction):
         else:
             list_param = {x: x for x in self.status['fields']}
             self.context.add_bot_msgs([Utils.chat_message(messages.change_field),
-                    Utils.choice("Fields selected", list_param)])
+                                       Utils.choice("Fields selected", list_param)])
             return ChangeField(self.context), False
 
-class ChangeField(AbstractAction):
+
+class ChangeField(AbstractDBAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.change_field_help)]
 
@@ -112,43 +111,47 @@ class ChangeField(AbstractAction):
     def logic(self, message, intent, entities):
         selected_field = message.strip().lower()
 
-        if selected_field in self.status['fields'] and selected_field!='metadata':
-            #self.context.payload.delete(self.status['field'])
-            gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k in self.context.payload.database.fields and k!=selected_field and k!='metadata'}
-            self.context.payload.delete(selected_field,self.status['fields'][selected_field])
+        if selected_field in self.status['fields'] and selected_field != 'metadata':
+            gcm_filter = {k: v for (k, v) in self.status['fields'].items() if
+                          k in self.db.fields and k != selected_field and k != 'metadata'}
+            self.context.payload.delete_from_dict('fields',selected_field)
             if len(gcm_filter) > 0:
-                self.context.payload.database.go_back(gcm_filter)
+                self.db.go_back(gcm_filter)
 
-            list_param = {x: x for x in self.context.payload.database.values[selected_field]}
-            #fields = {k:v for (k,v) in self.status['fields'].items() if k != selected_field}
+            list_param = {x: x for x in self.db.values[selected_field]}
 
-            #self.context.payload.delete(self.status['field'])
-            self.context.add_bot_msgs([Utils.chat_message("Which value do you want?"),Utils.choice(str(selected_field), list_param)])
+            self.context.add_bot_msgs(
+                [Utils.chat_message("Which value do you want?"), Utils.choice(str(selected_field), list_param)])
             return ValueAction(self.context), False
-            #return self.status['back'](self.context), True
-        elif selected_field=='metadata' or selected_field in self.status['fields']['metadata']:
+            # return self.status['back'](self.context), True
+        elif selected_field == 'metadata' or selected_field in self.status['fields']['metadata']:
             from .metadata_action import KeyAction
-            if selected_field=='metadata':
+            if selected_field == 'metadata':
                 list_param = {x: x for x in self.status['fields']['metadata']}
-                if list_param.keys()==1:
+                if list_param.keys() == 1:
                     self.context.add_bot_msgs([Utils.chat_message('Which one do you want to change?'),
                                                Utils.choice("Metadata selected", list_param)])
                     return ChangeMetadata(self.context), False
                 else:
-                    selected_field=list_param.keys()[0]
-                    #gcm_filter = {k: v for (k, v) in self.status['field'].items() if k in self.context.payload.database.fields and k != selected_field  and k!='metadata'}
+                    selected_field = list_param.keys()[0]
+                    # gcm_filter = {k: v for (k, v) in self.status['field'].items() if k in self.context.payload.database.fields and k != selected_field  and k!='metadata'}
 
-                    #if len(gcm_filter) > 0:
-                     #   self.context.payload.database.go_back(gcm_filter)
+                    # if len(gcm_filter) > 0:
+                    #   self.context.payload.database.go_back(gcm_filter)
                     self.context.payload.delete(selected_field, self.status['fields']['metadata'][selected_field])
-                    list_param = {x: x for x in list(set(self.context.payload.database.metadata[self.context.payload.database.metadata['key']==selected_field]['values'].values))}
+                    gcm_filter = {k: v for (k, v) in self.status['fields'].items() if k in self.db.fields and k != selected_field  and k!='metadata'}
+
+                    if len(gcm_filter) > 0:
+                       self.db.go_back(gcm_filter)
+                    list_param = {x: x for x in list(
+                        set(self.db.metadata[self.db.metadata['key'] == selected_field]['values'].values))}
                     self.context.add_bot_msgs(
                         [Utils.chat_message("Which value do you want?"), Utils.choice(str(selected_field), list_param)])
                     return KeyAction(self.context), False
             else:
                 self.context.payload.delete(selected_field, self.status['fields']['metadata'][selected_field])
-                list_param = {x: x for x in list(set(self.context.payload.database.metadata[
-                                                         self.context.payload.database.metadata[
+                list_param = {x: x for x in list(set(self.db.metadata[
+                                                         self.db.metadata[
                                                              'key'] == selected_field]['values'].values))}
 
                 self.context.add_bot_msgs(
@@ -160,7 +163,7 @@ class ChangeField(AbstractAction):
             return None, False
 
 
-class ChangeMetadata(AbstractAction):
+class ChangeMetadata(AbstractDBAction):
     def help_message(self):
         return [Utils.chat_message(helpMessages.change_field_help)]
 
@@ -173,8 +176,8 @@ class ChangeMetadata(AbstractAction):
 
         if selected_field in self.status['fields']['metadata']:
             self.context.payload.delete(selected_field, self.status['fields']['metadata'][selected_field])
-            list_param = {x: x for x in list(set(self.context.payload.database.metadata[
-                                                     self.context.payload.database.metadata[
+            list_param = {x: x for x in list(set(self.db.metadata[
+                                                     self.db.metadata[
                                                          'key'] == selected_field]['values'].values))}
 
             self.context.add_bot_msgs(

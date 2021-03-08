@@ -7,16 +7,16 @@ class DataAnalysis(AbstractAction):
         return None, False
 
     def on_enter(self):
-        self.context.add_bot_msg(Utils.chat_message("Which operation do you want to do?"))
+        self.context.add_bot_msg(Utils.chat_message(messages.arithmetic_operation))
         self.context.add_bot_msg(Utils.choice('Available operations', {'K-Means clustering': 'K-Means clustering'}))
         return None, False
 
     def logic(self, message, intent, entities):
 
         if intent in ['clustering','cluster']:
-            self.context.add_bot_msg(Utils.chat_message("Ok, I will perform K-Means clustering."))
+            self.context.add_bot_msg(Utils.chat_message(messages.kmeans))
             return KMeansClustering(self.context), True
 
         else:
-            self.context.add_bot_msg(Utils.chat_message("Sorry, only clustering is implemented till now."))
+            self.context.add_bot_msg(Utils.chat_message(messages.only_clust))
             return None, True

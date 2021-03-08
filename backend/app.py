@@ -177,16 +177,26 @@ def add_session_message(session, message):
         payload = message['payload']
         msg.append({'sender': payload['sender'], 'text': payload['text'], 'message_id': id})
         session['messages'] = msg
-    elif (message['type'] != 'tools_setup'):
+    elif (message['type'] not in ['tools_setup']):
         temp_d = dict(message)
         temp_d['message_id'] = id
         session['last_json'][message['type']] = temp_d
+    # elif (message['type']=='workflow'):
+    #     temp_d = dict(message)
+    #     temp_d['message_id'] = id
+    #     if message['type'] not in session['last_json']:
+    #         session['last_json'][message['type']] = [temp_d]
+    #     session['last_json'][message['type']].append(temp_d)
     else:
         for x in message['payload']['remove']:
             if x in session['last_json'].keys():
                 del session['last_json'][x]
 
     return id
+
+#Get message id
+def get_id(message):
+    return message['message_id']
 
 # Receive ack message and send the messages after the received ack number
 # If -1 then from the beginning
@@ -197,25 +207,40 @@ def test_ack_message(message):
 
     if 'messages' in session:
         # If -1 we send all the messages in the conversation
-        if user_message == -1:
-            for x in session['messages']:
-                emit('json_response',
-                     {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']},
-                      'message_id': x['message_id']})
-            for x in session['last_json']:
-                emit('json_response', session['last_json'][x])
+        # if user_message == -1:
+        #     for x in session['messages']:
+        #         emit('json_response',
+        #              {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']},
+        #               'message_id': x['message_id']})
+        #     for x in session['last_json']:
+        #         emit('json_response', session['last_json'][x])
+        #
+        # # Else we send from user_message + 1
+        # else:
+        last_msgs = [x for x in session['messages'] if x['message_id'] >= user_message + 1]
+        for x in last_msgs:
+            #if x['message_id'] > user_message + 1:
+            emit('json_response',
+                 {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']},
+                  'message_id': x['message_id']})
 
-        # Else we send from user_message + 1
-        else:
-            for x in session['messages']:
-                if x['message_id'] > user_message + 1:
-                    emit('json_response',
-                         {"type": "message", "payload": {'sender': x['sender'], 'text': x['text']},
-                          'message_id': x['message_id']})
+        last_json = [x for x in session['last_json'] if session['last_json'][x]['message_id'] >= user_message + 1]
+        for x in last_json:
+        #     if session['last_json'][x]['message_id'] > user_message + 1:
+            emit('json_response', session['last_json'][x])
 
-            for x in session['last_json']:
-                if session['last_json'][x]['message_id'] > user_message + 1:
-                    emit('json_response', session['last_json'][x])
+        #
+        #
+        # print(last_json)
+        # workflow = list(filter(lambda i: i['type'] == 'workflow', last_json))
+        # for i in workflow:
+        #     emit('json_response',  workflow[i])
+        # types = set([i['type'] for i in last_json if type!='workflow'])
+        # for t in types:
+        #     choice = list(filter(lambda i: i['type'] == t, last_json))[-1]
+        #     emit('json_response', choice)
+
+
 
 
 # Receive reset message

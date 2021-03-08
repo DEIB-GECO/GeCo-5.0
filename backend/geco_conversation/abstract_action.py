@@ -48,6 +48,30 @@ class AbstractAction(ABC):
          #   return self.logic(message, intent, entities)
 
 
+class AbstractDBAction(AbstractAction):
+    def __init__(self, context):
+        self.context = context
+        self.status = self.context.payload.status
+        self.db = self.context.payload.database
+        self.db_table = self.db.table
 
+    @abstractmethod
+    def help_message(self):
+        pass
+
+    @abstractmethod
+    def on_enter(self):
+        pass
+
+    @abstractmethod
+    def logic(self, message, intent, entities):
+        pass
+
+    def run(self, message, intent, entities):
+        if intent == "help":
+            self.help_message()
+            #return None, False
+        else:
+            return self.logic(message, intent, entities)
 
 
