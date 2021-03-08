@@ -91,18 +91,18 @@ class DSNameAction(AbstractAction):
         return [Utils.chat_message(helpMessages.value_help)]
 
     def on_enter(self):
-        # if len(set(self.context.payload.database.table['dataset_name']))==1:
-        fields = self.status['fields']
-        fields.update({'dataset_name': list(set(self.context.payload.database.table['dataset_name']))})
-        self.context.payload.clear()
-        self.context.payload.insert('fields', fields)
-        self.context.add_bot_msgs([Utils.param_list(fields)])
-        return RenameAction(self.context, MetadataAction(self.context)), True
-        # else:
-        #    self.context.add_bot_msgs([Utils.chat_message('Which dataset do you want among these?'),
-        #                               Utils.choice('Datasets', {i:i for i in list(set(self.context.payload.database.table['dataset_name']))})])
+        if len(set(self.context.payload.database.table['dataset_name']))==1:
+            fields = self.status['fields']
+            fields.update({'dataset_name': list(set(self.context.payload.database.table['dataset_name']))})
+            self.context.payload.clear()
+            self.context.payload.insert('fields', fields)
+            self.context.add_bot_msgs([Utils.param_list(fields)])
+            return RenameAction(self.context, MetadataAction(self.context)), True
+        else:
+            self.context.add_bot_msgs([Utils.chat_message('Which dataset do you want among these?'),
+                                       Utils.choice('Datasets', {i:i for i in list(set(self.context.payload.database.table['dataset_name']))})])
 
-        #    return None, False
+            return None, False
 
     def logic(self, message, intent, entities):
         if message in list(set(self.context.payload.database.table['dataset_name'])):
