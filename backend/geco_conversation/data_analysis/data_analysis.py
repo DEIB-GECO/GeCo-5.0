@@ -20,7 +20,7 @@ class DataAnalysis(AbstractAction):
             self.context.add_bot_msg(Utils.chat_message(messages.kmeans))
             return KMeansClustering(self.context), True
         elif intent=='dbscan':
-            self.context.add_bot_msg(Utils.chat_message(messages.kmeans))
+            self.context.add_bot_msg(Utils.chat_message(messages.dbscan))
             return DBScanClustering(self.context), True
         else:
             self.context.add_bot_msg(Utils.chat_message(messages.only_clust))
