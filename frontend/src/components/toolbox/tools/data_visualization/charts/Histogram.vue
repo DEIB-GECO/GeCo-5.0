@@ -4,7 +4,7 @@
   </div>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import { Bar } from 'vue-chartjs';
 import { bars, optionsTest } from '@/test/barchart_js';
 import { ChartData, ChartOptions } from 'chart.js';
@@ -32,7 +32,7 @@ export default Vue.extend({
       type: Object as () => ChartOptions
     },
     chartTitle: {
-      default: ""
+      default: ''
     }
   },
   data() {
@@ -62,55 +62,51 @@ export default Vue.extend({
       });
       const values: any = [];
       keys.forEach((x: number | string) => values.push(map.get(x)));
-      if(this.myData.datasets!= undefined){
+      if (this.myData.datasets != undefined) {
         this.myData.datasets[0].data = values;
-        this.myData.labels= keys;
+        this.myData.labels = keys;
       }
-
 
       // if(this.localData.datasets!= undefined){
       //   this.localData.datasets[0].data = values;
       //   this.localData.labels= keys;
       // }
     },
-    computeDiscreteFrequencies(numberList: number[]){
-      const binNumber = Math.ceil(Math.sqrt(numberList.length))
+    computeDiscreteFrequencies(numberList: number[]) {
+      const binNumber = Math.ceil(Math.sqrt(numberList.length));
       const min = Math.min(...numberList);
       const max = Math.max(...numberList);
-      const step = Math.ceil((max-min)/binNumber)
+      const step = Math.ceil((max - min) / binNumber);
       const values = [];
       const keys = [];
 
       let binMin = 0;
       let binMax = 0;
-      let filteredArray =  [];
+      let filteredArray = [];
       const colorBgArray = [];
       const colorBorderArray = [];
 
-      for(let i=0; i<binNumber; i++){
-        binMin = i*step + min;
-        binMax = Math.min(((i+1)*step+min), max);
+      for (let i = 0; i < binNumber; i++) {
+        binMin = i * step + min;
+        binMax = Math.min((i + 1) * step + min, max);
         filteredArray = numberList.filter(this.isInInterval(binMin, binMax));
         values.push(filteredArray.length);
-        keys.push(binMin.toString()+" - "+binMax.toString());
+        keys.push(binMin.toString() + ' - ' + binMax.toString());
         colorBgArray.push('rgba(75, 192, 192, 0.2)');
         colorBorderArray.push('rgba(75, 192, 192, 1)');
       }
 
-      if(this.myData.datasets!= undefined){
+      if (this.myData.datasets != undefined) {
         this.myData.datasets[0].data = values;
-        this.myData.labels= keys;
+        this.myData.labels = keys;
         this.myData.datasets[0].backgroundColor = colorBgArray;
         this.myData.datasets[0].borderColor = colorBorderArray;
-        this.myData.datasets[0].label= this.chartTitle;
-
+        this.myData.datasets[0].label = this.chartTitle;
       }
-
-
     },
-    isInInterval(min: number, max: number){
+    isInInterval(min: number, max: number) {
       return (x: number) => {
-        return (x>= min && x <= max);
+        return x >= min && x <= max;
       };
     }
   }

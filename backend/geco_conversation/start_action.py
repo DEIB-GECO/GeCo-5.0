@@ -13,6 +13,7 @@ class StartAction(AbstractAction):
         list_param = {'Annotations': 'annotations', 'Experimental data': 'experiments'}
         self.context.add_bot_msg(Utils.chat_message(messages.start_init))
         self.context.add_bot_msg(Utils.choice("Data available", list_param))
+        #self.context.add_bot_msg(Utils.scatter([1,2,3], [1,2,3], [0, 3, 2], {0, 3, 2}))
         self.context.add_bot_msg(Utils.workflow('Data selection'))
         return None, False
 
