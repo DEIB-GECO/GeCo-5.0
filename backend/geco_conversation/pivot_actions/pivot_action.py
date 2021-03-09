@@ -141,6 +141,7 @@ class Labels(AbstractAction):
         return [Utils.chat_message(messages.union_help)]
 
     def on_enter(self):
+        self.context.add_bot_msg(Utils.choice('',{}))
         self.context.add_bot_msg(Utils.chat_message('Do you want to add some labels from metadata or region data?'))
         return None, False
 
@@ -223,7 +224,7 @@ class Labels(AbstractAction):
         print(len(self.context.data_extraction.datasets))
         if len(self.context.data_extraction.datasets) == 2:
             return JoinPivotAction(self.context), True
-        return DonorDataset(self.context), True
+        return YesNoAction(self.context, DonorDataset(self.context),ChangePivot(self.context)), False
 
 
 class MetaLabels(AbstractAction):
@@ -246,3 +247,36 @@ class MetaLabels(AbstractAction):
                                                   {i: i for i in self.context.payload.database.region_schema if
                                                    i != 'item_id'}))
         return Labels(self.context), False
+
+class ChangePivot(AbstractAction):
+    def help_message(self):
+        return [Utils.chat_message(messages.union_help)]
+
+    def on_enter(self):
+        self.context.payload.back = ChangePivot
+        self.context.add_bot_msg(
+            Utils.chat_message('Do you want to transpose the table?'))
+        return None, False
+
+    def logic(self, message, intent, entities):
+        from geco_conversation.new_dataset import DonorDataset
+        if self.context.payload.back == ChangePivot:
+            if intent == 'affirm':
+                self.context.workflow[-1].result.ds = self.ds.T
+                self.context.add_bot_msgs([Utils.chat_message(
+                    'On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
+                    Utils.table_viz('Table', self.context.workflow[-1].result.ds)])
+                return YesNoAction(self.context, DonorDataset(self.context),ChangePivot(self.context)), False
+            else:
+                self.context.payload.back == PivotAction
+                self.context.add_bot_msg(
+                    Utils.chat_message('Do you want to change the value in the table?'))
+                return None, False
+        else:
+            if intent=='affirm':
+                self.context.payload.delete('region_value')
+                self.context.add_bot_msgs([Utils.chat_message(messages.value_region_message),
+                                           Utils.choice('Available regions',
+                                                        {i: i for i in self.context.payload.database.region_schema if
+                                                         i != 'item_id'})])
+                return PivotAction(self.context), False

@@ -149,6 +149,10 @@ nlu:
     - [tads](source) data for [essential thrombocythemia](disease)
     - I want experiment about [ewing sarcoma](disease)
     - I need [fibrosarcoma](disease)
+    - [pancreas adenocarcinoma]{"entity":"disease","value":"pancreatic adenocarcinoma"} [gene expressions]{"entity":"data_type","value":"gene expression"}
+    - [pancreas adenocarcinoma]{"entity":"disease","value":"pancreatic adenocarcinoma"} [gene expression]{"entity":"data_type","value":"gene expression"}.
+    - data for: [gene expression]{"entity":"data_type","value":"gene expression"}, [pancreas adenocarcinoma]{"entity":"disease","value":"pancreatic adenocarcinoma"}
+    - data of [gene expressions]{"entity":"data_type","value":"gene expression"}, [pancreatic adenocarcinoma](disease)
     - [rna sequencing]{"entity":"data_type","value":"gene expression"} for [follicular lymphoma](disease)
     - experiments for [rna seq]{"entity":"data_type","value":"gene expression"}
     - Get [sequencing of genes]{"entity":"data_type","value":"gene expression"} for [gastric adenocarcinoma](disease)
