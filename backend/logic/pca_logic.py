@@ -1,6 +1,6 @@
 from sklearn.decomposition import PCA
 from .kmeans_logic import ClusteringRes
-
+import time
 class PCARes:
     def __init__(self, data):
         self.pca_data = data
@@ -17,14 +17,16 @@ class PCALogic:
         self.run(sid)
 
     def run(self,sid):
-        text = 'from sklearn.decomposition import PCA\n'
+        pre = time.time()
+        #text = 'from sklearn.decomposition import PCA\n'
         pca = PCA(self.components)
-        text += f'pca = PCA({self.components})\n'
+        #text += f'pca = PCA({self.components})\n'
         pca_data = pca.fit_transform(self.ds)
-        text += f'pca_data = pca.fit_transform({self.name}.values)\n'
+        #text += f'pca_data = pca.fit_transform({self.name}.values)\n'
+        print('time post pca', time.time() - pre)
         self.op.result = PCARes(pca_data)
         self.op.executed = True
-        self.write_script(sid, text)
+        #self.write_script(sid, text)
 
     def write_script(self, sid, text):
         with open(f'python_script_{sid}.py', 'a') as f:

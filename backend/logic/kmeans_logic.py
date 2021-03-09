@@ -2,7 +2,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV
 from sklearn import *
-import copy
+import time
 from logic.pivot_logic import PivotRes
 
 class ClusteringRes:
@@ -30,6 +30,8 @@ class KMeansLogic:
         self.run(sid)
 
     def run(self, sid):
+        pre = time.time()
+        print('time pre', pre)
         if hasattr(self, 'labels'):
             for i in self.labels:
                 if i in self.ds.columns:
@@ -39,7 +41,7 @@ class KMeansLogic:
 
         if not self.tuning:
            # text = 'from sklearn.cluster import KMeans\n'
-            kmeans = KMeans(n_clusters=self.n_clust,n_jobs=10)
+            kmeans = KMeans(n_clusters=self.n_clust)
            # text += f'kmeans = KMeans(n_clusters={self.n_clust})\n'
             kmeans_fit = kmeans.fit(self.ds.values)
            # text += f'kmeans_fit=kmeans.fit({self.name}.values)\n'
@@ -62,7 +64,7 @@ class KMeansLogic:
             param_grid = {"n_clusters": range(self.min, self.max)}
            # text += 'param_grid = {"n_clusters":'+ f'range({self.min}, {self.max})'+'}\n'
             # run randomized search
-            search = GridSearchCV(KMeans(n_jobs=10),
+            search = GridSearchCV(KMeans(),
                                   param_grid=param_grid,
                                   scoring=silhouette_score)
            # text += 'search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)\n'
@@ -74,6 +76,7 @@ class KMeansLogic:
            # text +=  f'kmeans_fit = kmeans.fit({self.name}.values)\n'
             labels = kmeans.fit_predict(self.ds.values)
            # text += f'labels = kmeans.fit_predict({self.name}.values)\n'
+        print('time post km', time.time()-pre)
         self.op.result = ClusteringRes(self.name, self.ds.values, kmeans_fit, labels)
         self.op.executed = True
        # self.write_script(sid, text)
@@ -83,6 +86,7 @@ class KMeansLogic:
             f.write(text)
 
     def write(self,sid):
+
         if not self.tuning:
             with open(f'jupyter_notebook_{sid}.ipynb', 'a') as f:
                 f.write('{ "cell_type": "code",' +
