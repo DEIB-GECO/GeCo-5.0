@@ -64,7 +64,7 @@ class MinSamplesAction(AbstractAction):
         self.context.workflow.add(DBScan(self.context.workflow[-1], epsilon = self.status['epsilon'], min_samples=self.status['min_samples']))
         self.context.workflow.add(PCA(self.context.workflow[-1], 2))
         self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
-        self.context.workflow.run(self.context.workflow[-1])
+        self.context.workflow.run(self.context.workflow[-1],self.context.session_id)
         print(self.context.workflow[-1].result.__dict__)
         self.context.add_bot_msg(
             Utils.scatter(self.context.workflow[-1].result.x, self.context.workflow[-1].result.y,

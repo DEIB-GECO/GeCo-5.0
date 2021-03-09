@@ -65,9 +65,9 @@ all_db = database()
 
 # Creation of the main class of Dialogue Manager
 class ConversationDBExplore(object):
-    def __init__(self):
+    def __init__(self,sid):
         # Creation of the context
-        self.context = Context(all_db)
+        self.context = Context(all_db, sid)
         # Add first step to the context to start chatting
         self.context.add_step(bot_msgs=Utils.chat_message(messages.initial_greeting), action=StartAction(self.context))
         # Launch the conversation
@@ -286,7 +286,7 @@ def reset(session):
     # Starts a list of textual messages, a dict of visual messages and a dialogue manager
     session['messages'] = []
     session['last_json'] = {}
-    session['dm'] = ConversationDBExplore()
+    session['dm'] = ConversationDBExplore(request.sid)
 
     # add the initial messages to the session
     for msg in session['dm'].context.top_bot_msgs():

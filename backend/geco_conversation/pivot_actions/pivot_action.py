@@ -201,7 +201,7 @@ class Labels(AbstractAction):
         # self.context.workflow.add(
         #    Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
         if len(self.context.data_extraction.datasets) == 1:
-            self.context.workflow.run(self.context.workflow[-1])
+            self.context.workflow.run(self.context.workflow[-1], self.context.session_id)
             self.context.add_bot_msgs([Utils.chat_message(
                 'On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
                                        Utils.table_viz('Table', self.context.workflow[-1].result.ds),
@@ -211,7 +211,7 @@ class Labels(AbstractAction):
             # with open('workflow.txt','r') as f:
             #    workflow = f.readlines()
             # self.context.add_bot_msgs([Utils.chat_message('I am sorry but for now you can download only the workflow you did'), Utils.workflow('Download', download=True)])
-            self.context.workflow.run(self.context.workflow[-1])
+            self.context.workflow.run(self.context.workflow[-1],self.context.session_id)
             self.context.add_bot_msgs([Utils.chat_message(
                 'On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
                 Utils.table_viz('Table', self.context.workflow[-1].result.ds),
