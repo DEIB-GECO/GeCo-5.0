@@ -44,7 +44,7 @@ Session(app)
 
 # TODO check if we need cors_allowed_origins, I think we don't need anymore.
 socketio = SocketIO(app, manage_session=False, async_mode=async_mode, cors_allowed_origins='*',
-                    path=socketio_path, logger=False, engineio_logger=False, debug=False)
+                    path=socketio_path, logger=False, engineio_logger=False, debug=False,pingTimeout= 5000)
 
 simple_page = Blueprint('root_pages',
                         __name__,

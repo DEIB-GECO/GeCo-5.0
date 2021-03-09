@@ -92,13 +92,13 @@ class TuningDBScan(AbstractAction):
 
     def logic(self, message, intent, entities):
         if 'min_eps' not in self.status:
-            min = int(''.join(filter(str.isdigit, message)))
+            min = float(''.join(filter(str.isdigit, message)))
             self.context.payload.insert('min_eps', min)
             self.context.add_bot_msg(Utils.chat_message(
                 "Which is the maximum epsilon you want to try?"))
             return TuningDBScan(self.context), False
         elif 'max_eps' not in self.status:
-            max = int(''.join(filter(str.isdigit, message)))
+            max = float(''.join(filter(str.isdigit, message)))
             self.context.payload.insert('max_eps', max)
             self.context.add_bot_msg(Utils.chat_message(
                 "Which is the minimum number of samples you want to try?"))
