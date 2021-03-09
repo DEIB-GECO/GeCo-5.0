@@ -6,7 +6,7 @@ from logic.pivot_logic import PivotRes
 from logic.kmeans_logic import ClusteringRes
 
 class DBScanLogic:
-    def __init__(self, dbscan):
+    def __init__(self, dbscan, sid):
         self.op = dbscan
         self.ds = self.op.depends_on.result
         if  isinstance(self.ds, PivotRes):
@@ -21,9 +21,9 @@ class DBScanLogic:
         else:
             self.epsilon = dbscan.epsilon
             self.min_samples = dbscan.min_samples
-        self.run()
+        self.run(sid)
 
-    def run(self):
+    def run(self,sid):
         if hasattr(self, 'labels'):
             for i in self.labels:
                 if i in self.ds.columns:

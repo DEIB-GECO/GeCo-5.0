@@ -189,6 +189,7 @@ def add_session_message(session, message):
     #     session['last_json'][message['type']].append(temp_d)
     else:
         for x in message['payload']['remove']:
+            print(session['last_json'])
             if x in session['last_json']:
                 del session['last_json'][x]
 
