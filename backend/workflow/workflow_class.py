@@ -19,13 +19,14 @@ class Workflow(list):
     def __init__(self):
         super().__init__()
 
+
     def add(self, operation):
         self.append(operation)
 
         #self.draw_workflow()
         #self.visualize()
 
-    def run(self, last_op):
+    def run(self, last_op, sid):
         if last_op.executed == True:
             return
         elif last_op.__class__.__name__ == 'Select':
@@ -35,16 +36,16 @@ class Workflow(list):
             logic_class = getattr(package, last_op.__class__.__name__ + 'Logic')
             if hasattr(last_op, 'depends_on_2'):
                 if last_op.depends_on.executed == True and last_op.depends_on_2.executed == False:
-                    self.run(last_op.depends_on_2)
+                    self.run(last_op.depends_on_2, sid)
                 elif last_op.depends_on.executed == False and last_op.depends_on_2.executed == True:
-                    self.run(last_op.depends_on)
+                    self.run(last_op.depends_on, sid)
                 else:
-                    self.run(last_op.depends_on)
-                    self.run(last_op.depends_on_2)
+                    self.run(last_op.depends_on, sid)
+                    self.run(last_op.depends_on_2, sid)
             else:
                 if last_op.depends_on.executed == False:
-                    self.run(last_op.depends_on)
-            logic_class(last_op)
+                    self.run(last_op.depends_on, sid)
+            logic_class(last_op, sid)
         #self.draw_workflow()
         self.write_workflow()
 

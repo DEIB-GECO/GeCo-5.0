@@ -68,7 +68,7 @@ class Confirm(AbstractDBAction):
                     self.context.workflow.add(Select(ds))
                 self.context.add_bot_msgs([Utils.chat_message(messages.download),
                                            Utils.workflow('Data Selection', download=True, link_list=links),
-                                           Utils.param_list(list_param),
+                                           Utils.param_list(list_param),Utils.choice('',{}),
                                            Utils.tools_setup(add=None, remove='data_summary')])
 
                 # self.context.add_bot_msgs([Utils.chat_message(messages.download),Utils.workflow('Data Selection',download=True,link_list=links), Utils.chat_message(messages.gmql_operations), Utils.param_list(list_param), Utils.tools_setup(add=None,remove='data_summary')])

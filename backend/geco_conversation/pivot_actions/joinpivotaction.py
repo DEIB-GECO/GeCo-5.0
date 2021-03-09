@@ -24,7 +24,7 @@ class JoinPivotAction(AbstractAction):
 					self.context.workflow.add(
 						JoinPivot(self.context.workflow[-1], depends_on_2))#, joinby=self.status['joinby']))
 					break
-			self.context.workflow.run(self.context.workflow[-1])
+			self.context.workflow.run(self.context.workflow[-1],self.context.session_id)
 			self.context.add_bot_msgs([Utils.chat_message(
 				"Ok, I joined the two tables. The result is on the right."),Utils.table_viz(True, self.context.workflow[-1].result)])
 

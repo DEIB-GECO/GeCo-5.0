@@ -162,7 +162,8 @@ class Data_Extraction:
 # - the payload to save necessary temporary data for the pipeline
 # - the workflow, intermediate representation for the operations
 class Context:
-    def __init__(self, db):
+    def __init__(self, db, session_id):
+        self.session_id = session_id
         self.history = []
         self.payload = Payload(self, db)
         self.workflow = Workflow()

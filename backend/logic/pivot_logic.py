@@ -28,13 +28,13 @@ class PivotRes:
         self.dict_for_join = dict_for_join
 
 class PivotLogic:
-    def __init__(self, op):
+    def __init__(self, op, sid):
         self.op = op
         self.ds = self.op.depends_on.result
-        self.run()
+        self.run(sid)
 
 
-    def run(self):
+    def run(self,sid):
         print('inizio pivot')
         self.run_select()
         # if self.op.meta_col != None:
@@ -121,24 +121,24 @@ class PivotLogic:
         pivot.to_csv(f'{self.ds.name}.csv')
         self.op.result = PivotRes(self.ds.name, pivot, labels, self.ds.dict_for_join)
         self.op.executed = True
-        self.write()
+        self.write(sid)
 
 
-    def write(self):
-        with open('jupyter_notebook.ipynb', 'a') as f:
+    def write(self,sid):
+        with open(f'jupyter_notebook_{sid}.ipynb', 'a') as f:
             f.write('{ "cell_type": "code",'+
                     '"execution_count": 0,'+
                     '"metadata": {},'+
                     '"outputs": [],'+
                     '"source": ['+
                     'import pandas as pd\n'+
-                    '{} = pd.read_csv("pivot.csv")'.format(self.ds.name)+
+                    f'{self.ds.name} = pd.read_csv("{self.ds.name}.csv")\n'+
                     ']},')
         f.close()
 
-        with open('python_script.py', 'a') as f:
+        with open(f'python_script_{sid}.py', 'a') as f:
             f.write('import pandas as pd\n'+
-                    '{} = pd.read_csv("pivot.csv")'.format(self.ds.name))
+                    f'{self.ds.name} = pd.read_csv("{self.ds.name}.csv")\n')
         f.close()
 
 
