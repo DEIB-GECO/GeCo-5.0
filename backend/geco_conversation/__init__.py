@@ -20,6 +20,7 @@ from .yes_no_action import YesNoAction
 from geco_conversation.pivot_actions.joinpivotaction import JoinPivotAction
 from geco_conversation.pivot_actions.pivot_action import PivotAction
 from geco_conversation.data_analysis.kmeans_clustering import KMeansClustering
+from geco_conversation.data_analysis.dbscan_clustering import DBScanClustering
 from geco_conversation.data_analysis.data_analysis import DataAnalysis
 from .new_dataset import NewDataset
 from geco_conversation.gmql_actions.join_action import JoinAction
