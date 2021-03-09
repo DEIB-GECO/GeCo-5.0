@@ -38,45 +38,45 @@ class KMeansLogic:
                     self.ds = self.ds.drop(i, axis=0)
 
         if not self.tuning:
-            text = 'from sklearn.cluster import KMeans\n'
+           # text = 'from sklearn.cluster import KMeans\n'
             kmeans = KMeans(n_clusters=self.n_clust,n_jobs=10)
-            text += f'kmeans = KMeans(n_clusters={self.n_clust})\n'
+           # text += f'kmeans = KMeans(n_clusters={self.n_clust})\n'
             kmeans_fit = kmeans.fit(self.ds.values)
-            text += f'kmeans_fit=kmeans.fit({self.name}.values)\n'
+           # text += f'kmeans_fit=kmeans.fit({self.name}.values)\n'
             label =  kmeans.fit_predict(self.ds.values)
-            text += f'labels=kmeans.fit_predict({self.name}.values)\n'
+           # text += f'labels=kmeans.fit_predict({self.name}.values)\n'
             self.op.result = ClusteringRes(self.ds.values, kmeans_fit, label)
         else:
-            text = ('from sklearn.cluster import KMeans\n' +
-                    'from sklearn.model_selection import GridSearchCV\n' +
-                    'from sklearn import *\n')
+           # text = ('from sklearn.cluster import KMeans\n' +
+           #         'from sklearn.model_selection import GridSearchCV\n' +
+           #         'from sklearn import *\n')
             def silhouette_score(estimator, X):
                 clusters = estimator.fit_predict(self.ds.values)
                 #print(X)
                 score = metrics.silhouette_score(self.ds.values, clusters)
                 return score
-            text += ('def silhouette_score(estimator, X):\n'+
-                        f'\tclusters = estimator.fit_predict({self.name}.values)\n'+
-                        f'\tscore = metrics.silhouette_score({self.name}.values, clusters)\n'+
-                        '\treturn score\n\n')
+           # text += ('def silhouette_score(estimator, X):\n'+
+           #             f'\tclusters = estimator.fit_predict({self.name}.values)\n'+
+           #             f'\tscore = metrics.silhouette_score({self.name}.values, clusters)\n'+
+           #             '\treturn score\n\n')
             param_grid = {"n_clusters": range(self.min, self.max)}
-            text += 'param_grid = {"n_clusters":'+ f'range({self.min}, {self.max})'+'}\n'
+           # text += 'param_grid = {"n_clusters":'+ f'range({self.min}, {self.max})'+'}\n'
             # run randomized search
             search = GridSearchCV(KMeans(n_jobs=10),
                                   param_grid=param_grid,
                                   scoring=silhouette_score)
-            text += 'search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)\n'
+           # text += 'search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)\n'
             grid = search.fit(self.ds.values)
-            text += f'grid = search.fit({self.name}.values)\n'
+           # text += f'grid = search.fit({self.name}.values)\n'
             kmeans = grid.best_estimator_
-            text += 'kmeans = grid.best_estimator_\n'
+           # text += 'kmeans = grid.best_estimator_\n'
             kmeans_fit = kmeans.fit(self.ds.values)
-            text +=  f'kmeans_fit = kmeans.fit({self.name}.values)\n'
+           # text +=  f'kmeans_fit = kmeans.fit({self.name}.values)\n'
             labels = kmeans.fit_predict(self.ds.values)
-            text += f'labels = kmeans.fit_predict({self.name}.values)\n'
+           # text += f'labels = kmeans.fit_predict({self.name}.values)\n'
         self.op.result = ClusteringRes(self.name, self.ds.values, kmeans_fit, labels)
         self.op.executed = True
-        self.write_script(sid, text)
+       # self.write_script(sid, text)
 
     def write_script(self, sid, text):
         with open(f'python_script_{sid}.py', 'a') as f:
