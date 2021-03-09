@@ -35,8 +35,9 @@ class PivotLogic:
 
 
     def run(self,sid):
-        print('inizio pivot')
+        pre = time.time()
         self.run_select()
+        print('inizio pivot', pre)
         # if self.op.meta_col != None:
         #     items = list(self.ds.meta['item_id'])
         #     items.sort()
@@ -116,7 +117,7 @@ class PivotLogic:
                     pivot[i] = list(labels_reg[i])
                 pivot = pivot.T
         #pivot.index= pivot.index.droplevel(0)
-        print('pivot!')
+        print('time after pivot:', time.time() - pre)
         print(pivot.head())
         pivot.to_csv(f'{self.ds.name}.csv')
         self.op.result = PivotRes(self.ds.name, pivot, labels, self.ds.dict_for_join)

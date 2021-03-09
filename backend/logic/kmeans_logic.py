@@ -39,7 +39,7 @@ class KMeansLogic:
 
         if not self.tuning:
             text = 'from sklearn.cluster import KMeans\n'
-            kmeans = KMeans(n_clusters=self.n_clust)
+            kmeans = KMeans(n_clusters=self.n_clust,n_jobs=10)
             text += f'kmeans = KMeans(n_clusters={self.n_clust})\n'
             kmeans_fit = kmeans.fit(self.ds.values)
             text += f'kmeans_fit=kmeans.fit({self.name}.values)\n'
@@ -62,7 +62,7 @@ class KMeansLogic:
             param_grid = {"n_clusters": range(self.min, self.max)}
             text += 'param_grid = {"n_clusters":'+ f'range({self.min}, {self.max})'+'}\n'
             # run randomized search
-            search = GridSearchCV(KMeans(),
+            search = GridSearchCV(KMeans(n_jobs=10),
                                   param_grid=param_grid,
                                   scoring=silhouette_score)
             text += 'search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)\n'
