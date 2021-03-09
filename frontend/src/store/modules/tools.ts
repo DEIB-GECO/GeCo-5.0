@@ -21,6 +21,7 @@ class Tools extends VuexModule {
   fieldList: string[] = [];
   toolToShow = '';
 
+  // NOTA: se cambi questa conf. cambiala anche sotto in resetToolPane()
   activeTools: ToolTuple[] = [
     // { name: 'Dataset List', component: 'dataset' },
     // { name: 'Metadata', component: 'metadata' },
@@ -94,10 +95,13 @@ class Tools extends VuexModule {
   }
 
   @Mutation
-  resetToolPane(){
+  resetToolPane() {
     this.toolToShow = '';
     this.cleanCanvas = true;
-    this.activeTools = [];
+    this.activeTools = [
+      { name: 'Table', component: 'tableViewer' },
+      { name: 'Data', component: 'dataviz' }
+    ];
   }
 }
 
