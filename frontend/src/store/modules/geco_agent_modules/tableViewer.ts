@@ -1,4 +1,5 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
+import Vue from 'vue';
 
 @Module({ namespaced: true })
 class TableViewer extends VuexModule {
@@ -42,11 +43,21 @@ class TableViewer extends VuexModule {
 
   @Mutation
   setTable(tablePayload: TablePayload): void {
-    this.tableData = tablePayload.data;
-    if (tablePayload.options) {
-      this.options = tablePayload.options;
-      //TODO: call order function
-    }
+    Vue.set(this, 'tableData', null);
+    Vue.nextTick(() => {
+      Vue.set(this, 'tableData', tablePayload.data);
+    });
+    // this.tableData = tablePayload.data;
+    console.log('New Table data:', this.tableData);
+    // if (tablePayload.options) {
+    //   this.options = tablePayload.options;
+    //   //TODO: call order function
+    // }
+  }
+
+  @Mutation
+  resetTable() {
+    Vue.set(this, 'tableData', null);
   }
 }
 

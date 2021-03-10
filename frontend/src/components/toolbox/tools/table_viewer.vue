@@ -1,6 +1,6 @@
 <template>
   <div class="metadata_table_container">
-    <table>
+    <table v-if="tableData != null">
       <thead>
         <th>
           Id
