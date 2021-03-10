@@ -29,8 +29,9 @@ class KMeansClustering(AbstractAction):
         if intent != 'deny':
             n_clust = int(''.join(filter(str.isdigit, message)))
             self.context.payload.insert('n_clusters', n_clust)
-            # self.context.add_bot_msg(
-            #   Utils.chat_message("Ok, I will perform K-Means clustering using {}.".format(n_clust)))
+            Utils.wait_msg('Please wait, this step can take some time.')
+            import time
+            time.sleep(0.5)
             if self.context.workflow[-1].__class__.__name__ == 'Pivot':
                 self.context.workflow.add(KMeans(self.context.workflow[-1], clusters=n_clust))
             else:
@@ -74,6 +75,9 @@ class NumClusters(AbstractAction):
         else:
             max = int(''.join(filter(str.isdigit, message)))
             self.context.payload.insert('max_n_clusters', max)
+            Utils.wait_msg('Please wait, this step can take some time.')
+            import time
+            time.sleep(0.5)
             self.context.add_bot_msg(Utils.chat_message(messages.analysis_done))
             if self.context.workflow[-1].__class__.__name__ == 'Pivot':
                 self.context.workflow.add(
