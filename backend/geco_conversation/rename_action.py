@@ -17,7 +17,7 @@ class RenameAction(AbstractAction):
         return RenameAction(self.context, self.next), False
 
     def logic(self, message, intent, entities):
-        if intent == "affirm":
+        if intent == "affirm" or message.strip()=='':
             self.context.add_bot_msgs([Utils.chat_message(messages.name)])
             return RenameAction(self.context, self.next), False
         elif intent=='deny':
