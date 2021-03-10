@@ -258,11 +258,14 @@ def reset_button(message):
         data[request.sid] = []
 
     # Call function to reset the session
-    reset(session)
+    reset(session, True)
 
-    # emit('json_response', msg)
-    # with open("logger.json", "w") as file:
-    #    json.dump(data, file)
+    for msg in session['dm'].context.top_bot_msgs():
+        id = add_session_message(session, msg)
+        msg['message_id'] = id
+        emit('json_response', msg)
+    with open("logger.json", "w") as file:
+        json.dump(data, file)
 
     # session['status'].clear_msgs()
 
@@ -283,7 +286,7 @@ def disconnect_request():
          callback=can_disconnect)
 
 # Reset the session
-def reset(session):
+def reset(session, bool=False):
     # Delete everything in the session
     for k in list(session.keys()):
         if not k.startswith("_"):
@@ -295,10 +298,11 @@ def reset(session):
     session['dm'] = ConversationDBExplore(request.sid)
 
     # add the initial messages to the session
-    for msg in session['dm'].context.top_bot_msgs():
-        id = add_session_message(session, msg)
-        msg['message_id'] = id
-        # emit('json_response', msg)
+    if not bool:
+        for msg in session['dm'].context.top_bot_msgs():
+            id = add_session_message(session, msg)
+            msg['message_id'] = id
+            # emit('json_response', msg)
 
 # Receive a new connection from the user
 @socketio.on('connect', namespace='/test')

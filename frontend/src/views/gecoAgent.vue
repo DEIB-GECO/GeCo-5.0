@@ -198,11 +198,11 @@ export default class GecoAgent extends Vue {
   parseResponse(data: SocketJsonResponse) {
     console.log('PARSE RESPONSE, show: ' + data.show);
     console.log(data);
-    this.updateToolToShow(data.show);
-    // if (data.show != null) {
-    //   console.log("Chiamato show!");
-    //   this.updateToolToShow(data.show);
-    // }
+    //this.updateToolToShow(data.show);
+    if (data.show != null) {
+       console.log("Chiamato show!");
+       this.updateToolToShow(data.show);
+    }
     // this.updateLastMessageId(data.message_id);
     this.lastMessageId = data.message_id;
     // socket.emit('ack', { message_id: this.lastMessageId });
@@ -235,7 +235,7 @@ export default class GecoAgent extends Vue {
 
       this.editMessage('');
 
-      socket.emit('ack', {message_id: -1, location: "reset"});
+      //socket.emit('ack', {message_id: -1, location: "reset"});
       this.resetProcess();
       this.resetToolPane();
 
