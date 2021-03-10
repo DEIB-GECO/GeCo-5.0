@@ -37,7 +37,7 @@ class MetadataAction(AbstractDBAction):
         # if len(self.status['available_keys']) >= 1:
         self.context.add_bot_msgs(
             [Utils.chat_message(messages.metadata_filter)])  # , Utils.param_list(list_param)])
-        return None, False
+        return MetadataAction(self.context), False
         # else:
         #    self.context.payload.back = MetadataAction
         #    return RegionAction(self.context), True
@@ -174,9 +174,9 @@ class KeyAction(AbstractDBAction):
                 else:
                     self.context.add_bot_msgs([Utils.chat_message(messages.other_metadatum)])
                     self.context.payload.delete('key')
-                    return None, False
+                    return KeyAction(self.context), False
 
-        return None, False
+        return KeyAction(self.context), False
 
 
 class StringValueAction(AbstractDBAction):
