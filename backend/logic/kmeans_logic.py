@@ -19,7 +19,7 @@ class KMeansLogic:
         self.ds = self.op.depends_on.result
         if  isinstance(self.ds, PivotRes):
             self.labels = self.ds.labels
-            self.name = self.ds.ds_name
+            self.name = self.ds.name
             self.ds = self.ds.ds
         self.tuning = kmeans.tuning
         if self.tuning:

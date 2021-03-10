@@ -33,6 +33,7 @@ nlu:
     - experimental data
     - [mirna expression](data_type)
     - [dna methylation](data_type)
+    - i want [pancreas adenocarcinoma]{"entity":"disease","value":"pancreatic adenocarcinoma"}'s [gene expression](data_type)
     - I want to retrieve data from [acute adult t-cell leukemia/lymphoma](disease)
     - [1000 genomes](source) data for [acute lymphoblastic leukemia](disease)
     - I want experiment about [acute myeloid leukemia](disease)

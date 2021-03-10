@@ -206,6 +206,7 @@ def get_id(message):
 # If -1 then from the beginning
 @socketio.on('ack', namespace='/test')
 def test_ack_message(message):
+    print('ACKKKK ', message)
     # Check id of ack message received
     user_message = int(message['message_id'])
 
@@ -250,6 +251,7 @@ def test_ack_message(message):
 # Receive reset message
 @socketio.on('reset', namespace='/test')
 def reset_button(message):
+    print('RESETTTTTTT ', message)
     # Empty the logger for that session id
     with open('logger.json', 'r') as f:
         data = json.load(f)
