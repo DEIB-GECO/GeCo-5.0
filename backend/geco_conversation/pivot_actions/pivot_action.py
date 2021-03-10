@@ -201,6 +201,8 @@ class Labels(AbstractAction):
 
         # self.context.workflow.add(
         #    Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
+        from flask_socketio import SocketIO, emit, disconnect
+        emit('wait_msg',Utils.chat_message('I\'m sorry, this step can take some time.'))
         if len(self.context.data_extraction.datasets) == 1:
             self.context.workflow.run(self.context.workflow[-1], self.context.session_id)
             self.context.add_bot_msgs([Utils.chat_message(

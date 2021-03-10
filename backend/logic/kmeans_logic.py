@@ -45,9 +45,8 @@ class KMeansLogic:
            # text += f'kmeans = KMeans(n_clusters={self.n_clust})\n'
             kmeans_fit = kmeans.fit(self.ds.values)
            # text += f'kmeans_fit=kmeans.fit({self.name}.values)\n'
-            label =  kmeans.fit_predict(self.ds.values)
+            labels =  kmeans.fit_predict(self.ds.values)
            # text += f'labels=kmeans.fit_predict({self.name}.values)\n'
-            self.op.result = ClusteringRes(self.ds.values, kmeans_fit, label)
         else:
            # text = ('from sklearn.cluster import KMeans\n' +
            #         'from sklearn.model_selection import GridSearchCV\n' +
