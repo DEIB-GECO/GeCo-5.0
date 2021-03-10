@@ -56,6 +56,7 @@ class Tools extends VuexModule {
   @Mutation
   setToolToShow(newTool: string): void {
     this.cleanCanvas = false;
+    //this.toolToShow = this.availableTools.filter((el) => el.name == newTool)[0].component;
     this.toolToShow = newTool;
   }
 
