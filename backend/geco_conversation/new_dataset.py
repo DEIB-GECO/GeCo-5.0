@@ -64,7 +64,7 @@ class DonorDataset(AbstractDBAction):
                 Utils.choice('Datasets', {k: k for k, v in
                                           self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),Utils.table_viz('Table',table),
                 Utils.tools_setup(add=None, remove='data_summary')])
-            return None, False
+            return DonorDataset(self.context), False
 
         return DataAnalysis(self.context), True
 
@@ -85,7 +85,7 @@ class DonorDataset(AbstractDBAction):
             else:
                 self.context.add_bot_msgs([Utils.chat_message(
                     'Which one do you want?')])
-                return None, False
+                return DonorDataset(self.context), False
         else:
             self.context.payload.delete('common_donors')
             return DataAnalysis(self.context), True

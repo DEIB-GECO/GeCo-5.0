@@ -17,7 +17,7 @@ class KMeansClustering(AbstractAction):
 
         self.context.add_bot_msg(
             Utils.workflow("KMeans Clustering"))
-        return None, False
+        return KMeansClustering(self.context), False
 
     def logic(self, message, intent, entities):
 
@@ -52,7 +52,7 @@ class NumClusters(AbstractAction):
         if not hasattr(self, 'min'):
             self.min = int(''.join(filter(str.isdigit, message)))
             self.context.add_bot_msg(Utils.chat_message(messages.max_n_clust))
-            return None, False
+            return NumClusters(self.context), False
         else:
             self.max = int(''.join(filter(str.isdigit, message)))
             self.context.add_bot_msg(Utils.chat_message(messages.analysis_done))
