@@ -201,14 +201,13 @@ class Labels(AbstractAction):
 
         # self.context.workflow.add(
         #    Pivot(self.context.workflow[-1], region_column=self.status['region_column'], metadata_row=self.status['metadata_row'], region_value=value))
-        from flask_socketio import SocketIO, emit, disconnect
-        emit('wait_msg',Utils.chat_message('I\'m sorry, this step can take some time.'))
+        Utils.wait_msg('I\'m sorry, this step can take some time.')
         if len(self.context.data_extraction.datasets) == 1:
             self.context.workflow.run(self.context.workflow[-1], self.context.session_id)
             self.context.add_bot_msgs([Utils.chat_message(
                 'On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
                                        Utils.table_viz('Table', self.context.workflow[-1].result.ds[:50].T[:50].T),
-                                       Utils.tools_setup(add=None, remove='pie-chart')])
+                                       Utils.tools_setup(add=None, remove='data_summary')])
         else:
             # self.context.workflow.write_workflow()
             # with open('workflow.txt','r') as f:
