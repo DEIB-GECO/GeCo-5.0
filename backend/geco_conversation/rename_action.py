@@ -14,12 +14,12 @@ class RenameAction(AbstractAction):
     def on_enter(self):
         self.context.add_bot_msg(Utils.choice('',{}))
         self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
-        return RenameAction(self.context), False
+        return RenameAction(self.context, self.next), False
 
     def logic(self, message, intent, entities):
         if intent == "affirm":
             self.context.add_bot_msgs([Utils.chat_message(messages.name)])
-            return RenameAction(self.context), False
+            return RenameAction(self.context, self.next), False
         elif intent=='deny':
             name = "DS_" + str(len(self.context.data_extraction.datasets) +1 )
         else:
