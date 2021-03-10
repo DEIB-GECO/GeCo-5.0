@@ -124,7 +124,7 @@ class ChangeField(AbstractDBAction):
                 [Utils.chat_message("Which value do you want?"), Utils.choice(str(selected_field), list_param)])
             return ValueAction(self.context), False
             # return self.status['back'](self.context), True
-        elif selected_field == 'metadata' or selected_field in self.status['fields']['metadata']:
+        elif selected_field == 'metadata' or ('metadata' in self.status['fields'] and selected_field in self.status['fields']['metadata']):
             from .metadata_action import KeyAction
             if selected_field == 'metadata':
                 list_param = {x: x for x in self.status['fields']['metadata']}
