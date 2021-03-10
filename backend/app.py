@@ -83,8 +83,10 @@ class ConversationDBExplore(object):
     def enter(self):
         # Run the last action in the context
         node, on_enter = self.context.top_action().on_enter()
+        print('NODE ADDED ON ENTER', node)
         if node == None:
             # If node is None, the same action has to be added to the context history stack
+
             self.context.add_step(action=self.context.top_action())
         else:
             self.context.add_step(action=node)
@@ -95,6 +97,7 @@ class ConversationDBExplore(object):
     def run(self, message, intent, entities):
         print( self.context.top_action())
         next_state, enter = self.context.top_action().run(message, intent, entities)
+        print('NODE ADDED RUN', next_state)
         if next_state is not None:
             self.context.add_step(action=next_state)
             if enter:
