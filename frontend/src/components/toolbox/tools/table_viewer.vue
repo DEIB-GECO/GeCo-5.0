@@ -6,7 +6,9 @@
           Id
         </th>
         <th
-          v-for="(item, column, index) in tableData[Object.keys(tableData)[0]]"
+          v-for="(item, column, index) in tableData[
+            Object.keys(tableData)[0]
+          ]"
           :key="index + item"
         >
           {{ column }}
@@ -34,8 +36,26 @@ export default class TableViewer extends Vue {
   //TODO: implement options
   @tableStore.State options!: TableOptions;
 
+  shortTable!: TableDictionary;
+
   created() {
-    console.log('TABLE', this.tableData, typeof this.tableData);
+    // if(this.tableData.keys.length < 100){
+    //   this.shortTable = this.tableData;
+    // } else {
+    //   const filteredKeys = Object.keys(this.tableData).slice(0,100);
+    //   this.shortTable = {}
+    //   for(const el of filteredKeys){
+    //     this.shortTable[el] = this.tableData[el];
+    //   }
+    // }
+    // const filteredKeys = Object.keys(this.tableData).slice(0,100);
+    // console.log("KEYS", filteredKeys);
+    // console.log("KEYS", this.tableData);
+    // this.shortTable = {}
+    // for(const el of filteredKeys){
+    //   this.shortTable[el] = this.tableData[el];
+    // }
+    // console.log('TABLE', this.shortTable, typeof this.tableData);
   }
 }
 </script>

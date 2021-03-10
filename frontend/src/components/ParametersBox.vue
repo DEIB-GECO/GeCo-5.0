@@ -68,9 +68,9 @@ export default class Choice extends Vue {
   // column-width: auto;
   text-align: left;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   grid-auto-flow: column;
-  grid-template-columns: repeat(12, 350px);
+  grid-template-columns: repeat(12, max-content);
   margin: 20px;
 }
 
