@@ -174,6 +174,11 @@ export default class GecoAgent extends Vue {
       socket.emit('ack', {message_id: this.lastMessageId});
       console.log('RECONNECT! Mando ack');
     });
+    socket.on('wait_msg', (payload: any) => {
+      console.log("Ehi wait msg", payload);
+      this.jsonResponseParsingFunctions['message'](payload);
+      this.setSendButtonStatus (false);
+    })
   }
 
   sendMessage() {
