@@ -54,6 +54,7 @@ class NumClusters(AbstractAction):
         if 'min' not in self.status:
             min = int(''.join(filter(str.isdigit, message)))
             self.context.payload.insert('min', min)
+            print('status after min', self.status)
             self.context.add_bot_msg(Utils.chat_message(messages.max_n_clust))
             return NumClusters(self.context), False
         else:
@@ -63,7 +64,7 @@ class NumClusters(AbstractAction):
             self.context.workflow.add(KMeans(self.context.workflow[-1], tuning=True, min=self.status['min'][0], max=self.status['max'][0]))
             self.context.workflow.add(PCA(self.context.workflow[-1], 2))
             self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
-            Utils.wait_msg('I\'m sorry, this step can take some time.')
+
             self.context.workflow.run(self.context.workflow[-1],self.context.session_id)
             self.context.add_bot_msg(
                 Utils.scatter(self.context.workflow[-1].result.x, self.context.workflow[-1].result.y,

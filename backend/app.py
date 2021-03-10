@@ -20,8 +20,8 @@ Payload.max_decode_packets = 10000
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
-#async_mode = "gevent"
-async_mode= "threading"
+async_mode = "gevent"
+#async_mode= "threading"
 base_url = '/geco_agent/'
 socketio_path = base_url + 'socket.io/'
 app = Flask(__name__)
