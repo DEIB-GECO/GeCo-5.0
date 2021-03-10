@@ -3,6 +3,8 @@ import json
 import os
 import flask
 from threading import Lock
+import threading
+from multiprocessing import Process
 from flask import Blueprint, render_template
 from flask import Flask, session, request, copy_current_request_context
 from flask_session import Session
@@ -18,7 +20,8 @@ Payload.max_decode_packets = 10000
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
-async_mode = "gevent"
+#async_mode = "gevent"
+async_mode= "threading"
 base_url = '/geco_agent/'
 socketio_path = base_url + 'socket.io/'
 app = Flask(__name__)
