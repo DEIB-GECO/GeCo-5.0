@@ -12,6 +12,7 @@ class RenameAction(AbstractAction):
         return None, True
 
     def on_enter(self):
+        self.context.add_bot_msg(Utils.choice('',{}))
         self.context.add_bot_msgs([Utils.chat_message("OK"), Utils.chat_message(messages.assign_name)])
         return None, False
 

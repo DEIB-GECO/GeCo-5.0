@@ -1,5 +1,5 @@
 import pandas as pd
-
+from flask_socketio import SocketIO, emit, disconnect
 
 class Utils(object):
     def chat_message(message: str):
@@ -149,3 +149,6 @@ class Utils(object):
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))
+
+    def wait_msg(text):
+        emit('wait_msg', Utils.chat_message(text))

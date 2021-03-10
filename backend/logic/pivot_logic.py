@@ -22,7 +22,7 @@ db = create_engine(db_string)
 
 class PivotRes:
     def __init__(self, name, pivot, labels, dict_for_join):
-        self.ds_name = name
+        self.name = name
         self.ds = pivot
         self.labels = labels
         self.dict_for_join = dict_for_join
