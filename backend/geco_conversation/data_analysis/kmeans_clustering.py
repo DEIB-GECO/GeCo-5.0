@@ -49,14 +49,15 @@ class NumClusters(AbstractAction):
         pass
 
     def logic(self, message, intent, entities):
-        if not hasattr(self, 'min'):
+        if 'min' not in self.status:
             self.min = int(''.join(filter(str.isdigit, message)))
+            self.context.payload.insert('min', self.min)
             self.context.add_bot_msg(Utils.chat_message(messages.max_n_clust))
             return NumClusters(self.context), False
         else:
             self.max = int(''.join(filter(str.isdigit, message)))
             self.context.add_bot_msg(Utils.chat_message(messages.analysis_done))
-            self.context.workflow.add(KMeans(self.context.workflow[-1], tuning=True, min=self.min, max=self.max))
+            self.context.workflow.add(KMeans(self.context.workflow[-1], tuning=True, min=self.status['min'][0], max=self.max))
             self.context.workflow.add(PCA(self.context.workflow[-1], 2))
             self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
             Utils.wait_msg('I\'m sorry, this step can take some time.')
