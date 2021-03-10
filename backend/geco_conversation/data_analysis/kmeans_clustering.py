@@ -13,7 +13,7 @@ class KMeansClustering(AbstractAction):
         else:
             for i in range((len(self.context.workflow) - 2), 0, -1):
                 if self.context.workflow[i].__class__.__name__ == 'Pivot':
-                    self.context.payload.insert('ds_name', self.context.workflow[-1].result.name)
+                    self.context.payload.insert('ds_name', self.context.workflow[i].result.name)
         self.context.payload.insert('data_analysis_op', 'KMeans Clustering')
         self.context.add_bot_msg(Utils.param_list({k:v[0] for k,v in self.status.items()}))
         self.context.add_bot_msg(
