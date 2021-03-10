@@ -81,6 +81,7 @@ class Utils(object):
                 "data": v
             })
         return {"type": "data_summary",
+                "show": "dataviz",
                 "payload": {
                     "viz": viz
                 }}
@@ -91,6 +92,7 @@ class Utils(object):
                 "data": values}]
 
         return {"type": "data_summary",
+                "show": "dataviz",
                 "payload": {
                     "viz": viz
                 }}
@@ -111,6 +113,7 @@ class Utils(object):
                     "payload": {"state": state}}
 
     def table_viz(show, df, show_index=True, order_by=None):
+        show = 'tableViewer'
         if not isinstance(df.index, pd.MultiIndex):
             df = df[df.index.notnull()]
         df = df.T
@@ -143,6 +146,7 @@ class Utils(object):
                 "data": dict_scatter}]
 
         return {"type": "data_summary",
+                "show": "dataviz",
                 "payload": {
                     "viz": viz
                 }}
