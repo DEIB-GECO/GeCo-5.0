@@ -176,7 +176,7 @@ export default class GecoAgent extends Vue {
     });
     socket.on('wait_msg', (payload: any) => {
       console.log("Ehi wait msg", payload);
-      this.jsonResponseParsingFunctions['message'](payload);
+      this.jsonResponseParsingFunctions['message'](payload.payload);
       this.setSendButtonStatus (false);
     })
   }
