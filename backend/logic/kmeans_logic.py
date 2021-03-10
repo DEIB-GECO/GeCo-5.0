@@ -48,14 +48,15 @@ class KMeansLogic:
         else:
             print('min', self.min)
             print('max', self.max)
+
             def silhouette_score(estimator, X):
                 clusters = estimator.fit_predict(self.ds.values)
                 score = metrics.silhouette_score(self.ds.values, clusters)
                 return score
+
             param_grid = {"n_clusters": range(self.min, self.max)}
-            search = GridSearchCV(KMeans(),
-                                  param_grid=param_grid,
-                                  scoring=silhouette_score)
+            print('param_grid', param_grid)
+            search = GridSearchCV(KMeans(),param_grid=param_grid,scoring=silhouette_score)
             grid = search.fit(self.ds.values)
             kmeans = grid.best_estimator_
             kmeans_fit = kmeans.fit(self.ds.values)
