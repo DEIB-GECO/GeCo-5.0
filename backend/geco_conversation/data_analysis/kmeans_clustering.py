@@ -13,7 +13,7 @@ class KMeansClustering(AbstractAction):
         list_param['data_analysis_op'] = 'KMeans Clustering'
         self.context.add_bot_msg(Utils.param_list(list_param))
         self.context.add_bot_msg(
-            Utils.chat_message("Do you already know how many clusters to create? If so, tell me the number"))
+            Utils.chat_message("Do you already know how many clusters to create? If so, tell me the number, otherwise I will apply parameter tuning."))
 
         self.context.add_bot_msg(
             Utils.workflow("KMeans Clustering"))
