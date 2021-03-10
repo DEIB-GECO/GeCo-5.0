@@ -8,7 +8,12 @@ class KMeansClustering(AbstractAction):
 
     def on_enter(self):
         print('status', self.status)
-        self.context.payload.insert('ds_name', self.context.workflow[-1].result.name)
+        if self.context.workflow[-1].__class__.__name__ == 'Pivot':
+            self.context.payload.insert('ds_name', self.context.workflow[-1].result.name)
+        else:
+            for i in range((len(self.context.workflow) - 2), 0, -1):
+                if self.context.workflow[i].__class__.__name__ == 'Pivot':
+                    self.context.payload.insert('ds_name', self.context.workflow[-1].result.name)
         self.context.payload.insert('data_analysis_op', 'KMeans Clustering')
         self.context.add_bot_msg(Utils.param_list({k:v[0] for k,v in self.status.items()}))
         self.context.add_bot_msg(
@@ -25,7 +30,12 @@ class KMeansClustering(AbstractAction):
             self.context.payload.insert('n_clusters', n_clust)
             # self.context.add_bot_msg(
             #   Utils.chat_message("Ok, I will perform K-Means clustering using {}.".format(n_clust)))
-            self.context.workflow.add(KMeans(self.context.workflow[-1], clusters=n_clust))
+            if self.context.workflow[-1].__class__.__name__ == 'Pivot':
+                self.context.workflow.add(KMeans(self.context.workflow[-1], clusters=n_clust))
+            else:
+                for i in range((len(self.context.workflow) - 2), 0, -1):
+                    if self.context.workflow[i].__class__.__name__ == 'Pivot':
+                        self.context.workflow.add(KMeans(self.context.workflow[i], clusters=n_clust))
             self.context.workflow.add(PCA(self.context.workflow[-1], 2))
             self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
             self.context.workflow.run(self.context.workflow[-1],self.context.session_id)
@@ -75,4 +85,5 @@ class NumClusters(AbstractAction):
                               self.context.workflow[-1].result.labels, self.context.workflow[-1].result.u_labels))
             #self.context.add_bot_msg(Utils.chat_message(messages.restart))
             self.context.add_bot_msg(Utils.chat_message("Do you want to do again the K-Means Clustering?"))
+            self.context.payload.clear()
             return YesNoAction(self.context, KMeansClustering(self.context), ByeAction(self.context)), False
