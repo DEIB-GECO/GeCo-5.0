@@ -99,7 +99,7 @@ export default class GecoAgent extends Vue {
   @tools.Mutation addSingleToolToPane!: (newTool: string) => void;
   @tools.Mutation removeSingleToolFromPane!: (tool: string) => void;
   @dataVizStore.Mutation setCharts!: (newCharts: DataSummaryPayload) => void;
-  @dataVizStore.Action updateToolToShow!: (newTool: string) => void;
+  @tools.Action updateToolToShow!: (newTool: string) => void;
   @processStore.Mutation('parseJsonResponse') processParser!: (
       newProcess: ProcessPanePayload
   ) => void;
@@ -112,7 +112,8 @@ export default class GecoAgent extends Vue {
   lastMessageId = -1;
 
   addRemoveTools(jsonPayload: ToolsSetUpPayload) {
-    if (jsonPayload.add) {
+    if (jsonPayload.add != null) {
+      console.log("chiamo add con", jsonPayload.add);
       jsonPayload.add.forEach((newTool) => {
         this.addSingleToolToPane(newTool);
       });
@@ -161,7 +162,7 @@ export default class GecoAgent extends Vue {
   }
 
   created() {
-    socket.emit('ack', {message_id: this.lastMessageId});
+    socket.emit('ack', {message_id: this.lastMessageId, location: "crated"});
     socket.on('json_response', (payload: any) => {
       if (payload.type) {
         console.log('server sent JSON_response', payload);
@@ -171,7 +172,7 @@ export default class GecoAgent extends Vue {
       }
     });
     socket.on('reconnect', () => {
-      socket.emit('ack', {message_id: this.lastMessageId});
+      socket.emit('ack', {message_id: this.lastMessageId, location: "reconnect"});
       console.log('RECONNECT! Mando ack');
     });
     socket.on('wait_msg', (payload: any) => {
@@ -195,11 +196,13 @@ export default class GecoAgent extends Vue {
   }
 
   parseResponse(data: SocketJsonResponse) {
-    console.log('PARSE RESPONSE, type: ' + data.type);
+    console.log('PARSE RESPONSE, show: ' + data.show);
     console.log(data);
-    if (data.show) {
-      this.updateToolToShow(data.show);
-    }
+    this.updateToolToShow(data.show);
+    // if (data.show != null) {
+    //   console.log("Chiamato show!");
+    //   this.updateToolToShow(data.show);
+    // }
     // this.updateLastMessageId(data.message_id);
     this.lastMessageId = data.message_id;
     // socket.emit('ack', { message_id: this.lastMessageId });
@@ -232,7 +235,7 @@ export default class GecoAgent extends Vue {
 
       this.editMessage('');
 
-      socket.emit('ack', {message_id: -1});
+      socket.emit('ack', {message_id: -1, location: "reset"});
       this.resetProcess();
       this.resetToolPane();
 

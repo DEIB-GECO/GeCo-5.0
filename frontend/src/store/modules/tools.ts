@@ -40,7 +40,8 @@ class Tools extends VuexModule {
 
   @Action
   updateToolToShow(newTool: string): void {
-    console.log('update toool to show');
+    console.log('available tools: ', this.activeTools);
+    console.log('trying to show', newTool);
     //I check if the new tool exists
     if (newTool != '') {
       this.context.commit('addSingleToolToPane', newTool);
