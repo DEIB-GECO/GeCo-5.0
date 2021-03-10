@@ -15,7 +15,7 @@ class PivotAction(AbstractAction):
                                                       'Do you want to do operations on the features (e.g. genes) or on the samples?'),
                                    Utils.choice('Rows', {'Features': 'features', 'Samples': 'samples'})])
         self.context.add_bot_msgs([Utils.workflow('Pivot')])
-        return None, False
+        return PivotAction(self.context), False
 
     def logic(self, message, intent, entities):
         self.context.payload.back = PivotAction
@@ -41,7 +41,7 @@ class PivotAction(AbstractAction):
                 return MetaRow(self.context), True
             else:
                 self.context.add_bot_msg(Utils.chat_message('Sorry I did not understand. Features or samples?'))
-                return None, False
+                return PivotAction(self.context), False
 
         elif 'region_value' not in self.status:
 
@@ -53,11 +53,11 @@ class PivotAction(AbstractAction):
                                   {i: i for i in self.context.payload.database.region_schema
                                    if
                                    i != 'item_id'})])
-                return None, False
+                return PivotAction(self.context), False
             self.context.payload.insert('region_value', [value])
             return Labels(self.context), True
 
-        return None, False
+        return PivotAction(self.context), False
 
 
 class RegionRow(AbstractAction):
@@ -77,7 +77,7 @@ class RegionRow(AbstractAction):
                     self.context.add_bot_msgs([Utils.chat_message(
                         "Sorry, your choice is not correct. Please, choose one in the right panel."),
                                                Utils.choice('Available regions', reg_row)])
-                    return None, False
+                    return RegionRow(self.context), False
             self.context.payload.insert('region_row', region_row)
             # self.context.add_bot_msg(Utils.chat_message('I will put in the columns \'item_id\', ok?'))
             # return None, True
@@ -103,19 +103,19 @@ class MetaRow(AbstractAction):
             reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
             self.context.add_bot_msg(Utils.chat_message(messages.column_region_message))
             self.context.add_bot_msgs([Utils.choice('Available regions', reg_row)])
-            return None, False
+            return MetaRow(self.context), False
         else:
             reg_row = {'chrom,start,stop': 'chrom,start,stop', 'gene_symbol': 'gene_symbol'}
             self.context.add_bot_msg(Utils.chat_message(messages.column_region_message))
             self.context.add_bot_msgs([Utils.choice('Available regions', reg_row)])
-            return None, False
+            return MetaRow(self.context), False
 
     def logic(self, message, intent, entities):
         if 'metadata_row' not in self.status:
             meta_row = 'item_id'
             self.context.payload.insert('metadata_row', [meta_row])
             self.context.add_bot_msg(Utils.chat_message(messages.column_region_message))
-            return None, False
+            return MetaRow(self.context), False
 
         else:
             region_column = message.strip().split(',')
@@ -126,7 +126,7 @@ class MetaRow(AbstractAction):
                     self.context.add_bot_msgs([Utils.chat_message(
                         "Sorry, your choice is not correct. Please, choose one in the right panel."),
                                                Utils.choice('Available regions', reg_col)])
-                    return None, False
+                    return MetaRow(self.context), False
             self.context.payload.insert('region_column', region_column)
             self.context.add_bot_msgs([Utils.chat_message(messages.value_region_message),
                                        Utils.choice('Available regions',
@@ -143,7 +143,7 @@ class Labels(AbstractAction):
     def on_enter(self):
         self.context.add_bot_msg(Utils.choice('',{}))
         self.context.add_bot_msg(Utils.chat_message('Do you want to add some labels from metadata or region data?'))
-        return None, False
+        return Labels(self.context), False
 
     def logic(self, message, intent, entities):
         from geco_conversation.new_dataset import DonorDataset
@@ -257,7 +257,7 @@ class ChangePivot(AbstractAction):
         self.context.payload.back = ChangePivot
         self.context.add_bot_msg(
             Utils.chat_message('Do you want to transpose the table?'))
-        return None, False
+        return ChangePivot(self.context), False
 
     def logic(self, message, intent, entities):
         from geco_conversation.new_dataset import DonorDataset
@@ -272,7 +272,7 @@ class ChangePivot(AbstractAction):
                 self.context.payload.back == PivotAction
                 self.context.add_bot_msg(
                     Utils.chat_message('Do you want to change the value in the table?'))
-                return None, False
+                return ChangePivot(self.context), False
         else:
             if intent=='affirm':
                 self.context.payload.delete('region_value')

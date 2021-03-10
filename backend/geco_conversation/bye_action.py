@@ -11,7 +11,7 @@ class ByeAction(AbstractAction):
 
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message("Do you want to start another analysis from the beginning?"))
-        return None, False
+        return ByeAction(self.context), False
 
     def logic(self, message, intent, entities):
         bool = True
@@ -19,6 +19,6 @@ class ByeAction(AbstractAction):
             next_node = StartAction(self.context)
         else:
             self.context.add_bot_msgs([Utils.chat_message(messages.bye_message)])
-            next_node = None
+            next_node = ByeAction(self.context)
             bool = False
         return next_node, bool

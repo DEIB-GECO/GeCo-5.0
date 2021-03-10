@@ -13,7 +13,7 @@ class Confirm(AbstractDBAction):
             list_param.update({'metadata': '{}: {}'.format(x, self.status['fields']['metadata'][x]) for x in
                                self.status['fields']['metadata']})
         self.context.add_bot_msgs([Utils.chat_message(messages.confirm_selection), Utils.param_list(list_param)])
-        return None, False
+        return Confirm(self.context), False
 
     def logic(self, message, intent, entities):
         if self.context.payload.back != RegionAction:
@@ -160,7 +160,7 @@ class ChangeField(AbstractDBAction):
 
         else:
             self.context.add_bot_msgs([Utils.chat_message(messages.wrong_field)])
-            return None, False
+            return ChangeField(self.context), False
 
 
 class ChangeMetadata(AbstractDBAction):

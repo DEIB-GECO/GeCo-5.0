@@ -86,7 +86,7 @@ class ValueAction(AbstractDBAction):
                 [Utils.chat_message(f"The {request_field} {given_value} not valid, insert a valid one"),
                  Utils.choice(request_field, list_param, show_search=choice)])
 
-            return None, False
+            return ValueAction(self.context), False
 
 
 class DSNameAction(AbstractAction):
@@ -105,7 +105,7 @@ class DSNameAction(AbstractAction):
             self.context.add_bot_msgs([Utils.chat_message('Which dataset do you want among these?'),
                                        Utils.choice('Datasets', {i:i for i in list(set(self.context.payload.database.table['dataset_name']))})])
 
-            return None, False
+            return DSNameAction(self.context), False
 
     def logic(self, message, intent, entities):
         if message in list(set(self.context.payload.database.table['dataset_name'])):
@@ -121,4 +121,4 @@ class DSNameAction(AbstractAction):
                 [Utils.chat_message('Sorry, I didn\'t understand.\nWhich dataset do you want among these?'),
                  Utils.choice('Datasets',
                               {i: i for i in list(set(self.context.payload.database.table['dataset_name']))})])
-            return None, False
+            return DSNameAction(self.context), False

@@ -81,7 +81,7 @@ class FieldAction(AbstractDBAction):
                     list_param = {x: x for x in self.db.fields_names}
                     self.context.add_bot_msgs([Utils.chat_message(messages.wrong_choice),
                                                Utils.choice('Available fields', list_param)])
-                    return None, False
+                    return FieldAction(self.context), False
 
             fields = {x: self.status[x] for x in self.db.fields if x in self.status}
 
@@ -96,4 +96,4 @@ class FieldAction(AbstractDBAction):
             self.db.go_back({})
             self.context.add_bot_msgs([Utils.chat_message(messages.no_exp_found)])
             self.context.add_bot_msgs([Utils.chat_message("Which field do you want to select?")])
-            return None, False
+            return FieldAction(self.context), False

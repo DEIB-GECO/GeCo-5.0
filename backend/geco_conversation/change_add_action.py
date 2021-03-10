@@ -40,4 +40,4 @@ class ChangeAddAction(AbstractDBAction):
             self.context.add_bot_msgs([Utils.chat_message(
                 f"Sorry, I didn't understand. Do you want to change or add a new {self.status['field']}?"),
                                        Utils.choice('Available fields', list_param)])
-            return None, False
+            return ChangeAddAction(self.context), False

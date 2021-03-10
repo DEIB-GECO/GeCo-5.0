@@ -90,4 +90,4 @@ class RegionAction2(AbstractDBAction):
             return RegionAction(self.context), False
         else:
             self.context.add_bot_msgs([Utils.chat_message('Sorry, I don\'t understand')])
-            return None, False
+            return RegionAction2(self.context), False

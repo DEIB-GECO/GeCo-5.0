@@ -12,7 +12,7 @@ class DBScanClustering(AbstractAction):
 
         self.context.add_bot_msg(
             Utils.workflow("DBScan Clustering"))
-        return None, False
+        return DBScanClustering(self.context), False
 
     def logic(self, message, intent, entities):
 

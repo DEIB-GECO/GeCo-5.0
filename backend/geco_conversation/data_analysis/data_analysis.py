@@ -9,7 +9,7 @@ class DataAnalysis(AbstractAction):
     def on_enter(self):
         self.context.add_bot_msg(Utils.chat_message(messages.arithmetic_operation))
         self.context.add_bot_msg(Utils.choice('Available operations', {'K-Means clustering': 'K-Means clustering', 'DBScan clustering': 'DBScan Clustering'}))
-        return None, False
+        return DataAnalysis(self.context), False
 
     def logic(self, message, intent, entities):
 
@@ -24,4 +24,4 @@ class DataAnalysis(AbstractAction):
             return DBScanClustering(self.context), True
         else:
             self.context.add_bot_msg(Utils.chat_message(messages.only_clust))
-            return None, True
+            return DataAnalysis(self.context), True

@@ -15,7 +15,7 @@ class StartAction(AbstractAction):
         self.context.add_bot_msg(Utils.choice("Data available", list_param))
         #self.context.add_bot_msg(Utils.scatter([1,2,3], [1,2,3], [0, 3, 2], {0, 3, 2}))
         self.context.add_bot_msg(Utils.workflow('Data selection'))
-        return None, False
+        return StartAction(self.context), False
 
     def logic(self, message, intent, entities):
         bool = True
@@ -28,6 +28,6 @@ class StartAction(AbstractAction):
         else:
             self.context.add_bot_msgs([Utils.chat_message(messages.wrong_exp_ann),
                                        Utils.workflow('Data selection')])
-            next_node = None
+            next_node = StartAction(self.context)
             bool = False
         return next_node, bool

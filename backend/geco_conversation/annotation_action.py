@@ -74,4 +74,4 @@ class AnnotationAction(AbstractDBAction):
                     self.context.payload.delete(x)
             self.db.go_back({})
             self.context.add_bot_msgs([Utils.chat_message(messages.no_exp_found)])
-            return None, False
+            return AnnotationAction(self.context), False
