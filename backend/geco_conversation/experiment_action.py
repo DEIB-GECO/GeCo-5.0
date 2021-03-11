@@ -14,10 +14,11 @@ class ExperimentAction(AbstractDBAction):
 
     def is_healthy(self):
         if 'is_healthy' in self.status:
-            if self.status['is_healthy'] == ['healthy']:
-                self.context.payload.insert('is_healthy', ['true'])
-            if self.status['is_healthy'] == ['tumoral']:
-                self.context.payload.insert('is_healthy', ['false'])
+            print(self.status['is_healthy'])
+            if self.status['is_healthy'] == ['true']:
+                self.context.payload.insert('is_healthy', [True])
+            if self.status['is_healthy'] == ['false']:
+                self.context.payload.insert('is_healthy', [False])
 
     def check_status(self):
         temp = self.status.copy()

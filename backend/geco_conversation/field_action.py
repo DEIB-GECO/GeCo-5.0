@@ -15,9 +15,9 @@ class FieldAction(AbstractDBAction):
         temp = self.status.copy()
         for (k, v) in temp.items():
             if k == 'is_healthy':
-                if self.status['is_healthy'] == ['healthy']:
+                if self.status['is_healthy'] == ['true']:
                     self.context.payload.insert('is_healthy', [True])
-                if self.status['is_healthy'] == ['tumoral']:
+                if self.status['is_healthy'] == ['false']:
                     self.context.payload.insert('is_healthy', [False])
             if k in self.db.fields and k != 'is_healthy':
                 self.context.payload.replace(k, [x for x in v if x in self.db.values[k]])

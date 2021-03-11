@@ -50,7 +50,7 @@ nlu:
     - [peaks](data_type) from [ammon's horn](tissue)
     - data regarding [spljxn quantification](data_type) for cell [1015c](cell)
     - samples for [aars](target) data
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [angular gyrus](tissue)?
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [angular gyrus](tissue)?
     - [variant calling](data_type) of [aorta](tissue) tissue
     - I am looking for [copy number variation]{"entity":"data_type","value":"cnv"}
     - experiments data for [arm bone](tissue) from [grch38](assembly)
@@ -72,21 +72,21 @@ nlu:
     - can i have [abcf1](target) for cell line [786-0](cell)
     - I am looking for [copy number polymorphisms]{"entity":"data_type","value":"cnv"} data extracted from [tcga](source)
     - data for [biliary tract](tissue)
-    - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [breast fibrocystic change](disease)
-    - [bladder](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [tumoral]{"entity": "is_healthy", "value": "false"} patients affected by [breast fibrocystic change](disease)
+    - [bladder](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "true"} patients
     - samples of [8988t](cell) of patients affected by [burkitt lymphoma](disease).
-    - I would like to have [grch38](assembly) assembly data regarding [blood](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [cancer](disease)
-    - we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [body of pancreas](tissue)
-    - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients.
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [body of uterus](tissue)
-    - i'm looking for data from [1000 genomes](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [bone marrow](tissue)?
-    - [copy number polymorphism]{"entity":"data_type","value":"cnv"} for [healthy]{"entity": "is_healthy", "value": "False"} patients
-    - [dna copy number changes]{"entity":"data_type","value":"cnv"} for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [dna copy number change]{"entity":"data_type","value":"cnv"} of [carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [copy number variation]{"entity":"data_type","value":"copy number segment"} of [cervical adenocarcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "False"} patients
-    - [copy number variations]{"entity":"data_type","value":"copy number segment"} of [bones, joints and articular cartilage of limbs](tissue) for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [copy number]{"entity":"data_type","value":"copy number segment"} of [bones, joints and articular cartilage of other and unspecified sites](tissue) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - I would like to have [grch38](assembly) assembly data regarding [blood](tissue) of [tumoral]{"entity":"is_healthy", "value":"false"} patients with [cancer](disease)
+    - we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "true"} [body of pancreas](tissue)
+    - i want data from [healthy]{"entity": "is_healthy", "value": "true"} patients.
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [body of uterus](tissue)
+    - i'm looking for data from [1000 genomes](source) regarding [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [bone marrow](tissue)?
+    - [copy number polymorphism]{"entity":"data_type","value":"cnv"} for [healthy]{"entity": "is_healthy", "value": "false"} patients
+    - [dna copy number changes]{"entity":"data_type","value":"cnv"} for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [dna copy number change]{"entity":"data_type","value":"cnv"} of [carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [copy number variation]{"entity":"data_type","value":"copy number segment"} of [cervical adenocarcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "false"} patients
+    - [copy number variations]{"entity":"data_type","value":"copy number segment"} of [bones, joints and articular cartilage of limbs](tissue) for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [copy number]{"entity":"data_type","value":"copy number segment"} of [bones, joints and articular cartilage of other and unspecified sites](tissue) for [healthy]{"entity": "is_healthy", "value": "false"} patients
     - [grch38](assembly) data for [cistrome](source)
     - [bone tissue](tissue) dataset
     - [cervical carcinoma](disease) dataset of [dna copy number variation]{"entity":"data_type","value":"copy number segment"}
@@ -106,7 +106,7 @@ nlu:
     - [somatic mutations]{"entity":"data_type","value":"dna seq"} from [cartilage element](tissue)
     - data regarding [dna mutations]{"entity":"data_type","value":"dna seq"} for cell [a172](cell)
     - samples for [adnp](target) data
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [caudate nucleus](tissue)?
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [caudate nucleus](tissue)?
     - [chip-seq]{"entity":"data_type","value":"domain"} of [central nervous system](tissue) tissue
     - I am looking for [chromatin immunoprecipitation sequencing]{"entity":"data_type","value":"domain"}
     - experiments data for [cerebellar cortex](tissue) from [hg19](assembly)
@@ -128,21 +128,21 @@ nlu:
     - can i have [aff1](target) for cell line [acc112](cell)
     - I am looking for [quantification of transcriptomic features]{"entity":"data_type","value":"exon quantification"} data extracted from [cistrome](source)
     - data for [colon](tissue)
-    - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [embryonal carcinoma](disease)
-    - [colonic mucosa](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [tumoral]{"entity": "is_healthy", "value": "false"} patients affected by [embryonal carcinoma](disease)
+    - [colonic mucosa](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "true"} patients
     - samples of [ach2](cell) of patients affected by [embryonal testis carcinoma](disease)
-    - I would like to have [hg19](assembly) assembly data regarding [connective tissue](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [endometrial adenocarcinoma](disease)
-    - we would like to have items from [grch38](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [coronary artery](tissue)
-    - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [cranial](tissue)
-    - i'm looking for data from [encode](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [duodenal mucosa](tissue)?
-    - [exon rna-seq]{"entity":"data_type","value":"exon quantification"} for [healthy]{"entity": "is_healthy", "value": "False"} patients
-    - [expression of exons]{"entity":"data_type","value":"exon quantification"} for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [quantification of exons]{"entity":"data_type","value":"exon quantification"} of [endometrial carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [gene expression quantification]{"entity":"data_type","value":"gene expression"} of [endometriosis](disease) for [healthy]{"entity": "is_healthy", "value": "False"} patients
-    - [gene quantification]{"entity":"data_type","value":"gene expression"} of [duodenum](tissue) for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [expression of genes]{"entity":"data_type","value":"gene expression"} of [ear](tissue) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - I would like to have [hg19](assembly) assembly data regarding [connective tissue](tissue) of [tumoral]{"entity":"is_healthy", "value":"false"} patients with [endometrial adenocarcinoma](disease)
+    - we would like to have items from [grch38](assembly) from [healthy]{"entity": "is_healthy", "value": "true"} [coronary artery](tissue)
+    - i want data from [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [cranial](tissue)
+    - i'm looking for data from [encode](source) regarding [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [duodenal mucosa](tissue)?
+    - [exon rna-seq]{"entity":"data_type","value":"exon quantification"} for [healthy]{"entity": "is_healthy", "value": "false"} patients
+    - [expression of exons]{"entity":"data_type","value":"exon quantification"} for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [quantification of exons]{"entity":"data_type","value":"exon quantification"} of [endometrial carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [gene expression quantification]{"entity":"data_type","value":"gene expression"} of [endometriosis](disease) for [healthy]{"entity": "is_healthy", "value": "false"} patients
+    - [gene quantification]{"entity":"data_type","value":"gene expression"} of [duodenum](tissue) for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [expression of genes]{"entity":"data_type","value":"gene expression"} of [ear](tissue) for [healthy]{"entity": "is_healthy", "value": "false"} patients
     - [hg19](assembly) data for [roadmap epigenomics](source)
     - [embryo](tissue) dataset
     - [esophageal carcinoma](disease) dataset of [rna-seq]{"entity":"data_type","value":"gene expression"}
@@ -166,7 +166,7 @@ nlu:
     - [rna sequencing]{"entity":"data_type","value":"isoform expression"} from [esophagus](tissue)
     - data regarding [rna seq]{"entity":"data_type","value":"isoform expression"} for cell [achn](cell)
     - samples for [aggf1](target) data
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [esophagus muscularis mucosa](tissue)?
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [esophagus muscularis mucosa](tissue)?
     - [sequencing of isoforms]{"entity":"data_type","value":"isoform expression"} of [esophagus squamous epithelium](tissue) tissue
     - I am looking for [expression of isoforms]{"entity":"data_type","value":"isoform expression"}
     - experiments data for [eye](tissue) from [grch38](assembly)
@@ -188,21 +188,21 @@ nlu:
     - can i have [ago2](target) for cell line [ag09309](cell)
     - I am looking for [masked copy number]{"entity":"data_type","value":"masked copy number segment"} data extracted from [roadmap epigenomics](source)
     - data for [frontal lobe](tissue)
-    - [tumoral]{"entity": "is_healthy", "value": "False"} patients affected by [hereditary spherocytosis](disease)
-    - [gall bladder](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "True"} patients
+    - [tumoral]{"entity": "is_healthy", "value": "false"} patients affected by [hereditary spherocytosis](disease)
+    - [gall bladder](tissue) extracted from [healthy]{"entity": "is_healthy", "value": "true"} patients
     - samples of [ag09319 cell](cell) of patients affected by [immunoblastic lymphoma](disease)
-    - I would like to have [grch38](assembly) assembly data regarding [gastrocnemius medialis](tissue) of [tumoral]{"entity":"is_healthy", "value":"False"} patients with [immunoglobulin lambda locus](disease)
-    - we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "True"} [gastroesophageal sphincter](tissue)
-    - i want data from [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [germinal center](tissue)
-    - i'm looking for data from [tads](source) regarding [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - can we have data from [tumoral]{"entity": "is_healthy", "value": "False"} tissue from [gingiva](tissue)?
-    - [masked dna copy number variation]{"entity":"data_type","value":"masked copy number segment"} for [healthy]{"entity": "is_healthy", "value": "False"} patients
-    - [masked dna copy number variants]{"entity":"data_type","value":"masked copy number segment"} for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [masked dna copy number polymorphisms]{"entity":"data_type","value":"masked copy number segment"} of [invasive breast carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [masked dna copy number polymorphism]{"entity":"data_type","value":"masked copy number segment"} of [leukemia](disease) for [healthy]{"entity": "is_healthy", "value": "False"} patients
-    - [masked copy number polymorphisms]{"entity":"data_type","value":"masked copy number segment"} of [globus pallidus](tissue) for [healthy]{"entity": "is_healthy", "value": "True"} patients
-    - [masked polymorphisms, copy number]{"entity":"data_type","value":"masked copy number segment"} of [heart](tissue) for [healthy]{"entity": "is_healthy", "value": "False"} patients
+    - I would like to have [grch38](assembly) assembly data regarding [gastrocnemius medialis](tissue) of [tumoral]{"entity":"is_healthy", "value":"false"} patients with [immunoglobulin lambda locus](disease)
+    - we would like to have items from [hg19](assembly) from [healthy]{"entity": "is_healthy", "value": "true"} [gastroesophageal sphincter](tissue)
+    - i want data from [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [germinal center](tissue)
+    - i'm looking for data from [tads](source) regarding [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - can we have data from [tumoral]{"entity": "is_healthy", "value": "false"} tissue from [gingiva](tissue)?
+    - [masked dna copy number variation]{"entity":"data_type","value":"masked copy number segment"} for [healthy]{"entity": "is_healthy", "value": "false"} patients
+    - [masked dna copy number variants]{"entity":"data_type","value":"masked copy number segment"} for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [masked dna copy number polymorphisms]{"entity":"data_type","value":"masked copy number segment"} of [invasive breast carcinoma](disease) for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [masked dna copy number polymorphism]{"entity":"data_type","value":"masked copy number segment"} of [leukemia](disease) for [healthy]{"entity": "is_healthy", "value": "false"} patients
+    - [masked copy number polymorphisms]{"entity":"data_type","value":"masked copy number segment"} of [globus pallidus](tissue) for [healthy]{"entity": "is_healthy", "value": "true"} patients
+    - [masked polymorphisms, copy number]{"entity":"data_type","value":"masked copy number segment"} of [heart](tissue) for [healthy]{"entity": "is_healthy", "value": "false"} patients
     - [grch38](assembly) data for [tcga](source)
     - [heart left ventricle](tissue) dataset
     - [liver carcinoma](disease) dataset of [masked dna copy number changes]{"entity":"data_type","value":"masked copy number segment"}

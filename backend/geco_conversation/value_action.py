@@ -38,7 +38,7 @@ class ValueAction(AbstractDBAction):
             gcm_filter = {k: v for (k, v) in self.status.items() if (k in self.db.fields)}
 
             if len(gcm_filter) > 0:
-                self.cdb.update(gcm_filter)
+                self.db.update(gcm_filter)
                 list_param = {k: v for (k, v) in self.status.items() if k in self.db.fields_names}
                 choices = {x: x for x in self.db.fields_names}
             self.context.add_bot_msgs([Utils.chat_message(messages.filter_more),

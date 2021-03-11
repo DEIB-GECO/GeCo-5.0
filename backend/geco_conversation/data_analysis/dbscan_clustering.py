@@ -50,7 +50,7 @@ class EpsilonAction(AbstractAction):
 
         self.context.add_bot_msg(Utils.chat_message(
             "The minimum number of samples is 5 as default. Do you want to change it? If yes, please provide me the number."))
-        return MinSamplesAction(self.context), True
+        return MinSamplesAction(self.context), False
 
 
 class MinSamplesAction(AbstractAction):
@@ -67,9 +67,9 @@ class MinSamplesAction(AbstractAction):
         else:
             min_samples = int(message.strip())
             self.context.payload.insert('min_samples', min_samples)
-
+        print(self.status)
         self.context.workflow.add(
-            DBScan(self.context.workflow[-1], epsilon=self.status['epsilon'], min_samples=self.status['min_samples']))
+            DBScan(self.context.workflow[-1], epsilon=self.status['epsilon'][0], min_samples=self.status['min_samples'][0]))
         self.context.workflow.add(PCA(self.context.workflow[-1], 2))
         self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
         self.context.workflow.run(self.context.workflow[-1], self.context.session_id)

@@ -93,10 +93,7 @@ class DB:
         self.fields_names=[]
 
         for f in gcm:
-            if f!='is_healthy':
-                self.table = self.table[self.table[f].isin(gcm[f])]
-            #else:
-                #print(gcm[f])
+            self.table = self.table[self.table[f].isin(gcm[f])]
 
         for f in self.fields:
             values = []
