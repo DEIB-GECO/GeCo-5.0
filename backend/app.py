@@ -151,9 +151,15 @@ def test_message(message):
     data = json.loads(open("logger.json").read())
     data[request.sid].append(user_message)
 
-    # Call the dialogue manager that receive the message, interprets it and pass it to the correct action
-    session['dm'].receive(user_message)
-    # if (session['dm'].context.top_bot_msgs()!=None):
+    error_to_raise = None
+    try:
+        # Call the dialogue manager that receive the message, interprets it and pass it to the correct action
+        session['dm'].receive(user_message)
+        # if (session['dm'].context.top_bot_msgs()!=None):
+    except Exception as e:
+        session['dm'].context.add_bot_msg(Utils.chat_message("Something bad has happened, please start from beginning..."))
+        error_to_raise = e
+
 
     # For each message in the top of the stack, we add it to the session and we send it to the user
     #print(session['dm'].context.top_bot_msgs())
@@ -167,6 +173,10 @@ def test_message(message):
             data[request.sid].append(msg['payload']['text'])
         with open("logger.json", "w") as file:
             json.dump(data, file)
+
+    if error_to_raise:
+        raise error_to_raise
+
 
     # session['status'].clear_msgs()
     # session['previous_intent']= intent
