@@ -112,7 +112,7 @@ class Utils(object):
             return {"type": "workflow",
                     "payload": {"state": state}}
 
-    def table_viz(show, df, show_index=True, order_by=None):
+    def table_viz(df, show_index=True, order_by=None):
         show = 'tableViewer'
         if not isinstance(df.index, pd.MultiIndex):
             df = df[df.index.notnull()]

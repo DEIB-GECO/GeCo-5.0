@@ -208,7 +208,7 @@ class Labels(AbstractAction):
             self.context.workflow.run(self.context.workflow[-1], self.context.session_id)
             self.context.add_bot_msgs([Utils.chat_message(
                 'On the right, if you click on "Table", you can see the table. Is it ok?'),
-                                       Utils.table_viz('Table', self.context.workflow[-1].result.ds[:50].T[:50].T),
+                                       Utils.table_viz( self.context.workflow[-1].result.ds[:50].T[:50].T),
                                        Utils.tools_setup(add=None, remove='data_summary')])
         else:
             # self.context.workflow.write_workflow()
@@ -218,7 +218,7 @@ class Labels(AbstractAction):
             self.context.workflow.run(self.context.workflow[-1],self.context.session_id)
             self.context.add_bot_msgs([Utils.chat_message(
                 'On the right, if you click on "Table", you can see the table. Is it ok?'),
-                Utils.table_viz('Table', self.context.workflow[-1].result.ds[:50].T[:50].T),
+                Utils.table_viz( self.context.workflow[-1].result.ds[:50].T[:50].T),
                 Utils.tools_setup(add=None, remove='data_summary')])
 
         # self.context.add_bot_msgs([Utils.chat_message(messages.other_dataset)])
@@ -268,7 +268,7 @@ class ChangePivot(AbstractAction):
                 self.context.workflow[-1].result.ds = self.ds.T
                 self.context.add_bot_msgs([Utils.chat_message(
                     'On the right, if you click on "Table", you can see the table. You can download it. Is it ok?'),
-                    Utils.table_viz('Table', self.context.workflow[-1].result.ds[:50].T[:50].T)])
+                    Utils.table_viz(self.context.workflow[-1].result.ds[:50].T[:50].T)])
                 return YesNoAction(self.context, DonorDataset(self.context),ChangePivot(self.context)), False
             else:
                 self.context.payload.back == PivotAction

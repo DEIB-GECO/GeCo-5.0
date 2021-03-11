@@ -26,7 +26,7 @@ class JoinPivotAction(AbstractAction):
 					break
 			self.context.workflow.run(self.context.workflow[-1],self.context.session_id)
 			self.context.add_bot_msgs([Utils.chat_message(
-				"Ok, I joined the two tables. The result is on the right."),Utils.table_viz(True, self.context.workflow[-1].result)])
+				"Ok, I joined the two tables. The result is on the right."),Utils.table_viz( self.context.workflow[-1].result)])
 
 			return DataAnalysis(self.context), True
 		else:

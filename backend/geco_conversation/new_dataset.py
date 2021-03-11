@@ -62,7 +62,7 @@ class DonorDataset(AbstractDBAction):
                 'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'
                 'Do you want also one of these datasets?'),
                 Utils.choice('Datasets', {k: k for k, v in
-                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),Utils.table_viz('Table',table),
+                                          self.status['common_donors'].items() if (len(v) / len_donors) * 100 > 0}),Utils.table_viz(table),
                 Utils.tools_setup(add=None, remove='data_summary')])
             return DonorDataset(self.context), False
 
