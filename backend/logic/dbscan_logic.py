@@ -11,6 +11,7 @@ class DBScanLogic:
         self.ds = self.op.depends_on.result
         if  isinstance(self.ds, PivotRes):
             self.labels = self.ds.labels
+            self.name = self.ds.name
             self.ds = self.ds.ds
         self.tuning = dbscan.tuning
         if self.tuning:
@@ -33,8 +34,8 @@ class DBScanLogic:
 
         if not self.tuning:
             dbscan = DBSCAN(eps=self.epsilon, min_samples=self.min_samples).fit(self.ds.values)
-            label =  dbscan.labels_
-            self.op.result = ClusteringRes(self.ds.values, dbscan, label)
+            labels =  dbscan.labels_
+            self.op.result = ClusteringRes(self.name, self.ds.values, dbscan, labels)
         else:
 
             def silhouette_score(estimator, X):
@@ -51,8 +52,8 @@ class DBScanLogic:
             grid = search.fit(self.ds.values)
             dbscan = grid.best_estimator_
             dbscan_fit = dbscan.fit(self.ds.values)
-            label = dbscan_fit.labels_
-            self.op.result = ClusteringRes(self.ds.values, dbscan_fit, label)
+            labels = dbscan_fit.labels_
+            self.op.result = ClusteringRes(self.name, self.ds.values, dbscan_fit, labels)
         self.op.executed = True
         #self.write()
 
