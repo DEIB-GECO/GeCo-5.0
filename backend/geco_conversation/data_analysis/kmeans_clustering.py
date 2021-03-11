@@ -9,12 +9,12 @@ class KMeansClustering(AbstractAction):
     def on_enter(self):
         print('status', self.status)
         if self.context.workflow[-1].__class__.__name__ == 'Pivot':
-            self.context.payload.insert('ds_name', self.context.workflow[-1].result.name)
+            self.context.payload.insert('Ds Name', self.context.workflow[-1].result.name)
         else:
             for i in range((len(self.context.workflow) - 2), 0, -1):
                 if self.context.workflow[i].__class__.__name__ == 'Pivot':
-                    self.context.payload.insert('ds_name', self.context.workflow[i].result.name)
-        self.context.payload.insert('data_analysis_op', 'KMeans Clustering')
+                    self.context.payload.insert('Ds Name', self.context.workflow[i].result.name)
+        self.context.payload.insert('Method', 'KMeans Clustering')
         self.context.add_bot_msg(Utils.param_list({k: v[0] for k, v in self.status.items()}))
         self.context.add_bot_msg(
             Utils.chat_message(
@@ -28,7 +28,7 @@ class KMeansClustering(AbstractAction):
 
         if intent != 'deny':
             n_clust = int(''.join(filter(str.isdigit, message)))
-            self.context.payload.insert('n_clusters', n_clust)
+            self.context.payload.insert('N° clusters', n_clust)
             Utils.wait_msg('Please wait, this step can take some time.')
             import time
             time.sleep(0.5)
@@ -65,36 +65,36 @@ class NumClusters(AbstractAction):
 
     def logic(self, message, intent, entities):
         print(self.status)
-        if 'min_n_clusters' not in self.status:
+        if 'Min N° Clusters' not in self.status:
             min = int(''.join(filter(str.isdigit, message)))
-            self.context.payload.insert('min_n_clusters', min)
+            self.context.payload.insert('Min N° Clusters', min)
             self.context.add_bot_msg(Utils.param_list({k: v[0] for k, v in self.status.items()}))
             print('status after min', self.status)
             self.context.add_bot_msg(Utils.chat_message(messages.max_n_clust))
             return NumClusters(self.context), False
         else:
             max = int(''.join(filter(str.isdigit, message)))
-            self.context.payload.insert('max_n_clusters', max)
+            self.context.payload.insert('Max N° Clusters', max)
             Utils.wait_msg('Please wait, this step can take some time.')
             import time
             time.sleep(0.5)
             self.context.add_bot_msg(Utils.chat_message(messages.analysis_done))
             if self.context.workflow[-1].__class__.__name__ == 'Pivot':
                 self.context.workflow.add(
-                    KMeans(self.context.workflow[-1], tuning=True, min=self.status['min_n_clusters'][0],
-                           max=self.status['max_n_clusters'][0]))
+                    KMeans(self.context.workflow[-1], tuning=True, min=self.status['Min N° Clusters'][0],
+                           max=self.status['Max N° Clusters'][0]))
             else:
                 for i in range((len(self.context.workflow) - 2), 0, -1):
                     if self.context.workflow[i].__class__.__name__ == 'Pivot':
                         self.context.workflow.add(
-                            KMeans(self.context.workflow[i], tuning=True, min=self.status['min_n_clusters'][0],
-                                   max=self.status['max_n_clusters'][0]))
+                            KMeans(self.context.workflow[i], tuning=True, min=self.status['Min N° Clusters'][0],
+                                   max=self.status['Max N° Clusters'][0]))
 
             self.context.workflow.add(PCA(self.context.workflow[-1], 2))
             self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
 
             self.context.workflow.run(self.context.workflow[-1], self.context.session_id)
-            self.context.payload.insert('used_n_clusters', len(self.context.workflow[-1].result.u_labels))
+            self.context.payload.insert('N° Clusters', len(self.context.workflow[-1].result.u_labels))
             self.context.add_bot_msg(Utils.param_list({k: v[0] for k, v in self.status.items()}))
             self.context.add_bot_msg(
                 Utils.scatter(self.context.workflow[-1].result.x, self.context.workflow[-1].result.y,
