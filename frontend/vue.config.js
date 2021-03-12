@@ -7,5 +7,5 @@ module.exports = {
             },
         }
     },
-    publicPath: '/geco_agent/',
+    publicPath: '/geco_agent_rasa/',
 }

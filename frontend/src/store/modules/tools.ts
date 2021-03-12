@@ -21,13 +21,14 @@ class Tools extends VuexModule {
   fieldList: string[] = [];
   toolToShow = '';
 
+  // NOTA: se cambi questa conf. cambiala anche sotto in resetToolPane()
   activeTools: ToolTuple[] = [
     // { name: 'Dataset List', component: 'dataset' },
     // { name: 'Metadata', component: 'metadata' },
-    // { name: 'Table', component: 'tableViewer' }
+    { name: 'Table', component: 'tableViewer' },
     // { name: 'Field Explorer', component: 'field' },
     // { name: 'Query', component: 'query' }
-    // { name: 'Data', component: 'dataviz' }
+    { name: 'Data', component: 'dataviz' }
   ];
 
   @Mutation
@@ -39,7 +40,8 @@ class Tools extends VuexModule {
 
   @Action
   updateToolToShow(newTool: string): void {
-    console.log('update toool to show');
+    console.log('available tools: ', this.activeTools);
+    console.log('trying to show', newTool);
     //I check if the new tool exists
     if (newTool != '') {
       this.context.commit('addSingleToolToPane', newTool);
@@ -54,6 +56,7 @@ class Tools extends VuexModule {
   @Mutation
   setToolToShow(newTool: string): void {
     this.cleanCanvas = false;
+    //this.toolToShow = this.availableTools.filter((el) => el.name == newTool)[0].component;
     this.toolToShow = newTool;
   }
 
@@ -94,10 +97,13 @@ class Tools extends VuexModule {
   }
 
   @Mutation
-  resetToolPane(){
+  resetToolPane() {
     this.toolToShow = '';
     this.cleanCanvas = true;
-    this.activeTools = [];
+    this.activeTools = [
+      { name: 'Table', component: 'tableViewer' },
+      { name: 'Data', component: 'dataviz' }
+    ];
   }
 }
 

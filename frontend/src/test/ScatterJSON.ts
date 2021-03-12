@@ -1,32 +1,35 @@
-const ScatterJSON = [{
-            x: -10,
-            y: 0,
-            label: 'A'
-        }, {
-            x: 0,
-            y: 10,
-            label: 'A'
+// const ScatterJSON = [
+//             {
+//                 label: 0,
+//                 data: [
+//                     {x: 0, y: 4},
+//                     {x: 1, y: 3},
+//                     {x: 4, y: 6},
+//                     {x: 8, y: 4},
+//                     {x: 2, y: 4},
+//                     {x: 1, y: 7}
+//                 ]
+//             },
+//             {
+//                 label: 1,
+//                 data: [
+//                     {x: 2, y: 4},
+//                     {x: 5, y: 2},
+//                     {x: 2, y: 6},
+//                     {x: 2, y: 4},
+//                     {x: 1, y: 2},
+//                     {x: 7, y: 3}
+//                 ]
+//             }
+//         ]
 
-        }, {
-            x: 10,
-            y: 5,
-            label: 'A'
-        }, {
-            x: 2,
-            y: 4,
-            label: 'B'
-        },
-        {
-            x: 7,
-            y: 9,
-            label: 'B'
-        },
-        {
-            x: 1,
-            y: 8,
-            label: 'B'
-        }
-    ]
+const ScatterJSON = [
+    {
+                        label: 0,
+                        data: []
+                    }
+]
+
 
 
 export {ScatterJSON};

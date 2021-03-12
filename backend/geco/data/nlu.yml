@@ -6231,11 +6231,27 @@ nlu:
     - i want cluster genes
     - cluster
     - i want clusters
-    - kmeans
     - i want to do clustering
     - i want to find cluster
     - find cluster
+
+- intent: kmeans
+  examples: |
+    - kmeans
     - perform kmeans cluster
+    - k-means clustering
+    - kmean
+    - do kmean clustering
+    - find clusters using kmeans
+- intent: dbscan
+  examples: |
+    - dbscan
+    - perform dbscan cluster
+    - dbscan clustering
+    - dbscan
+    - do dbscan clustering
+    - find clusters using dbscan
+
 - synonym: thymoma
   examples: |
     - thynoma

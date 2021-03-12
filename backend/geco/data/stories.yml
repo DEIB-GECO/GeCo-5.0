@@ -372,15 +372,14 @@ stories:
   - action: action_yes_no
   - intent: deny
   - action: action_workflow
+  - action: utter_wait
   - action: utter_pivot_0
   - action: action_show_feature_sample
   - intent: feature
   - action: utter_pivot_1
   - action: action_show_all_region
   - intent: region
-  - action: utter_pivot_2
   - action: action_save_region
-  - intent: affirm
   - action: utter_pivot_3
   - intent: region
   - action: action_save_region
@@ -388,8 +387,11 @@ stories:
   - intent: deny
   - action: action_run_workflow
   - action: action_show_operations
+  - action: utter_wait_2
   - action: utter_pivot_7
-  - intent: cluster
+  - intent: affirm
+  - action: utter_operation
+  - intent: kmeans
   - action: action_workflow
   - action: utter_please_k-means_0
 
@@ -402,15 +404,14 @@ stories:
   - action: action_yes_no
   - intent: deny
   - action: action_workflow
+  - action: utter_wait
   - action: utter_pivot_0
   - action: action_show_feature_sample
   - intent: sample
   - action: utter_pivot_1b
   - action: action_show_all_region
   - intent: region
-  - action: utter_pivot_2b
   - action: action_save_region
-  - intent: affirm
   - action: utter_pivot_3
 
 - story: modify extracted + join
@@ -1021,15 +1022,14 @@ stories:
   - action: action_yes_no
   - intent: deny
   - action: action_workflow
+  - action: utter_wait
   - action: utter_pivot_0
   - action: action_show_feature_sample
   - intent: feature
   - action: utter_pivot_1
   - action: action_show_all_region
   - intent: region
-  - action: utter_pivot_2
   - action: action_save_region
-  - intent: affirm
   - action: utter_pivot_3
   - intent: region
   - action: action_save_region
@@ -1049,8 +1049,11 @@ stories:
   - action: action_save_feature
   - action: action_run_workflow
   - action: action_show_operations
+  - action: utter_wait_2
   - action: utter_pivot_7
-  - intent: cluster
+  - intent: affirm
+  - action: utter_operation
+  - intent: kmeans
   - action: action_workflow
   - action: utter_please_k-means_0
   - intent: tuning
@@ -1072,8 +1075,6 @@ stories:
   - action: action_show_all_region
   - intent: region
   - action: action_save_region
-  - action: utter_pivot_2b
-  - intent: affirm
   - action: utter_pivot_3
   - intent: region
   - action: action_save_region
@@ -1081,8 +1082,11 @@ stories:
   - intent: deny
   - action: action_run_workflow
   - action: action_show_operations
+  - action: utter_wait_2
   - action: utter_pivot_7
-  - intent: cluster
+  - intent: affirm
+  - action: utter_operation
+  - intent: kmeans
   - action: action_workflow
   - action: utter_please_k-means_0
   - intent: tuning
@@ -1592,15 +1596,14 @@ stories:
   - action: action_yes_no
   - intent: deny
   - action: action_workflow
+  - action: utter_wait
   - action: utter_pivot_0
   - action: action_show_feature_sample
   - intent: sample
   - action: utter_pivot_1b
   - action: action_show_all_region
   - intent: region
-  - action: utter_pivot_2b
   - action: action_save_region
-  - intent: affirm
   - action: utter_pivot_3
   - intent: region
   - action: action_save_region
@@ -1616,7 +1619,10 @@ stories:
   - action: action_save_feature
   - action: action_run_workflow
   - action: action_show_operations
+  - action: utter_wait_2
   - action: utter_pivot_7
+  - intent: affirm
+  - action: utter_operation
 
 - story: interactive_story_1
   steps:
@@ -2081,6 +2087,7 @@ stories:
   - action: action_yes_no
   - intent: deny
   - action: action_workflow
+  - action: utter_wait
   - action: utter_pivot_0
   - action: action_show_feature_sample
 
@@ -2215,3 +2222,28 @@ stories:
     - field: null
   - action: action_show_field
   - action: utter_filter_more
+
+- story: dbScan
+  steps:
+  - action: utter_pivot_7
+  - intent: affirm
+  - action: utter_operation
+  - intent: dbscan
+  - action: action_workflow
+  - action: utter_dbscan_0
+  - action: utter_dbscan_1
+  - intent: affirm
+  - action: utter_dbscan_2
+  - action: utter_dbscan_3
+  - intent: value
+  - action: action_take_dbscan
+  - action: utter_dbscan_4
+  - intent: value
+  - action: action_take_dbscan
+  - action: utter_dbscan_5
+  - intent: value
+  - action: action_take_dbscan
+  - action: utter_dbscan_6
+  - action: value
+  - action: action_take_dbscan
+  - action: utter_dbscan_7

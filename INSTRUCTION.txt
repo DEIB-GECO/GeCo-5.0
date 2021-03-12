@@ -15,7 +15,7 @@
 
 5- 	TEST
 	go to ./backend/geco 
-	petry run rasa shell
+	poetry run rasa shell
 
 6- 	Commands	
 	poetry run rasa run action 

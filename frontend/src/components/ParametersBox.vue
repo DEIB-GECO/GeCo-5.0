@@ -56,21 +56,15 @@ export default class Choice extends Vue {
 .parameters_box {
   height: 100%;
   overflow: auto;
+  width: 100%;
 }
 
 .parameter_list {
-  //
-  // display: flex;
-  // flex-direction: column;
-  // flex-wrap: wrap;
-  // height: 8vh;
-  // width: 30vw;
-  // column-width: auto;
   text-align: left;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   grid-auto-flow: column;
-  grid-template-columns: repeat(12, 350px);
+  grid-template-columns: repeat(1, 100%);
   margin: 20px;
 }
 

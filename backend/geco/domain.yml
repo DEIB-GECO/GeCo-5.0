@@ -58,6 +58,8 @@ intents:
 - cluster
 - greater
 - minor
+- kmeans
+- dbscan
 entities:
 - affirm
 - annotations
@@ -2109,16 +2111,18 @@ responses:
   - text: Do you want to add other aggregation functions? If so, tell me which one
   utter_map_4b:
   - text: Do you want to assign a name to your dataset? If so provide a name
+  utter_wait:
+  - text: Now I will put the data in a table, so as you can analyze them easily. This step can take some time, I'm sorry that you will wait.
+  utter_wait_2:
+  - text: Please wait, this step can take some time.
   utter_pivot_0:
-  - text: Now i will put the data in a table, so as you can analyze them easily. Do you want feature or sample data?
+  - text: According to what you want to analyze, I'll build your table. Do you want to do operations on the features (e.g. genes) or on the samples?
   utter_pivot_1:
-  - text: You have to define what to put in the rows. Which region do you want?
+  - text: You have to define what to put in the rows. Which region do you want? You can find the possible choices on the right.
   utter_pivot_1b:
-  - text: You have to define what to put in the columuns. Which region do you want?
+  - text: You have to define what to put in the columns. Which region do you want? You can find the possible choices on the right.
   utter_pivot_2:
-  - text: I will put in the columuns 'item_id' ok ?
-  utter_pivot_2b:
-  - text: I will put in the rows 'item_id' ok ?
+  - text: On the right, if you click on "Table", you can see the table. Is it ok?
   utter_pivot_3:
   - text: which region data do you want to use to fill your table?
   utter_pivot_4:
@@ -2128,7 +2132,9 @@ responses:
   utter_pivot_6:
   - text: Do you want to add a label to the feature? Choose one in the right panel
   utter_pivot_7:
-  - text: which operation do you want to do?
+  - text: On the right, if you click on "Table", you can see the table. Is it ok?
+  utter_operation:
+  - text: Which operation do you want to do? You can choose among the ones in the right panel.
   utter_please_k-means_0:
   - text: Give me the number of clusters you need. In case you don't know, you can try some tuning
   utter_please_k-means_1:
@@ -2137,6 +2143,23 @@ responses:
   - text: Which is the minimum and maximum number of clusters you want to try?
   utter_please_k-means_3:
   - text: Here is your analysis! Choose the final number of clusters you want to keep. Otherwise you can modify the parameters and re-run the analysis
+  utter_dbscan_0:
+  - text: Ok, I will perform DBScan clustering.
+  utter_dbscan_1:
+  - text: Do you want to apply parameter tuning?
+  utter_dbscan_2:
+    - text: "Ok! You have to tell me the ranges to try for the two parameters: the maximum distance (epsilon) between 2 samples and the number of samples in a neighborhood for a point to be considered as a core point."
+  utter_dbscan_3:
+    - text: Do you want to apply parameter tuning?
+  utter_dbscan_4:
+    - text: Which is the minimum epsilon you want to try? If you don't know, please tell me 0.
+  utter_dbscan_5:
+    - text: Which is the maximum epsilon you want to try?
+  utter_dbscan_6:
+    - text: Which is the minimum number of samples you want to try?
+  utter_dbscan_7:
+    - text: Which is the maximum number of samples you want to try?
+
 actions:
 - action_GMQL_binary
 - action_GMQL_unary
@@ -2206,8 +2229,6 @@ actions:
 - utter_pivot_0
 - utter_pivot_1
 - utter_pivot_1b
-- utter_pivot_2
-- utter_pivot_2b
 - utter_pivot_3
 - utter_please_k-means_0
 - utter_please_k-means_2
@@ -2219,3 +2240,8 @@ actions:
 - utter_provide_value
 - utter_rename_dataset
 - utter_what_data
+- utter_wait
+- utter_wait_2
+- utter_operation
+- action_take_dbscan
+

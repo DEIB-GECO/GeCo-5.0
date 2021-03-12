@@ -3,14 +3,15 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 @Module({ namespaced: true })
 class DataViz extends VuexModule {
   charts: ChartData[] = [
-    // {
-    //   title: 'Ciao',
-    //   vizType: 'histDistChart'
-    // }
+    {
+      title: 'Ciao',
+      vizType: 'scatter'
+    }
   ];
 
   @Mutation
   setCharts(newCharts: DataSummaryPayload): void {
+    console.log("ricevuti dei dati, li sto salvando", newCharts)
     newCharts.viz.map((singleChart) => {
       const newData = singleChart;
       if (newData.vizType == 'pie-chart') {

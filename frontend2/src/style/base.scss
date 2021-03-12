@@ -1,0 +1,26 @@
+// DEFINITION OF THE SCROLL BAR
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  /* background: #f1f1f1;*/
+  /* background: white; */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d2d9dc;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a6b4ba;
+}
+
+.pane_border {
+  border: solid 3px #ecebe4;
+}

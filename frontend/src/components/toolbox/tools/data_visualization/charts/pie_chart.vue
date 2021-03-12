@@ -217,6 +217,11 @@ export default class PieChart extends Vue {
   font-weight: bold;
 }
 
+.piechart_title {
+  padding-top: 10px;
+  font-weight: bold;
+}
+
 .tooltip {
   // NOTE: the css written here is not recognized for
   // some reason --  use tooltip.style as above!
