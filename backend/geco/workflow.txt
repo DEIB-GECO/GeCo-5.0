@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7f888c109110>
+result:<data_structure.dataset.Dataset object at 0x7fe08fd651d0>
 depends_on:Dataset
 metadata:None
 region:None
@@ -11,13 +11,13 @@ region:None
 Pivot
 --parameters--
 executed:True
-result:<logic.pivot_logic.PivotRes object at 0x7f888c9d4a50>
+result:<logic.pivot_logic.PivotRes object at 0x7fe091763250>
 depends_on:Select
 region_row:['gene_symbol']
 meta_row:None
 region_col:None
 meta_col:['item_id']
-value:['reads_per_million_mirna_mapped']
+value:['fpkm']
 other_meta:None
 other_region:None
 -------

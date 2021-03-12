@@ -2244,4 +2244,6 @@ actions:
 - utter_wait_2
 - utter_operation
 - action_take_dbscan
+- action_show_possible_region
+
 

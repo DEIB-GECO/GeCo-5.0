@@ -4,5 +4,6 @@ from .project_logic import ProjectMetadataLogic, ProjectRegionLogic
 from .cover_logic import CoverLogic
 from .joinPivot_logic import JoinPivotLogic
 from .kmeans_logic import KMeansLogic
+from .dbscan_logic import DBScanLogic
 from .pca_logic import PCALogic
 from .scatter_logic import ScatterLogic

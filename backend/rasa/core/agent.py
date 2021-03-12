@@ -65,7 +65,7 @@ async def load_from_server(agent: "Agent", model_server: EndpointConfig) -> "Age
     # a model.
     await _update_model_from_server(model_server, agent)
 
-    wait_time_between_pulls = model_server.kwargs.get("wait_time_between_pulls", 100)
+    wait_time_between_pulls = model_server.kwargs.get("wait_time_between_pulls", 200)
 
     if wait_time_between_pulls:
         # continuously pull the model every `wait_time_between_pulls` seconds

@@ -53,6 +53,21 @@ import Toolbox from './../components/toolbox/toolbox_interface.vue';
 import ParametersBox from '@/components/ParametersBox.vue';
 import {conversation} from './../test/conversation';
 
+console.log("before", document.cookie)
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+const session=getCookie('session')
+if(!session){
+    document.cookie="session="+Math.random()
+}
+
+
+
 const socket = io('http://localhost:5980', {
   path: '/socket.io',
   'reconnection': true,
@@ -68,6 +83,8 @@ const functionsAreaStore = namespace('gecoAgent/functionsArea');
 const dataVizStore = namespace('gecoAgent/DataViz');
 const processStore = namespace('gecoAgent/process');
 const tableStore = namespace('gecoAgent/TableViewer');
+
+
 
 @Component({
   components: {
@@ -163,6 +180,7 @@ export default class GecoAgent extends Vue {
 
   created() {
     socket.emit('ack', {message_id: this.lastMessageId, location: "crated"});
+    socket.emit('session_request', { session_id: document.cookie});
     socket.on('json_response', (payload: any) => {
       if (payload.type) {
         console.log('server sent JSON_response', payload);

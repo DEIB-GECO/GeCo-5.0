@@ -377,7 +377,7 @@ stories:
   - action: action_show_feature_sample
   - intent: feature
   - action: utter_pivot_1
-  - action: action_show_all_region
+  - action: action_show_possible_region
   - intent: region
   - action: action_save_region
   - action: utter_pivot_3
@@ -409,7 +409,7 @@ stories:
   - action: action_show_feature_sample
   - intent: sample
   - action: utter_pivot_1b
-  - action: action_show_all_region
+  - action: action_show_possible_region
   - intent: region
   - action: action_save_region
   - action: utter_pivot_3
@@ -1027,7 +1027,7 @@ stories:
   - action: action_show_feature_sample
   - intent: feature
   - action: utter_pivot_1
-  - action: action_show_all_region
+  - action: action_show_possible_region
   - intent: region
   - action: action_save_region
   - action: utter_pivot_3
@@ -1072,7 +1072,7 @@ stories:
   - action: action_show_feature_sample
   - intent: sample
   - action: utter_pivot_1b
-  - action: action_show_all_region
+  - action: action_show_possible_region
   - intent: region
   - action: action_save_region
   - action: utter_pivot_3
@@ -1601,7 +1601,7 @@ stories:
   - action: action_show_feature_sample
   - intent: sample
   - action: utter_pivot_1b
-  - action: action_show_all_region
+  - action: action_show_possible_region
   - intent: region
   - action: action_save_region
   - action: utter_pivot_3
@@ -2244,6 +2244,6 @@ stories:
   - intent: value
   - action: action_take_dbscan
   - action: utter_dbscan_6
-  - action: value
+  - intent: value
   - action: action_take_dbscan
   - action: utter_dbscan_7

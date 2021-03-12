@@ -64,10 +64,9 @@ class database:
         self.fields = fields
         self.get_all_values()
 
-    # and dataset_name in {}
     def get_all_values(self):
-        self.fields_names = []
-        self.values = {}
+        # self.fields_names = []
+        # self.values = {}
         res = db.engine.execute("select item_id, local_url, donor_source_id, " + ', '.join(fields)
                                 + " from dw.flatten_gecoagent where source in {} and dataset_name in {}".format(
             tuple(sources), tuple(datasets)))
@@ -77,8 +76,8 @@ class database:
         for f in self.fields:
             res = list(set(self.table[f]))
             if res != [] and len(res) > 1:
-                self.fields_names.append(f)
-                self.values[f] = res
+                # self.fields_names.append(f)
+                # self.values[f]= res
                 setattr(self, (str(f) + '_db'), res)
             else:
                 self.table = self.table.drop(f, axis=1)
@@ -108,10 +107,7 @@ class DB:
         self.fields_names = []
 
         for f in gcm:
-            if f != 'is_healthy':
-                self.table = self.table[self.table[f].isin(gcm[f])]
-            else:
-                print(gcm[f])
+            self.table = self.table[self.table[f].isin(gcm[f])]
 
         for f in self.fields:
             values = []
@@ -201,7 +197,7 @@ class DB:
         items = items.split(',')
         items = [int(i) for i in items]
         # items = ','.join(str(i) for i in items)
-        print(items)
+        # print(items)
         donors = list(self.table[self.table['item_id'].isin(items)]['donor_source_id'].values)
         return donors
 
@@ -299,7 +295,7 @@ class DB:
 
     def find_regions(self, gcm, filter2):
         ds_name = gcm['dataset_name'][0]
-        print(ds_name)
+        # print(ds_name)
         if ds_name in region_datasets:
             item_id = list(self.table['item_id'].values)
             items = ','.join(str(i) for i in item_id)

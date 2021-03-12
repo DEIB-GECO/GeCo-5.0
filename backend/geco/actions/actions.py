@@ -1131,15 +1131,10 @@ class SaveDb(Action):
         print(param_list)
         print("name db:", param_list["Name"])
 
-        print("fatto_0")
         dict_for_join={i:{'donor':d,'is_healthy':h,'disease':dis} for i,d,h,dis in db.table [['item_id','donor_source_id','is_healthy','disease']].values}
-        print("fatto_1")
         ds=dataset.Dataset(dict_selection, param_list["Name"], donors=list(set(db.table['donor_source_id'])), items=list(set(db.table['item_id']))) #invece di passare solo la dict_selection unisco anche il dizionario fatto dai metadati
-        print("fatto_2")
         ds.dict_for_join= dict_for_join
-        print("fatto_3")
         workflow.add(Select(ds))
-        print("fatto_4")
 
         #workflow.run(workflow[-1])
         return []
@@ -1532,8 +1527,9 @@ class ShowAllRegion(Action):
         z = db.find_regions(dict_selection,{})
         c = {}
         for y in z:
-            c.update({y: y})
-            print(y)
+            if(y != "chrom" and y != "start" and y != "stop" and y!="gene_symbol"):
+                c.update({y: y})
+                print(y)
 
         test={"chrom,start,stop":"chrom", "gene_symbol":"gene_symbol"}
 
@@ -1552,6 +1548,39 @@ class ShowAllRegion(Action):
 
         return []
 
+
+class ShowPossibleRegion(Action):
+
+    def name(self) -> Text:
+        return "action_show_possible_region"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+
+        test={"chrom,start,stop":"chrom", "gene_symbol":"gene_symbol"}
+
+
+        if (shell == False):
+            dispatcher.utter_message(Utils.choice("Region:", test)) #prima andava test
+        else:
+            dispatcher.utter_message("Region:")
+            print(c)
+
+        ## per salvare scelta seample feature
+        last_intent=tracker.latest_message['intent'].get('name')
+        if(last_intent=="sample" or last_intent =="feature"):
+            feature_sample=last_intent
+
+        return []
+
+
+
+
+
+
+
 class SaveRegion(Action):
 
     def name(self) -> Text:
@@ -1566,7 +1595,10 @@ class SaveRegion(Action):
         ## per salvare scelta seample feature
         message = tracker.latest_message.get('text')
         if (region==[]):
-            region.append(message)
+            if(message=="gene_symbol"):
+                region.append(message)
+            else:
+                region.append("chrom")
         else:
             region_1.append(message)
 
@@ -1714,12 +1746,12 @@ class RunWorkflow(Action):
         print("ci sono")
         if(feature_sample == "sample" ):
             workflow.add(pivot.Pivot(workflow[-1],region_column= region, metadata_row=['item_id'], region_value=region_1,other_meta=label_region, other_region=label_meta ) )
-            workflow.run(workflow[-1])
+            workflow.run(workflow[-1], "utente1_script.py")
             dispatcher.utter_message(Utils.table_viz('Table', workflow[-1].result.ds))
 
         else:
             workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],  region_value=region_1, other_meta=label_region, other_region=label_meta  ))
-            workflow.run(workflow[-1])
+            workflow.run(workflow[-1], "utente1_script.py")
             dispatcher.utter_message(Utils.table_viz('Table', workflow[-1].result.ds))
        # workflow.run(workflow[-1])
         return []
@@ -1734,7 +1766,7 @@ class ShowOperations(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        list_param = {'Clustering': 'Clustering', 'Other': 'Other'}
+        list_param = {'K-means Clustering': 'K-means Clustering', 'Dbscan Clustering': 'Dbscan Clustering'}
 
         if (shell == False):
             dispatcher.utter_message(Utils.choice("Data Analysis", list_param))
@@ -1780,7 +1812,7 @@ class ActionTakeMinMax(Action):
                 workflow.add(pca.PCA(workflow[-1],2))
                 workflow.add(scatter.Scatter(workflow[-1],workflow[-2]))
                 print(workflow)
-                workflow.run(workflow[-1])
+                workflow.run(workflow[-1], "utente1_script.py")
                 dispatcher.utter_message(
                     Utils.scatter(workflow[-1].result.x, workflow[-1].result.y, workflow[-1].result.labels,
                                   workflow[-1].result.u_labels))
@@ -1811,7 +1843,7 @@ class ActionNClusters(Action):
             workflow.add(pca.PCA(workflow[-1], 2))
             workflow.add(scatter.Scatter(workflow[-1], workflow[-2]))
             print(workflow)
-            workflow.run(workflow[-1])
+            workflow.run(workflow[-1], "utente1_script.py")
             #aggiungere risultati di scatterplot
 
             dispatcher.utter_message(Utils.scatter(workflow[-1].result.x, workflow[-1].result.y,workflow[-1].result.labels, workflow[-1].result.u_labels))
@@ -1855,8 +1887,12 @@ class Workflow(Action):
                 return []
 
 
-            if(last_intent == 'cluster'):
+            if(last_intent == 'cluster' or last_intent=="kmeans"):
                 dispatcher.utter_message(Utils.workflow("KMeans"))
+                return []
+
+            if(last_intent == 'dbscan'):
+                dispatcher.utter_message(Utils.workflow("Dbscan"))
                 return []
 
             dispatcher.utter_message(Utils.choice('Options', {'Keep': 'keep',

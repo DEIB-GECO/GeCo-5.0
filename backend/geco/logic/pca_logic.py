@@ -1,29 +1,39 @@
 from sklearn.decomposition import PCA
 from .kmeans_logic import ClusteringRes
-
+import time
 class PCARes:
     def __init__(self, data):
         self.pca_data = data
 
 
 class PCALogic:
-    def __init__(self, pca):
+    def __init__(self, pca, sid):
         self.op = pca
         self.ds = self.op.depends_on.result
         if isinstance(self.ds, ClusteringRes):
+            self.name = self.ds.name
             self.ds = self.ds.values
         self.components = pca.components
-        self.run()
+        self.run(sid)
 
-    def run(self):
+    def run(self,sid):
+        pre = time.time()
+        #text = 'from sklearn.decomposition import PCA\n'
         pca = PCA(self.components)
+        #text += f'pca = PCA({self.components})\n'
         pca_data = pca.fit_transform(self.ds)
+        #text += f'pca_data = pca.fit_transform({self.name}.values)\n'
+        print('time post pca', time.time() - pre)
         self.op.result = PCARes(pca_data)
         self.op.executed = True
-        self.write()
+        #self.write_script(sid, text)
 
-    def write(self):
-        with open('jupyter_notebook.ipynb', 'a') as f:
+    def write_script(self, sid, text):
+        with open(f'python_script_{sid}.py', 'a') as f:
+            f.write(text)
+
+    def write(self,sid):
+        with open(f'jupyter_notebook_{sid}.ipynb', 'a') as f:
             f.write('{ "cell_type": "code",' +
                     '"execution_count": 0,' +
                     '"metadata": {},' +
@@ -33,10 +43,12 @@ class PCALogic:
                     '"execution_count": 0,' +
                     '"metadata": {},' +
                     '"outputs": [],' +
-                    '"source": [pca = PCA({})\n' + 'pca_data = pca.fit_transform(table.values)\n]},')
+                    f'"source": [pca = PCA({self.components})\n' +
+                    f'pca_data = pca.fit_transform({self.name}.values)\n]'+'},')
         f.close()
 
-        with open('python_script.py', 'a') as f:
+        with open(f'python_script_{sid}.py', 'a') as f:
             f.write('from sklearn.decomposition import PCA\n' +
-                    'pca = PCA({})\n'.format(self.components) + 'pca_data = pca.fit_transform(table.values)\n'.format(self.components))
+                    f'pca = PCA({self.components})\n' +
+                    f'pca_data = pca.fit_transform({self.name}.values)\n')
         f.close()

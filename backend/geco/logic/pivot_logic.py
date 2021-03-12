@@ -21,21 +21,23 @@ db_string = get_db_uri()
 db = create_engine(db_string)
 
 class PivotRes:
-    def __init__(self, pivot, labels, dict_for_join):
+    def __init__(self, name, pivot, labels, dict_for_join):
+        self.name = name
         self.ds = pivot
         self.labels = labels
         self.dict_for_join = dict_for_join
 
 class PivotLogic:
-    def __init__(self, op):
+    def __init__(self, op, sid):
         self.op = op
         self.ds = self.op.depends_on.result
-        self.run()
+        self.run(sid)
 
 
-    def run(self):
-        print('inizio pivot')
+    def run(self,sid):
+        pre = time.time()
         self.run_select()
+        print('inizio pivot', pre)
         # if self.op.meta_col != None:
         #     items = list(self.ds.meta['item_id'])
         #     items.sort()
@@ -59,8 +61,6 @@ class PivotLogic:
         #temp_reg = self.ds.region.merge(temp_meta, left_on='item_id', right_index=True)
         temp_reg = self.ds.region
         #items_reg = pd.DataFrame(index=list(set(temp_reg['item_id'])))
-        print('TEMP REG')
-        print(temp_reg.head())
         #if (self.op.region_col!=None) and (self.op.meta_col!=None):
         #    col = self.op.region_col.append(self.op.meta_col)
         if self.op.region_col!=None:
@@ -78,7 +78,6 @@ class PivotLogic:
         df = pd.DataFrame().from_dict(self.ds.dict_for_join).T
         print('col', col)
         print('row', row)
-        print("value", self.op.value)
         print('prima pivot')
         pivot = temp_reg.pivot_table(index=row, columns=col, values=self.op.value)
         pivot.columns = pivot.columns.droplevel(0)
@@ -118,29 +117,29 @@ class PivotLogic:
                     pivot[i] = list(labels_reg[i])
                 pivot = pivot.T
         #pivot.index= pivot.index.droplevel(0)
-        print('pivot!')
+        print('time after pivot:', time.time() - pre)
         print(pivot.head())
-        pivot.to_csv('pivot.csv')
-        self.op.result = PivotRes(pivot, labels, self.ds.dict_for_join)
+        pivot.to_csv(f'{self.ds.name}.csv')
+        self.op.result = PivotRes(self.ds.name, pivot, labels, self.ds.dict_for_join)
         self.op.executed = True
-        #self.write()
+        self.write(sid)
 
 
-    def write(self):
-        with open('jupyter_notebook.ipynb', 'a') as f:
+    def write(self,sid):
+        with open(f'jupyter_notebook_{sid}.ipynb', 'a') as f:
             f.write('{ "cell_type": "code",'+
                     '"execution_count": 0,'+
                     '"metadata": {},'+
                     '"outputs": [],'+
                     '"source": ['+
                     'import pandas as pd\n'+
-                    '{} = pd.read_csv("pivot.csv")'.format(self.ds.name)+
+                    f'{self.ds.name} = pd.read_csv("{self.ds.name}.csv")\n'+
                     ']},')
         f.close()
 
-        with open('python_script.py', 'a') as f:
+        with open(f'python_script_{sid}.py', 'a') as f:
             f.write('import pandas as pd\n'+
-                    '{} = pd.read_csv("pivot.csv")'.format(self.ds.name))
+                    f'{self.ds.name} = pd.read_csv("{self.ds.name}.csv")\n')
         f.close()
 
 

@@ -294,14 +294,17 @@ class SocketIOInput(InputChannel):
                 if ("session=" in x):
                     data["session_id"] = x.split("=")[1]
 
+            logger.debug(data["session_id"])
+
             if data is None:
                 data = {}
             if "session_id" not in data or data["session_id"] is None:
                 data["session_id"] = uuid.uuid4().hex
                 logger.debug("ciao")
+            user_ID=data["session_id"]
             if self.session_persistence:
                 sio.enter_room(sid, data["session_id"])
-            await sio.emit("session_confirm", data["session_id"], room=sid)
+            await sio.emit("session_confirm", data["session_id"], room=user_ID)
             logger.debug(f"User {sid} session requested to socketIO endpoint.")
 
         @sio.on(self.user_message_evt, namespace=self.namespace)

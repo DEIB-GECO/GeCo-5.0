@@ -7,6 +7,7 @@ nlu:
     - restart
 - intent: choice_exact_experiment
   examples: |
+    - i want [gene expression](data_type) as (data_type)(field)
     - i want [gene expression](data_type) for [breast cancer](disease)
     - I would like to retrieve items from [tcga](source) regarding [kidney](tissue)
     - I want [isoform expression quantification](data_type) for [igak myeloma](disease)

@@ -6,22 +6,25 @@ from logic.pivot_logic import PivotRes
 from logic.kmeans_logic import ClusteringRes
 
 class DBScanLogic:
-    def __init__(self, dbscan):
+    def __init__(self, dbscan, sid):
         self.op = dbscan
         self.ds = self.op.depends_on.result
         if  isinstance(self.ds, PivotRes):
             self.labels = self.ds.labels
+            self.name = self.ds.name
             self.ds = self.ds.ds
         self.tuning = dbscan.tuning
         if self.tuning:
-            self.min = dbscan.min_clusters
-            self.max = dbscan.max_clusters
+            self.min_samp = dbscan.min_samp
+            self.max_samp = dbscan.max_samp
+            self.min_eps = dbscan.min_eps
+            self.max_eps = dbscan.max_eps
         else:
             self.epsilon = dbscan.epsilon
             self.min_samples = dbscan.min_samples
-        self.run()
+        self.run(sid)
 
-    def run(self):
+    def run(self,sid):
         if hasattr(self, 'labels'):
             for i in self.labels:
                 if i in self.ds.columns:
@@ -31,8 +34,8 @@ class DBScanLogic:
 
         if not self.tuning:
             dbscan = DBSCAN(eps=self.epsilon, min_samples=self.min_samples).fit(self.ds.values)
-            label =  dbscan.labels_
-            self.op.result = ClusteringRes(self.ds.values, dbscan, label)
+            labels =  dbscan.labels_
+            self.op.result = ClusteringRes(self.name, self.ds.values, dbscan, labels)
         else:
 
             def silhouette_score(estimator, X):
@@ -41,7 +44,7 @@ class DBScanLogic:
                 score = metrics.silhouette_score(self.ds.values, clusters)
                 return score
 
-            param_grid = {"eps": range(self.min, self.max), "min_samples":range(self.min, self.max) }
+            param_grid = {"eps": range(self.min_eps, self.max_eps), "min_samples":range(self.min_samp, self.max_samp) }
             # run randomized search
             search = GridSearchCV(DBSCAN(),
                                   param_grid=param_grid,
@@ -49,10 +52,10 @@ class DBScanLogic:
             grid = search.fit(self.ds.values)
             dbscan = grid.best_estimator_
             dbscan_fit = dbscan.fit(self.ds.values)
-            label = dbscan_fit.labels_
-            self.op.result = ClusteringRes(self.ds.values, dbscan_fit, label)
+            labels = dbscan_fit.labels_
+            self.op.result = ClusteringRes(self.name, self.ds.values, dbscan_fit, labels)
         self.op.executed = True
-        self.write()
+        #self.write()
 
     def write(self):
         if not self.tuning:
