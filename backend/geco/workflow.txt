@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7fe08fd651d0>
+result:<data_structure.dataset.Dataset object at 0x7f88ccda2250>
 depends_on:Dataset
 metadata:None
 region:None
@@ -11,13 +11,39 @@ region:None
 Pivot
 --parameters--
 executed:True
-result:<logic.pivot_logic.PivotRes object at 0x7fe091763250>
+result:<logic.pivot_logic.PivotRes object at 0x7f88ce793b10>
 depends_on:Select
-region_row:['gene_symbol']
-meta_row:None
-region_col:None
-meta_col:['item_id']
+region_row:None
+meta_row:['item_id']
+region_col:['gene_symbol']
+meta_col:None
 value:['fpkm']
 other_meta:None
 other_region:None
+-------
+2
+KMeans
+--parameters--
+executed:True
+result:<logic.kmeans_logic.ClusteringRes object at 0x7f88c78423d0>
+depends_on:Pivot
+tuning:True
+min_clusters:3
+max_clusters:5
+-------
+3
+PCA
+--parameters--
+executed:True
+result:<logic.pca_logic.PCARes object at 0x7f88a97869d0>
+depends_on:KMeans
+components:2
+-------
+4
+Scatter
+--parameters--
+executed:True
+result:<logic.scatter_logic.ScatterRes object at 0x7f88a9d1db50>
+depends_on:PCA
+depends_on_2:KMeans
 -------

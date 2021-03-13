@@ -380,16 +380,17 @@ stories:
   - action: action_show_possible_region
   - intent: region
   - action: action_save_region
+  - action: action_show_all_region
   - action: utter_pivot_3
   - intent: region
   - action: action_save_region
   - action: utter_pivot_4
   - intent: deny
-  - action: action_run_workflow
-  - action: action_show_operations
   - action: utter_wait_2
+  - action: action_run_workflow
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_operations
   - action: utter_operation
   - intent: kmeans
   - action: action_workflow
@@ -412,6 +413,7 @@ stories:
   - action: action_show_possible_region
   - intent: region
   - action: action_save_region
+  - action: action_show_all_region
   - action: utter_pivot_3
 
 - story: modify extracted + join
@@ -1030,6 +1032,7 @@ stories:
   - action: action_show_possible_region
   - intent: region
   - action: action_save_region
+  - action: action_show_all_region
   - action: utter_pivot_3
   - intent: region
   - action: action_save_region
@@ -1047,11 +1050,11 @@ stories:
     - intent: deny
     - intent: region
   - action: action_save_feature
-  - action: action_run_workflow
-  - action: action_show_operations
   - action: utter_wait_2
+  - action: action_run_workflow
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_operations
   - action: utter_operation
   - intent: kmeans
   - action: action_workflow
@@ -1075,16 +1078,17 @@ stories:
   - action: action_show_possible_region
   - intent: region
   - action: action_save_region
+  - action: action_show_all_region
   - action: utter_pivot_3
   - intent: region
   - action: action_save_region
   - action: utter_pivot_4
   - intent: deny
-  - action: action_run_workflow
-  - action: action_show_operations
   - action: utter_wait_2
+  - action: action_run_workflow
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_operations
   - action: utter_operation
   - intent: kmeans
   - action: action_workflow
@@ -1604,6 +1608,7 @@ stories:
   - action: action_show_possible_region
   - intent: region
   - action: action_save_region
+  - action: action_show_all_region
   - action: utter_pivot_3
   - intent: region
   - action: action_save_region
@@ -1617,11 +1622,11 @@ stories:
   - action: utter_pivot_6
   - intent: deny
   - action: action_save_feature
-  - action: action_run_workflow
-  - action: action_show_operations
   - action: utter_wait_2
+  - action: action_run_workflow
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_operations
   - action: utter_operation
 
 - story: interactive_story_1
@@ -1637,7 +1642,6 @@ stories:
   - action: action_give_exact_experiment
   - action: action_show_field
   - action: utter_filter_more
-
 
 - story: interactive_story_1
   steps:
@@ -2227,6 +2231,7 @@ stories:
   steps:
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_operations
   - action: utter_operation
   - intent: dbscan
   - action: action_workflow

@@ -23,7 +23,7 @@ data = experiment_fields
 ann = False
 #database1 = DB(experiment_fields,False,[1,2])
 predefNameDb= "DS_"
-number = 0
+number = 1
 workflow = Workflow()
 show=[]
 last =1
@@ -287,8 +287,6 @@ class MoreFields(Action):
         else:
             return []
 
-
-
 class SelectData(Action):
 
     def name(self) -> Text:
@@ -344,7 +342,6 @@ class ShowField(Action):
 
             dispatcher.utter_message(Utils.param_list(param_list))
             #print(db.table)
-            #dispatcher.utter_message(Utils.table_viz("table",db.table))
 
             #dispatcher.utter_message(Utils.create_piecharts(db,list_param,param_list))
 
@@ -1511,8 +1508,6 @@ class ShowAllRegion(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        global feature_sample
-
         dict_selection = {}
         for num, name in enumerate(Selection_list):
             if (name[1] == False):
@@ -1536,15 +1531,10 @@ class ShowAllRegion(Action):
 
         if (c != {}):
             if (shell == False):
-                dispatcher.utter_message(Utils.choice("Region:", c)) #prima andava test
+                dispatcher.utter_message(Utils.choice("Available region:", c)) #prima andava test
             else:
-                dispatcher.utter_message("Region:")
+                dispatcher.utter_message("Available region:")
                 print(c)
-
-        ## per salvare scelta seample feature
-        last_intent=tracker.latest_message['intent'].get('name')
-        if(last_intent=="sample" or last_intent =="feature"):
-            feature_sample=last_intent
 
         return []
 
@@ -1558,14 +1548,20 @@ class ShowPossibleRegion(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
+        global feature_sample
 
         test={"chrom,start,stop":"chrom", "gene_symbol":"gene_symbol"}
+        ## per salvare scelta seample feature
+        last_intent=tracker.latest_message['intent'].get('name')
+        if(last_intent=="sample" or last_intent =="feature"):
+            print(last_intent)
+            feature_sample=last_intent
 
 
         if (shell == False):
-            dispatcher.utter_message(Utils.choice("Region:", test)) #prima andava test
+            dispatcher.utter_message(Utils.choice("Available region:", test)) #prima andava test
         else:
-            dispatcher.utter_message("Region:")
+            dispatcher.utter_message("Available region:")
             print(c)
 
         ## per salvare scelta seample feature
@@ -1574,12 +1570,6 @@ class ShowPossibleRegion(Action):
             feature_sample=last_intent
 
         return []
-
-
-
-
-
-
 
 class SaveRegion(Action):
 
@@ -1699,9 +1689,7 @@ class ActionShowFeature(Action):
                 print(z)
 
         ## per salvare scelta seample feature
-        last_intent=tracker.latest_message['intent'].get('name')
-        if(last_intent=="sample" or last_intent =="feature"):
-            feature_sample=last_intent
+
 
 
         return []
@@ -1744,15 +1732,38 @@ class RunWorkflow(Action):
         print(region)
         print(region_1)
         print("ci sono")
-        if(feature_sample == "sample" ):
-            workflow.add(pivot.Pivot(workflow[-1],region_column= region, metadata_row=['item_id'], region_value=region_1,other_meta=label_region, other_region=label_meta ) )
-            workflow.run(workflow[-1], "utente1_script.py")
-            dispatcher.utter_message(Utils.table_viz('Table', workflow[-1].result.ds))
+
+        if(shell==False):
+            if(feature_sample.lower() == "sample" ):
+                workflow.add(
+                    pivot.Pivot(workflow[-1],region_column= region, metadata_row=['item_id'], region_value=region_1,
+                                other_meta=label_region, other_region=label_meta ) )
+                workflow.run(workflow[-1], "utente1_script.py")
+                print(" sample")
+                dispatcher.utter_message(Utils.table_viz( workflow[-1].result.ds[:50].T[:50].T))
+                #print("ds.table",db.table)
+              #  dispatcher.utter_message(Utils.table_viz("table",db.table))
+
+
+            else:
+                workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],region_value=region_1,
+                                         other_meta=label_region, other_region=label_meta  ))
+                workflow.run(workflow[-1], "utente1_script.py")
+                print(" feature")
+                dispatcher.utter_message(Utils.table_viz( workflow[-1].result.ds[:50].T[:50].T))
+                print("ds.table",db.table)
 
         else:
-            workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],  region_value=region_1, other_meta=label_region, other_region=label_meta  ))
-            workflow.run(workflow[-1], "utente1_script.py")
-            dispatcher.utter_message(Utils.table_viz('Table', workflow[-1].result.ds))
+            if (feature_sample == "sample"):
+                workflow.add(
+                    pivot.Pivot(workflow[-1], region_column=region, metadata_row=['item_id'], region_value=region_1,
+                                other_meta=label_region, other_region=label_meta))
+                workflow.run(workflow[-1], "utente1_script.py")
+            else:
+                workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],region_value=region_1,
+                                         other_meta=label_region, other_region=label_meta  ))
+                workflow.run(workflow[-1], "utente1_script.py")
+
        # workflow.run(workflow[-1])
         return []
 
@@ -1787,7 +1798,7 @@ class ActionTakeMinMax(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        global N_cluster
+        global N_cluster,param_list
 
         last_intent=tracker.latest_message['intent'].get('name')
 
@@ -1805,6 +1816,8 @@ class ActionTakeMinMax(Action):
                     max=int(c[0])
 
                 print(max,c[1])
+                param_list.update({"Min N° Clusters": min})
+                param_list.update({"Max N° Clusters": max})
 
                 KM=clustering.KMeans(workflow[-1], clusters=None, tuning=True, min= min, max=max)
                 print(workflow)
@@ -1813,6 +1826,8 @@ class ActionTakeMinMax(Action):
                 workflow.add(scatter.Scatter(workflow[-1],workflow[-2]))
                 print(workflow)
                 workflow.run(workflow[-1], "utente1_script.py")
+
+                dispatcher.utter_message(Utils.param_list(param_list))
                 dispatcher.utter_message(
                     Utils.scatter(workflow[-1].result.x, workflow[-1].result.y, workflow[-1].result.labels,
                                   workflow[-1].result.u_labels))
@@ -1830,13 +1845,14 @@ class ActionNClusters(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        global N_cluster
+        global N_cluster,param_list
 
         last_intent=tracker.latest_message['intent'].get('name')
 
         if(last_intent == 'value'):
             N_cluster = tracker.latest_message.get('text')
             print(type(int(N_cluster)))
+            param_list.update({"N° Clusters":N_cluster})
             #if(type(N_cluster)== int ):
             KM=clustering.KMeans(workflow[-1], clusters=int(N_cluster), tuning=False)
             workflow.add(KM)
@@ -1846,6 +1862,7 @@ class ActionNClusters(Action):
             workflow.run(workflow[-1], "utente1_script.py")
             #aggiungere risultati di scatterplot
 
+            dispatcher.utter_message(Utils.param_list(param_list))
             dispatcher.utter_message(Utils.scatter(workflow[-1].result.x, workflow[-1].result.y,workflow[-1].result.labels, workflow[-1].result.u_labels))
 
             return []
@@ -1879,6 +1896,7 @@ class Workflow(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         last_intent=tracker.latest_message['intent'].get('name')
+        global param_list
 
         if (shell == False):
 
@@ -1888,11 +1906,15 @@ class Workflow(Action):
 
 
             if(last_intent == 'cluster' or last_intent=="kmeans"):
-                dispatcher.utter_message(Utils.workflow("KMeans"))
+                param_list = {"Method":"KMeans Clustering"}
+                dispatcher.utter_message(Utils.workflow("KMeans Clustering"))
+                dispatcher.utter_message(Utils.param_list(param_list))
                 return []
 
             if(last_intent == 'dbscan'):
-                dispatcher.utter_message(Utils.workflow("Dbscan"))
+                param_list = {"Method":"Dbscan Clustering"}
+                dispatcher.utter_message(Utils.workflow("Dbscan Clustering"))
+                dispatcher.utter_message(Utils.param_list(param_list))
                 return []
 
             dispatcher.utter_message(Utils.choice('Options', {'Keep': 'keep',
@@ -1906,3 +1928,6 @@ class Workflow(Action):
                 dispatcher.utter_message(Utils.workflow("Project Region"))
 
         return []
+
+
+

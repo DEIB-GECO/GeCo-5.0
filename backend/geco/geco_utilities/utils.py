@@ -1,4 +1,5 @@
 from data_structure.database import *
+import pandas as pd
 
 class Utils(object):
     def chat_message(message: str):
@@ -77,16 +78,16 @@ class Utils(object):
 
     def pie_chart(pie_dict):
         viz = []
-        for (k,v) in pie_dict.items():
+        for (k, v) in pie_dict.items():
             viz.append({
                 "vizType": "pie-chart",
                 "title": k,
                 "data": v
             })
-           # print(viz)
-        return {"type" : "data_summary",
-                "payload" : {
-                    "viz":viz
+        return {"type": "data_summary",
+                "show": "dataviz",
+                "payload": {
+                    "viz": viz
                 }}
 
     def hist(values, title):
@@ -114,7 +115,8 @@ class Utils(object):
             return {"type": "workflow",
                     "payload": {"state": state}}
 
-    def table_viz(show, df, show_index=True, order_by=None):
+    def table_viz(df, show_index=True, order_by=None):
+        show = 'tableViewer'
         if not isinstance(df.index, pd.MultiIndex):
             df = df[df.index.notnull()]
         df = df.T
@@ -124,7 +126,7 @@ class Utils(object):
         df.columns = map(str, df.columns)
         data = df.to_dict()
         # data = {str(k):v for k,v in data.items()}
-        #print(list(data.items())[:3])
+        # print(list(data.items())[:3])
         return {"type": "table",
                 "show": show,
                 "payload": {

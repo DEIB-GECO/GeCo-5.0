@@ -2140,7 +2140,7 @@ responses:
   utter_please_k-means_1:
   - text: Here is your clustering!
   utter_please_k-means_2:
-  - text: Which is the minimum and maximum number of clusters you want to try?
+  - text: Which is the minimum and maximum number of clusters you want to try? Please separate them with a ;
   utter_please_k-means_3:
   - text: Here is your analysis! Choose the final number of clusters you want to keep. Otherwise you can modify the parameters and re-run the analysis
   utter_dbscan_0:
