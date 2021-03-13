@@ -51,7 +51,7 @@ To train and chat with `reminderbot`, execute the following steps:
 
    You can then send messages to the bot via the callback channel endpoint:
    ```
-   curl -XPOST http://localhost:5980/webhooks/callback/webhook \
+   curl -XPOST http://localhost:5990/webhooks/callback/webhook \
       -d '{"sender": "tester", "message": "hello"}' \
       -H "Content-type: application/json"
    ```

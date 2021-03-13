@@ -67,12 +67,12 @@ To start a server with your NLU model, run:
 rasa run
 ```
 
-This will start a server listening on port 5980.
+This will start a server listening on port 5990.
 
 To send a request to the server, run:
 
 ```bash
-curl 'localhost:5980/model/parse?emulation_mode=luis' -d '{"text": "hello"}'
+curl 'localhost:5990/model/parse?emulation_mode=luis' -d '{"text": "hello"}'
 The `emulation_mode` parameter tells Rasa that you want your json
 response to have the same format as you would get from LUIS.
 You can also leave it out to get the result in the usual Rasa format.

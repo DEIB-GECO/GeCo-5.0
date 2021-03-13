@@ -82,7 +82,7 @@ class ActionTellID(Action):
             f'curl -H "Content-Type: application/json" '
             f'-X POST -d \'{{"name": "EXTERNAL_dry_plant", '
             f'"entities": {{"plant": "Orchid"}}}}\' '
-            f'"http://localhost:5980/conversations/{conversation_id}'
+            f'"http://localhost:5990/conversations/{conversation_id}'
             f'/trigger_intent?output_channel=latest"'
         )
 

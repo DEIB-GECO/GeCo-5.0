@@ -343,7 +343,7 @@ def test_db_get_url_with_sqlite():
 
 
 def test_get_db_url_with_correct_host():
-    expected = "postgresql://localhost:5980/mydb"
+    expected = "postgresql://localhost:5990/mydb"
 
     assert (
         str(
@@ -356,7 +356,7 @@ def test_get_db_url_with_correct_host():
 
 
 def test_get_db_url_with_query():
-    expected = "postgresql://localhost:5980/mydb?driver=my-driver"
+    expected = "postgresql://localhost:5990/mydb?driver=my-driver"
 
     assert (
         str(

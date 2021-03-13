@@ -66,6 +66,6 @@ VOLUME /tmp
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # the entry point
-EXPOSE 5980
+EXPOSE 5990
 ENTRYPOINT ["rasa"]
 CMD ["--help"]

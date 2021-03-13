@@ -68,13 +68,13 @@ if(!session){
 
 
 
-const socket = io('http://localhost:5980', {
+const socket = io('http://localhost:5990', {
   path: '/socket.io',
   'reconnection': true,
   'reconnectionDelay': 500,
   'reconnectionAttempts': 10
 });
-//const socket = io('http://localhost:5980');
+//const socket = io('http://localhost:5990');
 const tools = namespace('tools');
 const gecoAgentStore = namespace('gecoAgent');
 const conversationStore = namespace('gecoAgent/conversation');

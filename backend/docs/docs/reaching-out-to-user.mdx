@@ -81,7 +81,7 @@ into the conversation with id `user123`:
 ```
 curl -H "Content-Type: application/json" -X POST \
   -d '{"name": "EXTERNAL_dry_plant", "entities": {"plant": "Orchid"}}' \
-  "http://localhost:5980/conversations/user123/trigger_intent?output_channel=latest"
+  "http://localhost:5990/conversations/user123/trigger_intent?output_channel=latest"
 ```
 
 ### 2. Get the Conversation ID
@@ -166,7 +166,7 @@ Run this POST request to simulate the external event, using your conversation ID
 ```bash
 curl -H "Content-Type: application/json" -X POST -d \
 '{"name": "EXTERNAL_dry_plant", "entities": {"plant": "Orchid"}}' \
-"http://localhost:5980/conversations/user1234/trigger_intent?output_channel=latest"
+"http://localhost:5990/conversations/user1234/trigger_intent?output_channel=latest"
 ```
 
 You should see the bot respond in your channel:

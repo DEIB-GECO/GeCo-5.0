@@ -59,7 +59,7 @@ services:
   rasa:
     image: rasa/rasa:${variables.release}-full
     ports:
-      - 5980:5980
+      - 5990:5990
     volumes:
       - ./:/app
     command:
@@ -79,7 +79,7 @@ services:
   rasa:
     image: rasa/rasa:${variables.release}-full
     ports:
-      - 5980:5980
+      - 5990:5990
     volumes:
       - ./:/app
     command:
@@ -88,7 +88,7 @@ services:
     image: <image:tag>
     expose: 5055`}</code></pre>
 
-The `expose: 5980` is what allows the `rasa` service to reach the `app` service on that port.
+The `expose: 5990` is what allows the `rasa` service to reach the `app` service on that port.
 To instruct the `rasa` service to send its action requests to that endpoint, add it to your `endpoints.yml`:
 
 ```yaml-rasa
@@ -102,11 +102,11 @@ To run the services configured in your `docker-compose.yml` execute:
 docker-compose up
 ```
 
-You should then be able to interact with your bot via requests to port 5980, on the webhook endpoint that
+You should then be able to interact with your bot via requests to port 5990, on the webhook endpoint that
 corresponds to a [configured channel](#configuring-channels):
 
 ```bash
-curl -XPOST http://localhost:5980/webhooks/rest/webhook \
+curl -XPOST http://localhost:5990/webhooks/rest/webhook \
   -H "Content-type: application/json" \
   -d '{"sender": "test", "message": "hello"}'
 ```

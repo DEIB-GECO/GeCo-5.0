@@ -239,7 +239,7 @@ def training_request(
         payload_as_yaml = concatenated_payload_file.read_text()
 
         response = requests.post(
-            "http://localhost:5980/model/train",
+            "http://localhost:5990/model/train",
             data=payload_as_yaml,
             headers={"Content-type": rasa.server.YAML_CONTENT_TYPE},
             params={"force_training": True},

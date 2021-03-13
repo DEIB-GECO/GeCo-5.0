@@ -3,7 +3,7 @@ module.exports = {
     devServer: {
         proxy: {
             "/socket.io": {
-                target: "http://localhost:5980/" // So that the client dev server can access your socket.io
+                target: "http://localhost:5990/" // So that the client dev server can access your socket.io
             },
         }
     },

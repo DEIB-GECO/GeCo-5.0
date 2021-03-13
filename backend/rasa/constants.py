@@ -15,7 +15,7 @@ NLU_MODEL_NAME_PREFIX = "nlu_"
 CHECKPOINT_MODEL_NAME = "rasa_model_checkpoint"
 
 DEFAULT_RASA_X_PORT = 5002
-DEFAULT_RASA_PORT = 5980
+DEFAULT_RASA_PORT = 5990
 
 # Key in global config file which contains whether the user agreed to telemetry
 # reporting. These are reused in Rasa X. Keep this in mind when changing their names.
