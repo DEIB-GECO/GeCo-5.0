@@ -114,8 +114,8 @@ class TuningDBScan(AbstractAction):
             self.context.payload.insert('max_samp', max)
 
         self.context.workflow.add(
-            DBScan(self.context.workflow[-1], tuning=True, min_eps=self.status['min_eps'],
-                   max_eps=self.status['max_eps'], min_samp=self.status['min_samp'], max_samp=self.status['max_samp']))
+            DBScan(self.context.workflow[-1], tuning=True, min_eps=self.status['min_eps'][0],
+                   max_eps=self.status['max_eps'][0], min_samp=self.status['min_samp'][0], max_samp=self.status['max_samp'][0]))
         self.context.workflow.add(PCA(self.context.workflow[-1], 2))
         self.context.workflow.add(Scatter(self.context.workflow[-1], self.context.workflow[-2]))
         self.context.workflow.run(self.context.workflow[-1], self.context.session_id)
