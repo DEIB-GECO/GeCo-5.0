@@ -2148,11 +2148,11 @@ responses:
   utter_dbscan_1:
   - text: Do you want to apply parameter tuning?
   utter_dbscan_2:
-    - text: "Ok! You have to tell me the ranges to try for the two parameters: the maximum distance (epsilon) between 2 samples and the number of samples in a neighborhood for a point to be considered as a core point."
+    - text: "Ok! You have to define 2 parameters: the maximum distance between 2 samples and the number of samples in a neighborhood for a point to be considered as a core point."
   utter_dbscan_3:
-    - text: Do you want to apply parameter tuning?
+    - text: Start with the max distance, the default is 0.5. Do you want to change it? If yes, please provide me the number.
   utter_dbscan_4:
-    - text: Which is the minimum epsilon you want to try? If you don't know, please tell me 0.
+    - text: The minimum number of samples is 5 as default. Do you want to change it? If yes, please provide me the number.
   utter_dbscan_5:
     - text: Which is the maximum epsilon you want to try?
   utter_dbscan_6:
@@ -2243,7 +2243,8 @@ actions:
 - utter_wait
 - utter_wait_2
 - utter_operation
-- action_take_dbscan
 - action_show_possible_region
+- action_take_dbscan_1
+- action_take_dbscan_2
 
 

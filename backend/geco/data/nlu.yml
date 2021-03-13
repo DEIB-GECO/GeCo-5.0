@@ -6253,9 +6253,11 @@ nlu:
     - do dbscan clustering
     - find clusters using dbscan
 
+- synonym: gene_symbol
+  examples: |
+    - gene symbol
 - synonym: thymoma
   examples: |
-    - thynoma
     - thym
 - synonym: mirna expression
   examples: |

@@ -89,6 +89,14 @@ label_region = []
 
 N_cluster = int
 
+
+###############################
+###   Variabili DBScan      ###
+###############################
+
+first_DBScan_v = int
+second_DBScan_v = int
+
 ###############################
 ### Per testare sulla shell ###
 ###############################
@@ -1867,6 +1875,68 @@ class ActionNClusters(Action):
 
             return []
 
+
+
+#################################################################################################
+######################################  DBScan     ##############################################
+#################################################################################################
+class ActionDBScan_1(Action):
+
+    def name(self) -> Text:
+        return "action_take_dbscan_1"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        global first_DBScan_v
+
+        last_intent=tracker.latest_message['intent'].get('name')
+        message = tracker.latest_message.get('text')
+
+        if(last_intent=="value"):
+            first_DBScan_v=float(message)
+        else:
+            first_DBScan_v=0.5
+
+        return [] #, ActionReverted()
+
+
+class ActionDBScan_2(Action):
+
+    def name(self) -> Text:
+        return "action_take_dbscan_2"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        global first_DBScan_v, second_DBScan_v, param_list
+
+        last_intent=tracker.latest_message['intent'].get('name')
+        message = tracker.latest_message.get('text')
+
+        if(last_intent=="value"):
+            second_DBScan_v=float(message)
+
+        else:
+            second_DBScan_v=5
+
+        param_list= {"Method":"DBScan Clustering","second_DBScan_v":second_DBScan_v,"first_DBScan_v":first_DBScan_v}
+
+
+        workflow.add(clustering.DBScan(workflow[-1], epsilon=first_DBScan_v, min_samples=second_DBScan_v))
+        workflow.add(pca.PCA(workflow[-1], 2))
+        workflow.add(scatter.Scatter(workflow[-1], workflow[-2]))
+        workflow.run(workflow[-1], "utente1_script.py")
+
+        dispatcher.utter_message(Utils.param_list(param_list))
+        dispatcher.utter_message(Utils.scatter(workflow[-1].result.x,workflow[-1].result.y,
+                                               workflow[-1].result.labels,workflow[-1].result.u_labels))
+        dispatcher.utter_message(Utils.chat_message(
+            f"Ok, I did DBScan clustering using {first_DBScan_v} and {second_DBScan_v}."))
+
+        return []
 
 #################################################################################################
 ######################################  General    ##############################################

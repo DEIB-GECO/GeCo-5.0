@@ -2237,18 +2237,16 @@ stories:
   - action: action_workflow
   - action: utter_dbscan_0
   - action: utter_dbscan_1
-  - intent: affirm
+  - intent: deny
   - action: utter_dbscan_2
   - action: utter_dbscan_3
-  - intent: value
-  - action: action_take_dbscan
+  - or:
+    - intent: value
+    - intent: deny
+  - action: action_take_dbscan_1
   - action: utter_dbscan_4
-  - intent: value
-  - action: action_take_dbscan
-  - action: utter_dbscan_5
-  - intent: value
-  - action: action_take_dbscan
-  - action: utter_dbscan_6
-  - intent: value
-  - action: action_take_dbscan
-  - action: utter_dbscan_7
+  - or:
+    - intent: value
+    - intent: deny
+  - action: action_take_dbscan_2
+

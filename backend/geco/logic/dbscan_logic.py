@@ -4,6 +4,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn import *
 from logic.pivot_logic import PivotRes
 from logic.kmeans_logic import ClusteringRes
+import numpy as np
 
 class DBScanLogic:
     def __init__(self, dbscan, sid):
@@ -44,7 +45,7 @@ class DBScanLogic:
                 score = metrics.silhouette_score(self.ds.values, clusters)
                 return score
 
-            param_grid = {"eps": range(self.min_eps, self.max_eps), "min_samples":range(self.min_samp, self.max_samp) }
+            param_grid = {"eps": np.arange(self.min_eps, self.max_eps, 0.1), "min_samples":range(self.min_samp, self.max_samp) }
             # run randomized search
             search = GridSearchCV(DBSCAN(),
                                   param_grid=param_grid,
