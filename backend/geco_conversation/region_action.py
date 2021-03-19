@@ -24,6 +24,7 @@ class RegionAction(AbstractDBAction):
             regions = self.db.find_regions(gcm_filter, meta_filter)
         else:
             regions = self.db.find_regions(gcm_filter, {})
+        print(regions)
         if regions!= None:
             self.context.payload.insert('available_regions', {x: x for x in regions})
         else:

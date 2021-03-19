@@ -2,7 +2,9 @@
 import json
 import os
 import flask
+import time
 from threading import Lock
+import copy
 import threading
 from multiprocessing import Process
 from flask import Blueprint, render_template
@@ -129,6 +131,7 @@ class ConversationDBExplore(object):
             Utils.pyconsole_debug(entities)
 
             self.context.modify_status(entities)
+            time.sleep(1)
             self.run(message, intent, entities)
 
 
@@ -206,7 +209,8 @@ def add_session_message(session, message):
     else:
         for x in message['payload']['remove']:
             print(session['last_json'].keys())
-            if x in session['last_json'].keys():
+            keys_copy = [i for i in session['last_json'].keys()]
+            if x in keys_copy:
                 del session['last_json'][x]
 
     return id

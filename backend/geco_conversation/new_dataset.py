@@ -72,15 +72,22 @@ class DonorDataset(AbstractDBAction):
         if intent != 'deny':
             del self.context.payload.database
             self.context.payload.database = DB(fields, False, copy.deepcopy(self.context.payload.original_db))
+            self.db = self.context.payload.database
             if intent != 'affirm':
                 last_ds_selected = self.context.data_extraction.datasets[-1]
                 if 'disease' in last_ds_selected.fields:
                     disease = last_ds_selected.fields['disease']
                     self.context.payload.insert('disease', disease)
                 self.context.payload.insert('dataset_name', message)
+                self.db.update_donors(message,self.status['common_donors'][message])
+                print('common',len(list(self.status['common_donors'][message])))
+                print('donors',len(list(set(self.db.table['donor_source_id']))))
+                print('len items', len(list(set(self.db.table['item_id']))))
                 gcm_filter = {k: v for (k, v) in self.status.items() if k in self.db.fields}
                 self.db.update(gcm_filter)
+
                 self.context.payload.insert('fields', gcm_filter)
+                print(self.context.payload.database.table)
                 return DSNameAction(self.context), True
             else:
                 self.context.add_bot_msgs([Utils.chat_message(

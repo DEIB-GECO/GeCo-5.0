@@ -2,15 +2,15 @@ import pandas as pd
 
 
 class JoinPivotLogic:
-    def __init__(self, op):
+    def __init__(self, op, sid):
         self.op = op
         self.table_1 = self.op.depends_on.result.ds
         self.dict_1 = self.op.depends_on.result.dict_for_join
         self.table_2 = self.op.depends_on_2.result.ds
         self.dict_2 = self.op.depends_on_2.result.dict_for_join
-        self.run()
+        self.run(sid)
 
-    def run(self):
+    def run(self,sid):
         self.df1 = pd.DataFrame.from_dict(self.dict_1).T
         self.df2 = pd.DataFrame.from_dict(self.dict_2).T
         if self.table_1.index.name=='item_id' and self.table_2.index.name=='item_id':

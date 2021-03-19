@@ -22,7 +22,7 @@ sources = ['tcga', 'encode', 'roadmap epigenomics', '1000 genomes', 'refseq']
 datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10', 'grch38_tcga_copy_number_2019_10',
             'grch38_tcga_mirna_expression_2019_10','hg19_tcga_cnv','hg19_tcga_rnaseq_exon','hg19_tcga_dnaseq','hg19_tcga_mirnaseq_mirna',
-            'hg19_tcga_mirnaseq_isoform','hg19_tcga_rnaseq_spljxn','hg19_tcga_rnaseq_gene''hg19_tcga_dnamethylation']
+            'hg19_tcga_mirnaseq_isoform','hg19_tcga_rnaseq_spljxn','hg19_tcga_rnaseq_gene','hg19_tcga_dnamethylation']
 region_datasets = datasets
 all_datasets = ['grch38_tcga_gene_expression_2019_10', 'grch38_tcga_somatic_mutation_masked_2019_10',
             'grch38_tcga_methylation_2019_10', 'grch38_tcga_copy_number_masked_2019_10',
@@ -268,9 +268,11 @@ class DB:
         return val
 
     def find_regions(self,gcm,filter2):
+        print(gcm)
         ds_name = gcm['dataset_name'][0]
-        #print(ds_name)
+        print('DS_NAME', ds_name)
         if ds_name in region_datasets:
+            print('Ho ds_name')
             item_id = list(self.table['item_id'].values)
             items = ','.join(str(i) for i in item_id)
             if filter2 != {}:
