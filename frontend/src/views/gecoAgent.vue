@@ -55,25 +55,61 @@ import {conversation} from './../test/conversation';
 
 console.log("before", document.cookie)
 
-//function getCookie(name) {
-//  const value = `; ${document.cookie}`;
-//  const parts = value.split(`; ${name}=`);
-//  if (parts.length === 2) return parts.pop().split(';').shift();
+function getCookie(name:any) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length == 2){
+        const d = parts.pop().split(';').shift()
+        return d;
+  }
+}
+
+const session=getCookie('session')
+if(!session){
+    document.cookie="session="+Math.random()
+}
+
+//function writeCookie(name:any,value:any,days:any) {
+//    var date, expires;
+//    if (days) {
+//        date = new Date();
+//        date.setTime(date.getTime()+(days*24*60*60*1000));
+//        expires = "; expires=" + date.toUTCString();
+//            }else{
+//        expires = "";
+//    }
+//    document.cookie = name + "=" + value + expires + "; path=/";
+//    console.log("heyyyyyyyyyyyy")
+//    console.log(document.cookie)
 //}
 
-//const session=getCookie('session')
-//if(!session){
-//    document.cookie="session="+Math.random()
+//function readCookie(name:any) {
+//    var i, c, ca, nameEQ = name + "=";
+//    ca = document.cookie.split(';');
+//    for(i=0;i < ca.length;i++) {
+//        c = ca[i];
+//        while (c.charAt(0)==' ') {
+//            c = c.substring(1,c.length);
+//        }
+//        if (c.indexOf(nameEQ) == 0) {
+//            return c.substring(nameEQ.length,c.length);
+//        }
+//    }
+//    return '';
 //}
+
+//var sId = 's234543245';
+//writeCookie('sessionId', sId, 3);
+
+//var sId = readCookie('sessionId')
+
 
 //const socket = io('/test', {
 //  path: '/geco_agent_rasa/socket.io',
-const socket = io('http://localhost:5990', {
-  path: '/socket.io',
-  'reconnection': true,
-  'reconnectionDelay': 500,
-  'reconnectionAttempts': 10
-});
+
+const socket = io()
+
+
 //const socket = io('http://localhost:5990');
 const tools = namespace('tools');
 const gecoAgentStore = namespace('gecoAgent');
@@ -179,8 +215,9 @@ export default class GecoAgent extends Vue {
   }
 
   created() {
-    socket.emit('ack', {message_id: this.lastMessageId, location: "crated"});
-    //socket.emit('session_request', { session_id: document.cookie});
+    socket.emit('connect', { session_id:  "ciao"});
+    socket.emit('ack', {session_id: document.cookie, message_id: this.lastMessageId, location: "crated"});
+    socket.emit('session_request', { session_id:  document.cookie});
     socket.on('json_response', (payload: any) => {
       if (payload.type) {
         console.log('server sent JSON_response', payload);
@@ -197,17 +234,24 @@ export default class GecoAgent extends Vue {
       console.log("Ehi wait msg", payload);
       this.jsonResponseParsingFunctions['message'](payload.payload);
       this.setSendButtonStatus (false);
-    })
+    });
+
+    socket.on("session_confirm", (payload: any) => {
+    console.log("sessione confermata fra")
+    console.log(payload)
+        })
   }
 
   sendMessage() {
     if (this.message != '') {
       this.setSendButtonStatus(false);
       this.addUserMessage(this.message);
-      socket.emit('my_event', {data: this.message});
+      socket.emit('my_event', {session_id:  document.cookie, data: this.message});
       this.editMessage('');
     }
   }
+
+
 
   concatenateToMessage(newPiece: string) {
     this.message += ' ' + newPiece;

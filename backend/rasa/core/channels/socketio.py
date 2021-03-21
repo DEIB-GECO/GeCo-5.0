@@ -44,11 +44,11 @@ class SocketIOOutput(OutputChannel):
 
 
     """Creato da me"""
-    async def _send_message(self,socket_id: Text, response: Any) -> None:
+    async def _send_message(self, socket_id: Text, response: Any) -> None:
         global user_ID
 
         X = response['text']
-        await self.sio.emit('json_response', {"type" : "message", "payload" : {"sender": "bot","text": X}})
+        await self.sio.emit('json_response', {"type" : "message", "payload" : {"sender": "bot","text": X}},room=socket_id)
 
         if(tracker==True):
             with open("sessions/"+user_ID+".json") as json_file:
@@ -74,7 +74,7 @@ class SocketIOOutput(OutputChannel):
                 await self._send_message(recipient_id, {"text": message_part})
 
         else:
-            await self.sio.emit('json_response',text)
+            await self.sio.emit('json_response',text,room=recipient_id)
 
 
     async def send_image_url(
@@ -269,10 +269,10 @@ class SocketIOInput(InputChannel):
                 with open("sessions/" +sid+".json", "w") as f:
                     json.dump(data, f)
 
-            await self.sio.emit('json_response', {"type": "message", "payload": {"sender": "bot", "text": "Hi, there! I'm here to help you for the extraction and the analysis of genomic data."}})
-            await self.sio.emit('json_response', {"type": "message", "payload": {"sender": "bot", "text": "What data are you looking for?"}})
-            await self.sio.emit('json_response', {"type": "available_choices","payload": {"showSearchBar": False,"showDetails": False,"caption":'Data available',"showHelpIcon": False, "elements": [{'name': 'Annotations', 'value':'Annotations'},{'name': 'Experiments', 'value':'Experiments'}]}})
-            await self.sio.emit('json_response', {"type": "workflow","payload": {"state": "Data Selection"}})
+            await self.sio.emit('json_response', {"type": "message", "payload": {"sender": "bot", "text": "Hi, there! I'm here to help you for the extraction and the analysis of genomic data."}}, room=sid)
+            await self.sio.emit('json_response', {"type": "message", "payload": {"sender": "bot", "text": "What data are you looking for?"}}, room=sid)
+            await self.sio.emit('json_response', {"type": "available_choices","payload": {"showSearchBar": False,"showDetails": False,"caption":'Data available',"showHelpIcon": False, "elements": [{'name': 'Annotations', 'value':'Annotations'},{'name': 'Experiments', 'value':'Experiments'}]}}, room=sid)
+            await self.sio.emit('json_response', {"type": "workflow","payload": {"state": "Data Selection"}}, room=sid)
 
         @sio.on("disconnect", namespace=self.namespace)
         async def disconnect(sid: Text) -> None:
@@ -288,6 +288,8 @@ class SocketIOInput(InputChannel):
             logger.debug("Ho ricevuto richiesta di sessione")
             logger.debug("data vale: ")
             logger.debug(data)
+            logger.debug("il sid vale: ")
+            logger.debug(sid)
 
             for x in data["session_id"].split():
                 logger.debug(x)
@@ -301,10 +303,13 @@ class SocketIOInput(InputChannel):
             if "session_id" not in data or data["session_id"] is None:
                 data["session_id"] = uuid.uuid4().hex
                 logger.debug("ciao")
-            user_ID=data["session_id"]
             if self.session_persistence:
                 sio.enter_room(sid, data["session_id"])
-            await sio.emit("session_confirm", data["session_id"], room=user_ID)
+
+            logger.debug("data session2 vale: ")
+            logger.debug(data)
+
+            await sio.emit("session_confirm", data["session_id"], room=sid)
             logger.debug(f"User {sid} session requested to socketIO endpoint.")
 
         @sio.on(self.user_message_evt, namespace=self.namespace)
@@ -339,11 +344,42 @@ class SocketIOInput(InputChannel):
         @sio.on('my_event', namespace=self.namespace)
         async def handle_message(sid: Text, data: Dict) -> Any:
             output_channel = SocketIOOutput(sio, self.bot_message_evt)
+            logger.debug("arriva il sid")
+            logger.debug(sid)
+            logger.debug("arriva il data")
+            logger.debug(data)
+            logger.debug("arriva il data session id")
+            logger.debug(data["session_id"])
 
-            global user_ID
+            #for x in data["session_id"].split():
+            #    logger.debug(x)
+            #    if ("session=" in x):
+            #        data["session_id"] = x.split("=")[1]
+
+            for x in data["session_id"].split():
+                logger.debug(x)
+                if ("session=" in x):
+                    data["session_id"] = x.split("=")[1]
+
+            if self.session_persistence:
+                if not data.get("session_id"):
+                    rasa.shared.utils.io.raise_warning(
+                        "A message without a valid session_id "
+                        "was received. This message will be "
+                        "ignored. Make sure to set a proper "
+                        "session id using the "
+                        "`session_request` socketIO event."
+                    )
+                    return
+                sender_id = data["session_id"]
+            else:
+                sender_id = sid
+
+
+            #global user_ID
 
             message = UserMessage(
-                data["data"], output_channel, user_ID, input_channel=self.name()
+                data["data"], output_channel, sender_id, input_channel=self.name()
             )
             #('data[data]',data["data"])
             with open('data.txt', 'a') as outfile:

@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7f8523be6c90>
+result:<data_structure.dataset.Dataset object at 0x7f87eec754d0>
 depends_on:Dataset
 metadata:None
 region:None
@@ -11,7 +11,7 @@ region:None
 Pivot
 --parameters--
 executed:True
-result:<logic.pivot_logic.PivotRes object at 0x7f8525652110>
+result:<logic.pivot_logic.PivotRes object at 0x7f880b8bc5d0>
 depends_on:Select
 region_row:None
 meta_row:['item_id']
@@ -20,30 +20,4 @@ meta_col:None
 value:['fpkm']
 other_meta:None
 other_region:None
--------
-2
-DBScan
---parameters--
-executed:True
-result:<logic.kmeans_logic.ClusteringRes object at 0x7f8525652310>
-depends_on:Pivot
-tuning:False
-epsilon:0.5
-min_samples:5.0
--------
-3
-PCA
---parameters--
-executed:True
-result:<logic.pca_logic.PCARes object at 0x7f85018284d0>
-depends_on:DBScan
-components:2
--------
-4
-Scatter
---parameters--
-executed:True
-result:<logic.scatter_logic.ScatterRes object at 0x7f8501828190>
-depends_on:PCA
-depends_on_2:DBScan
 -------

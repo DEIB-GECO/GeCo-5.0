@@ -17,3 +17,10 @@ rules:
   steps:
   - intent: back
   - action: action_back
+
+- rule: reset
+  steps:
+  - intent: reset
+  - action: action_reset_total
+  - action: action_what_data
+  - action: utter_what_data

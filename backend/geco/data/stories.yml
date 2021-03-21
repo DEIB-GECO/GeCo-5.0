@@ -171,28 +171,6 @@ stories:
   - intent: insert
   - action: action_modify
 
-- story: Reset slot
-  steps:
-  - intent: reset 
-  - action: action_reset
-  - slot_was_set:
-    - cell: Null
-    - source: Null
-    - is_healthy: Null
-    - tissue: Null 
-    - file_format: Null 
-    - assembly: Null 
-    - feature: Null 
-    - disease: Null 
-    - data_type: Null 
-    - content_type: Null 
-    - target: Null 
-    - technique : Null
-    - experiments: Null
-    - annotations: Null
-  - action: action_what_data
-  - action: utter_what_data
-
 
 - story: only meta choice
   steps:
@@ -289,7 +267,6 @@ stories:
   #- action: action_what_data
   #- action: utter_what_data
 
-
 - story: filter giving a metadatum
   steps:
   - action: action_download_database
@@ -362,7 +339,6 @@ stories:
   - action: action_what_data
   - action: utter_what_data
 
-
 - story: pivot
   steps:
   - action: action_set_gmql
@@ -385,11 +361,60 @@ stories:
   - intent: region
   - action: action_save_region
   - action: utter_pivot_4
+  - action: action_yes_no
   - intent: deny
   - action: utter_wait_2
   - action: action_run_workflow
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_donor
+  - action: utter_donor
+  - intent: choice_value_dataset_name
+    entities:
+      - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - slot_was_set:
+      - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - action: action_save_database
+  - slot_was_set:
+      - dataset_number: 2
+  - action: utter_rename_dataset
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+      - dataset_rename: null
+  - action: action_download_database_2
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: deny
+  - action: action_save_dataset_2
+  - action: utter_pivot_0
+  - action: action_show_feature_sample
+  - intent: feature
+  - action: utter_pivot_1b
+  - action: action_show_possible_region
+  - intent: region
+  - action: action_save_region
+  - action: action_show_all_region
+  - action: utter_pivot_3
+  - intent: region
+  - action: action_save_region
+  - action: utter_pivot_4
+  - action: action_yes_no
+  - intent: affirm
+  - action: action_show_sample
+  - action: utter_pivot_5
+  - intent: deny
+  - action: action_save_sample
+  - action: action_show_feature
+  - action: utter_pivot_6
+  - intent: deny
+  - action: action_save_feature
+  - action: utter_wait_2
+  - action: action_run_workflow
+  - action: utter_pivot_7
+  - action: utter_pivot_8
+  - intent: affirm
+  - action: action_join_tables
   - action: action_show_operations
   - action: utter_operation
   - intent: kmeans
@@ -698,22 +723,6 @@ stories:
   - intent: modify_selection
   - action: utter_start_over
   - intent: reset
-  - action: action_reset
-  - slot_was_set:
-      - cell: Null
-      - source: Null
-      - is_healthy: Null
-      - tissue: Null
-      - file_format: Null
-      - assembly: Null
-      - feature: Null
-      - disease: Null
-      - data_type: Null
-      - content_type: Null
-      - target: Null
-      - technique: Null
-      - experiments: Null
-      - annotations: Null
   - action: action_reset_total
   - action: action_what_data
   - action: utter_what_data
@@ -1037,6 +1046,7 @@ stories:
   - intent: region
   - action: action_save_region
   - action: utter_pivot_4
+  - action: action_yes_no
   - intent: affirm
   - action: action_show_sample
   - action: utter_pivot_5
@@ -1054,6 +1064,9 @@ stories:
   - action: action_run_workflow
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_donor
+  - action: utter_donor
+  - intent: deny
   - action: action_show_operations
   - action: utter_operation
   - intent: kmeans
@@ -1083,11 +1096,15 @@ stories:
   - intent: region
   - action: action_save_region
   - action: utter_pivot_4
+  - action: action_yes_no
   - intent: deny
   - action: utter_wait_2
   - action: action_run_workflow
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_donor
+  - action: utter_donor
+  - intent: deny
   - action: action_show_operations
   - action: utter_operation
   - intent: kmeans
@@ -1613,6 +1630,7 @@ stories:
   - intent: region
   - action: action_save_region
   - action: utter_pivot_4
+  - action: action_yes_no
   - intent: affirm
   - action: action_show_sample
   - action: utter_pivot_5
@@ -1626,6 +1644,54 @@ stories:
   - action: action_run_workflow
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_donor
+  - action: utter_donor
+  - intent: choice_value_dataset_name
+    entities:
+      - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - slot_was_set:
+      - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - action: action_save_database
+  - slot_was_set:
+      - dataset_number: 2
+  - action: utter_rename_dataset
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+    - dataset_rename: null
+  - action: action_download_database_2
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: deny
+  - action: action_save_dataset_2
+  - action: utter_pivot_0
+  - action: action_show_feature_sample
+  - intent: feature
+  - action: utter_pivot_1b
+  - action: action_show_possible_region
+  - intent: region
+  - action: action_save_region
+  - action: action_show_all_region
+  - action: utter_pivot_3
+  - intent: region
+  - action: action_save_region
+  - action: utter_pivot_4
+  - action: action_yes_no
+  - intent: affirm
+  - action: action_show_sample
+  - action: utter_pivot_5
+  - intent: deny
+  - action: action_save_sample
+  - action: action_show_feature
+  - action: utter_pivot_6
+  - intent: deny
+  - action: action_save_feature
+  - action: utter_wait_2
+  - action: action_run_workflow
+  - action: utter_pivot_7
+  - action: utter_pivot_8
+  - intent: affirm
+  - action: action_join_tables
   - action: action_show_operations
   - action: utter_operation
 
@@ -2231,6 +2297,9 @@ stories:
   steps:
   - action: utter_pivot_7
   - intent: affirm
+  - action: action_show_donor
+  - action: utter_donor
+  - intent: deny
   - action: action_show_operations
   - action: utter_operation
   - intent: dbscan
@@ -2250,3 +2319,52 @@ stories:
     - intent: deny
   - action: action_take_dbscan_2
 
+
+- story: interactive_story_1
+  steps:
+  - intent: retrieve_experiments
+    entities:
+    - experiments: experiments
+  - slot_was_set:
+    - experiments: experiments
+  - action: action_data
+  - action: action_show_field
+  - action: utter_field_name
+  - intent: choice_exact_experiment
+    entities:
+    - data_type: gene expression
+    - disease: pancreatic adenocarcinoma
+  - slot_was_set:
+    - data_type: gene expression
+  - slot_was_set:
+    - disease: pancreatic adenocarcinoma
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: deny
+  - action: action_checkSlots
+  - slot_was_set:
+    - DS: true
+  - action: utter_rename_dataset
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+    - dataset_rename: null
+  - action: action_download_database
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: deny
+  - action: action_save_dataset
+  - action: utter_keep_modify
+  - action: action_keep_modify
+  - intent: keep
+  - action: action_set_gmql
+  - slot_was_set:
+    - GMQL: true
+  - action: utter_new_dataset
+  - action: action_yes_no
+  - intent: deny
+  - action: action_workflow
+  - action: utter_wait
+  - action: utter_pivot_0
+  - action: action_show_feature_sample

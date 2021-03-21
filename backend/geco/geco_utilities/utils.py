@@ -160,3 +160,6 @@ class Utils(object):
 
     def pyconsole_debug(payload):
         print("################## DEBUG: {}".format(payload))
+
+    def wait_msg(text):
+        return('wait_msg', Utils.chat_message(text))

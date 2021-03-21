@@ -21,3 +21,6 @@
 	poetry run rasa run action 
 	poetry run rasa run -m models --enable-api --cors "*" --debug
 	python app.py
+
+7-  add libraries es pandas
+    poetry add pandas

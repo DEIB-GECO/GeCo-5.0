@@ -1927,6 +1927,7 @@ nlu:
     - i want [gene expression](data_type)
     - i want [mirna expression](data_type)
     - [gene expression](data_type)
+    - i need [gene expression](data_type) and [pancreatic adenocarcinoma](disease)
 - intent: retrieve_annotations
   examples: |
     - [annotation](annotations)
@@ -2046,6 +2047,7 @@ nlu:
     - [experimental data](experiments)
     - [experim](experiments)
     - [esperiments](experiments)
+    - i need [experiments](experiments)
 - intent: search_field
   examples: |
     - [file_format](field)
@@ -6148,6 +6150,7 @@ nlu:
     - keep my selection
     - i want keep my selection
     - i wannna keep it
+    - i want to keep
 - intent: modify_extracted
   examples: |
     - i want to modify the extracted data
@@ -6200,6 +6203,7 @@ nlu:
     - [type](region)
     - [reads_per_million_mirna_mapped](region)
     - [gene_symbol](region)
+    - gene symbol
     - [composite_element_ref](region)
     - [beta_value](region)
     - [entrez_gene_id](region)
@@ -6235,7 +6239,6 @@ nlu:
     - i want to do clustering
     - i want to find cluster
     - find cluster
-
 - intent: kmeans
   examples: |
     - kmeans
@@ -6249,15 +6252,11 @@ nlu:
     - dbscan
     - perform dbscan cluster
     - dbscan clustering
-    - dbscan
     - do dbscan clustering
     - find clusters using dbscan
-
-- synonym: gene_symbol
-  examples: |
-    - gene symbol
 - synonym: thymoma
   examples: |
+    - thynoma
     - thym
 - synonym: mirna expression
   examples: |
@@ -6280,10 +6279,10 @@ nlu:
 - synonym: 'false'
   examples: |
     - tumoral
-    - tumor
-    - diseased
     - ill
+    - diseased
     - sick
+    - tumor
     - non-healthy
 - synonym: copy number segment
   examples: |
@@ -6301,9 +6300,9 @@ nlu:
 - synonym: 'true'
   examples: |
     - healthy
+    - non tumoral
     - control
     - normal
-    - non tumoral
     - normal tissue
     - control sample
     - healthy tissue
@@ -8016,6 +8015,9 @@ nlu:
     - skin
     - skin region
     - skin zone
+- synonym: gene_symbol
+  examples: |
+    - gene symbol
 - synonym: 1205-lu
   examples: |
     - wm451-lu

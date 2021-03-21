@@ -3,11 +3,12 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- choice_value_healthy
-- choice_exact_experiment
+- keep
 - retrieve_experiments
-- choice_value_tissue
 - deny
+- choice_exact_experiment
+- choice_value_healthy
+- choice_value_tissue
 - choice_value_data_type
 - rename_database
 - search_field
@@ -16,7 +17,6 @@ intents:
 - affirm
 - review
 - region
-- keep
 - choice_value_disease
 - operation
 - choice_value_assembly
@@ -1834,6 +1834,11 @@ slots:
     - eif4g1
     - fubp1
     - __other__
+
+  dataset_number:
+    type: float
+    influence_conversation: true
+
   technique:
     type: categorical
     influence_conversation: true
@@ -2133,6 +2138,8 @@ responses:
   - text: Do you want to add a label to the feature? Choose one in the right panel
   utter_pivot_7:
   - text: On the right, if you click on "Table", you can see the table. Is it ok?
+  utter_pivot_8:
+  - text: Do you want to join the two tables?
   utter_operation:
   - text: Which operation do you want to do? You can choose among the ones in the right panel.
   utter_please_k-means_0:
@@ -2148,18 +2155,19 @@ responses:
   utter_dbscan_1:
   - text: Do you want to apply parameter tuning?
   utter_dbscan_2:
-    - text: "Ok! You have to define 2 parameters: the maximum distance between 2 samples and the number of samples in a neighborhood for a point to be considered as a core point."
+  - text: 'Ok! You have to define 2 parameters: the maximum distance between 2 samples and the number of samples in a neighborhood for a point to be considered as a core point.'
   utter_dbscan_3:
-    - text: Start with the max distance, the default is 0.5. Do you want to change it? If yes, please provide me the number.
+  - text: Start with the max distance, the default is 0.5. Do you want to change it? If yes, please provide me the number.
   utter_dbscan_4:
-    - text: The minimum number of samples is 5 as default. Do you want to change it? If yes, please provide me the number.
+  - text: The minimum number of samples is 5 as default. Do you want to change it? If yes, please provide me the number.
   utter_dbscan_5:
-    - text: Which is the maximum epsilon you want to try?
+  - text: Which is the maximum epsilon you want to try?
   utter_dbscan_6:
-    - text: Which is the minimum number of samples you want to try?
+  - text: Which is the minimum number of samples you want to try?
   utter_dbscan_7:
-    - text: Which is the maximum number of samples you want to try?
-
+  - text: Which is the maximum number of samples you want to try?
+  utter_donor:
+  - text: The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset. If you want you can select one otherwise say no and let's move on.
 actions:
 - action_GMQL_binary
 - action_GMQL_unary
@@ -2206,8 +2214,11 @@ actions:
 - action_show_field
 - action_show_metadatum
 - action_show_operations
+- action_show_possible_region
 - action_show_sample
 - action_show_value
+- action_take_dbscan_1
+- action_take_dbscan_2
 - action_take_min_max
 - action_take_value
 - action_union
@@ -2226,6 +2237,7 @@ actions:
 - utter_join_2
 - utter_keep_modify
 - utter_new_dataset
+- utter_operation
 - utter_pivot_0
 - utter_pivot_1
 - utter_pivot_1b
@@ -2239,12 +2251,13 @@ actions:
 - utter_project_region_3
 - utter_provide_value
 - utter_rename_dataset
-- utter_what_data
 - utter_wait
 - utter_wait_2
-- utter_operation
-- action_show_possible_region
-- action_take_dbscan_1
-- action_take_dbscan_2
-
-
+- utter_what_data
+- action_show_donor
+- utter_donor
+- action_save_database
+- utter_pivot_8
+- action_join_tables
+- action_download_database_2
+- action_save_dataset_2
