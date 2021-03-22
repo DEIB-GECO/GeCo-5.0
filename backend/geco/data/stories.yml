@@ -1666,7 +1666,7 @@ stories:
   - action: action_save_dataset_2
   - action: utter_pivot_0
   - action: action_show_feature_sample
-  - intent: feature
+  - intent: sample
   - action: utter_pivot_1b
   - action: action_show_possible_region
   - intent: region
@@ -2368,3 +2368,183 @@ stories:
   - action: utter_wait
   - action: utter_pivot_0
   - action: action_show_feature_sample
+
+- story: interactive_story_1
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_exact_experiment
+    entities:
+    - disease: thymoma
+  - slot_was_set:
+    - disease: thymoma
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: deny
+  - action: action_checkSlots
+  - slot_was_set:
+    - DS: false
+  - slot_was_set:
+    - field: dataset_name
+  - action: action_show_value
+  - intent: choice_value_dataset_name
+    entities:
+    - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - slot_was_set:
+    - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: utter_rename_dataset
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+    - dataset_rename: null
+  - action: action_download_database
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: metadatum
+  - action: action_metadatum_type
+  - intent: value
+
+- story: interactive_story_2
+  steps:
+  - intent: choice_exact_experiment
+    entities:
+    - data_type: mirna expression
+  - slot_was_set:
+    - data_type: mirna expression
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: choice_exact_experiment
+    entities:
+    - disease: thymoma
+  - slot_was_set:
+    - disease: thymoma
+  - action: action_give_exact_experiment
+  - action: action_show_field
+  - action: utter_filter_more
+  - intent: deny
+  - action: action_checkSlots
+  - slot_was_set:
+    - DS: false
+  - slot_was_set:
+    - field: dataset_name
+  - action: action_show_value
+  - intent: choice_value_dataset_name
+    entities:
+    - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - slot_was_set:
+    - dataset_name: grch38_tcga_mirna_expression_2019_10
+  - action: action_check_value
+  - slot_was_set:
+    - field: null
+  - action: utter_rename_dataset
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+    - dataset_rename: null
+  - action: action_download_database
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: metadatum
+  - action: action_metadatum_type
+  - intent: greater
+  - action: action_take_value
+  - action: utter_what_metadata
+  - action: action_show_metadatum
+  - intent: deny
+  - action: action_save_dataset
+  - action: utter_keep_modify
+  - action: action_keep_modify
+  - intent: keep
+  - action: action_set_gmql
+  - slot_was_set:
+    - GMQL: true
+  - action: utter_new_dataset
+  - action: action_yes_no
+  - intent: deny
+  - action: action_workflow
+  - action: utter_wait
+  - action: utter_pivot_0
+  - action: action_show_feature_sample
+  - intent: sample
+  - action: utter_pivot_1b
+  - action: action_show_possible_region
+  - intent: region
+    entities:
+    - region: gene_symbol
+  - action: action_save_region
+  - action: action_show_all_region
+  - action: utter_pivot_3
+  - intent: region
+    entities:
+    - region: reads_per_million_mirna_mapped
+  - action: action_save_region
+  - action: utter_pivot_4
+  - action: action_yes_no
+  - intent: deny
+  - action: utter_wait_2
+  - action: action_run_workflow
+  - action: utter_pivot_7
+  - intent: affirm
+  - action: action_show_donor
+  - action: utter_donor
+  - intent: choice_value_dataset_name
+    entities:
+    - dataset_name: grch38_tcga_gene_expression_2019_10
+  - slot_was_set:
+    - dataset_name: grch38_tcga_gene_expression_2019_10
+  - action: action_save_database
+  - slot_was_set:
+    - dataset_number: 2
+  - action: utter_rename_dataset
+  - intent: deny
+  - action: action_rename_database
+  - slot_was_set:
+    - dataset_rename: null
+  - action: action_download_database_2
+  - action: utter_filter
+  - action: action_show_metadatum
+  - intent: deny
+  - action: action_save_dataset_2
+  - action: utter_pivot_0
+  - action: action_show_feature_sample
+  - intent: sample
+  - action: utter_pivot_1b
+  - action: action_show_possible_region
+  - intent: region
+    entities:
+    - region: gene_symbol
+  - action: action_save_region
+  - action: action_show_all_region
+  - action: utter_pivot_3
+  - intent: region
+    entities:
+    - region: fpkm
+  - action: action_save_region
+  - action: utter_pivot_4
+  - action: action_yes_no
+  - intent: deny
+  - action: utter_wait_2
+  - action: action_run_workflow
+  - action: utter_pivot_7
+  - action: utter_pivot_8
+  - intent: affirm
+  - action: action_join_tables
+  - action: action_show_operations
+  - action: utter_operation
+  - intent: kmeans
+  - action: action_workflow
+  - action: utter_please_k-means_0
+  - intent: value
+  - action: action_n_clusters
+  - action: utter_please_k-means_1

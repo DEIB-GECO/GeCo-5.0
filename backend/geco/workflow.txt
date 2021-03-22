@@ -2,7 +2,7 @@
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7fe451b8e150>
+result:<data_structure.dataset.Dataset object at 0x7faba1d9a210>
 depends_on:Dataset
 metadata:None
 region:None
@@ -11,7 +11,7 @@ region:None
 Pivot
 --parameters--
 executed:True
-result:<logic.pivot_logic.PivotRes object at 0x7fe4680bc190>
+result:<logic.pivot_logic.PivotRes object at 0x7fab9f962910>
 depends_on:Select
 region_row:None
 meta_row:['item_id']
@@ -25,7 +25,7 @@ other_region:None
 Select
 --parameters--
 executed:True
-result:<data_structure.dataset.Dataset object at 0x7fe4685afad0>
+result:<data_structure.dataset.Dataset object at 0x7faba4503e90>
 depends_on:Dataset
 metadata:None
 region:None
@@ -34,7 +34,7 @@ region:None
 Pivot
 --parameters--
 executed:True
-result:<logic.pivot_logic.PivotRes object at 0x7fe453568550>
+result:<logic.pivot_logic.PivotRes object at 0x7fabaca1d150>
 depends_on:Select
 region_row:None
 meta_row:['item_id']
@@ -43,4 +43,27 @@ meta_col:None
 value:['fpkm']
 other_meta:None
 other_region:None
+-------
+4
+JoinPivot
+--parameters--
+executed:True
+result:                                                     A1BG      A1CF         A2M     A2ML1   A3GALT2     A4GALT  ...     mirlet7e     mirlet7f1     mirlet7f2     mirlet7g     mirlet7i    snord138
+donor                                is_healthy                                                                 ...                                                                               
+0be4fa90-0122-4b26-b35f-7b1a4a16e63b False       0.156924  0.000000   49.058017  0.021042  0.027311  22.803387  ...  1364.435056   5472.500519   5536.407724  1903.266875  1488.356642   28.060778
+b1774c5c-7a6f-4bf6-8539-15a35f1457e6 False       0.142680  0.000000   40.510070  0.009031  0.042979   7.268143  ...  1514.542946  10998.668329  11290.564070  1287.840323   533.331271   68.139700
+09f8acfc-4d80-4005-9f40-7485309997f5 False       0.138732  0.002226   32.022877  0.005854  0.000000  10.487950  ...  1307.286345  12929.170327  13271.745978  2112.650193  1027.726953   80.275489
+bd06627d-1e86-4212-b53b-082686abee7e False       0.020342  0.000000   42.577646  4.329562  0.159319   7.628601  ...   681.109105   5636.282306   5715.048604  1875.766117   837.388126  100.286003
+c1f7e0cd-24b0-4c45-8e60-1ff669a692ab False       0.190123  0.000000   26.355163  0.012641  0.022561   1.560608  ...  1497.035399  12200.644463  12491.222623  1590.660750   684.241228   40.263752
+...                                                   ...       ...         ...       ...       ...        ...  ...          ...           ...           ...          ...          ...         ...
+7aef4dcf-0a4b-4848-beab-377394456bee False       0.250536  0.005098   19.808822  0.231284  0.023929   1.314208  ...   737.943862  24336.570374  24510.592956  1606.483332   807.332613   61.993578
+fbc5debd-f117-4ade-81b0-45d49fdd50a1 False       0.248214  0.000000   22.832666  0.105899  0.000000   2.753000  ...  1139.428643  10825.276135  11070.746894  2189.524078   998.310335   37.704559
+51feca45-114e-4817-99d6-1c9842cd679a False       0.283063  0.002362   41.667002  0.006211  0.376875  23.272381  ...  1635.797050   5446.471647   5588.684765   785.703247   447.410503   44.173306
+8889f7a6-3f3d-417b-bf3e-9a2155c4786c False       0.145135  0.000000  106.158831  0.248203  0.267453   1.685042  ...  1108.386781   7948.762617   8143.770345   763.935036   861.129363   40.858762
+67ff3aa1-9d52-4dc8-8501-ecd0d37a8735 False       0.056913  0.001696   79.558993  0.020069  0.015919  31.746015  ...  1931.569159   8218.066891   8431.347420  1517.187826   995.760237   54.538105
+
+[121 rows x 20082 columns]
+depends_on:Pivot
+depends_on_2:Pivot
+joinby:None
 -------

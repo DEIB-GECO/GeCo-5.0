@@ -1928,6 +1928,9 @@ nlu:
     - i want [mirna expression](data_type)
     - [gene expression](data_type)
     - i need [gene expression](data_type) and [pancreatic adenocarcinoma](disease)
+    - i need [mirna expression](data_type)
+    - i need [thynoma]{"entity": "disease", "value": "thymoma"}
+    - give me [thynoma]{"entity": "disease", "value": "thymoma"}
 - intent: retrieve_annotations
   examples: |
     - [annotation](annotations)
@@ -2047,7 +2050,6 @@ nlu:
     - [experimental data](experiments)
     - [experim](experiments)
     - [esperiments](experiments)
-    - i need [experiments](experiments)
 - intent: search_field
   examples: |
     - [file_format](field)
@@ -2409,6 +2411,8 @@ nlu:
     - [grch38_encode_narrow_2020_01](dataset_name)
     - [hg19_encode_broad_2020_01](dataset_name)
     - [grch38_tcga_copy_number_masked_2019_10](dataset_name)
+    - [grch38_tcga_mirna_expression_2019_10](dataset_name)
+    - [grch38_tcga_gene_expression_2019_10](dataset_name)
 - intent: choice_value_content_type
   examples: |
     - [clonal rearrangement, multiple peaks](content_type)
@@ -4699,6 +4703,7 @@ nlu:
     - major 311
     - biggest of 560
     - major of 569
+    - > 20000
 - intent: value
   examples: |
     - 1
@@ -4821,6 +4826,7 @@ nlu:
     - 54;90
     - 76;102
     - 08
+    - > 20000
 - intent: metadatum
   examples: |
     - 'iospecimen_aliquot__plate_row':- 8
@@ -6232,6 +6238,9 @@ nlu:
     - [matched_norm_sample_uuid](region)
     - [fpkm](region)
     - [segment_mean](region)
+    - [gene_symbol](region)
+    - [reads_per_million_mirna_mapped](region)
+    - [fpkm](region)
 - intent: cluster
   examples: |
     - i want cluster genes
@@ -6248,6 +6257,7 @@ nlu:
     - kmean
     - do kmean clustering
     - find clusters using kmeans
+    - K-means Clustering
 - intent: dbscan
   examples: |
     - dbscan

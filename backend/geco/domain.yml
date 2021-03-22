@@ -3,26 +3,29 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- keep
-- retrieve_experiments
+- value
+- region
 - deny
+- keep
+- sample
+- affirm
+- greater
+- metadatum
 - choice_exact_experiment
+- choice_value_dataset_name
+- kmeans
+- retrieve_experiments
 - choice_value_healthy
 - choice_value_tissue
 - choice_value_data_type
 - rename_database
 - search_field
-- choice_value_dataset_name
 - start
-- affirm
 - review
-- region
 - choice_value_disease
 - operation
 - choice_value_assembly
 - choice_value_cell
-- value
-- metadatum
 - modify
 - tuning
 - modify_extracted
@@ -54,11 +57,8 @@ intents:
 - change_field
 - back
 - feature
-- sample
 - cluster
-- greater
 - minor
-- kmeans
 - dbscan
 entities:
 - affirm
@@ -77,6 +77,7 @@ entities:
 - field
 - file_format
 - is_healthy
+- region
 - source
 - target
 - technique
@@ -802,6 +803,11 @@ slots:
     - hg19_roadmap_epigenomics_narrow
     - hg19_tcga_cnv
     - __other__
+  dataset_number:
+    type: float
+    influence_conversation: true
+    max_value: 1.0
+    min_value: 0.0
   dataset_rename:
     type: text
     influence_conversation: true
@@ -1834,11 +1840,6 @@ slots:
     - eif4g1
     - fubp1
     - __other__
-
-  dataset_number:
-    type: float
-    influence_conversation: true
-
   technique:
     type: categorical
     influence_conversation: true
@@ -2183,6 +2184,7 @@ actions:
 - action_data
 - action_difference
 - action_download_database
+- action_download_database_2
 - action_give_exact_experiment
 - action_give_more_fields
 - action_insert
@@ -2190,6 +2192,7 @@ actions:
 - action_is_healthy_no
 - action_is_healthy_yes
 - action_join
+- action_join_tables
 - action_keep_modify
 - action_map
 - action_metadata_exploration
@@ -2202,13 +2205,16 @@ actions:
 - action_reset
 - action_reset_total
 - action_run_workflow
+- action_save_database
 - action_save_dataset
+- action_save_dataset_2
 - action_save_feature
 - action_save_region
 - action_save_sample
 - action_set_gmql
 - action_show_all_metadatum
 - action_show_all_region
+- action_show_donor
 - action_show_feature
 - action_show_feature_sample
 - action_show_field
@@ -2229,6 +2235,7 @@ actions:
 - utter_GMQL_unary
 - utter_confirm_2a
 - utter_confirm_your_choices
+- utter_donor
 - utter_field_name
 - utter_filter
 - utter_filter_more
@@ -2242,7 +2249,11 @@ actions:
 - utter_pivot_1
 - utter_pivot_1b
 - utter_pivot_3
+- utter_pivot_4
+- utter_pivot_7
+- utter_pivot_8
 - utter_please_k-means_0
+- utter_please_k-means_1
 - utter_please_k-means_2
 - utter_please_k-means_3
 - utter_project_metadata_1
@@ -2254,10 +2265,4 @@ actions:
 - utter_wait
 - utter_wait_2
 - utter_what_data
-- action_show_donor
-- utter_donor
-- action_save_database
-- utter_pivot_8
-- action_join_tables
-- action_download_database_2
-- action_save_dataset_2
+- utter_what_metadata

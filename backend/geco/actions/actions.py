@@ -237,7 +237,7 @@ class MoreFields(Action):
                     if (shell == False):
                         dispatcher.utter_message(Utils.param_list(param_list))
 
-                    return [SlotSet("field", None)]
+                return [SlotSet("field", None)]
 
 
 
@@ -1676,7 +1676,7 @@ class ShowPossibleRegion(Action):
             dispatcher.utter_message(Utils.choice("Available region:", test)) #prima andava test
         else:
             dispatcher.utter_message("Available region:")
-            print(c)
+            print(test)
 
         ## per salvare scelta seample feature
         last_intent=tracker.latest_message['intent'].get('name')
@@ -1830,7 +1830,8 @@ class RunWorkflow(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         global feature_sample, region, region_1, label_meta,label_region
 
-        dispatcher.utter_message(Utils.wait_msg("plz wait"))
+        if(shell==False):
+            dispatcher.utter_message(Utils.wait_msg("plz wait"))
 
         if(label_meta == []):
             label_meta=None
@@ -1845,36 +1846,27 @@ class RunWorkflow(Action):
         print(region_1)
         print("ci sono")
 
-        if(shell==False):
-            if(feature_sample.lower() == "sample" ):
-                workflow.add(
-                    pivot.Pivot(workflow[-1],region_column= region, metadata_row=['item_id'], region_value=region_1,
-                                other_meta=label_region, other_region=label_meta ) )
-                workflow.run(workflow[-1], "utente1_script.py")
-                print(" sample")
+        if(feature_sample.lower() == "sample" ):
+            workflow.add(
+                pivot.Pivot(workflow[-1],region_column= region, metadata_row=['item_id'], region_value=region_1,
+                            other_meta=label_region, other_region=label_meta ) )
+            workflow.run(workflow[-1], "utente1_script.py")
+            print(" sample")
+            if (shell == False):
                 dispatcher.utter_message(Utils.table_viz( workflow[-1].result.ds[:50].T[:50].T))
                 #print("ds.table",db.table)
               #  dispatcher.utter_message(Utils.table_viz("table",db.table))
 
-
-            else:
-                workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],region_value=region_1,
-                                         other_meta=label_region, other_region=label_meta  ))
-                workflow.run(workflow[-1], "utente1_script.py")
-                print(" feature")
-                dispatcher.utter_message(Utils.table_viz( workflow[-1].result.ds[:50].T[:50].T))
-                print("ds.table",db.table)
-
         else:
-            if (feature_sample == "sample"):
-                workflow.add(
-                    pivot.Pivot(workflow[-1], region_column=region, metadata_row=['item_id'], region_value=region_1,
-                                other_meta=label_region, other_region=label_meta))
-                workflow.run(workflow[-1], "utente1_script.py")
-            else:
-                workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],region_value=region_1,
-                                         other_meta=label_region, other_region=label_meta  ))
-                workflow.run(workflow[-1], "utente1_script.py")
+            workflow.add(pivot.Pivot(workflow[-1],region_row = region, metadata_column = ['item_id'],region_value=region_1,
+                                     other_meta=label_region, other_region=label_meta  ))
+            workflow.run(workflow[-1], "utente1_script.py")
+            print(" feature")
+            if (shell == False):
+                dispatcher.utter_message(Utils.table_viz( workflow[-1].result.ds[:50].T[:50].T))
+            print("ds.table",db.table)
+
+
         region=[]
         region_1=[]
         label_meta=[]
@@ -1915,11 +1907,11 @@ class ActionShowDonors(Action):
             table['Number of Donors'] = [len(set(v)) for k, v in funz.items()]
             table['Common Percentage'] = ((table['Number of Donors'] / len_donors) * 100).apply(lambda x: round(x, 2))
 
-            dispatcher.utter_message(Utils.choice('Datasets', {k: k for k, v in
-                                          funz.items() if (len(v) / len_donors) * 100 > 0}))
-
-            dispatcher.utter_message(Utils.table_viz(table))
-            dispatcher.utter_message(Utils.tools_setup(add=None, remove='data_summary'))
+            if (shell == False):
+                dispatcher.utter_message(Utils.choice('Datasets', {k: k for k, v in
+                                                                   funz.items() if (len(v) / len_donors) * 100 > 0}))
+                dispatcher.utter_message(Utils.table_viz(table))
+                dispatcher.utter_message(Utils.tools_setup(add=None, remove='data_summary'))
 
         return []
 
@@ -2058,11 +2050,10 @@ class ActionJoin(Action):
                     pivot.JoinPivot(workflow[-1], depends_on_2))  # , joinby=self.status['joinby']))
                 break
         workflow.run(workflow[-1], "utente1_script.py")
-        print("risultati",workflow[-1].result)
+       # print("risultati",workflow[-1].result)
 
-
-        dispatcher.utter_message(Utils.table_viz(workflow[-1].result))
-
+        if(shell==False):
+            dispatcher.utter_message(Utils.table_viz(workflow[-1].result[:50].T[:50].T))
 
         return []
 
@@ -2128,9 +2119,10 @@ class ActionTakeMinMax(Action):
                 print(workflow)
                 workflow.run(workflow[-1], "utente1_script.py")
 
-                dispatcher.utter_message(Utils.param_list(param_list))
-                dispatcher.utter_message(
-                    Utils.scatter(workflow[-1].result.x, workflow[-1].result.y, workflow[-1].result.labels,
+                if (shell == False):
+                    dispatcher.utter_message(Utils.param_list(param_list))
+                    dispatcher.utter_message(
+                        Utils.scatter(workflow[-1].result.x, workflow[-1].result.y, workflow[-1].result.labels,
                                   workflow[-1].result.u_labels))
 
                 #for i in c:
@@ -2163,8 +2155,9 @@ class ActionNClusters(Action):
             workflow.run(workflow[-1], "utente1_script.py")
             #aggiungere risultati di scatterplot
 
-            dispatcher.utter_message(Utils.param_list(param_list))
-            dispatcher.utter_message(Utils.scatter(workflow[-1].result.x, workflow[-1].result.y,workflow[-1].result.labels, workflow[-1].result.u_labels))
+            if(shell== False):
+                dispatcher.utter_message(Utils.param_list(param_list))
+                dispatcher.utter_message(Utils.scatter(workflow[-1].result.x, workflow[-1].result.y,workflow[-1].result.labels, workflow[-1].result.u_labels))
 
             return []
 
@@ -2223,11 +2216,12 @@ class ActionDBScan_2(Action):
         workflow.add(scatter.Scatter(workflow[-1], workflow[-2]))
         workflow.run(workflow[-1], "utente1_script.py")
 
-        dispatcher.utter_message(Utils.param_list(param_list))
-        dispatcher.utter_message(Utils.scatter(workflow[-1].result.x,workflow[-1].result.y,
-                                               workflow[-1].result.labels,workflow[-1].result.u_labels))
-        dispatcher.utter_message(Utils.chat_message(
-            f"Ok, I did DBScan clustering using {first_DBScan_v} and {second_DBScan_v}."))
+        if(shell == False):
+            dispatcher.utter_message(Utils.param_list(param_list))
+            dispatcher.utter_message(Utils.scatter(workflow[-1].result.x,workflow[-1].result.y,
+                                                   workflow[-1].result.labels,workflow[-1].result.u_labels))
+            dispatcher.utter_message(Utils.chat_message(
+                f"Ok, I did DBScan clustering using {first_DBScan_v} and {second_DBScan_v}."))
 
         return []
 
