@@ -63,7 +63,7 @@ funz = {}
 dataset_new = ''
 disease_new = {}
 donor_new = []
-
+common_donors =[]
 
 #print(all_val)
 #print(dbfields)
@@ -1892,7 +1892,7 @@ class ActionShowDonors(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        global funz,db
+        global funz,db,common_donors
         num_tables = 0
         len_donors = len(ds.donors)
         db = DB(data, ann, all_db)
@@ -1968,7 +1968,9 @@ class ActionSaveDabase(Action):
             param_list.update(dict_selection)
 
         db.update(dict_selection)
-       # db.update_donors(ds,donor_new)
+
+
+        db.update_donors(dataset_new,funz[dataset_new])
 
         if (shell == False):
             dispatcher.utter_message(Utils.param_list(param_list))
@@ -2056,6 +2058,10 @@ class ActionJoin(Action):
                     pivot.JoinPivot(workflow[-1], depends_on_2))  # , joinby=self.status['joinby']))
                 break
         workflow.run(workflow[-1], "utente1_script.py")
+        print("risultati",workflow[-1].result)
+
+
+        dispatcher.utter_message(Utils.table_viz(workflow[-1].result))
 
 
         return []
