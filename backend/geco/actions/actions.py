@@ -997,6 +997,8 @@ class ShowMetadatum(Action):
             else:
                 dict_selection.update({name[0]: [name[1]]})
 
+        print(dict_selection)
+
         z = db.find_all_keys(dict_selection)
         c={}
         for y in z:
@@ -1890,10 +1892,12 @@ class ActionShowDonors(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        global funz
+        global funz,db
         num_tables = 0
         len_donors = len(ds.donors)
-        db.go_back({})
+        db = DB(data, ann, all_db)
+
+        #db.go_back({})
         last_ds_selected =ds
         table_donors = db.table[(db.table['donor_source_id'].isin(
             set(last_ds_selected.donors)))]
@@ -1910,9 +1914,6 @@ class ActionShowDonors(Action):
             table = pd.DataFrame(index=funz.keys())
             table['Number of Donors'] = [len(set(v)) for k, v in funz.items()]
             table['Common Percentage'] = ((table['Number of Donors'] / len_donors) * 100).apply(lambda x: round(x, 2))
-            dispatcher.utter_message(Utils.chat_message(
-                'The datasets on the right contain different data for some of the patients that you selected before. You can see the percentage of the common patients for each dataset.'
-                'Do you want also one of these datasets?'))
 
             dispatcher.utter_message(Utils.choice('Datasets', {k: k for k, v in
                                           funz.items() if (len(v) / len_donors) * 100 > 0}))
@@ -1931,26 +1932,46 @@ class ActionSaveDabase(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        global param_list
+        global Selection_list,param_list
 
         last_intent = tracker.latest_message['intent'].get('name')
         message = tracker.latest_message.get('text')
 
+        Selection_list=[]
         param_list={}
 
         dataset_new= message
-        disease_new= ds.fields['disease']
+        disease_new= str(ds.fields['disease'])[2:-2]
         donor_new= ds.donors
 
         print(dataset_new)
         print(disease_new)
         print(donor_new)
-
-        param_list.update({"": ds.donors})
+        Selection_list.append(["dataset_name", dataset_new])
         if(disease_new!= None):
-            param_list.update({"disease":ds.fields['disease']})
-        param_list.update({"donor_new": ds.donors})
+            Selection_list.append(["disease",disease_new])
 
+        dict_selection = {}
+        for num, name in enumerate(Selection_list):
+            if (name[1] == False):
+                dict_selection.update({name[0]: [False]})
+
+            elif (name[1] == True):
+                dict_selection.update({name[0]: [True]})
+
+            else:
+                dict_selection.update({name[0]: [name[1]]})
+
+        print(dict_selection)
+
+        if (dict_selection != {}):
+            param_list.update(dict_selection)
+
+        db.update(dict_selection)
+       # db.update_donors(ds,donor_new)
+
+        if (shell == False):
+            dispatcher.utter_message(Utils.param_list(param_list))
 
         return [SlotSet("dataset_number", 2)]
 
@@ -2023,15 +2044,18 @@ class ActionJoin(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        for i in range((len(self.context.workflow) - 2), 0, -1):
+        global workflow
+
+
+        for i in range((len(workflow) - 2), 0, -1):
             print(i)
-            print(self.context.workflow[i].__class__.__name__)
-            if self.context.workflow[i].__class__.__name__ == 'Pivot':
-                depends_on_2 = self.context.workflow[i]
-                self.context.workflow.add(
-                    JoinPivot(self.context.workflow[-1], depends_on_2))  # , joinby=self.status['joinby']))
+            print(workflow[i].__class__.__name__)
+            if workflow[i].__class__.__name__ == 'Pivot':
+                depends_on_2 = workflow[i]
+                workflow.add(
+                    pivot.JoinPivot(workflow[-1], depends_on_2))  # , joinby=self.status['joinby']))
                 break
-        self.context.workflow.run(self.context.workflow[-1], self.context.session_id)
+        workflow.run(workflow[-1], "utente1_script.py")
 
 
         return []

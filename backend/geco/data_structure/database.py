@@ -204,7 +204,9 @@ class DB:
     # Retrieves all keys
     def find_all_keys(self, filter, filter2={}):
         item_id = list(self.table['item_id'].values)
+        print("item_id",item_id)
         items = ','.join(str(i) for i in item_id)
+        print("param_list",items)
 
         if filter2 != {}:
             items = self.query_key2(filter2, items)

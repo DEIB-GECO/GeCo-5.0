@@ -13,12 +13,13 @@ class Pivot(UnaryOperation):
         self.value = region_value
         self.other_meta = other_meta
         self.other_region = other_region
-'''
+
 class JoinPivot(BinaryOperation):
     def __init__(self, op, op2, joinby: Field=None):
         super().__init__(op, op2)
         self.joinby = joinby
 
+'''
 class ConcatenatePivot(BinaryOperation):
     def __init__(self, op, op2):
         super().__init__(op, op2)
