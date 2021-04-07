@@ -21,6 +21,8 @@ class KMeansLogic:
             self.labels = self.ds.labels
             self.name = self.ds.name
             self.ds = self.ds.ds
+        else:
+            self.name = None
         self.tuning = kmeans.tuning
         if self.tuning:
             self.min = kmeans.min_clusters

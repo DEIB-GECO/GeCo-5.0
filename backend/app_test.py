@@ -12,12 +12,10 @@ from flask import Flask, session, request, copy_current_request_context
 from flask_session import Session
 from flask_socketio import SocketIO, emit, disconnect
 from rasa.nlu.model import Interpreter
-from data_structure.database import database
-from geco_conversation import *
-from data_structure.context import Context
 
 from engineio.payload import Payload
 from flask import Flask
+from geco_conversation import *
 from flask_executor import Executor
 from waitress import serve
 
@@ -35,7 +33,7 @@ if async_mode == 'eventlet':
 elif async_mode == 'gevent':
     from gevent import monkey
     #monkey.patch_all()
-    monkey.patch_all(thread=False, socket=False)
+    monkey.patch_all()#(thread=False, socket=False)
 
 base_url = '/geco_agent/'
 socketio_path = base_url + 'socket.io/'
@@ -72,7 +70,7 @@ simple_page = Blueprint('root_pages',
                         template_folder='../frontend/dist')
 
 thread = None
-#thread_lock = Lock()
+thread_lock = Lock()
 
 
 # Creation of logger file to save conversations
@@ -80,49 +78,28 @@ if not os.path.exists('logger.json'):
     with open('logger.json', 'w') as f:
         json.dump({}, f)
 
-# Loading the data from database
-all_db = database()
 
 
 # Creation of the main class of Dialogue Manager
 class ConversationDBExplore(object):
     def __init__(self,sid):
         # Creation of the context
-        self.context = Context(all_db, sid)
+        self.bot_msgs = [Utils.chat_message(messages.initial_greeting)]
         # Add first step to the context to start chatting
-        self.context.add_step(bot_msgs=Utils.chat_message(messages.initial_greeting), action=StartAction(self.context))
         # Launch the conversation
         self.enter()
 
     def clear_msgs(self):
-        self.bot_messages = []
+        self.bot_msgs = []
 
     # To call each time no messages are needed to pass from one action to the other
     def enter(self):
+        self.bot_msgs.append(Utils.chat_message('What do you want?'))
         # Run the last action in the context
-        node, on_enter = self.context.top_action().on_enter()
-        print('NODE ADDED ON ENTER', node)
-        if node == None:
-            # If node is None, the same action has to be added to the context history stack
-
-            self.context.add_step(action=self.context.top_action())
-        else:
-            self.context.add_step(action=node)
-            if on_enter:
-                self.enter()
 
     # To call each time to run the needed action
     def run(self, message, intent, entities):
-        print( self.context.top_action())
-        next_state, enter = self.context.top_action().run(message, intent, entities)
-        print('NODE ADDED RUN', next_state)
-        if next_state is not None:
-            self.context.add_step(action=next_state)
-            if enter:
-                self.enter()
-        else:
-            # If node is None, the same action has to be added to the context history stack
-            self.context.add_step(action=self.context.top_action())
+        self.bot_msgs.append(Utils.chat_message('Ok'))
 
     # To receive the messages from the user
     def receive(self, message):
@@ -130,25 +107,19 @@ class ConversationDBExplore(object):
         interpretation = interpreter.parse(message)
         intent = interpretation['intent']['name']
 
-        if intent == 'back':
-            # If intent is back, we need to remove the last step from the stack
-            self.context.pop()
-        else:
-            # We add user msg to the context history stack, we extract the entities and we run the next action
-            self.context.add_user_msg(message)
-            entities = {}
-            for e in interpretation['entities']:
-                if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
-                    entities[e['entity']].append(e['value'].lower().strip())
-                else:
-                    entities[e['entity']] = [e['value'].lower().strip()]
 
-            Utils.pyconsole_debug(intent)
-            Utils.pyconsole_debug(entities)
+        entities = {}
+        for e in interpretation['entities']:
+            if e['entity'] in entities and e['value'].lower().strip() not in entities[e['entity']]:
+                entities[e['entity']].append(e['value'].lower().strip())
+            else:
+                entities[e['entity']] = [e['value'].lower().strip()]
 
-            self.context.modify_status(entities)
-            #time.sleep(3)
-            self.run(message, intent, entities)
+        Utils.pyconsole_debug(intent)
+        Utils.pyconsole_debug(entities)
+
+        #time.sleep(3)
+        self.run(message, intent, entities)
 
 
 @simple_page.route('/')
@@ -176,7 +147,7 @@ def test_message(message):
         session['dm'].receive(user_message)
         # if (session['dm'].context.top_bot_msgs()!=None):
     except Exception as e:
-        session['dm'].context.add_bot_msg(Utils.chat_message("Something bad has happened, please start from beginning..."))
+        #session['dm'].context.add_bot_msg(Utils.chat_message("Something bad has happened, please start from beginning..."))
         error_to_raise = e
 
     Utils.wait_msg('iniziato thread ')
@@ -193,10 +164,14 @@ def test_message(message):
     #x = threading.Thread(target= f)
     #x.start()
     #x.join()
-    x = socketio.start_background_task(target=f)
+    #x = socketio.start_background_task(target=f)
     #print(type(x))
     #print(x.__dict__)
-    x.join()
+    #global thread
+    #with thread_lock:
+    #    if thread is None:
+    #        thread = socketio.start_background_task(target=f)
+        #thread.join()
     #while True:
     #    if x.is_alive():
     #        socketio.sleep(1)
@@ -207,7 +182,7 @@ def test_message(message):
 
     # For each message in the top of the stack, we add it to the session and we send it to the user
     #print(session['dm'].context.top_bot_msgs())
-    for msg in session['dm'].context.top_bot_msgs():
+    for msg in session['dm'].bot_msgs:
         id = add_session_message(session, msg)
         msg['message_id'] = id
         emit('json_response', msg)
@@ -318,7 +293,7 @@ def reset_button(message):
     # Call function to reset the session
     reset(session, True)
 
-    for msg in session['dm'].context.top_bot_msgs():
+    for msg in session['dm'].bot_msgs:
         id = add_session_message(session, msg)
         msg['message_id'] = id
         emit('json_response', msg)
@@ -357,7 +332,7 @@ def reset(session, bool=False):
 
     # add the initial messages to the session
     if not bool:
-        for msg in session['dm'].context.top_bot_msgs():
+        for msg in session['dm'].bot_msgs:
             id = add_session_message(session, msg)
             msg['message_id'] = id
             # emit('json_response', msg)
@@ -375,8 +350,8 @@ def test_connect():
         data[request.sid] = []
     # data = {}
     # data[request.sid] = []
-    if session['dm'].context.top_bot_msgs() != None:
-        for msg in session['dm'].context.top_bot_msgs():
+    if session['dm'].bot_msgs != None:
+        for msg in session['dm'].bot_msgs:
             if msg['type'] == 'message':
                 data[request.sid].append(msg['payload']['text'])
 
