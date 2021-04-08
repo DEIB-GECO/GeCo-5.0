@@ -1,4 +1,24 @@
 #!/usr/bin/env python
+
+
+# Set this variable to "threading", "eventlet" or "gevent" to test the
+# different async modes, or leave it set to None for the application to choose
+# the best option based on installed packages.
+async_mode = "gevent"
+# async_mode = "eventlet"
+#async_mode= "threading"
+
+
+if async_mode == 'eventlet':
+    import eventlet
+    eventlet.monkey_patch()
+elif async_mode == 'gevent':
+    from gevent import monkey
+    #monkey.patch_all()
+    # monkey.patch_all(thread=False, socket=False)
+    monkey.patch_all(thread=False)
+
+
 import json
 import os
 import flask
@@ -16,24 +36,21 @@ from rasa.nlu.model import Interpreter
 from engineio.payload import Payload
 from flask import Flask
 from geco_conversation import *
-from flask_executor import Executor
-from waitress import serve
+# from flask_executor import Executor
+# from waitress import serve
 
 Payload.max_decode_packets = 10000
-# Set this variable to "threading", "eventlet" or "gevent" to test the
-# different async modes, or leave it set to None for the application to choose
-# the best option based on installed packages.
-async_mode = "gevent"
-#async_mode = "eventlet"
-#async_mode= "threading"
 
-if async_mode == 'eventlet':
-    import eventlet
-    eventlet.monkey_patch()
-elif async_mode == 'gevent':
-    from gevent import monkey
-    #monkey.patch_all()
-    monkey.patch_all()#(thread=False, socket=False)
+
+
+# if async_mode == 'eventlet':
+#     import eventlet
+#     eventlet.monkey_patch()
+# elif async_mode == 'gevent':
+#     from gevent import monkey
+#     #monkey.patch_all()
+#     monkey.patch_all()#(thread=False, socket=False)
+
 
 base_url = '/geco_agent/'
 socketio_path = base_url + 'socket.io/'
@@ -151,28 +168,66 @@ def test_message(message):
         error_to_raise = e
 
     Utils.wait_msg('iniziato thread ')
-    def f():
-        a=0
-        while a<100000000:
-            a+=1
-            if a%10000000==0:
-                #Utils.wait_msg('thread ' + str(a))
-                #socketio.sleep(1)
-                print('THREAD', a)
+
+    aa = 1234567876543
+    def f(sid = 1234, user_message='m'):
+        nonlocal aa
+        print("aa", aa)
+        aa = 5
+        print("aa", aa)
+        try:
+
+            a=0
+            while a<100000000:
+                a+=1
+                aa = a
+                if a%10000000==0:
+                    #Utils.wait_msg('thread ' + str(a))
+                    #socketio.sleep(1)
+                    print('THREAD', sid, user_message, a)
+
+        except e:
+            pass
+        # Utils.wait_msg('finished thread ')
     #x = executor.submit(f)
     # x.result()
-    #x = threading.Thread(target= f)
-    #x.start()
-    #x.join()
-    #x = socketio.start_background_task(target=f)
-    #print(type(x))
-    #print(x.__dict__)
+
+    # # ARIF
+    x = threading.Thread(target= f, args=(request.sid,user_message))
+    x.start()
+    while x.is_alive():
+        socketio.sleep(0.1)
+    # print("hello11")
+    # socketio.sleep(5)
+    print("hello22")
+    x.join()
+
+    session['dm'].bot_msgs.append(Utils.chat_message("DENEME\n" + str(aa)))
+    # # ARIF
+
+    # x = socketio.start_background_task(f, request.sid)
+    # print(type(x))
+    # print(type(x).__bases__)
+    # print(x.__dict__)
+    # socketio.sleep(10)
+    # x.join()
+    # f(request.sid)
+
+    # import concurrent.futures
+    # import math
+    #
+    # with concurrent.futures.ProcessPoolExecutor(max_workers=3) as executor:
+    #     executor.submit(f)
+    # session['dm'].bot_msgs.append(Utils.chat_message("DENEME\n" + str(aa)))
+
+
+    print("HELLO")
     #global thread
     #with thread_lock:
     #    if thread is None:
     #        thread = socketio.start_background_task(target=f)
         #thread.join()
-    #while True:
+    # while True:
     #    if x.is_alive():
     #        socketio.sleep(1)
     #    else:
@@ -192,6 +247,8 @@ def test_message(message):
             data[request.sid].append(msg['payload']['text'])
         with open("logger.json", "w") as file:
             json.dump(data, file)
+
+    session['dm'].bot_msgs = []
 
     if error_to_raise:
         raise error_to_raise
